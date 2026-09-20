@@ -6,7 +6,7 @@
   "start_url": "./play.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "landscape",
+  "orientation": "any",
   "background_color": "#102134",
   "theme_color": "#102134"
 }
