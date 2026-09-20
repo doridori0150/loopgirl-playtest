@@ -1,0 +1,12 @@
+{
+  "id": "./",
+  "name": "LoopGirl",
+  "short_name": "LoopGirl",
+  "lang": "ko",
+  "start_url": "./play.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#102134",
+  "theme_color": "#102134"
+}

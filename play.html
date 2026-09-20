@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head><script>try{if(localStorage.getItem('gateloop_risk_ab')==null)localStorage.setItem('gateloop_risk_ab','B');}catch(e){}</script>
+<head><script>try{if(localStorage.getItem('gateloop_risk_ab')==null)localStorage.setItem('gateloop_risk_ab','B');}catch(e){}</script><link rel="manifest" href="manifest.webmanifest">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>LoopGirl</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="LoopGirl">
+<meta name="theme-color" content="#102134">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Do+Hyeon&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
@@ -1235,12 +1238,12 @@ button,a,input,select{touch-action:manipulation}
  #mobileInspTabs{display:flex;gap:4px;flex:none}#mobileInspTabs button{flex:1;border:1px solid #475d74;border-radius:5px;background:#132941;color:#cee8ff;min-height:32px}#mobileInspTabs button[aria-pressed=true]{background:#1979bb;color:white}
  .insp .ibody{overflow:hidden;gap:3px}.insp #inspBase,.insp #inspPv,.insp #inspSynergy{display:none!important}.insp[data-mobile-page=preview] #inspPv,.insp[data-mobile-page=base] #inspBase,.insp[data-mobile-page=combo] #inspSynergy{display:block!important}.insp[data-mobile-page=combo] .ibody{display:none}.insp #inspSynergy{flex:1;min-height:0}.insp .synergy-inline{font-size:12px;display:grid;gap:8px}.insp .synergy-inline button{min-height:36px}
  .insp .ift{gap:4px;display:flex;flex:none}.insp .ift button{flex:1;font-size:11px;min-height:34px;padding:4px}.insp #mobileConfirm,.insp #mobileInspectCancel{display:block}.insp #inspEst,.insp .risk-detail{display:none!important}.insp .risk-decision{margin:3px 0;padding:6px;gap:4px}.insp .risk-decision strong{font-size:12px}.insp .risk-decision p{font-size:10px}.insp .risk-decision .chain-read{font-size:11px;padding-top:3px}.insp .cm,.insp .cd,.insp .cc{font-size:12px;line-height:1.4}
- .tilemenu{position:fixed!important;left:auto!important;right:max(8px,env(safe-area-inset-right))!important;top:49px!important;bottom:auto!important;width:258px;max-height:calc(100dvh - 56px);padding:8px;font-size:12px;z-index:20}.tilemenu .risk-decision{padding:5px;margin:0 0 4px}.tilemenu .risk-decision strong{font-size:13px}.tilemenu .synergy-inline span{display:none}.tilemenu .kbd{font-size:11px}
+ .tilemenu{position:fixed!important;left:auto!important;right:max(8px,env(safe-area-inset-right))!important;top:49px!important;bottom:auto!important;width:258px;max-height:calc(var(--mobile-height,100dvh) - 56px);padding:8px;font-size:12px;z-index:20}.tilemenu .risk-decision{padding:5px;margin:0 0 4px}.tilemenu .risk-decision strong{font-size:13px}.tilemenu .synergy-inline span{display:none}.tilemenu .kbd{font-size:11px}
  .drawbanner{padding:3px 6px;gap:4px;font-size:11px;max-height:42px}.drawbanner>.kbd{display:none}.drawbanner .btn{min-height:32px;padding:4px 8px}.gatebig{display:none}
- .modal{padding:6px max(8px,env(safe-area-inset-right)) 6px max(8px,env(safe-area-inset-left));align-items:center}.modal>.modal-box{max-height:calc(100dvh - 12px);width:min(920px,98vw);border-radius:12px}.mh{padding:6px 10px;gap:6px}.mh .mt .tag{display:none}.mh .msub{font-size:11px}.mbody{padding:8px 10px}.mfoot{padding:5px 10px;gap:6px}.mfoot .btn{padding:4px 12px;min-height:34px}
+ .modal{padding:6px max(8px,env(safe-area-inset-right)) 6px max(8px,env(safe-area-inset-left));align-items:center}.modal>.modal-box{max-height:calc(var(--mobile-height,100dvh) - 12px);width:min(920px,98vw);border-radius:12px}.mh{padding:6px 10px;gap:6px}.mh .mt .tag{display:none}.mh .msub{font-size:11px}.mbody{padding:8px 10px}.mfoot{padding:5px 10px;gap:6px}.mfoot .btn{padding:4px 12px;min-height:34px}
  #settings .settings-tabs{margin-bottom:5px;gap:5px}#settings .setrows{display:grid;grid-template-columns:1fr 1fr;gap:5px}#settings .setrows .f{padding:6px;gap:4px}#settings .setrows .f .kbd{font-size:11px;line-height:1.35}#settings .setrows .f b{font-size:13px}#settings .risk-setting>div:first-child{flex-basis:auto}
- #riskCamp{padding:6px}#riskCamp>.risk-camp-box{max-height:calc(100dvh - 12px);width:min(850px,98vw);padding:10px;gap:5px}.risk-camp-box header>span{display:none}.risk-camp-box h2{font-size:18px;margin:0}.risk-camp-grid{gap:5px}.risk-camp-grid section{padding:6px}.risk-camp-grid strong{font-size:16px;margin:2px 0}.risk-camp-box p{font-size:11px;margin:3px 0}.risk-camp-box small{font-size:10px;line-height:1.3}.risk-camp-party{grid-template-columns:repeat(4,1fr);gap:4px;margin-top:2px}.risk-camp-party>div{padding:5px;font-size:10px}.risk-camp-box footer .btn{padding:6px;font-size:13px;min-height:36px}
- .synergy-box{padding:8px!important;gap:4px;max-height:calc(100dvh - 12px)!important;width:min(850px,98vw)!important}.synergy-box .mh{padding:0 4px 4px}.synergy-controls select{padding:5px;min-height:32px}.synergy-status{padding:4px;font-size:11px}#synergyBody h3{font-size:16px;margin:3px 0}#synergyBody{font-size:12px;line-height:1.35}#synergyBody dl{grid-template-columns:75px 1fr 75px 1fr;gap:6px;margin:4px 0}#synergyBody small{font-size:10px}.synergy-box .mfoot{padding:4px 0 0}
+ #riskCamp{padding:6px}#riskCamp>.risk-camp-box{max-height:calc(var(--mobile-height,100dvh) - 12px);width:min(850px,98vw);padding:10px;gap:5px}.risk-camp-box header>span{display:none}.risk-camp-box h2{font-size:18px;margin:0}.risk-camp-grid{gap:5px}.risk-camp-grid section{padding:6px}.risk-camp-grid strong{font-size:16px;margin:2px 0}.risk-camp-box p{font-size:11px;margin:3px 0}.risk-camp-box small{font-size:10px;line-height:1.3}.risk-camp-party{grid-template-columns:repeat(4,1fr);gap:4px;margin-top:2px}.risk-camp-party>div{padding:5px;font-size:10px}.risk-camp-box footer .btn{padding:6px;font-size:13px;min-height:36px}
+ .synergy-box{padding:8px!important;gap:4px;max-height:calc(var(--mobile-height,100dvh) - 12px)!important;width:min(850px,98vw)!important}.synergy-box .mh{padding:0 4px 4px}.synergy-controls select{padding:5px;min-height:32px}.synergy-status{padding:4px;font-size:11px}#synergyBody h3{font-size:16px;margin:3px 0}#synergyBody{font-size:12px;line-height:1.35}#synergyBody dl{grid-template-columns:75px 1fr 75px 1fr;gap:6px;margin:4px 0}#synergyBody small{font-size:10px}.synergy-box .mfoot{padding:4px 0 0}
  .cratecards{gap:6px}.ccard{padding:6px;gap:4px}.ccard img.ca{height:65px}.ccard .ci{font-size:32px}.ccard .cd{font-size:12px;line-height:1.35}.ccard b{font-size:14px}.ccard .ck{font-size:11px}
  .wbody{padding:5px 8px}.students{gap:5px;grid-template-columns:repeat(3,1fr)}.ldr{grid-template-columns:1fr 270px;gap:8px}.stu{padding:5px}.stu img.pt.face{height:48px;width:48px}.stu .sbars,.stu .cl{display:none}.stu .nm{font-size:12px}.stu .dk{font-size:11px}.sdetail{padding:7px;gap:5px}.sdetail img.pt.full{height:65px;width:55px}.sdetail .top{gap:6px}.sdetail .sig{margin:2px 0}.sdetail .sig img{max-height:28px}.sdetail .nm{font-size:15px}.sdetail .tinfo .kit,.sdetail .tinfo .traits{display:none}.sdetail .btn{padding:4px 9px}.trauma-care{font-size:10px;padding:4px}
  .gldlg .pt{width:88px}.gldlg .box{padding:8px 12px}.gldlg .txt{font-size:15px;line-height:1.5;min-height:4.5em}.gldlg .who{font-size:13px}.gldlg .bar button{min-height:34px}
@@ -1256,7 +1259,7 @@ button,a,input,select{touch-action:manipulation}
 @media(max-width:1100px) and (max-height:600px) and (orientation:landscape){
  .mobile-page-hidden{display:none!important}.mobile-pages{display:flex;align-items:center;justify-content:center;gap:8px;flex:none;height:30px;font-size:12px}.mobile-pages button,.mobile-shop-toggle{min-height:30px;border:1px solid #90aac8;border-radius:5px;background:#e9f4ff;color:#19456a;font:inherit}.mobile-pages button{min-width:40px}.mobile-shop-toggle{display:block;flex:none;margin:0 0 4px;width:100%}
  .sdetail .top{height:52px;min-height:52px}.sdetail img.pt.full{height:48px;width:40px}.sdetail .trauma-care{display:grid;grid-template-columns:1fr auto;gap:2px}.sdetail .trauma-care>b{grid-column:1}.sdetail .trauma-care>span{grid-column:1;font-size:10px}.sdetail .trauma-care>button{grid-column:2;grid-row:1/3;font-size:11px}.sdetail .sig{height:28px;min-height:28px}
- .shopbox{height:calc(100dvh - 12px)}.shopbox .mh{padding:4px 10px}.shopbox h3{font-size:16px}.shopbox .mtabs{padding:3px 10px;gap:4px}.shopbox .mtabs button{padding:4px 8px;font-size:12px;min-height:32px}.shopbox .shbody{padding:5px 8px}.shstu{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}.shlist{padding:0;overflow:hidden;display:flex;flex-direction:column}.shdetail{padding:6px;gap:4px;border-radius:8px}
+ .shopbox{height:calc(var(--mobile-height,100dvh) - 12px)}.shopbox .mh{padding:4px 10px}.shopbox h3{font-size:16px}.shopbox .mtabs{padding:3px 10px;gap:4px}.shopbox .mtabs button{padding:4px 8px;font-size:12px;min-height:32px}.shopbox .shbody{padding:5px 8px}.shstu{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}.shlist{padding:0;overflow:hidden;display:flex;flex-direction:column}.shdetail{padding:6px;gap:4px;border-radius:8px}
  .shlist #shParty{display:none}.shlist.mobile-party #shParty{display:grid;grid-template-columns:1fr 1fr;gap:4px}.shlist.mobile-party #offers{display:none}.pstrip .pm{padding:4px;gap:3px;position:relative}.pstrip .pm img.pt{width:28px;height:28px}.pstrip .pm b{font-size:11px}.pstrip .pm .idc{display:none}.pstrip .pm button{min-height:28px;padding:3px;font-size:10px}.pstrip .pm .pmb{gap:2px}.pstrip .pm .hpt{font-size:10px}
  .offers{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.offer{display:grid;grid-template-columns:45px 1fr;min-height:74px;height:74px;border-radius:7px;transform:none!important}.offer .oart{height:70px}.offer .oart .oi{font-size:28px}.offer .ok,.offer .ob,.offer .oid{display:none}.offer .ometa{padding:4px;gap:3px;justify-content:center}.offer .orow{flex-wrap:wrap;gap:2px}.offer .onm,.offer .opr{font-size:12px}.offer .oact{font-size:10px}
  .odet,.odet.k-item{grid-template-columns:minmax(0,1fr);gap:4px}.odet .dart{display:none}.odet .dinfo{grid-column:1;overflow:hidden;gap:4px;padding:0}.odet .dinfo>*{flex:none}.dnm{font-size:18px}.dbadges .rar,.dflag{padding:1px 5px;font-size:10px}.did{font-size:11px;gap:3px}.dfacts{font-size:11px;gap:3px}.dfacts dt{font-size:10px}.dfacts dd{line-height:1.3}.dkit,.dsig{font-size:11px;line-height:1.35;padding:4px}.odet .sbars.big{gap:3px}.odet .sbars.big .sb{font-size:12px}.odet .dbuy{grid-column:1;padding:5px;font-size:12px;min-height:34px}.odet .dbuy small{display:none}.shopbox .mfoot .btn{min-width:0;font-size:12px}.shgrid{grid-template-columns:minmax(0,1fr) 230px;gap:8px}.shopbox .shhand .hand{flex-wrap:wrap!important;gap:4px}.shopbox .shhand .hand .card{width:84px!important;flex-basis:84px;height:64px}.shopbox .shhand .hand .card .art{height:28px}.shopbox .shhand .hand .card .art img:not(.ico){height:26px;width:26px}.shhand h4 .kbd{display:none}.shside{gap:4px}.shgoal{padding:5px}.shgoal h4{margin:0}.shgoal .kbd{font-size:10px}
@@ -1277,7 +1280,7 @@ button,a,input,select{touch-action:manipulation}
 @media(max-width:1100px) and (max-height:600px) and (orientation:landscape){
  .dossier{display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:12px;line-height:1.35}.dossier .dshead{grid-column:1/-1;grid-template-columns:85px 1fr;gap:8px}.dossier .dsart{height:80px}.dossier .dsmain{gap:3px}.dossier .st div{padding:3px}.dossier .st b{font-size:17px}.dossier .dsrow{grid-template-columns:62px 1fr;gap:5px;padding-top:4px}.dossier .dsrow .kbd,.dossier>.kbd{font-size:10px}.dossier .dscards{gap:2px}.dossier .dscards span{padding:2px 4px}.dossier .dsodds .kbd{font-size:10px}
  .howto{grid-template-columns:1fr 1fr;gap:5px}.howto div{font-size:12px;line-height:1.35;padding:5px 7px}.howto b{font-size:13px;margin-bottom:3px}.hkeys{display:none}.tut .steps{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;line-height:1.35}.tut .steps>div{padding:6px}.tut .steps b{font-size:13px}.tut .chk{font-size:11px}
- .duelbox{height:calc(100dvh - 12px)}.duelbox .dstage{flex:1;min-height:0;height:auto}.duelbox .dbar{min-height:36px}.duelbox .dbar .exbtn{height:34px;min-height:34px}.duelbox .dhd .tag{display:none}
+ .duelbox{height:calc(var(--mobile-height,100dvh) - 12px)}.duelbox .dstage{flex:1;min-height:0;height:auto}.duelbox .dbar{min-height:36px}.duelbox .dbar .exbtn{height:34px;min-height:34px}.duelbox .dhd .tag{display:none}
  body.mobile-landscape .gldlg .txt{font-size:15px;line-height:1.5;min-height:4.5em}body.mobile-landscape .gldlg .pt{width:88px}
 }
 
@@ -1287,15 +1290,26 @@ button,a,input,select{touch-action:manipulation}
 }
 
 @media(max-width:1100px) and (max-height:600px) and (orientation:landscape){
- .result{height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);padding:8px 12px}.result h1{font-size:22px}.result .rank{font-size:40px}.result .sub{font-size:11px;margin-bottom:3px}.result .quote{padding:4px 8px;margin-top:4px;gap:8px}.result .quote canvas{width:38px;height:38px}.result .quote .q{font-size:12px}.result .rbtns{margin-top:4px}.result table{font-size:12px;margin:3px 0}.result td{padding:3px}.result .goal3,.result .suggest{font-size:11px;padding:4px;margin:3px 0}
+ .result{height:calc(var(--mobile-height,100dvh) - 12px);max-height:calc(var(--mobile-height,100dvh) - 12px);padding:8px 12px}.result h1{font-size:22px}.result .rank{font-size:40px}.result .sub{font-size:11px;margin-bottom:3px}.result .quote{padding:4px 8px;margin-top:4px;gap:8px}.result .quote canvas{width:38px;height:38px}.result .quote .q{font-size:12px}.result .rbtns{margin-top:4px}.result table{font-size:12px;margin:3px 0}.result td{padding:3px}.result .goal3,.result .suggest{font-size:11px;padding:4px;margin:3px 0}
 }
 
 @media(max-width:1100px) and (max-height:600px) and (orientation:landscape){
- .helpbox{height:calc(100dvh - 12px)}.helpbox .mbody{display:flex;flex-direction:column;min-height:0;overflow:hidden}.helpbox .howto{flex:1;min-height:0;overflow:hidden;align-content:start}.helpbox .pgbar{flex:none;margin-top:4px}
+ .helpbox{height:calc(var(--mobile-height,100dvh) - 12px)}.helpbox .mbody{display:flex;flex-direction:column;min-height:0;overflow:hidden}.helpbox .howto{flex:1;min-height:0;overflow:hidden;align-content:start}.helpbox .pgbar{flex:none;margin-top:4px}
 }
 
 @media(max-width:1100px) and (max-height:600px) and (orientation:landscape){
  .shside #shServices>.row{display:grid;grid-template-columns:1fr 1fr;gap:3px!important}.shside #shServices .btn{min-height:32px;padding:3px;font-size:10px;white-space:nowrap}.shside #shServices .btn:last-child{grid-column:1/-1}
+}
+
+.mobile-screen-entry{display:none}.mobile-display-box{padding:16px;gap:8px;width:min(600px,94vw);font-size:13px}.mobile-display-box h3,.mobile-display-box p{margin:0}.mobile-display-box small{font-size:11px}
+@media(max-width:1100px) and (max-height:600px) and (orientation:landscape){
+ .screen{height:var(--mobile-height,100dvh)}.mobile-screen-entry{display:inline-flex;justify-content:center;margin-top:3px;min-height:34px!important;padding:4px 10px!important;font-size:12px!important}#mobileFullscreen{width:auto;min-width:54px;padding:4px;font-size:11px;white-space:nowrap}
+ body.mobile-short .tbar{height:38px;min-height:38px;padding:2px 8px}body.mobile-short .tbar button{min-height:32px}body.mobile-short .run-body{grid-template-rows:minmax(0,1fr) 78px;padding-top:3px;padding-bottom:3px;gap:3px}body.mobile-short .hand-wrap .ht{height:20px;min-height:20px}body.mobile-short .hand .card{height:48px}body.mobile-short .hand .card .art{height:22px}body.mobile-short .hand .card .art img:not(.ico){height:20px;width:20px}body.mobile-short .hand .card .gist{display:none}body.mobile-short .side #party{grid-template-columns:repeat(4,1fr);gap:2px}body.mobile-short .side .member img.pt{display:none}body.mobile-short .side .member .mn{font-size:9px!important}body.mobile-short .side #stage{min-height:36px;height:50px!important}body.mobile-short .side .dtoggle{height:28px}body.mobile-short .side .exbtn{height:30px;min-height:30px}body.mobile-short .side{gap:3px}
+ body.mobile-short .insp .ihd{min-height:26px}body.mobile-short .insp .ix{height:28px}body.mobile-short #mobileInspTabs button{min-height:28px}body.mobile-short .insp .ift button{min-height:32px;height:32px}body.mobile-short .insp .ihd .imeta{display:none}
+}
+
+@media(max-width:1100px) and (max-height:600px) and (orientation:landscape){
+ body.mobile-short .insp[data-mobile-page=preview] #inspPv{display:flex!important;flex-direction:column;height:100%;min-height:0}body.mobile-short .insp .risk-decision{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}body.mobile-short .insp .risk-decision>*{flex:none}body.mobile-short #inspPv .pgbar{flex:none;min-height:26px;margin:0}body.mobile-short #inspPv .pgbar button{min-height:26px;padding:2px 8px}body.mobile-short .side .exbtn span{line-height:28px}
 }
 </style>
 </head>
@@ -1320,7 +1334,7 @@ button,a,input,select{touch-action:manipulation}
       <div class="title-menu">
         <button class="btn title-start" id="btnGoSelect"><span>이야기 시작<span class="title-start-sub">LooP 로비로</span></span><span class="title-arrow" aria-hidden="true">↗</span></button>
         <button class="btn ghost" id="btnGoAcademy" hidden>사무소</button>
-        <div class="title-secondary"><button class="btn ghost" id="btnSettings">설정</button><span aria-hidden="true"></span><button class="btn ghost" id="btnHelpTitle" title="규칙 요약 · 조작">플레이 가이드 <span aria-hidden="true">↗</span></button></div>
+        <button class="btn ghost mobile-screen-entry" id="mobileTitleFullscreen">⛶ 전체 화면</button><div class="title-secondary"><button class="btn ghost" id="btnSettings">설정</button><span aria-hidden="true"></span><button class="btn ghost" id="btnHelpTitle" title="규칙 요약 · 조작">플레이 가이드 <span aria-hidden="true">↗</span></button></div>
       </div>
     </main>
     <footer class="title-footer">
@@ -10980,14 +10994,15 @@ if(typeof window!=='undefined'&&window.addEventListener)window.addEventListener(
 {const o=typeof $==='function'?$('#optStageFx'):null;if(o){o.checked=stageFxOn();o.onchange=()=>{stageSetFx(!!o.checked);};}}
 </script>
 <div id="mobileRotate" hidden role="dialog" aria-modal="true" aria-label="화면 회전 안내"><span class="rotate-icon" aria-hidden="true">↻</span><h2>가로로 돌려 주세요</h2><p>지도와 분대를 함께 보며 플레이할 수 있어요.<br>화면을 돌리는 동안 원정은 일시정지됩니다.</p><button class="btn ghost" id="mobilePortraitContinue">세로로 계속</button></div>
+<div class="modal" id="mobileDisplayHelp" hidden role="dialog" aria-modal="true" aria-labelledby="mobileDisplayTitle"><div class="modal-box mobile-display-box"><h3 id="mobileDisplayTitle">주소창 없이 플레이하기</h3><p>이 브라우저에서는 전체 화면을 켤 수 없습니다.</p><p>아이폰: Safari의 공유 메뉴 → 홈 화면에 추가 → 웹 앱으로 열기(표시되는 경우)를 켜고 추가하세요.</p><p>안드로이드: Chrome 또는 삼성 인터넷에서 이 링크를 열고 「전체 화면」을 눌러 주세요. 앱 내부 브라우저는 외부 브라우저로 열어 주세요.</p><small>홈 화면 아이콘으로 실행할 때 저장소가 달라질 수 있으니 기존 진행은 설정에서 백업해 두세요.</small><button class="btn" id="mobileDisplayClose">확인</button></div></div>
 <script>
 'use strict';
 /* Landscape phone presentation and touch input. Gameplay rules remain unchanged. */
-const MOBILE={portraitAllowed:false,zoom:1,x:0,y:0,drag:null,suppressClick:false,page:'preview',lastLayout:'',lastRun:null};
+const MOBILE={displayHelp:false,portraitAllowed:false,zoom:1,x:0,y:0,drag:null,suppressClick:false,page:'preview',lastLayout:'',lastRun:null};
 const mobileLandscape=()=>!!(window.matchMedia&&window.matchMedia('(max-width:1100px) and (max-height:600px) and (orientation:landscape)').matches);
 const mobilePortrait=()=>!!(window.matchMedia&&window.matchMedia('(max-width:600px) and (orientation:portrait)').matches);
 const mobileDevice=()=>mobileLandscape()||mobilePortrait()||isCoarse;
-const mobileBlocked=()=>mobileDevice()&&(document.hidden||(mobilePortrait()&&!MOBILE.portraitAllowed));
+const mobileBlocked=()=>mobileDevice()&&(MOBILE.displayHelp||document.hidden||(mobilePortrait()&&!MOBILE.portraitAllowed));
 function mobilePause(){if(run&&!run.ended){userPaused=true;setSpeed(0);}}
 function mobileMapFit(){
  const v=$('#mapViewport');if(!v||!canvas)return;
@@ -11004,8 +11019,11 @@ function mobileZoom(d){MOBILE.zoom=clamp(MOBILE.zoom+d,1,2.5);if(MOBILE.zoom===1
 function mobileSync(){
  const land=mobileLandscape(),port=mobilePortrait(),blocked=port&&!MOBILE.portraitAllowed;
  document.body.classList.toggle('mobile-landscape',land);$('#mobileRotate').hidden=!blocked;
- const key=land+'|'+port+'|'+window.innerWidth+'|'+window.innerHeight;
- if(key!==MOBILE.lastLayout){MOBILE.lastLayout=key;MOBILE.drag=null;if(port)mobilePause();MOBILE.zoom=1;MOBILE.x=MOBILE.y=0;mobileMapFit();if(run&&!run.ended){dirty=true;fitHand();fitSide();}}
+ const visibleHeight=mobileViewportHeight();
+ if(document.documentElement&&document.documentElement.style){const st=document.documentElement.style;if(land)st.setProperty('--mobile-height',visibleHeight+'px');else st.removeProperty('--mobile-height');}
+ document.body.classList.toggle('mobile-short',land&&visibleHeight<=320);
+ const key=land+'|'+port+'|'+window.innerWidth+'|'+visibleHeight;
+ if(key!==MOBILE.lastLayout){const rotated=MOBILE.lastLayout.split('|').slice(0,2).join('|')!==land+'|'+port;MOBILE.lastLayout=key;MOBILE.drag=null;if(port)mobilePause();if(rotated){MOBILE.zoom=1;MOBILE.x=MOBILE.y=0;}mobileMapFit();if(run&&!run.ended){dirty=true;fitHand();fitSide();}}
  if(MOBILE.lastRun!==run){MOBILE.lastRun=run;MOBILE.zoom=1;MOBILE.x=MOBILE.y=0;mobileMapFit();}
 }
 function mobileInspectorPage(page){
@@ -11025,7 +11043,9 @@ $('#mobilePortraitContinue').onclick=()=>{MOBILE.portraitAllowed=true;mobileSync
 $('#mobileConfirm').onclick=()=>$('#btnPlace').click();
 $('#mobileInspectCancel').onclick=inspCancel;
 $$('#mobileInspTabs button').forEach(b=>b.onclick=()=>mobileInspectorPage(b.dataset.mi));
-$('#mobileFullscreen').onclick=async()=>{try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else if(document.fullscreenElement&&document.exitFullscreen)await document.exitFullscreen();}catch(e){}mobileSync();};
+$('#mobileFullscreen').onclick=mobileFullscreen;
+$('#mobileTitleFullscreen').onclick=mobileFullscreen;
+$('#mobileDisplayClose').onclick=()=>{MOBILE.displayHelp=false;$('#mobileDisplayHelp').hidden=true;mobilePause();};
 canvas.addEventListener('pointerdown',e=>{MOBILE.suppressClick=false;if(!mobileLandscape()||MOBILE.zoom<=1||e.button>0)return;MOBILE.drag={id:e.pointerId,x:e.clientX,y:e.clientY,ox:MOBILE.x,oy:MOBILE.y,moved:false};});
 canvas.addEventListener('pointermove',e=>{const d=MOBILE.drag;if(!d||d.id!==e.pointerId)return;const dx=e.clientX-d.x,dy=e.clientY-d.y;if(Math.hypot(dx,dy)>6)d.moved=true;if(!d.moved)return;e.preventDefault();if(canvas.setPointerCapture)canvas.setPointerCapture(e.pointerId);MOBILE.x=d.ox+dx;MOBILE.y=d.oy+dy;mobileMapFit();});
 function mobileEndDrag(e){const d=MOBILE.drag;if(!d||d.id!==e.pointerId)return;MOBILE.suppressClick=d.moved;MOBILE.drag=null;}
@@ -11087,7 +11107,8 @@ if(document.createElement){
  $('#tut .steps').appendChild(guide);
 }
 
-$('#mobileFullscreen').hidden=!(document.documentElement&&document.documentElement.requestFullscreen);
+$('#mobileFullscreen').textContent='전체 화면';
+document.addEventListener('fullscreenchange',()=>{const text=document.fullscreenElement?'화면 축소':'전체 화면';$('#mobileFullscreen').textContent=text;$('#mobileTitleFullscreen').textContent='⛶ '+text;mobileSync();});
 
 function mobileHelpFit(e){
  const el=$('#help .howto'),bar=$('#help .pgbar[data-for="mobile-help"]');if(!el)return;
@@ -11098,8 +11119,26 @@ function mobileHelpFit(e){
 }
 if(document.addEventListener)document.addEventListener('click',mobileHelpFit);
 window.addEventListener('resize',mobileHelpFit);
+
+function mobileViewportHeight(){const v=window.visualViewport;return Math.round(v&&(!v.scale||Math.abs(v.scale-1)<.05)?Math.min(window.innerHeight,v.height):window.innerHeight);}
+async function mobileFullscreen(){
+ try{
+  if(document.fullscreenElement&&document.exitFullscreen)await document.exitFullscreen();
+  else if(document.documentElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen({navigationUI:'hide'});
+  else throw new Error('fullscreen unavailable');
+ }catch(e){mobilePause();MOBILE.displayHelp=true;$('#mobileDisplayHelp').hidden=false;}
+ mobileSync();
+}
+
+function mobileRiskPages(){
+ const el=$('#inspPv .risk-decision'),bar=$('#inspPv .pgbar[data-for="mobile-risk"]');if(!el)return;
+ if(!mobileLandscape()||mobileViewportHeight()>320){[...el.children].forEach(k=>k.hidden=false);if(bar)bar.hidden=true;return;}
+ if(el.clientHeight)pageify(el,'mobile-risk');
+}
+if(typeof MutationObserver==='function')new MutationObserver(mobileRiskPages).observe($('#inspPv'),{childList:true});
+window.addEventListener('resize',mobileRiskPages);
 </script>
-<script>(()=>{const release={"channel":"preview","version":"20949f28d719a484","builtAt":"2026-09-20T10:11:12.724Z","file":"play.html"};let next=null;
+<script>(()=>{const release={"channel":"preview","version":"8095d0351fa221b8","builtAt":"2026-09-20T10:20:31.314Z","file":"play.html"};let next=null;
  const box=document.createElement('div');box.style.cssText='position:fixed;bottom:8px;left:50%;transform:translateX(-50%);z-index:10000;background:#102134;color:#fff;border:1px solid #6bbce8;border-radius:10px;padding:8px 12px;font:12px sans-serif;max-width:90vw;display:none';
  const label=document.createElement('span'),button=document.createElement('button');button.textContent='업데이트';button.style.cssText='margin-left:10px;padding:6px 10px;cursor:pointer';box.append(label,button);document.body.append(box);
  const playing=()=>typeof run!=='undefined'&&run&&!run.ended;
