@@ -1818,6 +1818,24 @@ button,a,input,select{touch-action:manipulation}
 #s-title .title-arrow,#s-title .title-start-sub { display:none; }
 #s-title #btnSettings { min-width:44px;min-height:44px;font-size:23px; }
 @media(max-width:600px) and (orientation:portrait) {
+ .mobile-flow-list { overflow-y:auto!important;overscroll-behavior:contain; }
+ #s-academy .opanel .mobile-flow-list { overflow:visible!important;flex:none;height:auto;max-height:none; }
+ #s-academy .opanel #codex { grid-template-columns:1fr; }
+ #schedule .schedwrap { overflow-y:auto; }
+ #schedule #schedList { overflow:visible!important;flex:none;height:auto;max-height:none; }
+ #s-select .dcombo.mobile-flow-list { overflow-y:auto!important; }
+ #s-select #deckPool.mobile-flow-list { grid-auto-rows:92px;align-content:start; }
+ #help .helpbox .mbody { overflow-y:auto; }
+ #help .howto.mobile-flow-list { flex:none;overflow:visible!important; }
+ #help .howto>div { display:block!important; }
+ #help #btnHelpPage { display:none; }
+ .insp #inspPv .risk-decision.mobile-flow-list { overflow-y:auto!important; }
+ #shop:not(:has(.unified)) #shDetail .dinfo { overflow-y:auto; }
+ #s-result .rtwrap { overflow-y:auto;overscroll-behavior:contain; }
+ #s-result #rPg { display:none; }
+ #drawerBody [data-dp="inv"] { overflow-y:auto; }
+ #drawerBody #inv { overflow:visible;max-height:none; }
+ #drawerBody #invPg { display:none; }
  #s-select>.hdr { min-height:54px;padding:12px 16px;background:#fcfcfa;border-bottom:1px solid #dbe3eb; }
  #s-select .hdr .hname { color:#324c65;font-size:15px;white-space:nowrap; }
  #s-select #wizTitle { color:inherit; }
@@ -8352,7 +8370,7 @@ function renderHold(){const box=$('#shHold');const on=canHoldAt();box.hidden=!on
 /* 보급 드론 서비스 UI: 철거(지도 타일 목록)·변환(손패 목록). 출격 보급에서는 지도가 비어 있으므로 변환만 의미 있음 */
 let svcMode=null,shopTab='offers',svcPage=0;
 const SVL_PAGE=6; /* 철거·승급·변환 목록은 6개씩 페이지로(2열 × 3줄) — §24 개정 뒤 보급 본문은 스크롤되지만 긴 목록은 쪽으로 나눠 둔다 */
-function svlPaged(btns){const n=Math.max(1,Math.ceil(btns.length/SVL_PAGE));svcPage=Math.min(svcPage,n-1);const part=btns.slice(svcPage*SVL_PAGE,(svcPage+1)*SVL_PAGE).join('');return `<div class="svl">${part}${n>1?`<span class="pg"><button data-pg="-1">◀</button>${svcPage+1}/${n}<button data-pg="1">▶</button></span>`:''}</div>`;}
+function svlPaged(btns){if(typeof mobilePortrait==='function'&&mobilePortrait())return '<div class="svl">'+btns.join('')+'</div>';const n=Math.max(1,Math.ceil(btns.length/SVL_PAGE));svcPage=Math.min(svcPage,n-1);const part=btns.slice(svcPage*SVL_PAGE,(svcPage+1)*SVL_PAGE).join('');return `<div class="svl">${part}${n>1?`<span class="pg"><button data-pg="-1">◀</button>${svcPage+1}/${n}<button data-pg="1">▶</button></span>`:''}</div>`;}
 /* v1.1 타일 승급(서비스 횟수와 별개 — OP 만 있으면 몇 번이든): 지도 위 내 타일 목록 */
 function upgradeListHtml(){const tiles=run.tiles.filter(t=>t.i!==0&&t.card&&t.card!=='mark'&&upgradeCost(t)!=null);
  return tiles.length?svlPaged(tiles.map(t=>`<button class="btn xs ghost" data-up="${t.i}" ${run.op<upgradeCost(t)?'disabled':''} title="${upgradeStr(t)}">${CARDS[t.card].icon} ${CARDS[t.card].name} <span class="kbd">#${t.i} Lv${tileLv(t)}→${tileLv(t)+1} · OP ${upgradeCost(t)}</span></button>`)):'<span class="kbd">승급할 타일이 없습니다</span>';}
@@ -12482,9 +12500,10 @@ function renderPanels(){
  $('#handHint').textContent=selectedCard!==null?'배치할 빛나는 칸 클릭 (Esc 취소)':situHint(run.hintStage);
  $('#invCount').textContent=`${run.inv.length}/${INV_MAX}`;
  /* 가방: 페이지당 개수는 보이는 높이에 맞춰 3 → 2 → 1 로 줄인다(§24 — 분대 4명이면 장착 버튼 줄이 길어진다) */
- for(let per=INV_PAGE;per>=1;per--){const n=Math.max(1,Math.ceil(run.inv.length/per));invPage=Math.min(invPage,n-1);$('#invPg').innerHTML=n>1?`<button data-ip="-1">◀</button> ${invPage+1}/${n} <button data-ip="1">▶</button>`:'';
+ const scrollInventory=typeof mobilePortrait==='function'&&mobilePortrait();
+ for(let per=scrollInventory?Math.max(1,run.inv.length):INV_PAGE;per>=1;per--){const n=Math.max(1,Math.ceil(run.inv.length/per));invPage=Math.min(invPage,n-1);$('#invPg').innerHTML=n>1?`<button data-ip="-1">◀</button> ${invPage+1}/${n} <button data-ip="1">▶</button>`:'';
   $('#inv').innerHTML=run.inv.slice(invPage*per,(invPage+1)*per).map(it=>`<div class="it" data-id="${it.id}">${itemHtml(it)}<div class="btns">${run.party.map((m,i)=>`<button data-eq="${i}">→ ${m.stu.name}</button>`).join('')}<button data-act="sv" class="x">분해</button></div></div>`).join('')||'<div class="kbd">비어 있음 — 획득한 장비를 골라 장착하세요</div>';
-  const pn=$('#drawerBody [data-dp=inv]');if(!pn||!pn.offsetParent||pn.scrollHeight<=pn.clientHeight+1)break;}
+  const pn=$('#drawerBody [data-dp=inv]');if(scrollInventory||!pn||!pn.offsetParent||pn.scrollHeight<=pn.clientHeight+1)break;}
  $('#log').innerHTML=run.log.slice(0,70).map(l=>`<div class="${l.cls||''}">${l.txt}</div>`).join('');
  if(typeof renderSystemRunUI==='function')renderSystemRunUI();
  renderInspector(true);fitHand();
@@ -12918,6 +12937,7 @@ function showResult(reason,gained,spG){
 let rPage=0;
 function layoutResultTable(){const wrap=$('.rtwrap'),pg=$('#rPg'),rows=$$('#rTable tr');if(!wrap||!pg||!rows.length)return;
  for(const r of rows)r.hidden=false;pg.hidden=true;
+ if(typeof mobilePortrait==='function'&&mobilePortrait())return;
  if(wrap.scrollHeight<=wrap.clientHeight+1)return;
  pg.hidden=false;pg.innerHTML='<button data-rp="-1">◀</button><span></span><button data-rp="1">▶</button>';
  const Hh=wrap.clientHeight,pages=[[]];let h=0;for(const r of rows){const rh=r.offsetHeight||28;if(h+rh>Hh&&pages[pages.length-1].length){pages.push([]);h=0;}pages[pages.length-1].push(r);h+=rh;}
@@ -13437,6 +13457,7 @@ function pageify(el,key,page){
  if(!el||!el.children||!el.parentElement)return;const kids=[...el.children];for(const k of kids)k.hidden=false;
  if(el.dataset)el.dataset.pager=key;
  let bar=el.parentElement.querySelector(`.pgbar[data-for="${key}"]`);if(bar)bar.hidden=true;
+ if(typeof mobileFlowList==='function'&&mobileFlowList(el,key))return;
  if(!el.clientHeight||!kids.length||!el.getBoundingClientRect)return;
  if(el.scrollTop)el.scrollTop=0;
  const limit=()=>{const r=el.getBoundingClientRect();return r.top+(el.clientTop||0)+el.clientHeight+1;},over=k=>k.getBoundingClientRect().bottom>limit();
@@ -14568,22 +14589,22 @@ window.addEventListener('resize',mobileSync);if(window.visualViewport)window.vis
 if(typeof ResizeObserver==='function')new ResizeObserver(mobileMapFit).observe($('#mapViewport'));
 mobileInspectorPage('preview');mobileSync();
 
-/* Short landscape panels use pages instead of nested scrolling. */
+/* A selected character's description is one continuous view. */
 function mobileDetailPages(){
  const box=$('#shDetail'),el=box&&box.querySelector('.dinfo');if(!el)return;
- let bar=box.querySelector('.mobile-pages');
- const kids=[...el.children];
- if(!mobileTouchLayout()||$('#shop .shopbox').classList.contains('unified')){kids.forEach(e=>e.classList.remove('mobile-page-hidden'));if(bar)bar.remove();return;}
- if(!el.clientHeight)return;
- if(!bar){bar=document.createElement('div');bar.className='mobile-pages';box.appendChild(bar);bar.dataset.page='0';}
- kids.forEach(e=>e.classList.remove('mobile-page-hidden'));
- const cap=el.clientHeight,groups=[[]];let used=0;
- for(const e of kids){const h=e.getBoundingClientRect().height+5;if(used+h>cap&&groups[groups.length-1].length){groups.push([]);used=0;}groups[groups.length-1].push(e);used+=h;}
- let page=Math.min(+bar.dataset.page||0,groups.length-1);bar.dataset.page=page;
- kids.forEach(e=>e.classList.toggle('mobile-page-hidden',!groups[page].includes(e)));
- bar.innerHTML=`<button aria-label="이전 상세 페이지" ${page===0?'disabled':''}>◀</button><span>상세 ${page+1}/${groups.length}</span><button aria-label="다음 상세 페이지" ${page===groups.length-1?'disabled':''}>▶</button>`;
- const btn=bar.querySelectorAll('button');btn[0].onclick=()=>{bar.dataset.page=page-1;mobileDetailPages();};btn[1].onclick=()=>{bar.dataset.page=page+1;mobileDetailPages();};
+ [...el.children].forEach(e=>e.classList.remove('mobile-page-hidden'));
+ const bar=box.querySelector('.mobile-pages');if(bar)bar.remove();
 }
+
+function mobileFlowList(el,key){
+ const keys=['mem','stu','sched','quest','codex','mobile-pool','mobile-combo','mobile-help','mobile-risk'];
+ const on=mobilePortrait()&&keys.includes(key);
+ el.classList.toggle('mobile-flow-list',on);return on;
+}
+function mobileFlowRefresh(){
+ $$('[data-pager]').forEach(el=>pageify(el,el.dataset.pager));
+}
+window.addEventListener('resize',mobileFlowRefresh);
 function mobileShopControls(){
  const list=$('#shop .shlist');if(!list)return;
  if(!list.querySelector('.mobile-shop-toggle')){const b=document.createElement('button');b.className='mobile-shop-toggle';b.textContent='분대 관리 · 선두 / 매각';b.onclick=()=>{const on=list.classList.toggle('mobile-party');b.textContent=on?'고용 목록으로':'분대 관리 · 선두 / 매각';};list.prepend(b);}
@@ -15185,5 +15206,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="4bf964bad19d50ab";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="b428f991413856a9";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
