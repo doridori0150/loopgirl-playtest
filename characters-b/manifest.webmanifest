@@ -1,0 +1,12 @@
+{
+  "id": "./",
+  "name": "LoopGirl 캐릭터 B",
+  "short_name": "캐릭터 B",
+  "lang": "ko",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#102134",
+  "theme_color": "#102134"
+}

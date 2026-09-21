@@ -1,0 +1,27 @@
+{
+  "channel": "character-b",
+  "version": "99dd7ab85676ec0d",
+  "builtAt": "2026-09-21T06:35:25.403Z",
+  "students": [
+    "harin",
+    "chaewon",
+    "seoyul",
+    "somi",
+    "yuna",
+    "seoyoon",
+    "mina",
+    "eunha",
+    "rin",
+    "dahye",
+    "gaeul",
+    "ara",
+    "yerin",
+    "jiu"
+  ],
+  "deferred": [
+    "bora",
+    "yeseo"
+  ],
+  "gameplayValidation": "deferred",
+  "baseline_sha256": "57c4161501d735a7d5fde4bd74bfaeaa7b50f5afa7a2d06327e053f77ba0b970"
+}
