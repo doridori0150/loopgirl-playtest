@@ -1468,15 +1468,6 @@ button,a,input,select{touch-action:manipulation}
 @media(max-width:600px){#s-lobby>.hdr{height:auto;min-height:54px;flex-wrap:wrap;gap:2px;padding:5px 10px}#s-lobby>.hdr .hname{width:100%;white-space:nowrap}#s-lobby>.hdr .hres{font-size:10px;line-height:1.5}}
 </style>
 <style>/* One scrollable supply sheet, visible gear slots, unified region operations. */
-.curriculum{grid-column:1/-1;padding:14px;min-width:0;line-height:1.55}
-.curriculum p{margin:5px 0;font-size:13px;overflow-wrap:anywhere}
-.curriculum small{display:block;opacity:.8;font-size:12px;overflow-wrap:anywhere}
-.curriculum details{margin-top:10px}
-.curriculum summary{cursor:pointer;font-size:13px;font-weight:700}
-.curriculum ol{padding-left:22px;margin:10px 0 0}
-.curriculum li{margin:0 0 12px;font-size:13px}
-.curriculum .learned>b{color:#248875}
-#students{grid-auto-rows:max-content;align-content:start;overflow:auto}
 .shopbox.unified #shTabs{display:none}
 .shopbox.unified #shBody{display:flex!important;flex-direction:column;gap:14px;overflow:auto;min-height:0;padding:14px;overscroll-behavior:contain}
 .shopbox.unified .shpane{display:block!important;flex:none;overflow:visible;min-height:0;max-height:none}
@@ -1789,222 +1780,12 @@ button,a,input,select{touch-action:manipulation}
  .profile-tabs{position:sticky;top:0;background:#fff;z-index:1}
 }
 </style>
-<style>/* Mobile portrait hubs: one primary view, then dedicated detail views. */
-.mobile-hub-only,.title-mobile-character { display:none; }
-#mobileRotateGate {
- position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;
- flex-direction:column;padding:32px;background:#eff6ff;color:#21334a;text-align:center;
-}
-#mobileRotateGate>span { font-size:48px;color:#247aa5; }
-#mobileRotateGate h2 { font-size:24px;margin:12px; }
-#mobileRotateGate p,#mobileRotateGate small { margin:5px; }
-#mobileHubSheet .mobile-hub-list { display:grid;gap:10px; }
-#mobileHubSheet .mobile-hub-list button {
- display:flex;align-items:center;gap:14px;min-height:78px;padding:14px;text-align:left;
- background:#fff;border:1px solid #ccdce7;border-radius:12px;color:#233e53;
-}
-.mobile-hub-list button>span { flex:1;min-width:0; }
-.mobile-hub-list b,.mobile-hub-list small { display:block; }
-.mobile-hub-list small { margin-top:5px;color:#566b7c;font-size:14px; }
-.mobile-hub-list i { font-style:normal;font-size:22px; }
-.mobile-hub-list em { font-style:normal; }
-.mobile-hub-list button:disabled { background:#e9eef2;color:#627283;opacity:1; }
-.mobile-wallet { display:grid;gap:18px;font-size:16px;padding:16px 4px; }
-.mobile-wallet>span { display:flex;align-items:center;gap:12px; }
-.mobile-sheet-note { color:#4b6579;font-size:14px;line-height:1.7; }
-#s-title .title-start { justify-content:center;text-align:center; }
-#s-title .title-arrow,#s-title .title-start-sub { display:none; }
-#s-title #btnSettings { min-width:44px;min-height:44px;font-size:23px; }
-@media(max-width:600px) and (orientation:portrait) {
- #characterPreviewBadge { display:none; }
- :root { --hub-nav-height:calc(68px + env(safe-area-inset-bottom,0px)); }
- body.mobile-portrait { overflow:hidden; }
- body.mobile-portrait .screen { height:var(--mobile-height,100dvh);min-height:0; }
- .mobile-hub-only { display:block; }
- .mobile-hub-only button { font:inherit;cursor:pointer; }
- #s-title .echo-title {
-  position:relative;width:100%;height:100%;min-height:0;padding:0;display:block;
-  overflow:hidden;background:#d7eaf5!important;color:#1e4d68;
- }
- #s-title .echo-title::before,#s-title .echo-title::after { display:none; }
- #s-title .title-mobile-character {
-  display:block;position:absolute;inset:22% 0 auto;width:100%;height:60%;
-  object-fit:contain;object-position:center;pointer-events:none;
- }
- #s-title .title-orbits,#s-title .title-topline,#s-title .title-eyebrow,
- #s-title .title-description,#s-title .title-footer,#s-title .title-content>h2 { display:none; }
- #s-title .title-content { display:contents; }
- #s-title .title-logo {
-  position:absolute;left:50%;top:5%;transform:translateX(-50%);width:230px;margin:0;
-  font-size:70px;color:#23556e;text-shadow:none;line-height:.85;
- }
- #s-title .logo-oo i { width:46px;height:46px;border-width:8px;border-color:#378aad;box-shadow:none; }
- #s-title .logo-girl { font-size:31px;letter-spacing:.33em;margin-left:30px;margin-top:8px;color:#23556e; }
- #s-title .logo-period,#s-title .logo-halo,#s-title .logo-spark,#s-title .logo-caption { display:none; }
- #s-title .title-menu { position:absolute;left:24px;right:24px;bottom:7%;width:auto;margin:0; }
- #s-title .title-start {
-  width:100%;min-height:56px;padding:14px 10px;border:1px solid #b0d3e5;border-radius:8px;
-  background:#f7fcffed;box-shadow:0 5px 16px #4d85a112;color:#20506b;font-size:18px;letter-spacing:.1em;
- }
- #s-title .title-secondary { display:contents; }
- #s-title #btnSettings {
-  position:fixed;top:max(12px,env(safe-area-inset-top));right:14px;z-index:5;
-  width:44px;height:44px;padding:0;color:#26536a;border:1px solid #adcddd;
-  background:#ffffffb8;border-radius:50%;
- }
- body.mobile-hub .screen.active {
-  padding:0 0 var(--hub-nav-height);background:#edf4f7;color:#233e53;overflow:hidden;
- }
- body.mobile-hub-detail .screen.active { padding-bottom:env(safe-area-inset-bottom,0px); }
- body.mobile-hub .screen.active>.hdr,body.mobile-hub .screen.active>.navbar { display:none; }
- .mobile-hub-head {
-  display:flex;align-items:center;gap:8px;flex:none;min-height:58px;
-  padding:calc(6px + env(safe-area-inset-top,0px)) 12px 6px;
-  background:#f8fcfff5;border-bottom:1px solid #d7e3eb;color:#24475e;
- }
- .mobile-hub-head>span { flex:1;min-width:0;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
- .mobile-hub-head button {
-  min-height:44px;padding:6px 10px;color:#2e5670;background:transparent;border:0;border-radius:8px;
- }
- .mobile-hub-head .mobile-home { font-size:24px;font-weight:900;padding-left:0;letter-spacing:-1px; }
- .mobile-hub-head .mobile-wallet-button { font-size:14px;background:#e9f1f7; }
- .mobile-hub-head .mobile-settings { width:44px;font-size:22px;padding:0; }
- #mobileHubNav {
-  position:fixed;z-index:30;left:0;right:0;bottom:0;height:var(--hub-nav-height);
-  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
-  padding:4px 8px calc(4px + env(safe-area-inset-bottom,0px));
-  background:#fbfdff;border-top:1px solid #cddde8;box-shadow:0 -3px 16px #2242550b;
- }
- #mobileHubNav button {
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  border:0;border-radius:10px;background:transparent;color:#62798a;font-size:14px;font-weight:700;min-height:56px;
- }
- #mobileHubNav i { font-size:23px;font-style:normal;line-height:1; }
- #mobileHubNav button[aria-current="page"] { background:#e5f3fc;color:#126591; }
- #mobileHubNav button[data-hub-nav="sortie"] { color:#1474a6; }
- #s-lobby>.lbody { display:none; }
- #s-lobby #mobileLobby {
-  display:flex;flex:1;min-height:0;flex-direction:column;position:relative;
-  padding:12px 16px;background:#d7e5ef80;overflow:hidden;
- }
- .mobile-lobby-meta {
-  display:flex;justify-content:space-between;gap:12px;font-size:13px;margin-bottom:10px;color:#294c63;
- }
- .mobile-lobby-meta>* { background:#f5fbffed;border-radius:5px;padding:3px 8px; }
- #mobileLobbyQuest {
-  display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:1;flex:none;
-  width:100%;padding:11px 14px;text-align:left;border:1px solid #ccdce7;border-radius:12px;
-  background:#fbfdfff0;color:#23445a;box-shadow:0 4px 14px #3355750b;
- }
- #mobileLobbyQuest span { min-width:0; }
- #mobileLobbyQuest small { display:block;color:#147da7;font-size:12px; }
- #mobileLobbyQuest b { display:block;font-size:16px;line-height:1.6; }
- #mobileLobbyQuest em { display:block;color:#617687;font-size:13px;font-style:normal; }
- #mobileLobbyQuest>i { font-style:normal;font-size:25px; }
- #mobileLobbyCharacterButton {
-  position:relative;flex:1;min-height:0;width:100%;border:0;padding:0;background:transparent;
- }
- #mobileLobbyCharacter {
-  display:block;position:absolute;inset:8px 0 0;height:calc(100% - 8px);width:100%;object-fit:contain;
- }
- .mobile-lobby-caption {
-  position:absolute;bottom:12px;left:0;right:0;display:flex;flex-direction:column;gap:5px;text-align:left;
-  background:#fbfdfff0;border:1px solid #d3e2ed;border-radius:12px;padding:12px 16px;color:#24475e;
- }
- .mobile-lobby-caption b { font-size:15px; }
- .mobile-lobby-caption>span { font-size:14px; }
- .mobile-lobby-links { display:flex;gap:8px;flex:none; }
- .mobile-lobby-links button {
-  min-height:44px;min-width:0;padding:8px 10px;border:1px solid #cadce8;background:#f7fcff;
-  border-radius:9px;color:#416377;font-size:12px;
- }
- .mobile-lobby-links button:last-child { flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis; }
- #mobileOfficeBar,#mobileTownBar {
-  display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;flex:none;
- }
- #mobileOfficeNext { font-size:13px;line-height:1.5; }
- #mobileOfficeBar small { display:block;margin-top:4px;font-size:11px;color:#617889; }
- #mobileOfficeBar button,#mobileTownBar button,#mobileOfficeBack button,#mobileRecordsTabs button {
-  min-height:44px;flex:none;padding:8px 12px;border:1px solid #bdd3e2;
-  background:#fff;border-radius:8px;color:#2b5873;font-size:14px;
- }
- #s-academy .obody { display:flex;flex:1;min-height:0;padding:0 12px 12px;overflow:hidden; }
- #s-academy .obody>#officeNav { display:none; }
- #s-academy .obody>.omap {
-  display:block;position:relative;flex:1;min-height:0;overflow:auto;background:#dce9e6;
-  border-radius:12px;overscroll-behavior:contain;
- }
- #s-academy .omap>img { display:block;width:680px;min-width:680px;height:100%;max-width:none;object-fit:contain; }
- #s-academy .opanel { display:none; }
- #s-academy[data-office-detail="true"] .omap,#s-academy[data-office-detail="true"] #mobileOfficeBar { display:none; }
- #s-academy[data-office-detail="true"] .opanel {
-  display:flex;flex:1;min-width:0;min-height:0;padding:12px;overflow-y:auto;border-radius:12px;
- }
- #s-academy .atab.on { min-height:0;flex:none; }
- #mobileOfficeBack { margin-bottom:12px; }
- #mobileOfficeBack button { width:100%;text-align:left;border:0;background:#edf5fa; }
- #mobileRecordsTabs { display:flex;gap:8px;flex:none;margin-bottom:12px; }
- #mobileRecordsTabs button { flex:1; }
- #mobileRecordsTabs button[aria-pressed="true"] { background:#1e6d96;color:#fff;border-color:#1e6d96; }
- #acTabs.rooms .office-site { min-width:68px;min-height:64px; }
- #acTabs.rooms .office-site i { width:38px;height:38px;font-size:20px; }
- #acTabs.rooms .office-site b { font-size:13px;padding:4px 8px; }
- #acTabs.rooms .office-site small { font-size:11px; }
- #s-academy .office-map-note { font-size:12px;max-width:270px;white-space:normal; }
- #s-academy #officeCare { font-size:13px;min-height:44px; }
- #s-academy .opanel .kbd,#s-academy .opanel .d { font-size:14px;line-height:1.6; }
- #s-academy .opanel button { min-height:44px; }
- #s-academy .opanel .f { flex-wrap:wrap;gap:12px; }
- #s-academy .opanel #quests,#s-academy .opanel #codex { overflow:visible;max-height:none; }
- #s-academy .opanel .node .nd { font-size:14px;line-height:1.6; }
- #s-academy .opanel .branch.half .tier { display:block; }
- #s-academy .opanel .branch .tier.mobile-command-hidden { display:none; }
- #s-academy #treePg { display:none; }
- #s-town { background:#edf4f7;color:#233e53; }
- #s-town .tbody {
-  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;
-  min-height:0;overflow-y:auto;gap:16px;padding:0 12px 16px;
- }
- #s-town .tmap { flex:none;min-height:220px;height:32dvh;overflow:auto;border-radius:12px;box-shadow:none; }
- #s-town .tmap #townImg { width:640px;min-width:640px;height:auto;max-width:none; }
- #s-town .tmap .trank,#s-town .tarrow { display:none; }
- #s-town .pin { min-width:44px;min-height:54px; }
- #s-town .pin .pnm { font-size:12px; }
- #mobileTownList { flex:none; }
- #mobileTownList h2 { margin:0 0 10px;font-size:15px; }
- #mobileTownPeople { display:grid;gap:10px; }
- #mobileTownPeople button {
-  display:flex;align-items:center;gap:12px;width:100%;min-height:84px;padding:12px;
-  border:1px solid #d2e0ea;border-radius:12px;background:#fff;color:#24475e;text-align:left;
- }
- #mobileTownPeople img.pt { width:56px;height:60px;object-fit:contain;flex:none; }
- #mobileTownPeople button>span { flex:1;display:flex;flex-direction:column;gap:3px; }
- #mobileTownPeople b { font-size:15px; }
- #mobileTownPeople small { font-size:13px;color:#617889; }
- #mobileTownPeople em { font-style:normal;font-size:12px;color:#177f94; }
- #mobileTownPeople i { font-style:normal;font-size:20px; }
- #settings .settings-tabs { flex:none; }
- #settings .settings-tabs button { flex:1;min-height:44px; }
- #settings .setrows { overflow-y:auto; }
- #settings .setrows .f { flex-wrap:wrap;gap:12px;padding:16px; }
- #settings .setrows .f>div { width:100%; }
- #settings .setrows .f .kbd { font-size:14px;line-height:1.65; }
- #settings button { min-height:44px; }
- #settings .savebtns { display:flex;flex-wrap:wrap;gap:8px; }
- #mobileHubSheet { padding:0; }
- #mobileHubSheet>.modal-box { width:100%;height:var(--mobile-height,100dvh);max-height:none;border-radius:0; }
- #mobileHubSheet .mh { min-height:64px; }
- #mobileHubSheetClose { width:44px;height:44px; }
- #mobileHubSheet .mbody { padding:16px;overflow-y:auto;padding-bottom:max(16px,env(safe-area-inset-bottom)); }
-}
-</style>
 </head>
 <body>
 
 <!-- ===== 타이틀: 키 비주얼 + 버튼 3개 (규칙 요약은 ? 도움말 모달) ===== -->
 <section id="s-title" class="screen active">
   <div class="hero echo-title">
-    <img class="title-mobile-character" src="media/101e5bd9fac18e4628376f0b244a52b693ffb15dceaf81c18f8ea12dd6e14185-q90.webp" alt="유하린">
     <div class="title-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
     <header class="title-topline"><span class="title-brand"><span aria-hidden="true">◈</span> LooP <i>/</i> HUNTER ACADEMY</span><span class="title-edition">v2.1.2 · 원정과 인연</span></header>
     <main class="title-content">
@@ -2019,16 +1800,10 @@ button,a,input,select{touch-action:manipulation}
       <h2>어제의 잔향, 내일의 우리.</h2>
       <p class="title-description">반복되는 게이트 너머,<br>너와 함께 다음 이야기를.</p>
       <div class="title-menu">
-        <button class="btn title-start" id="btnGoSelect">
-          <span><span id="titleStartLabel">TOUCH TO START</span>
-          <span class="title-start-sub" id="titleStartSub">하린이 찾아온 날부터</span></span>
-          <span class="title-arrow" aria-hidden="true">↗</span>
-        </button>
+        <button class="btn title-start" id="btnGoSelect"><span><span id="titleStartLabel">이야기 시작</span><span class="title-start-sub" id="titleStartSub">하린이 찾아온 날부터</span></span><span class="title-arrow" aria-hidden="true">↗</span></button>
         <button class="btn ghost" id="btnGoAcademy" hidden>사무소</button>
-        <div class="title-secondary">
-          <button class="btn ghost" id="btnSettings" aria-label="설정">⚙</button>
-          <button class="btn ghost" id="btnHelpTitle" hidden>플레이 가이드</button>
-        </div>
+        <div class="title-story-actions"><button class="btn ghost sm" id="btnOpeningReplay" hidden>도입부 다시 보기</button><button class="btn ghost sm" id="btnNewStory" hidden>처음부터 새 이야기</button></div>
+        <button class="btn ghost mobile-screen-entry" id="mobileTitleFullscreen">⛶ 전체 화면</button><div class="title-secondary"><button class="btn ghost" id="btnSettings">설정</button><span aria-hidden="true"></span><button class="btn ghost" id="btnHelpTitle" title="규칙 요약 · 조작">플레이 가이드 <span aria-hidden="true">↗</span></button></div>
       </div>
     </main>
     <footer class="title-footer">
@@ -2238,6 +2013,7 @@ button,a,input,select{touch-action:manipulation}
   <nav class="navbar">
     <button class="btn ghost sm" id="btnAcTitle">‹ 로비</button>
     <div class="nright">
+      <button class="btn ghost sm" id="btnReset" style="color:#b91c1c">세이브 초기화</button>
       <button class="btn ghost sm" id="btnAcTown">학원가 ›</button>
       <button class="btn sm" id="btnAcSelect">작전실 ›</button>
     </div>
@@ -2347,24 +2123,6 @@ button,a,input,select{touch-action:manipulation}
     <div class="mh"><div class="mt"><div class="tag">SETTINGS</div><h3>설정</h3></div><button class="icobtn mx" id="btnSettingsClose" title="닫기 (Esc)">✕</button></div>
     <nav class="settings-tabs" aria-label="설정 분류"><button class="btn ghost sm" data-settings-tab="play" aria-pressed="true">플레이</button><button class="btn ghost sm" data-settings-tab="experiment" aria-pressed="false">실험</button><button class="btn ghost sm" data-settings-tab="save" aria-pressed="false">저장·이름</button></nav>
     <div class="mbody setrows">
-      <div data-settings-panel="save" hidden class="f">
-        <div><b>새 이야기</b><div class="kbd">현재 진행을 백업한 뒤 처음부터 시작합니다.</div></div>
-        <button class="btn ghost sm" id="btnNewStory">처음부터 시작</button>
-        <button id="btnReset" hidden>세이브 초기화</button>
-      </div>
-      <div data-settings-panel="save" hidden class="f">
-        <div><b>자동 저장</b><div class="kbd">귀환·강화·교류 후 자동 저장됩니다.
-          진행 중인 원정은 저장되지 않습니다. 파일 내보내기는 백업용입니다.</div></div>
-      </div>
-      <div data-settings-panel="play" class="f">
-        <div><b>도움말 · 화면</b></div>
-        <button class="btn ghost sm" id="btnSettingsGuide">플레이 가이드</button>
-        <button class="btn ghost sm" id="mobileTitleFullscreen">전체 화면</button>
-      </div>
-      <div data-settings-panel="play" class="f">
-        <div><b>첫 만남</b><div class="kbd">진행을 유지하고 처음 만난 장면만 다시 봅니다.</div></div>
-        <button class="btn ghost sm" id="btnOpeningReplay" hidden>도입부 다시 보기</button>
-      </div>
       <div data-settings-panel="experiment" hidden class="f risk-setting"><div><b>위험 읽기 · A/B 실험</b><div class="kbd">A 기존 / B 시간 누적·도착 예고·야전 회복 한도·캠프 판단. B는 현재 성장을 복사한 별도 저장. 원정 중 변경 불가.</div></div><select id="optRiskAB" aria-label="A/B 실험 선택"><option value="A">A · 기존</option><option value="B">B · 개선</option></select><button class="btn ghost sm" id="btnRiskExport">결과 저장</button></div>
       <div data-settings-panel="play" class="f"><div><b>카드 배치</b><div class="kbd">카드 선택 후 칸을 누르면 즉시 배치합니다. Space로 정지·재개하며, 수동 정지는 배치 후에도 유지됩니다.</div></div></div>
       <div data-settings-panel="play" class="f"><div><b>사운드</b><div class="kbd">효과음 켜기/끄기 (M)</div></div><button class="icobtn" id="btnMuteTitle" title="사운드 켜기/끄기 (M)">🔊</button></div>
@@ -2582,16 +2340,16 @@ const STUDENTS=[
  {id:'eunha',name:'백은하',club:'astro',role:'dps',rarity:2,weapon:'저격소총',color:'#a855f7',hair:'#e9d5ff',halo:'#d8b4fe',eye:'#7e22ce',hairLen:15,hp:90,atk:22,def:2,spd:1.2,crit:0.25,
   trait:{name:'초탄 필중',desc:'전투 첫 공격은 반드시 치명타'},ex:{name:'헤드샷',icon:'🎯',desc:'현재 대상에게 공격력 500% 확정 치명타'},
   quotes:['…목표 확인. 사거리 안이에요.','한 발이면 충분해요. 두 발은 낭비죠.','{name} 님, 다음에도… 저를 골라주실 거죠?'],crisis:'…탄창, 마지막이에요.'},
- {id:'rin',name:'서린',club:'astro',role:'tank',rarity:1,weapon:'중력 방패',color:'#6366f1',hair:'#312e81',halo:'#a5b4fc',eye:'#3730a3',hairLen:11,hp:180,atk:10,def:9,spd:0.8,crit:0.05,
+ {id:'rin',name:'서린',club:'astro',role:'tank',rarity:1,weapon:'중력 방패',color:'#6366f1',hair:'#312e81',halo:'#a5b4fc',eye:'#3730a3',hairLen:11,hp:180,atk:10,def:9,spd:0.8,crit:0.05,req:{clear:'B'},
   trait:{name:'중력장',desc:'피격 시 공격자의 다음 공격 0.3초 지연'},ex:{name:'중력 붕괴',icon:'🌀',desc:'모든 적 3초 정지'},
   quotes:['천체관측부 서린. 중력은 제 전공이에요. …방패도요.','별은 멀고 게이트는 가깝네요. 오늘은 가까운 쪽부터.'],crisis:'…중력이… 무거워…'},
- {id:'dahye',name:'윤다혜',club:'council',role:'dps',rarity:2,weapon:'쌍권총',color:'#f43f5e',hair:'#7f1d1d',halo:'#fda4af',eye:'#9f1239',hairLen:13,hp:100,atk:18,def:3,spd:1.3,crit:0.15,
+ {id:'dahye',name:'윤다혜',club:'council',role:'dps',rarity:2,weapon:'쌍권총',color:'#f43f5e',hair:'#7f1d1d',halo:'#fda4af',eye:'#9f1239',hairLen:13,hp:100,atk:18,def:3,spd:1.3,crit:0.15,req:{clear:'A'},
   trait:{name:'연사',desc:'공격이 2회 적중 (각 55%)'},ex:{name:'탄막',icon:'🔫',desc:'모든 적에게 공격력 200% ×2'},
   quotes:['학생회 회계 윤다혜. 탄약 영수증은 제가 챙길게요.','두 자루면 두 배로 빠르죠. {name} 님, 재장전 시간은 빼고요.'],crisis:'…탄창, 하나 남았어…'},
- {id:'mina',name:'오미나',club:'rescue',role:'sup',rarity:2,weapon:'메딕 드론',color:'#10b981',hair:'#fef3c7',halo:'#6ee7b7',eye:'#047857',hairLen:8,hp:110,atk:8,def:4,spd:1.0,crit:0.05,
+ {id:'mina',name:'오미나',club:'rescue',role:'sup',rarity:2,weapon:'메딕 드론',color:'#10b981',hair:'#fef3c7',halo:'#6ee7b7',eye:'#047857',hairLen:8,hp:110,atk:8,def:4,spd:1.0,crit:0.05,req:{clear:'S'},
   trait:{name:'재생 필드',desc:'전투 중 초당 전원 HP 1% 회복'},ex:{name:'완전 회복',icon:'💚',desc:'전원 HP 50% 회복 + 보호막 20'},
   quotes:['구조부 오미나예요. 다들 제 드론 안에 계세요, 안전해요.','{name} 님, 물 드셨어요? 아니면 제가… 아, 드론이 챙길게요.'],crisis:'…드론… 배터리가…'},
- {id:'jiu',name:'한지우',club:'shield',role:'dps',rarity:1,weapon:'대검',color:'#d97706',hair:'#1c1917',halo:'#fcd34d',eye:'#92400e',hairLen:6,hp:140,atk:15,def:6,spd:0.9,crit:0.10,
+ {id:'jiu',name:'한지우',club:'shield',role:'dps',rarity:1,weapon:'대검',color:'#d97706',hair:'#1c1917',halo:'#fcd34d',eye:'#92400e',hairLen:6,hp:140,atk:15,def:6,spd:0.9,crit:0.10,req:{growth:30},
   trait:{name:'역습',desc:'피격 시 다음 공격 +40%'},ex:{name:'대참격',icon:'🗡️',desc:'현재 대상 400% + 나머지 100%'},
   quotes:['방패조인데 검을 들었냐고요? 막는 것도 결국 베는 거예요.','{name} 님, 제 이름 기억하셨네요. …그것만으로도 충분해요.'],crisis:'…한 번만 더, 베게 해줘…'},
  {id:'ara',name:'정아라',club:'shield',role:'tank',rarity:2,weapon:'대형 방패',color:'#64748b',hair:'#9a3412',halo:'#cbd5e1',eye:'#334155',hairLen:5,hp:200,atk:9,def:10,spd:0.7,crit:0.05,
@@ -2605,10 +2363,10 @@ const STUDENTS=[
  {id:'yerin',name:'문예린',club:'shield',role:'sup',rarity:0,weapon:'거대 렌치',color:'#ea580c',hair:'#ea580c',halo:'#fdba74',eye:'#78350f',hairLen:12,hp:105,atk:9,def:4,spd:1.0,crit:0.05,
   trait:{name:'현장 정비',desc:'공격 적중 시 HP가 가장 낮은 아군에게 보호막 3 (정비 보호막 최대 30)'},ex:{name:'전면 정비',icon:'🔧',desc:'전원 보호막 25 + 전투불능 학생 HP 25%로 복귀'},
   quotes:['방패조 정비 담당 문예린! {name} 님, 그 장비 제가 손봐 드릴까요? 아니 진짜로요!','렌치 하나면 다 고쳐요. 방패도, 드론도, …마음도?','{name} 님 오늘 표정이 좀 어두운데, 정비 필요하시면 말씀하세요!'],crisis:'아직… 아직 고칠 수 있어…!'},
- {id:'gaeul',name:'윤가을',club:'rescue',role:'tank',rarity:1,weapon:'방패 + 구조 로프',color:'#7f1d1d',hair:'#7c2d12',halo:'#fca5a5',eye:'#78350f',hairLen:6,hp:175,atk:10,def:8,spd:0.85,crit:0.05,
+ {id:'gaeul',name:'윤가을',club:'rescue',role:'tank',rarity:1,weapon:'방패 + 구조 로프',color:'#7f1d1d',hair:'#7c2d12',halo:'#fca5a5',eye:'#78350f',hairLen:6,hp:175,atk:10,def:8,spd:0.85,crit:0.05,req:{clear:'C'},
   trait:{name:'엄호',desc:'피격 시 25% 확률로 HP가 가장 낮은 다른 아군 HP 4% 회복'},ex:{name:'케이프 방벽',icon:'🧣',desc:'자신 보호막 60 + 4초간 적 공격의 80%를 자신이 받음'},
   quotes:['은하 구조부 윤가을입니다. …도서부도요. 조용히 뒤를 지킬게요.','로프는 사람을 끌어올리는 데 쓰는 거예요. 그래서 들었어요.','{name} 님, 책 한 권 추천해 드릴까요? …돌아가면요.'],crisis:'…아직, 잡고 있어요.'},
- {id:'yeseo',name:'정예서',club:'astro',role:'dps',rarity:1,weapon:'레일건',color:'#0ea5e9',hair:'#f5f5f4',halo:'#7dd3fc',eye:'#0284c7',hairLen:16,hp:100,atk:14,def:3,spd:1.1,crit:0.05,
+ {id:'yeseo',name:'정예서',club:'astro',role:'dps',rarity:1,weapon:'레일건',color:'#0ea5e9',hair:'#f5f5f4',halo:'#7dd3fc',eye:'#0284c7',hairLen:16,hp:100,atk:14,def:3,spd:1.1,crit:0.05,req:{growth:10},
   trait:{name:'충전 사격',desc:'전투 중 공격마다 피해 +8% 누적(최대 +40%) — 치명타·첫타에 기대지 않는 지속 화력'},ex:{name:'과충전 레일건',icon:'⚡',desc:'현재 대상에게 공격력 350% + 관통으로 나머지 적 100% (치명타 아님)'},
   quotes:['도림 천체관측부 정예서. …밤샘은 특기예요. 게이트도 밤이죠?','레일건은 충전이 전부예요. 첫 발은 버리는 셈 쳐요.','{name} 님, 랭킹 1위 찍고 자러 갈게요. …게임 얘기 아니에요.'],crisis:'…충전… 아직 안 끝났어…'},
 ];
@@ -2641,102 +2399,10 @@ const PERKS=[
  {id:'vanguard',icon:'🛡',name:'전열 강화',desc:()=>`전열이 받는 피해 −${Math.round(BAL.perk.vanguard*100)}%`},
  {id:'rear',icon:'🏹',name:'후열 화력',desc:()=>`후열 공격 +${Math.round(BAL.perk.rear*100)}%`},
  {id:'loot',icon:'💰',name:'전리품 감정',desc:()=>`계약 XP·마나석 +${Math.round(BAL.perk.loot*100)}%`},
-];/* Campaign learning path. Character access is shared by recruitment, decks and hub UI. */
-const BUILD_CURRICULUM=[
- {id:'start',name:'기본 분대',students:['harin','chaewon','seoyul'],
-  goal:'공격·방어·회복을 갖추고, 소환 타일 옆에 지원을 놓습니다.',
-  practice:'슬라임으로 성장하고 골렘으로 장비를 확보하세요.',
-  next:'한 원정에서 교전 3승·캠프 1회 후 생환 또는 E 핵심 공략 완료'},
- {id:'field',name:'지원 배치',students:['yerin'],
-  goal:'예린의 공격 보호막과 길가 지원으로 같은 전투의 피해를 줄입니다.',
-  practice:'이전 원정에서 가장 많이 다친 구간을 지원 타일로 보완하세요.',next:'E 핵심 공략 완료'},
- {id:'E',clear:'E',name:'첫 빌드 분기',students:['seoyoon','somi'],
-  goal:'서윤의 처치 연쇄 또는 소미의 승급 지원 중 한 방향을 시험합니다.',
-  practice:'새 동료를 고용하고, 귀환 후 등록되는 서명 카드로 다음 덱을 만드세요.',next:'D 핵심 공략 완료'},
- {id:'D',clear:'D',name:'다수전과 거점',students:['yuna','ara'],
-  goal:'유나의 광역 공격 또는 아라의 도발·반사로 적이 많은 구간을 활용합니다.',
-  practice:'소환을 늘리기 전에 지원을 준비하고 조건부 유물의 발동을 확인하세요.',next:'C 핵심 공략 완료'},
- {id:'C',clear:'C',name:'강적 대응',students:['eunha','gaeul'],
-  goal:'은하의 집중 화력 또는 가을의 분대 보호로 B 장갑 해제 구간을 준비합니다.',
-  practice:'보스 대응 타일과 EX 사용 시점을 정하고 지도 전술로 배치를 조정하세요.',next:'B 핵심 공략 완료'},
- {id:'B',clear:'B',name:'제어와 역습',students:['rin','jiu'],
-  goal:'린의 제어 또는 지우의 피격 후 반격을 기존 빌드에 연결합니다.',
-  practice:'A의 두 적을 상대할 화력·생존 분담을 정하세요.',next:'A 핵심 공략 완료'},
- {id:'A',clear:'A',name:'복합 빌드',students:['dahye','mina'],
-  goal:'다혜의 다중 적중 또는 미나의 지속 회복으로 S 대응 부품을 보완합니다.',
-  practice:'순환 저항에 맞춰 보조 동료·장비를 바꾸되 주력 조합은 유지하세요.',next:'S 핵심 공략 완료'},
- {id:'S',clear:'S',name:'숙련 확장',students:['bora','yeseo'],
-  goal:'보라의 진형 유지와 예서의 장기전 누적을 기존 조합과 비교합니다.',
-  practice:'지역·난도별 기록을 비교하세요. 별도 스코어 도전은 후속 구현 예정입니다.',next:'현재 캠페인 해금 완료'}
 ];
-function curriculumStage(id){return BUILD_CURRICULUM.find(p=>p.id===id);}
-function curriculumRank(m=meta){
- const order=['E','D','C','B','A','S'];
- return order.reduce((top,id,i)=>(m.cleared||{})[id]?Math.max(top,i):top,-1);
-}
-function curriculumReached(id,m=meta){
- if(id==='start')return true;
- const rank=curriculumRank(m);
- if(id==='field')return !!m.curriculum?.field||rank>=0;
- return rank>=['E','D','C','B','A','S'].indexOf(id)&&!!curriculumStage(id)?.clear;
-}
-function curriculumStudentStage(id){return BUILD_CURRICULUM.find(p=>p.students.includes(id));}
-function curriculumNormalize(m,raw=m){
- const old=raw?.curriculum,kept={};
- for(const s of STUDENTS){
-  const id=s.id;
-  const used=(raw?.bondXp?.[id]||0)>0||(raw?.bond?.[id]||0)>0||(raw?.growth?.[id]||0)>0
-   ||(raw?.growthLv?.[id]||0)>0||(raw?.deck?.[id]?.length||0)>0
-   ||(raw?.decks?.[id]||[]).some(x=>x&&Array.isArray(x.free));
-  if(old?.kept?.[id]||(!old?.v&&used))kept[id]=true;
- }
- m.curriculum={v:1,field:!!old?.field,kept};return m.curriculum;
-}
-function curriculumStudentOpen(s,m=meta){
- if(!s)return false;
- if(typeof simUnlockAll!=='undefined'&&simUnlockAll)return true;
- const p=curriculumStudentStage(s.id);
- return !!m.curriculum?.kept?.[s.id]||!!p&&curriculumReached(p.id,m);
-}
-function curriculumCurrent(m=meta){
- return [...BUILD_CURRICULUM].reverse().find(p=>curriculumReached(p.id,m))||BUILD_CURRICULUM[0];
-}
-function curriculumAdvance(r,reason){
- if(!migratedCurriculum())curriculumNormalize(meta);
- if(r.valid&&(reason==='camp'||reason==='boss')&&(r.wins||0)>=3&&(r.camps||0)>=1){
-  meta.curriculum.field=true;
- }
- const before=new Set(r.curriculumBefore||[]);
- r.curriculumNew=STUDENTS.filter(s=>studentUnlocked(s)&&!before.has(s.id)).map(s=>s.id);
- return r.curriculumNew;
-}
-function migratedCurriculum(){return meta.curriculum?.v===1;}
-function curriculumUnmet(s){return (meta.bondXp?.[s.id]||meta.bond?.[s.id]||0)<=0;}
-function curriculumPending(){
- return STUDENTS.filter(s=>studentUnlocked(s)&&curriculumStudentStage(s.id)?.id!=='start'&&curriculumUnmet(s));
-}
-const CURRICULUM_SYSTEMS={side:'field',land:'E',supply:'E',relic2:'D',tactic:'C'};
-const CURRICULUM_RELICS={
- halo:'start',contract:'start',medkit:'start',plate:'field',
- core:'E',battery:'E',lens:'E',drone:'E',survey:'D',compass:'D',medal:'D',frontmap:'D',
- scope:'C',clubflag:'C',stamp:'C',lucky:'B',savings:'B',regular:'B',ledger:'B',neardeath:'B',specimen:'D'
-};
-function curriculumSystemOpen(id,m=meta){
- return curriculumReached(CURRICULUM_SYSTEMS[id]||'start',m);
-}
-function curriculumRelicOpen(id){
- if(typeof simUnlockAll!=='undefined'&&simUnlockAll)return true;
- if(BAL.econ2&&id==='specimen')return false; // Its random-drop effect is not wired to econ2's fixed card rewards.
- return curriculumReached(CURRICULUM_RELICS[id]||'start');
-}
-function curriculumSystemHint(id){
- const stage=CURRICULUM_SYSTEMS[id];
- return stage==='field'?'교전 3승·캠프 1회 후 생환 또는 E 핵심 공략 완료':`${stage} 핵심 공략 완료`;
-}
-
 const perkOf=id=>PERKS.find(p=>p.id===id)||null;
 /* v0.9 학생 성장 (Codex R2): 유효 동행 = 합류 후 완전한 랩 3회 생존 + 보스 조우 시 생존. 학생별 런당 1회. 누적 1/3/6/10/15 → Lv1~5.
- * 기본 HP·공격·방어 × (1+0.03·Lv). Lv3 고유 패시브. 학생 해금은 BUILD_CURRICULUM의 공통 단계 판정을 쓴다. */
+ * 기본 HP·공격·방어 × (1+0.03·Lv). Lv3 고유 패시브. 신규 학생은 req(게이트 클리어 / 누적 성장) 충족 전 보급·리더 모두 불가 */
 const GROWTH_STEPS=[1,2,4,7,10]; /* Codex R2 초안 1/3/6/10/15는 성장 소진 P50 99런으로 과다 → 1/2/4/7/10 */
 /* §27.6 l-4(econ2): 성장 Lv 는 소재로 산 값(meta.growthLv)이고, 런 안에서는 시작 때 찍은 스냅샷(run.gLv)을 쓴다.
  * meta.growth(유효 동행 누적)는 그대로 — 호감과 학생 해금(growthTotal)이 쓴다 */
@@ -2746,12 +2412,8 @@ function growthLv(id){
 const gMulOf=id=>BAL.econ2?ECON.growthFx(growthLv(id)).stat:1+0.03*growthLv(id);
 function growthLvMeta(id){if(BAL.econ2)return Math.max(0,Math.min(ECON.growthMax(),+((meta.growthLv||{})[id])||0));const n=meta.growth[id]||0;let lv=0;for(const t of GROWTH_STEPS)if(n>=t)lv++;return lv;}
 const growthTotal=()=>Object.values(meta.growth||{}).reduce((a,b)=>a+b,0);
-function studentUnlocked(s){return curriculumStudentOpen(s);}
-function lockReason(s){
- if(studentUnlocked(s))return '';
- const p=curriculumStudentStage(s.id);
- return p?.clear?`${p.clear} 핵심 공략 완료 · ${p.name}`:'교전 3승·캠프 1회 후 생환 또는 E 핵심 공략 완료';
-}
+function studentUnlocked(s){if(!s.req)return true;if(s.req.clear)return !!meta.cleared[s.req.clear];if(s.req.growth)return growthTotal()>=s.req.growth;return true;}
+function lockReason(s){if(!s.req)return '';if(s.req.clear)return `${s.req.clear} 게이트 마스터 처치 후 합류`;if(s.req.growth)return `유효 동행 누적 ${s.req.growth}회 후 합류 (현재 ${growthTotal()})`;return '';}
 const PASSIVES={harin:{name:'돌격 지휘',desc:'전투 시작 시 전원 첫 공격 +15%'},chaewon:{name:'방벽 전개',desc:'전투 시작 시 전원 보호막 +8'},seoyul:{name:'트리아지',desc:'전투 종료 시 HP 최저 아군 10% 회복'},somi:{name:'작전 예산',get desc(){return BAL.econ2?'계약 보상 OP +10%':'계약 보상 OP +1';}},yuna:{name:'관측 공유',desc:'진화 대응 선택지 +1'},seoyoon:{name:'추격',desc:'처치 시 EX +4'},eunha:{name:'저격 지원',desc:'게이트 마스터에게 피해 +10%'},ara:{name:'철벽 진형',desc:'해일 등 광역 피해 −25%'},rin:{name:'중력 방벽',desc:'전투 시작 시 모든 적 첫 공격 0.5초 지연'},dahye:{name:'탄창 공유',desc:'전원 치명타 +5%p'},mina:{name:'구호 네트워크',desc:'캠프 회복 +5%p'},jiu:{name:'역습 교범',desc:'전원 받는 피해 −5%'},
  bora:{name:'의장 지휘',desc:'선두 학생 방어 +2'},yerin:{name:'정비 교범',desc:'전투 시작 시 전원 보호막 +5'},gaeul:{name:'구조 훈련',desc:'캠프 복귀 HP +10%p'},yeseo:{name:'충전 예열',desc:'전투 시작 시 충전 1단계(+8%)'}};
 const hasPassive=id=>!!(run&&run.party.some(m=>m.stu.id===id&&!m.down)&&growthLv(id)>=3);
@@ -2766,8 +2428,7 @@ const CLUB_ICON={council:'🏛️',shield:'🛡️',rescue:'✚',astro:'✦',ass
 const CLUB_BG={council:['#1e3a8a','#60a5fa'],shield:['#3f3f46','#fbbf24'],rescue:['#14532d','#4ade80'],astro:['#312e81','#818cf8'],assoc:['#1e40af','#93c5fd'],gate:['#4a1d1d','#fb7185']};
 const CARDS={
  // ---- 학생회 (지휘·OP) ----
- 
-ruin:{club:'council',name:'붕괴 구역',icon:'🏚️',type:'spawn',spawn:'golem',cap:2,bg:'#3f3f46',bd:'#a1a1aa',desc:'{spawn:이름} 무리 소환',contract:{op:3,xp:24,drop:0.6},enh:{contract:{op:1}}},
+ ruin:{club:'council',name:'붕괴 구역',icon:'🏚️',type:'spawn',spawn:'golem',cap:2,bg:'#3f3f46',bd:'#a1a1aa',desc:'{spawn:이름} 무리 소환',contract:{op:3,xp:24,drop:0.6},enh:{contract:{op:1}}},
  patrol:{club:'council',name:'순찰 초소',icon:'🚧',type:'spawn',spawn:'slime',cap:2,desc:'{spawn:이름} 무리 소환(약체)',contract:{op:2,xp:10,drop:0.15},enh:{contract:{op:1}}},
  hq:{club:'council',name:'작전 본부',icon:'🏛️',type:'support',desc:'지도에 있는 동안 전원 공격 +{pas.atk} · 방어 +{pas.def}',pas:{atk:1,def:1},enh:{pas:{atk:1}}},
  budget:{club:'council',name:'예산과',icon:'💼',type:'support',desc:'진입 시 OP {enter.op}',enter:{op:1},enh:{enter:{op:1}}},
@@ -3278,18 +2939,12 @@ const CRATES={
 const GRADES={base:{id:'base',name:'기본',icon:'',n:0},hi:{id:'hi',name:'상급',icon:'▲',n:1},top:{id:'top',name:'특급',icon:'★',n:2}};
 /* v1.3 해금 표(§21.10 "한 런에 새 체계 하나"): 귀환할 때마다 조건을 만족한 다음 층 하나만 연다. 열린 것은 다시 잠기지 않는다 */
 const UNLOCKS=[
- {id:'supply',name:'보급과 평가',icon:'📦',need:m=>curriculumSystemOpen('supply',m),
-  desc:'E 공략 완료: 캠프·대형 보급의 팩과 작전 평가가 열립니다'},
- {id:'side',name:'길가 결계',icon:'🏮',need:m=>curriculumSystemOpen('side',m),
-  desc:'교전 3승·캠프 1회 후 생환 또는 E 공략 완료: 길가 지원이 열립니다'},
- {id:'land',name:'지형 결계',icon:'⛰',need:m=>curriculumSystemOpen('land',m),
-  desc:'E 공략 완료: 기본 지형 외의 지형·시설 풀을 탐색합니다'},
- {id:'relic2',name:'조건부 유물',icon:'🏺',need:m=>curriculumSystemOpen('relic2',m),
-  desc:'D 공략 완료: 보드 유물 개방. C에서 편성 유물, B에서 운영·위험 유물이 추가됩니다'},
- {id:'tactic',name:'지도 전술',icon:'🎴',need:m=>curriculumSystemOpen('tactic',m),
-  desc:'C 공략 완료: 전술 상자와 전술 슬롯 2칸(망각·봉인·이설·복제)이 열립니다'},
+ {id:'supply',name:'보급과 평가',icon:'📦',need:m=>!!m.cleared.E,desc:'매 랩 소형 보급(상자 예약)·대형 보급의 상자 2칸·작전 평가가 열립니다'},
+ {id:'side',name:'길가 결계',icon:'🏮',need:m=>true,desc:'도로 옆 칸에 놓는 길가 결계가 드롭·상자에 나옵니다'},
+ {id:'land',name:'지형 결계',icon:'⛰',need:m=>true,desc:'아무 비도로 칸에 놓는 지형 결계가 드롭·상자에 나옵니다'},
+ {id:'relic2',name:'조건부 유물',icon:'🏺',need:m=>!!(m.best&&m.best.D)||!!m.cleared.D,desc:'지도·분대·보급 행동을 보는 조건부 유물 10종이 보급·상자에 나옵니다'},
+ {id:'tactic',name:'지도 전술',icon:'🎴',need:m=>true,desc:'전술 상자와 전술 슬롯 2칸(망각·봉인·이설·복제)이 열립니다'},
 ];
-
 /* 목표선: 5점 반올림[g × (base + perLap×(lap−1)) × adj] — 런 시작 시 고정(적응형 금지) */
 const scoreLine=(gateId,lap)=>Math.max(5,5*Math.round(((BAL.line.gate[gateId]||1)*(BAL.line.base+BAL.line.perLap*(lap-1))*BAL.line.adj)/5));
 const SUPPLIES=[
@@ -5401,7 +5056,6 @@ function fillMeta(o){
  if(econOn())m.econ=2;else delete m.econ;
  if(typeof campaignNormalize==='function')campaignNormalize(m);
  if(GL.relationships)GL.relationships.normalize(m);
- curriculumNormalize(m,o);
  if(typeof collectionNormalize==='function')collectionNormalize(m,o);
  if(typeof affectionNormalize==='function')affectionNormalize(m,o);
  if(typeof commandNormalize==='function')commandNormalize(m);
@@ -5623,7 +5277,6 @@ const playerNameNow=()=>(window.GL&&GL.story&&GL.story.playerName&&GL.story.play
 const sayName=t=>{const n=playerNameNow()||'대표';return String(t==null?'':t).replace(/\{name\} 님/g,n==='대표'?'대표님':'{name} 님').replace(/\{name\}/g,n);};
 
 function newRun(leader){
- if(!migratedCurriculum())curriculumNormalize(meta);
  const seed=(Math.random()*4294967296)>>>0; /* v1.3 런 시드: 보급 상자 후보는 전투·드롭 난수와 분리해 runSeed+supplyId+offerId 로 만든다 */
  const g=gate(),fx=calcFx(meta.skills);const gCount={};for(const st of STUDENTS)gCount[st.id]=meta.growth[st.id]||0;
  run={lap:1,pos:0,moveTimer:0,state:'walking',time:0,riskAB:riskNewRun(),traumaStart:riskOn()?{...(meta.trauma||{})}:{},traumaFallen:{},
@@ -5900,7 +5553,7 @@ const costStr=cost=>Object.keys(cost||{}).map(k=>k==='mana'?`💎 ${cost[k]}`:`$
 function buyFacility(id){if(typeof officeFacilityOpen==='function'&&!officeFacilityOpen(id))return false;const f=FACILITIES.find(x=>x.id===id);if(!f)return false;const lv=meta.upg[f.id];if(lv>=f.max)return false;
  const cost=facCost(f,lv);if(!payCost(cost))return false;meta.upg[f.id]++;save();return true;}
 /* §27.6 l-4 학생 성장 구매 — 그 학생의 학원 교본 + 역할 코어(높은 Lv 는 기억 조각) */
-function growthNext(sid){const st=STUDENTS.find(x=>x.id===sid);if(!st||!econOn()||!studentUnlocked(st))return null;
+function growthNext(sid){const st=STUDENTS.find(x=>x.id===sid);if(!st||!econOn())return null;
  const lv=growthLvMeta(sid);if(lv>=ECON.growthMax())return null;
  const cost=ECON.growthCost(lv+1,st.school,st.role);return cost?{lv:lv+1,cost,ok:costOk(cost)}:null;}
 function buyGrowth(sid){const nx=growthNext(sid);if(!nx||!nx.ok)return false;
@@ -7365,7 +7018,7 @@ function simTerrain(){
 <script>
 'use strict';
 /* ================= v1.3 §21 「보급과 평가」(§21.10 확정 범위) =================
- * 해금: unlocked(id) — 유효 정산 때 도달한 교육 단계를 함께 개방한다. simUnlockAll은 실험용 전체 해금이다.
+ * 해금: unlocked(id) — meta.unlock(UNLOCKS 순서대로 귀환마다 하나씩 advanceUnlocks). 시뮬은 기본으로 전부 연 상태(simUnlockAll)에서 잰다.
  * 평가: 점수 원장 run.score = {cur:{entries:[{base,risk,mult}],add}, laps:[{lap,score,line,grade,final}], combo:{id:1}, total, sumCap, sumLine, grade}.
  *   ruleCore(kind,data)(dispatchRuleEvent 안 — 실플레이·시뮬 공통, 승산 모의 중에는 오지 않는다):
  *   kill = 적 ID당 1회 처치점을 그 무리(pk.pts)에 · packClear = 무리당 1회 원장에 기입(위험 가산은 그 무리에만·가장 높은 하나, 전투 시작 시 확정한 pk.risk) · combo = 조합 ID당 런 1회 +40.
@@ -7382,14 +7035,10 @@ const unlocked=id=>simUnlockAll||!!(meta.unlock&&meta.unlock[id]);
  * 덱 편집(DECK_EDIT.add·풀 자물쇠) · 출격 덱(deckFor — 잠긴 카드는 빠지고 기본 카드로 채움 + 안내) · 배치(canPlaceCard/validSpots) · 드롭(terrainOpen/terrainPick) · 결계 상자(crateView)가 모두 이것만 본다 */
 const cardOpen=id=>{const c=CARDS[id];if(!c)return false;if(c.econ&&!econOn())return false; /* §27.6 k: 재화 개편 전용 카드(공장류)는 스위치를 켠 판에서만 */
  return !!c.starter||!(c.cls==='side'||c.cls==='land')||unlocked(typeof boardCardLayer==='function'?boardCardLayer(id):c.cls);}; /* v1.5: 스위치가 켜지면 길가 결계의 층이 단순 길가/나머지로 나뉜다(board.js) */
-const cardLockHint=id=>{
- const layer=typeof boardCardLayer==='function'?boardCardLayer(id):CARDS[id]?.cls;
- const u=UNLOCKS.find(x=>x.id===layer);
- return u?`${u.icon} ${u.name} — ${curriculumSystemHint(u.id)}`:'';
-};
+const cardLockHint=id=>{if(typeof boardLockHint==='function'){const h=boardLockHint(id);if(h!=null)return h;}const c=CARDS[id],u=c&&UNLOCKS.find(x=>x.id===c.cls);return u?`${u.icon} ${u.name} 해금 전 — ${econOn()?'유효 귀환마다 길가 → 지형 → 보급·평가(E 클리어 필요)':'E 클리어 뒤 귀환마다 보급·평가 → 길가 → 지형'}`:'';};
 const supplyOn=()=>BAL.supplyOn!==false&&unlocked('supply');
 const shopSlots=()=>supplyOn()?BAL.shopSlotsV13:SHOP_SLOTS;
-/* 기본 지형은 첫 출격부터. 확장 지형·보급은 E, 조건 유물은 D, 지도 전술은 C 공략 뒤. */
+/* v2.1: 기본 지형은 첫 출격부터, 전체 보드는 두 번째 유효 귀환에 개방. 보급은 E 공략 뒤. */
 const ECON_UNLOCK_ORDER=['side','land','supply','relic2','tactic'];
 function unlockList(){const base=(typeof boardUnlockList==='function'?boardUnlockList():UNLOCKS);
  if(!econOn())return base;
@@ -7397,16 +7046,7 @@ function unlockList(){const base=(typeof boardUnlockList==='function'?boardUnloc
  const out=ECON_UNLOCK_ORDER.map(id=>by[id]).filter(Boolean);
  for(const d of base)if(out.indexOf(d)<0)out.push(d);
  return out;}
-function advanceUnlocks(){
- const u=meta.unlock||(meta.unlock={}),opened=[];
- for(const d of unlockList()){
-  if(u[d.id]||!curriculumSystemOpen(d.id))continue;
-  u[d.id]=meta.runs||1;opened.push(d);
- }
- if(!opened.length)return null;
- return {id:opened[0].id,ids:opened.map(d=>d.id),icon:'🔓',name:opened.map(d=>d.name).join(' · '),
-  desc:opened.map(d=>d.desc).join(' / ')};
-}
+function advanceUnlocks(){const u=meta.unlock||(meta.unlock={});for(const d of unlockList()){if(u[d.id])continue;if(d.need(meta)){u[d.id]=meta.runs||1;return d;}return null;}return null;}
 const hashStr=s=>{let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h;};
 function seedRng(key){let a=hashStr(String(run.seed)+'|'+key);return ()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),61|t);return ((t^(t>>>14))>>>0)/4294967296;};}
 /* ----- 유물 ----- */
@@ -7417,7 +7057,6 @@ function seedRng(key){let a=hashStr(String(run.seed)+'|'+key);return ()=>{a=(a+0
 const relicOk=id=>{const R=relicOf(id);if(!R||!run||run.relics.includes(id))return false;
  if(R.econ&&!econOn())return false;
  if(econOn()&&(R.id==='contract'))return false;
- if(!curriculumRelicOpen(id))return false;
  return !R.cond||unlocked('relic2');};
 const relicPool=()=>RELICS.filter(r=>relicOk(r.id));
 function grantRelic(id,src){if(!run||run.relics.length>=BAL.relicSlots||!relicOk(id))return false;run.relics.push(id);(run.relicLog||(run.relicLog=[])).push({id,src:src||'?',lap:run.lap});run.party.forEach(recalcMember);dirty=true;return true;}
@@ -7426,7 +7065,7 @@ function riverAdjCount(){if(!run||!run.cells)return 0;const s=new Set();for(cons
 const relicNow=id=>{const R=relicOf(id);if(!R||!R.now)return '';try{return R.now(run,{riverAdj:riverAdjCount()});}catch(e){return '';}};
 function discardRelic(id){const i=run.relics.indexOf(id);if(i<0||run.battle)return false;run.relics.splice(i,1);run.party.forEach(recalcMember);log(`🏺 유물 「${relicOf(id).name}」을(를) 내려놓았습니다`,'shop');dirty=true;return true;}
 function makeOfferNoRelic(){const kind=weightedPick([{k:'student',w:60},{k:'supply',w:15}]).k,free=Math.random()<0.05;
- if(kind==='student'){const rar=rarityRoll(),stu=pickStudent(rar);return {uid:uid(),kind,stu,rarity:stu.rarity,cost:free?0:STUDENT_COST[stu.rarity],free};}
+ if(kind==='student'){const rar=rarityRoll(),stu=pickStudent(rar);return {uid:uid(),kind,stu,rarity:rar,cost:free?0:STUDENT_COST[rar],free};}
  const sp=pick(SUPPLIES.filter(x=>econOn()?x.id!=='crystal':!x.econ)); /* econ2: 결계 결정(OP → SP)은 폐지, 특훈은 econ2 에서만 */
  return {uid:uid(),kind:'supply',supply:sp,rarity:0,cost:free?0:(econOn()&&sp.id==='train'?BAL.econ.train[0]:sp.cost),abs:econOn()&&sp.id==='train',free};}
 function regularCheck(cost){if(!(cost>0)||!run.relics.includes('regular'))return;const R=relicOf('regular'),ctx={rerolled:(run.shop.rerollsHere||0)>0,paid:cost,used:!!run.shop.regularUsed};
@@ -7579,7 +7218,7 @@ function skipCrate(){
 function crateTakeOk(cr,id){
  if(!cr)return false;
  if(cr.kind==='recruit'){
-  const m=recruitedMember(id);return STUDENTS.some(s=>s.id===id&&studentUnlocked(s))&&(!m||m.star<3);
+  const m=recruitedMember(id);return STUDENTS.some(s=>s.id===id)&&(!m||m.star<3);
  }
  if(cr.kind==='relic')return relicOk(id);
  if(cr.kind==='ward')return run.hand.length<handMax();
@@ -8096,19 +7735,11 @@ function useEx(){
 'use strict';
 // ================= 보급 롤 (핵심) =================
 function rarityRoll(){let b=run.lap<=2?0:run.lap<=4?1:2;if(hasRelic('lucky'))b+=relicTune('lucky').tier;b+=FX().rarity;const T=ODDS[Math.min(3,b)],r=Math.random()*100;return r<T[0]?0:r<T[0]+T[1]?1:2;}
-function pickStudent(rar){
- const available=STUDENTS.filter(studentUnlocked),matching=available.filter(s=>s.rarity===rar);
- const launchSolo=run.shop.kind==='launch'&&run.party.length<2;
- const pool=(matching.length?matching:available).map(s=>{
-  const owned=run.party.find(m=>m.stu.id===s.id&&m.star<3);
-  return {s,w:owned?(launchSolo?0.25:2):1};
- });
- return weightedPick(pool).s;
-}
+function pickStudent(rar){const launchSolo=run.shop.kind==='launch'&&run.party.length<2;const pool=[];for(const s of STUDENTS.filter(x=>x.rarity===rar&&studentUnlocked(x))){const owned=run.party.find(m=>m.stu.id===s.id&&m.star<3);const w=owned?(launchSolo?0.25:2):1;pool.push({s,w});}return weightedPick(pool).s;}
 function makeOffer(){
  if(run.relics.length>=BAL.relicSlots)return makeOfferNoRelic();
  const kind=weightedPick([{k:'student',w:60},{k:'relic',w:25},{k:'supply',w:15}]).k,free=Math.random()<0.05;
- if(kind==='student'){const rar=rarityRoll(),stu=pickStudent(rar);return {uid:uid(),kind,stu,rarity:stu.rarity,cost:free?0:STUDENT_COST[stu.rarity],free};}
+ if(kind==='student'){const rar=rarityRoll(),stu=pickStudent(rar);return {uid:uid(),kind,stu,rarity:rar,cost:free?0:STUDENT_COST[rar],free};}
  if(kind==='relic'){const rar=rarityRoll(),shown=new Set((run.shop.offers||[]).filter(o=>o&&o.kind==='relic').map(o=>o.relic.id)),base=relicPool().filter(r=>!shown.has(r.id));let pool=base.filter(r=>r.rarity===rar);if(!pool.length)pool=base; /* C-06: 한 진열에 같은 유물 두 번 금지 */
   if(pool.length){const rel=pick(pool);return {uid:uid(),kind,relic:rel,rarity:rel.rarity,cost:free?0:RELIC_COST[rel.rarity],free};}}
  const sp=pick(SUPPLIES.filter(x=>econOn()?x.id!=='crystal':!x.econ)); /* econ2: 결계 결정(OP → SP)은 폐지, 특훈은 econ2 에서만 */
@@ -8127,16 +7758,8 @@ function rollOffers(){rollOffersCore();for(const o of run.shop.offers)if(o.kind=
 function econLaunchOffers(){
  const n=Math.max(1,(BAL.econ.hireSlots||3)+(meta.upg.ops?1:0)),have=new Set(run.party.map(m=>m.stu.id)),picks=[];
  const take=pool=>{if(!pool.length)return;const st=pick(pool);picks.push(st);have.add(st.id);};
- const pending=curriculumPending();
- const offer=pool=>{const fresh=pool.filter(s=>pending.includes(s));take(fresh.length?[fresh[0]]:pool);};
- const roles=new Set(run.party.map(m=>m.stu.role));
- for(const role of ['tank','sup','dps']){
-  if(picks.length>=n)break;if(roles.has(role))continue;
-  offer(STUDENTS.filter(s=>studentUnlocked(s)&&!have.has(s.id)&&s.role===role));
- }
- while(picks.length<n){
-  const pool=STUDENTS.filter(s=>studentUnlocked(s)&&!have.has(s.id));if(!pool.length)break;offer(pool);
- }
+ for(const role of ['tank','sup','dps']){if(picks.length>=n)break;take(STUDENTS.filter(s=>studentUnlocked(s)&&!have.has(s.id)&&s.role===role));}
+ while(picks.length<n){const pool=STUDENTS.filter(s=>studentUnlocked(s)&&!have.has(s.id));if(!pool.length)break;take(pool);}
  run.shop.offers=picks.map(stu=>({uid:uid(),kind:'student',stu,rarity:stu.rarity,cost:BAL.econ.hire,abs:true,free:false,hire:true}));
  const tr=SUPPLIES.find(x=>x.id==='train');
  if(tr&&run.party.some(m=>m.star<3))run.shop.offers.push({uid:uid(),kind:'supply',supply:tr,rarity:0,cost:BAL.econ.launchTrain,abs:true,free:false});
@@ -8147,7 +7770,7 @@ function rollOffersCore(){
  const pi=promoSlot();
  // 천장(pity): 희귀 이상이 하나도 없는 롤이 연속 2회면 다음 롤은 희귀 이상 1칸 보장 (승급 슬롯과 다른 칸)
  const hasRare=run.shop.offers.some(o=>o.rarity>=1);
- if(!hasRare&&run.shop.dry>=2){let i=rnd(0,shopSlots()-1);if(i===pi)i=(i+1)%shopSlots();const stu=pickStudent(1);run.shop.offers[i]={uid:uid(),kind:'student',stu,rarity:stu.rarity,cost:STUDENT_COST[stu.rarity],free:false,pity:true};run.shop.dry=0;}
+ if(!hasRare&&run.shop.dry>=2){let i=rnd(0,shopSlots()-1);if(i===pi)i=(i+1)%shopSlots();const stu=pickStudent(1);run.shop.offers[i]={uid:uid(),kind:'student',stu,rarity:1,cost:STUDENT_COST[1],free:false,pity:true};run.shop.dry=0;}
  else run.shop.dry=hasRare?0:(run.shop.dry||0)+1;
  /* v1.3 특급: 대형 진열에 유물 1칸 보장(정상 가격 — 선택 폭만 넓힌다). 승급·보정 칸은 건드리지 않는다 */
  if(supplyOn()&&BAL.scoreReward&&gradeNow()==='top'&&run.relics.length<BAL.relicSlots&&!run.shop.offers.some(o=>o.kind==='relic')){const pool=relicPool();const k=run.shop.offers.findIndex(o=>!o.promo&&!o.pity&&!o.guaranteed&&!o.free);if(pool.length&&k>=0){const rel=pick(pool);run.shop.offers[k]={uid:uid(),kind:'relic',relic:rel,rarity:rel.rarity,cost:RELIC_COST[rel.rarity],free:false,topGrade:true};}}
@@ -8157,8 +7780,7 @@ function ensureMate(){if(econOn())return; /* §27.6 d: econ2 는 출격 고용 �
  if(run.shop.kind!=='launch'||run.party.length>=2)return;
  const unowned=o=>o.kind==='student'&&o.rarity===0&&!run.party.find(m=>m.stu.id===o.stu.id);
  if(run.shop.offers.some(unowned))return;
- const pool=STUDENTS.filter(s=>s.rarity===0&&studentUnlocked(s)&&!run.party.find(m=>m.stu.id===s.id));
- if(!pool.length)return;
+ const pool=STUDENTS.filter(s=>s.rarity===0&&!run.party.find(m=>m.stu.id===s.id));if(!pool.length)return;
  const i=rnd(0,shopSlots()-1);run.shop.offers[i]={uid:uid(),kind:'student',stu:pick(pool),rarity:0,cost:STUDENT_COST[0],free:false,guaranteed:true};
 }
 function openShop(kind){
@@ -8192,7 +7814,6 @@ const rerollCost=()=>{const base=BAL.rerollCosts[Math.min((run&&run.shop&&run.sh
 function reroll(){if(run.op<rerollCost()||run.t<=T_IMMINENT)return;run.op-=rerollCost();run.shop.rerolls++;run.shop.rerollsHere=(run.shop.rerollsHere||0)+1;spendT(T_REROLL,'reroll');rollOffers();renderShop();SFX.reroll();for(let i=0;i<shopSlots();i++)SFX.flip(i);}
 function buy(ouid,replaceIdx){
  const o=run.shop.offers.find(x=>x.uid===ouid);if(!o||o.sold||run.op<priceOf(o))return;
- if(o.kind==='student'&&!studentUnlocked(o.stu))return;
  if(o.kind==='relic'&&(run.relics.length>=BAL.relicSlots||!relicOk(o.relic.id)))return; /* 유물 슬롯 5칸 · v1.4 R4 C-06: 보유 중(중복)·미해금 조건부는 살 수 없다 */
  const cost=priceOf(o);
  if(o.kind==='student'){
@@ -8395,7 +8016,6 @@ function crateCellsHtml(){const crs=run.shop.crates||[],g=GRADES[gradeNow()],n=B
 // ================= 런 종료 =================
 function endRun(reason){
  if(run.ended)return;
- run.curriculumBefore=STUDENTS.filter(studentUnlocked).map(s=>s.id);
  if(estMode){run.ended=true;run.state='ended';run.battle=null;run.result={reason};return;} /* 승산 모의: 메타 정산·저장·연출 없음 */
  if(reason==='boss'&&GL.relationships)GL.relationships.observeVictory(run,{boss:true});
  riskRecord(reason);
@@ -8431,7 +8051,6 @@ function endRun(reason){
  {const book=econOn()?(meta.best2||(meta.best2={})):meta.best,prev=book[g.id];if(!prev||score>prev.score)book[g.id]={score,rank,lap:run.lap,mana:gained};}
  /* v1.3 작전 평가 최고 기록은 별도 필드(meta.evalBest) — 기존 best[gate].score(획득 자원 기반)와 섞지 않는다 */
  if(supplyOn()){const pe=meta.evalBest[g.id];run.evalNew=!pe||run.score.total>pe.total;if(run.evalNew)meta.evalBest[g.id]={v:1,total:run.score.total,q:+eb.q.toFixed(2),laps:run.score.laps.length,top:run.score.laps.filter(l=>l.grade==='top').length};}
- if(!simUnlockAll)curriculumAdvance(run,reason);
  run.unlockNew=simUnlockAll?null:advanceUnlocks();
  if(econOn()){run.resReleased={};for(const [k,n] of Object.entries(meta.resPending||{})){if(n>0&&econResOpen(k)){meta.res[k]=(meta.res[k]||0)+n;run.resReleased[k]=n;delete meta.resPending[k];}}}
  if(typeof openingRecordReturn==='function')openingRecordReturn(reason);
@@ -8456,6 +8075,7 @@ function voidRun(reason){
  log('⛔ 무효 출격 — 전투 승리·캠프 통과 전에 귀환해 보상이 없습니다','imp');
  if(!simMode){SFX.click();showResult(reason,0,0);const after=()=>{if(reason==='death'&&typeof storyQueueAftermath==='function')storyQueueAftermath(reason);if(typeof openingAfterRun==='function'&&openingAfterRun())return;if(reason==='death'&&typeof storyAftermathDone==='function')storyAftermathDone(reason);};if(typeof showDuelReport==='function')showDuelReport(after);else after();}
 }
+
 
 </script>
 <script>
@@ -8793,7 +8413,10 @@ function collectionPool(){return Object.keys(CARDS).filter(id=>typeof isPlayable
  * A recruitable student is not yet an encountered student. Current-run hires become known on return. */
 function collectionStudentKnown(s,m){
  if(!s)return false;m=m||meta;
- if(!curriculumStudentOpen(s,m))return false;
+ if(s.req){
+  if(s.req.clear&&!(m.cleared||{})[s.req.clear])return false;
+  if(!s.req.clear&&s.req.growth&&Object.values(m.growth||{}).reduce((a,n)=>a+(+n||0),0)<s.req.growth)return false;
+ }
  const xp=(m.bondXp||{})[s.id],met=xp!=null?(+xp||0)>0:(+((m.bond||{})[s.id])||0)>0;
  return s.rarity===0||met;
 }
@@ -8986,7 +8609,8 @@ function boardCardLayer(id){const c=CARDS[id];if(!c)return null;if(!boardOn()||c
 function boardLockHint(id){
  if(!boardOn())return null;const c=CARDS[id];if(!c||!(c.cls==='side'||c.cls==='land'))return '';
  const u=UNLOCKS15.find(x=>x.id===boardCardLayer(id));if(!u)return '';
- return `${u.icon} ${u.name} — ${curriculumSystemHint(u.id)}`;
+ const order=unlockList().map(x=>x.id==='supply'?x.name+'(E 클리어 뒤)':x.name).join(' → ');
+ return `${u.icon} ${u.name} 해금 전 — 유효 귀환마다 한 층씩(${order})`;
 }
 /* 새 덱 프리셋(기본·집중·분산)의 길가 1장(§25.5) — 스위치가 켜지고 그 카드가 열렸을 때만. 뺄 카드: ① 평범한 지원 카드(소환·서명·바리에이션 원본이 아닌 것)의 마지막 장
  * ② 없으면 두 장 이상 든 카드의 마지막 한 장(집중 프리셋 = 소환 ×2 + 서명) ③ 그래도 없으면 마지막 장. 길가 카드는 맨 앞(시뮬 land 덱 = 집중 앞 4장에도 남게) */
@@ -12576,39 +12200,11 @@ function renderMissionPick(){
 </script>
 <script>
 'use strict';
-function curriculumHtml(){
- const current=curriculumCurrent(),index=BUILD_CURRICULUM.indexOf(current),next=BUILD_CURRICULUM[index+1];
- const names=p=>p.students.map(id=>STUDENTS.find(s=>s.id===id)?.name||id).join(' · ');
- return `<section class="curriculum panel" aria-label="성장 로드맵">
-  <b>현재 목표 · ${current.name}</b><p>${current.goal}</p><p>${current.practice}</p>
-  <small>${next?`다음 해금 · ${names(next)} — ${current.next}`:'캠페인 동료 해금 완료'}</small>
-  <details><summary>빌드 성장 경로 보기</summary><ol>${BUILD_CURRICULUM.map((p,i)=>{
-   const open=curriculumReached(p.id);
-   const need=i?BUILD_CURRICULUM[i-1].next:'처음부터';
-   return `<li class="${open?'learned':''}"><b>${open?'✓':'🔒'} ${p.name} · ${names(p)}</b>
-    <small>${need}</small><p>${p.goal}</p></li>`;
-  }).join('')}</ol></details></section>`;
-}
-function curriculumResultHtml(){
- const ids=run?.curriculumNew||[],current=curriculumCurrent();
- const names=ids.map(id=>STUDENTS.find(s=>s.id===id)?.name||id).join(' · ');
- return `${names?`<div><b>새 동료 해금</b><span>${names} · 다음 출격 고용에서 미동행 동료를 우선 제시합니다.
-  희귀 동료는 함께 귀환해 리더를 열고 서명 덱을 등록하세요.</span></div>`:''}
-  <div><b>다음 런에서 시험할 것</b><span>${current.goal} ${current.practice}</span></div>`;
-}
-
-</script>
-<script>
-'use strict';
 // ================= 화면 =================
 let curScreen='s-title';
-function show(id){
- curScreen=id;$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo(0,0);
- if(typeof openingRefresh==='function')openingRefresh(id);
- if(GL.mobileHubSync)GL.mobileHubSync();
-}
+function show(id){curScreen=id;$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo(0,0);if(typeof openingRefresh==='function')openingRefresh(id);}
 function renderRoster(){
- $('#roster').innerHTML=STUDENTS.filter(studentUnlocked).map(s=>`<div class="${(!studentUnlocked(s)||!leaderOk(s))?'lk':''}" title="${s.name} · ${CLUBS[s.club]} · ${ROLES[s.role]} · ${RARITY[s.rarity].name}">${ptImg(s,'face')}${s.name}</div>`).join('');
+ $('#roster').innerHTML=STUDENTS.map(s=>`<div class="${(!studentUnlocked(s)||!leaderOk(s))?'lk':''}" title="${s.name} · ${CLUBS[s.club]} · ${ROLES[s.role]} · ${RARITY[s.rarity].name}">${ptImg(s,'face')}${s.name}</div>`).join('');
 }
 function applyKeyVisual(){const h=$('.hero');if(h&&!h.classList.contains('kv')){h.classList.add('kv');h.style.backgroundImage=`url(${artUrl(KEYVISUAL_SRC)})`;}}
 function showTitle(){applyKeyVisual();{const ps=pinStatus(),el=$('#titlePin');el.hidden=!ps;if(ps)el.textContent=ps.text;}if($('#titleMana'))$('#titleMana').textContent=meta.mana||0;if(econOn()&&$('#titleResource'))$('#titleResource').innerHTML=walletHtml();$('#titleSp').textContent=meta.sp;$('#titleRuns').textContent=meta.runs;renderRoster();show('s-title');}
@@ -12637,15 +12233,12 @@ function renderGates(){
  if(typeof campaignRender==='function')campaignRender($('#regionMission'));
 }
 function renderSchoolTabs(){
- const schools=Object.entries(SCHOOLS).filter(([k])=>STUDENTS.some(s=>s.school===k&&studentUnlocked(s)));
- if(!schools.some(([k])=>k===schoolTab))schoolTab=null;
  if(!schoolTab){const s=STUDENTS.find(x=>x.id===selLeader);schoolTab=s?s.school:Object.keys(SCHOOLS)[0];}
- $('#schoolTabs').innerHTML=schools.map(([k,sc])=>`<button data-sc="${k}" class="${schoolTab===k?'on':''}" style="--acc:${sc.accent}" title="${sc.name}(${sc.abbr}) · ${sc.desc}">${sc.short} <span class="kbd">${STUDENTS.filter(s=>s.school===k&&studentUnlocked(s)).length}</span></button>`).join('');
+ $('#schoolTabs').innerHTML=Object.entries(SCHOOLS).map(([k,sc])=>`<button data-sc="${k}" class="${schoolTab===k?'on':''}" style="--acc:${sc.accent}" title="${sc.name}(${sc.abbr}) · ${sc.desc}">${sc.short} <span class="kbd">${STUDENTS.filter(s=>s.school===k).length}</span></button>`).join('');
  $$('#schoolTabs button').forEach(b=>b.onclick=()=>{schoolTab=b.dataset.sc;SFX.click();renderSchoolTabs();renderStudents();});
 }
 function renderStudents(){
- $('#students').innerHTML=curriculumHtml()+STUDENTS.filter(s=>s.school===schoolTab&&studentUnlocked(s))
- .map(s=>{const {gated,locked}=stuLocked(s);
+ $('#students').innerHTML=STUDENTS.filter(s=>s.school===schoolTab).map(s=>{const {gated,locked}=stuLocked(s);
   return `<div class="stu panel${locked?' locked':''}${pickStu===s.id?' pick':''}" data-id="${s.id}"><span class="rar r${s.rarity}">${RARITY[s.rarity].name}</span><div class="bond" data-tip="호감도">♥ Lv.${bondLv(s.id)}</div>${ptImg(s,'face')}
   <div class="nm">${s.name} ${traumaBadge(s.id)}</div><div class="cl">${idChipsHtml(s)}${traitChipsHtml(s)}</div>${statBarsHtml(statLine(s),'mini')}
   <div class="dk" data-s="${s.id}"></div>${locked?`<div class="lkr" data-tip="${escTip(gated?lockReason(s):'보급 롤에서 만나 함께 귀환하면 리더로 해금')}">🔒</div>`:''}</div>`;}).join('');
@@ -12685,10 +12278,7 @@ function renderSelect(){
  * 편집 로직은 DECK_EDIT 에 모아 두어 DOM 없이도 검사할 수 있다(tools/regress.cjs 덱 편집 왕복) */
 let selLeader=null,poolFilter='all';
 function freeOf(id){const f=meta.deck[id];return deckNorm(id,Array.isArray(f)?f:deckPreset('default',id));}
-function selectLeader(id){
- const s=STUDENTS.find(s=>s.id===id);if(!s||!studentUnlocked(s)||!leaderOk(s))return false;
- selLeader=id;renderDeck();return true;
-}
+function selectLeader(id){selLeader=id;renderDeck();}
 function deckClubCount(leaderId,club){const d=[...fixedFor(leaderId),...freeOf(leaderId)];return d.filter(x=>CARDS[x].club===club).length;}
 const DECK_EDIT={
  free(){return freeOf(selLeader);},
@@ -12825,7 +12415,6 @@ function showResult(reason,gained,spG){
    <div><b>📌 핀 목표</b><span>${ps?ps.text.replace('📌 핀 목표: ',''):(meta.pin?'개발 완료 — 학원에서 새 목표를 핀 하세요':'없음 — 학원에서 노드·시설에 📌')}</span></div>${evalLineHtml()}`;
   /* v1.4 R4 C-04: 무효 출격(전투 승리 0 · 캠프 통과 0)은 맨 위 한 줄로 알린다 */
   if(typeof campaignRunHtml==='function')$('#rGoal3').innerHTML+=campaignRunHtml(run,reason);
-  if(run.valid)$('#rGoal3').innerHTML+=curriculumResultHtml();
   if(run.result&&run.result.invalid)$('#rGoal3').innerHTML=`<div class="void"><b>⛔ 무효 출격 — 보상 없음</b><span>전투 1회 승리 또는 캠프 1회 통과 전에 귀환 — 마나석·SP·호감·학원가 주기·해금이 오르지 않습니다</span></div>`+$('#rGoal3').innerHTML;}
  const rank=run.result.rank,rk=[rank,{S:'#ff6fae',A:'#a855f7',B:'#128cff',C:'#6f7d9c'}[rank]],g=gate();
  $('#rRank').textContent=rk[0];$('#rRank').style.color=rk[1];
@@ -12915,7 +12504,7 @@ function renderAcademy(){
  $$('#facilities [data-pinf]').forEach(b=>b.onclick=()=>{setPin('upg',b.dataset.pinf);SFX.click();renderAcademy();});
  $$('#facilities button[data-id]').forEach(b=>b.onclick=()=>{if(buyFacility(b.dataset.id))renderAcademy();});
  /* 학생 탭: 성장(유효 동행)·해금 상태 */
- $('#growthList').innerHTML=curriculumHtml()+STUDENTS.filter(studentUnlocked).map(s=>{const {gated,locked}=stuLocked(s);return `<div class="g${locked?' lk':''}">${ptImg(s,'face')}<div style="min-width:0"><b>${s.name} <span class="kbd">${RARITY[s.rarity].name} · ♥ Lv.${bondLv(s.id)}</span></b><span class="kbd">${CLUBS[s.club]} · ${ROLES[s.role]} · ${growthLine(s)}${locked?' · 🔒 '+(gated?lockReason(s):'함께 귀환하면 해금'):''}</span></div>${econOn()?econGrowBtn(s):''}</div>`;}).join('');
+ $('#growthList').innerHTML=STUDENTS.map(s=>{const {gated,locked}=stuLocked(s);return `<div class="g${locked?' lk':''}">${ptImg(s,'face')}<div style="min-width:0"><b>${s.name} <span class="kbd">${RARITY[s.rarity].name} · ♥ Lv.${bondLv(s.id)}</span></b><span class="kbd">${CLUBS[s.club]} · ${ROLES[s.role]} · ${growthLine(s)}${locked?' · 🔒 '+(gated?lockReason(s):'함께 귀환하면 해금'):''}</span></div>${econOn()?econGrowBtn(s):''}</div>`;}).join('');
  $$('#growthList [data-grow]').forEach(b=>b.onclick=()=>{if(buyGrowth(b.dataset.grow)){SFX.buy();renderAcademy();}});
  show('s-academy'); /* v1.4 §24: 페이지 맞춤(pageify·fitTree)은 화면이 보여야 높이를 잰다 — 먼저 보이고 채운다 */
  if(typeof renderOfficeExtras==='function')renderOfficeExtras(); /* v1.4 C: 방 핫스팟·기록실·유물 풀·휴게실 */
@@ -12936,10 +12525,7 @@ function setAcTab(t,room){const next=AC_TITLE[t]?t:'skill',rm=(room&&roomOf(room
  if(acTab==='codex'){const el=$('#codex');if(el)pageify(el,'codex');}
  if(acTab==='stu'&&typeof renderLounge==='function')renderLounge();
  if(acTab==='mem'&&typeof renderArchive==='function')renderArchive();
- if(acTab==='skill'&&typeof fitTree==='function')fitTree();
- if(typeof renderOfficeMap==='function')renderOfficeMap();
- if(GL.mobileHubSync)GL.mobileHubSync();
-}
+ if(acTab==='skill'&&typeof fitTree==='function')fitTree();if(typeof renderOfficeMap==='function')renderOfficeMap();}
 /* v1.4 §24 지휘실: 분기 12노드가 패널 높이를 넘으면 1·2단 / 3·4단 두 쪽으로 나눈다(모바일) */
 function fitTree(){const br=$('#tree .branch.on');if(!br||!br.querySelectorAll)return;const tiers=[...br.querySelectorAll('.tier')];if(!tiers.length)return;br.classList.remove('half','p2');const bar=$('#treePg');
  if(br.scrollHeight<=br.clientHeight+1){if(bar)bar.hidden=true;return;}
@@ -13008,11 +12594,7 @@ function setSettingsPage(page){
 }
 $$('#settings [data-settings-tab]').forEach(b=>b.onclick=()=>setSettingsPage(b.dataset.settingsTab));
 function syncNameRow(){const n=playerNameNow();$('#nameNow').textContent=n?`지금: 「${sayName('{name} 님')}」`:'아직 정하지 않았습니다 — 학생들이 「대표님」으로 부릅니다(이름을 정하면 「{이름} 님」)';} /* v1.4 R4: 호칭 규칙 공용(sayName) */
-$('#btnSettings').onclick=()=>{
- riskSyncSettings();syncNameRow();syncBackupRow();
- if(typeof openingRenderTitle==='function')openingRenderTitle();
- $('#optStoryRun').checked=meta.storyInRun!==false;$('#settings').hidden=false;
-};
+$('#btnSettings').onclick=()=>{riskSyncSettings();syncNameRow();syncBackupRow();$('#optStoryRun').checked=meta.storyInRun!==false;$('#settings').hidden=false;};
 $('#btnRename').onclick=()=>{if(!GL.dialog||!GL.story)return;GL.dialog.askName({max:GL.story.NAME_MAX,value:GL.story.playerName(),onDone:n=>{GL.story.setPlayerName(n);syncNameRow();}});};
 $('#optStoryRun').onchange=()=>{meta.storyInRun=$('#optStoryRun').checked;save();};$('#btnSettingsClose').onclick=()=>{$('#settings').hidden=true;};
 /* 세이브 백업(설정 창): 내보내기 = .json 파일 저장(+클립보드 복사 시도) · 가져오기 = 파일 선택 → 요약 비교 확인 → 적용 후 다시 불러오기 · 되돌리기 = 가져오기 직전 세이브와 맞바꾸기. 규칙은 game.js(exportSave/parseSave/applySave/restoreBackup) */
@@ -13062,7 +12644,6 @@ function econShoppingLine(){
  return '🧾 장보기: '+lack.slice(0,2).map(k=>`${ECON.defOf(k).name} ${(res[k]||0)}/${need[k]} → ${src(k)}`).join(' · ');}
 /* §27.6 l-4: 학생 성장 구매 버튼 — 다음 Lv 과 필요한 소재(그 학생의 학원 교본 + 역할 코어) */
 function econGrowBtn(st){
- if(!studentUnlocked(st))return '<span class="kbd">동료 해금 후 성장 가능</span>';
  const nx=growthNext(st.id);
  if(!nx)return `<span class="kbd" style="align-self:center">성장 MAX</span>`;
  const need=Object.keys(nx.cost).map(k=>`${ECON.defOf(k).name} ${Math.min(((meta.res||{})[k]||0),nx.cost[k])}/${nx.cost[k]}`).join(' · ');
@@ -13438,16 +13019,8 @@ function replayMemory(id){
 
 /* 유물 보관고: 유물 풀(기본 10 · 조건부 10)의 해금 상태 칩 */
 function renderVaultPool(){
- const el=$('#relicPool');if(!el)return;
- const pool=RELICS.filter(r=>econOn()?r.id!=='contract'&&r.id!=='specimen':!r.econ);
- el.innerHTML=pool.map(r=>{
-  const lk=!curriculumRelicOpen(r.id)||(r.cond&&!unlocked('relic2'));
-  const stage=CURRICULUM_RELICS[r.id],need=stage==='field'?curriculumSystemHint('side'):
-   stage==='start'?'기본 개방':`${stage} 핵심 공략 완료`;
-  const tip=escTip(`${r.name} — ${r.desc}${lk?' · '+need:''}`);
-  return `<span class="rp r${r.rarity}${lk?' lk':''}" data-tip="${tip}">
-   ${lk?hubIco('ui_lock','잠김'):r.icon}</span>`;
- }).join('');
+ const el=$('#relicPool');if(!el)return;const open2=unlocked('relic2');
+ el.innerHTML=RELICS.map(r=>{const lk=r.cond&&!open2;return `<span class="rp r${r.rarity}${lk?' lk':''}" data-tip="${escTip(r.name)} — ${escTip(r.desc)}${lk?' (D 게이트 출격으로 해금)':''}">${lk?hubIco('ui_lock','잠김'):r.icon}</span>`;}).join('');
 }
 /* 휴게실: 학생 · 호감 Lv · 진행도 · Lv 보상(2 리더 · 4 커스텀 패치(준비 중) · 8 상주). Lv8 이상은 「상주」 */
 function renderLounge(){
@@ -13493,7 +13066,6 @@ function renderTown(){
  $('#townRank').innerHTML=`<div class="tr1">${rankBadge(R.i)}<b>${d.name}</b><span class="kbd">${open?`장소 ${d.places.filter(placeOpen).length}/${d.places.length} 개방`:`랭크 ${rankName(d.rank)} 에 개방`}</span></div><div class="kbd">${R.next?`다음 랭크 ${R.next.id} 까지 ${R.need}점`:'최고 랭크'}${nextPlace?` · 다음 장소 「${nextPlace.name}」 = 랭크 ${rankName(nextPlace.rank)}`:''}</div><div class="kbd">${pins.length?`이 구역 ${pins.length}명${(()=>{const k=pins.filter(p=>!townMet(p.stu)&&bondEventsFor(p.stu).length).length;return k?` · ♥ 새 이야기 ${k}`:' · 새 이야기 없음(짧은 대화는 선택)';})()}`:'이 구역에 온 학생이 없습니다'}</div>`;
  $('#townDots').innerHTML=ds.map((x,i)=>`<span class="${i===HUB.district?'on':''}${districtOpen(x)?'':' lk'}" data-d="${i}">${districtOpen(x)?'':'🔒'}${x.name}</span>`).join('');
  $$('#townDots span').forEach(el=>el.onclick=()=>{HUB.district=+el.dataset.d;SFX.click();renderTown();});
- if(GL.mobileHubTown)GL.mobileHubTown();
  {const all=townPins(),k=all.filter(p=>!townMet(p.stu)&&bondEventsFor(p.stu).length).length;$('#btnTownSched').innerHTML=`전체 일정${k?` <b>♥${k}</b>`:''}`;} /* v1.4 R4 권고: 남은 교류 수가 아니라 ♥ 새 이야기 수 */
 }
 function townMove(dir){const n=townDistricts().length;HUB.district=(HUB.district+dir+n)%n;SFX.click();renderTown();}
@@ -13561,7 +13133,6 @@ function openCharacterProfile(id){
 function closeCharacterProfile(){
  const el=$('#characterProfile');if(el)el.hidden=true;
  PROFILE.returnFocus?.focus?.();applyAffectionWallpaper();
- if(GL.mobileHubSync)GL.mobileHubSync();
 }
 function profileMemories(id){
  const S=GL.story;return (meta.story?.memory||[]).map(x=>S?.get(x)).filter(e=>e
@@ -13688,7 +13259,7 @@ function renderCharacterProfile(){
 function renderProfileLounge(el){
  el.classList.add('profile-lounge');
  el.innerHTML='<p>동료를 선택하면 프로필 · 교류 · 개인 이야기 · 특전을 확인할 수 있습니다.</p>'
-  +'<div class="profile-lounge-cards">'+STUDENTS.filter(studentUnlocked).map(s=>{
+  +'<div class="profile-lounge-cards">'+STUDENTS.map(s=>{
    const met=studentMet(s);
    return `<button data-profile="${s.id}" ${met?'':'disabled'}>${profilePortrait(s,'face')}`
     +`<b>${profileEscape(s.name)}</b><small>${met?'♥ Lv.'+bondLv(s.id):'아직 만나지 못한 동료'}</small></button>`;
@@ -13858,24 +13429,23 @@ function openingReplay(){
  D.open(ev,{vars:{name:S.playerName()||'대표'},can:()=>true,needText:()=>'',resolve:id=>S.get(id),onChoose:()=>{},onClose:()=>{}});
 }
 function openingNewStory(){
- if(storyBusy()||curScreen==='s-run')return false;
+ if(storyBusy())return false;
  if(!confirm('처음부터 새 이야기를 시작할까요? 현재 진행은 백업하며, 설정의 「되돌리기」로 복구할 수 있습니다.'))return false;
  try{
   const backup=JSON.stringify({at:new Date().toISOString(),meta,player:playerNameNowSafe()});
   localStorage.setItem(backupKey(),backup);
   if(localStorage.getItem(backupKey())!==backup)throw Error('backup');
  }catch(e){alert('백업을 저장하지 못했습니다. 설정에서 세이브를 파일로 내보낸 뒤 다시 시도해 주세요.');return false;}
- $('#settings').hidden=true;
  run=null;MODAL.clear();resetMeta();openingEnter(showLobby);return true;
 }
 function openingRenderTitle(){
  const started=openingHasProgress(),o=openingState();
  const label=$('#titleStartLabel'),sub=$('#titleStartSub');
- if(label)label.textContent='TOUCH TO START';
+ if(label)label.textContent=started?'이어서 하기':'이야기 시작';
  if(sub)sub.textContent=o.queue.length?'멈췄던 이야기부터':started?'저장된 LooP로 돌아가기':'하린이 찾아온 날부터';
  const replay=$('#btnOpeningReplay'),fresh=$('#btnNewStory');
- if(replay){replay.hidden=!started;replay.onclick=()=>{$('#settings').hidden=true;openingReplay();};}
- if(fresh){fresh.hidden=false;fresh.disabled=curScreen==='s-run';fresh.onclick=openingNewStory;}
+ if(replay){replay.hidden=!started;replay.onclick=openingReplay;}
+ if(fresh){fresh.hidden=!started;fresh.onclick=openingNewStory;}
 }
 function openingRenderJournal(){
  const el=$('#openingJournal');if(!el)return;
@@ -14440,14 +14010,13 @@ if(typeof window!=='undefined'&&window.addEventListener)window.addEventListener(
 <div class="modal" id="mobileDisplayHelp" hidden role="dialog" aria-modal="true" aria-labelledby="mobileDisplayTitle"><div class="modal-box mobile-display-box"><h3 id="mobileDisplayTitle">주소창 없이 플레이하기</h3><p>이 브라우저에서는 전체 화면을 켤 수 없습니다.</p><p>아이폰: Safari의 공유 메뉴 → 홈 화면에 추가 → 웹 앱으로 열기(표시되는 경우)를 켜고 추가하세요.</p><p>안드로이드: Chrome 또는 삼성 인터넷에서 이 링크를 열고 「전체 화면」을 눌러 주세요. 앱 내부 브라우저는 외부 브라우저로 열어 주세요.</p><small>홈 화면 아이콘으로 실행할 때 저장소가 달라질 수 있으니 기존 진행은 설정에서 백업해 두세요.</small><button class="btn" id="mobileDisplayClose">확인</button></div></div>
 <script>
 'use strict';
-/* Portrait phone presentation and touch input. Landscape phones show a rotation gate. */
+/* Phone portrait/landscape presentation and touch input; gameplay rules unchanged. */
 const MOBILE={displayHelp:false,zoom:1,x:0,y:0,drag:null,suppressClick:false,page:'preview',lastLayout:'',lastRun:null};
-const mobileLandscape=()=>!!(window.matchMedia&&window.matchMedia('(pointer: coarse)').matches
- &&window.matchMedia('(max-width:1100px) and (max-height:600px) and (orientation:landscape)').matches);
+const mobileLandscape=()=>!!(window.matchMedia&&window.matchMedia('(max-width:1100px) and (max-height:600px) and (orientation:landscape)').matches);
 const mobilePortrait=()=>!!(window.matchMedia&&window.matchMedia('(max-width:600px) and (orientation:portrait)').matches);
-const mobileTouchLayout=()=>mobilePortrait();
-const mobileDevice=()=>mobileTouchLayout()||mobileLandscape()||isCoarse;
-const mobileBlocked=()=>mobileDevice()&&(mobileLandscape()||MOBILE.displayHelp||document.hidden);
+const mobileTouchLayout=()=>mobileLandscape()||mobilePortrait();
+const mobileDevice=()=>mobileTouchLayout()||isCoarse;
+const mobileBlocked=()=>mobileDevice()&&(MOBILE.displayHelp||document.hidden);
 function mobilePause(){if(run&&!run.ended){userPaused=true;setSpeed(0);}}
 function mobileMapFit(){
  const v=$('#mapViewport');if(!v||!canvas)return;
@@ -14463,10 +14032,7 @@ function mobileMapFit(){
 function mobileZoom(d){MOBILE.zoom=clamp(MOBILE.zoom+d,1,2.5);if(MOBILE.zoom===1)MOBILE.x=MOBILE.y=0;closeTileMenu();mobileMapFit();}
 function mobileSync(){
  const land=mobileLandscape(),port=mobilePortrait();
- document.body.classList.remove('mobile-landscape');document.body.classList.toggle('mobile-portrait',port);
- document.body.classList.toggle('mobile-rotation-required',land);
- const gate=$('#mobileRotateGate');if(gate)gate.hidden=!land;
- if(land)mobilePause();
+ document.body.classList.toggle('mobile-landscape',land);document.body.classList.toggle('mobile-portrait',port);
  const visibleHeight=mobileViewportHeight();
  if(document.documentElement&&document.documentElement.style){const st=document.documentElement.style;if(land||port)st.setProperty('--mobile-height',visibleHeight+'px');else st.removeProperty('--mobile-height');}
  document.body.classList.toggle('mobile-short',land&&visibleHeight<=320);
@@ -14789,223 +14355,6 @@ function closeRoster(){MODAL.pop('roster');if(MODAL.has('shop'))renderShop();dir
 }
 
 </script>
-<script>
-'use strict';
-/* Portrait hub navigation. Reuses the existing facility, story and profile actions. */
-const MOBILE_HUB={returnFocus:null};
-const mobileHubEscape=s=>String(s??'').replace(/[&<>"']/g,c=>
- ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function mobileHubOffice(room='home'){
- if(storyBusy())return;
- const r=roomOf(room);HUB.acRoom=r.id;acTab=r.t;renderAcademy();
-}
-function mobileHubClose(){
- if($('#mobileHubSheet').hidden)return;
- $('#mobileHubSheet').hidden=true;MOBILE_HUB.returnFocus?.focus?.();
-}
-function mobileHubSheet(title,html){
- MOBILE_HUB.returnFocus=document.activeElement;
- $('#mobileHubSheetTitle').textContent=title;$('#mobileHubSheetBody').innerHTML=html;
- $('#mobileHubSheet').hidden=false;$('#mobileHubSheetClose').focus();
-}
-function mobileHubFacilities(){
- const items=ROOMS.filter(r=>r.id!=='home').map(r=>{
-  const open=officeRoomOpen(r),f=FACILITIES.find(x=>x.id===r.f);
-  const state=open?(f?`Lv.${meta.upg[r.f]||0}`:r.desc):officeFacilityHint(r.f);
-  return `<button data-hub-room="${r.id}" ${open?'':'disabled'}>
-   <i aria-hidden="true">${open?r.icon:'🔒'}</i><span><b>${mobileHubEscape(r.name)}</b>
-   <small>${mobileHubEscape(state)}</small></span><em>${open?'›':''}</em></button>`;
- }).join('');
- mobileHubSheet('시설 목록',`<div class="mobile-hub-list">${items}</div>`);
- $('#mobileHubSheetBody').querySelectorAll('[data-hub-room]').forEach(b=>b.onclick=()=>{
-  mobileHubClose();mobileHubOffice(b.dataset.hubRoom);
- });
-}
-function mobileHubDistricts(){
- const html=townDistricts().map((d,i)=>{
-  const open=districtOpen(d);
-  return `<button data-hub-district="${i}" ${open?'':'disabled'}>
-   <span><b>${mobileHubEscape(d.name)}</b><small>${open?'방문하기':`LooP 랭크 ${rankName(d.rank)} 필요`}</small>
-   </span><em>${open?'›':'🔒'}</em></button>`;
- }).join('');
- mobileHubSheet('구역 선택',`<div class="mobile-hub-list">${html}</div>`);
- $('#mobileHubSheetBody').querySelectorAll('[data-hub-district]').forEach(b=>b.onclick=()=>{
-  mobileHubClose();HUB.district=+b.dataset.hubDistrict;renderTown();
- });
-}
-function mobileHubWallet(){
- mobileHubSheet('보유 재화',`<div class="mobile-wallet">${econOn()?walletHtml():`마나석 ${meta.mana}`}
-  <span>스킬 포인트 <b>${meta.sp}</b></span></div>
-  <p class="mobile-sheet-note">원정의 전리품으로 시설과 동료를 성장시킬 수 있습니다.</p>`);
-}
-function mobileHubMission(){
- const o=openingState();
- if(o.queue.length)return {tag:'이야기',name:'멈췄던 이야기 이어보기',progress:'진행 중',action:()=>openingDrain()};
- const next=Object.keys(CAMPAIGN_REGIONS).find(id=>!campaignMainDone(id));
- if(next){const gate=GATES.find(g=>g.id===next);
-  return {tag:'메인 의뢰',name:`${gate?.name||next} 핵심 공략`,progress:'보스 격파 0/1',
-   action:()=>{selectStep=1;renderSelect();}};
- }
- return {tag:'협회 의뢰',name:'완료할 의뢰 살펴보기',progress:'의뢰 목록',action:()=>mobileHubOffice('board')};
-}
-function mobileHubLobby(){
- const status=mobileHubMission(),clock=affectionClock(),pin=pinStatus();
- $('#mobileLobbyDay').textContent=`DAY ${clock.day+1} · ${String(clock.hour).padStart(2,'0')}:00`;
- $('#mobileLobbyRank').textContent=`LooP ${loopRank().id}`;
- $('#mobileLobbyQuestTag').textContent=status.tag;
- $('#mobileLobbyQuestName').textContent=status.name;
- $('#mobileLobbyQuestProgress').textContent=status.progress;
- $('#mobileLobbyQuest').onclick=status.action;
- $('#mobileLobbyPin').textContent=pin?`${pin.name} · ${pin.ready?'강화 가능':pin.progressText}`:'원정 준비 · 시설 성장 · 동료와 교류';
- const selected=STUDENTS.find(s=>s.id===PROFILE.student);
- const id=selected&&studentMet(selected)?selected.id:'harin';
- const s=STUDENTS.find(x=>x.id===id)||STUDENTS[0];
- const image=$('#mobileLobbyCharacter');image.alt=s.name;
- image.src=artUrl(GL.dialog?.portraitAssets?.[s.id]||CHAR_ART(s.id).full);
- $('#mobileLobbyName').textContent=s.name;
- $('#mobileLobbyCharacterButton').onclick=()=>openCharacterProfile(s.id);
- $('#mobileLobbyTalk').textContent=bondEventsFor(s.id).length?'새로운 이야기가 기다리고 있어요.':'다음 원정을 함께 준비해요.';
-}
-function mobileHubTown(){
- if(!mobilePortrait())return;
- const district=townDistricts()[HUB.district],pins=townPins().filter(p=>p.district===district.id);
- $('#mobileTownDistrict').textContent=district.name+' ▾';
- const list=$('#mobileTownPeople');
- list.innerHTML=pins.map(p=>{
-  const s=STUDENTS.find(x=>x.id===p.stu),event=bondEventsFor(s.id).length;
-  const status=event?'새 이야기':townMet(s.id)?'오늘 대화 완료':'프로필 · 교류';
-  return `<button data-hub-student="${s.id}">${ptImg(s,'face')}<span><b>${s.name}</b>
-   <small>${mobileHubEscape(PLACE_BY_ID[p.place].name)}</small><em>${status}</em></span><i>›</i></button>`;
- }).join('')||'<p>이 구역에는 지금 만날 동료가 없습니다.</p>';
- list.querySelectorAll('[data-hub-student]').forEach(b=>b.onclick=()=>townPinClick(b.dataset.hubStudent));
- $('#mobileTownCount').textContent=`이 구역의 동료 ${pins.length}명`;
- mobileHubCenterTown();
-}
-function mobileHubCenterTown(){
- if(!mobilePortrait()||curScreen!=='s-town')return;
- const map=$('#townMap'),img=$('#townImg');
- if(!img.complete||!img.naturalWidth||map.dataset.phoneDistrict===String(HUB.district))return;
- map.scrollLeft=Math.max(0,(img.clientWidth-map.clientWidth)/2);
- map.scrollTop=Math.max(0,(img.clientHeight-map.clientHeight)/2);
- const pin=map.querySelector('.pin');
- if(pin){
-  const target=pin.getBoundingClientRect(),view=map.getBoundingClientRect();
-  map.scrollLeft+=target.left+target.width/2-view.left-view.width/2;
-  map.scrollTop+=target.top+target.height/2-view.top-view.height/2;
- }
- map.dataset.phoneDistrict=String(HUB.district);
-}
-function mobileHubSync(){
- const phone=mobilePortrait(),hub=['s-lobby','s-academy','s-town'].includes(curScreen);
- const detail=curScreen==='s-academy'&&HUB.acRoom!=='home';
- $('#mobileHubNav').hidden=!phone||!hub||detail;
- document.body.classList.toggle('mobile-hub',phone&&hub);
- document.body.classList.toggle('mobile-hub-detail',phone&&detail);
- $('#mobileHead-s-academy>span').textContent=detail?roomOf(HUB.acRoom).name:'사무소';
- const current=curScreen==='s-town'?'town':curScreen==='s-academy'?'office':'';
- $$('#mobileHubNav [data-hub-nav]').forEach(b=>{
-  b.setAttribute('aria-current',b.dataset.hubNav===current?'page':'false');
- });
- const records=curScreen==='s-academy'&&['mem','codex'].includes(acTab);
- $('#mobileRecordsTabs').hidden=!records;
- $$('#mobileRecordsTabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===acTab)));
- if(!hub)mobileHubClose();
- if(phone&&curScreen==='s-lobby')mobileHubLobby();
- if(phone&&curScreen==='s-town')mobileHubTown();
- const next=officeNextUnlock();
- $('#mobileOfficeNext').textContent=next?`다음 개방 · ${next.name} · 원정 ${next.remaining}회 뒤`:'모든 성장 시설 개방';
- if(phone&&curScreen==='s-academy'&&!detail){
-  const map=$('#s-academy .omap');
-  if(!map.dataset.phoneCentered&&map.clientWidth){
-   map.scrollLeft=Math.max(0,(map.scrollWidth-map.clientWidth)/2);map.dataset.phoneCentered='true';
-  }
- }
- const gate=$('#mobileRotateGate');if(gate)gate.hidden=!mobileLandscape();
-}
-{
- const make=(tag,id,html,parent)=>{
-  const el=document.createElement(tag);el.id=id;el.className='mobile-hub-only';el.innerHTML=html;
-  parent.appendChild(el);return el;
- };
- const nav=make('nav','mobileHubNav',[
-  ['sortie','↗','출격'],['office','⌂','사무소'],['town','◇','학원가'],['companions','♡','동료'],['records','▤','기록']
- ].map(([id,icon,name])=>`<button data-hub-nav="${id}"><i aria-hidden="true">${icon}</i>${name}</button>`).join(''),
- document.body);nav.hidden=true;nav.setAttribute('aria-label','거점 메뉴');
- nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{
-  if(storyBusy())return;
-  switch(b.dataset.hubNav){
-   case 'sortie':selectStep=1;renderSelect();break;
-   case 'office':mobileHubOffice();break;
-   case 'town':showTown();break;
-   case 'companions':openCharacterProfile();break;
-   case 'records':mobileHubOffice('archive');break;
-  }
- });
- for(const id of ['s-lobby','s-academy','s-town']){
-  const head=make('header','mobileHead-'+id,`<button class="mobile-home" aria-label="로비로">LooP</button>
-   <span>${id==='s-academy'?'사무소':id==='s-town'?'학원가':'우리의 다음 이야기'}</span>
-   <button class="mobile-wallet-button" aria-label="보유 재화">재화</button>
-   <button class="mobile-settings" aria-label="설정">⚙</button>`,$('#'+id));
-  $('#'+id).prepend(head);head.classList.add('mobile-hub-head');
-  head.querySelector('.mobile-home').onclick=()=>showLobby();
-  head.querySelector('.mobile-wallet-button').onclick=mobileHubWallet;
-  head.querySelector('.mobile-settings').onclick=()=>$('#btnSettings').click();
- }
- make('div','mobileLobby',`<div class="mobile-lobby-meta"><b id="mobileLobbyDay"></b>
-  <span id="mobileLobbyRank"></span></div>
-  <button id="mobileLobbyQuest"><span><small id="mobileLobbyQuestTag"></small>
-  <b id="mobileLobbyQuestName"></b><em id="mobileLobbyQuestProgress"></em></span><i>›</i></button>
-  <button id="mobileLobbyCharacterButton" aria-label="대표 동료 프로필">
-  <img id="mobileLobbyCharacter" alt=""><span class="mobile-lobby-caption">
-  <b id="mobileLobbyName"></b><span id="mobileLobbyTalk"></span></span></button>
-  <div class="mobile-lobby-links"><button id="mobileLobbyMissions">의뢰 목록 ›</button>
-  <button id="mobileLobbyGrowth"><span id="mobileLobbyPin"></span> ›</button></div>`,$('#s-lobby'));
- $('#mobileLobbyMissions').onclick=()=>mobileHubOffice('board');
- $('#mobileLobbyGrowth').onclick=()=>mobileHubOffice();
- const office=make('div','mobileOfficeBar',`<span><span id="mobileOfficeNext"></span>
-  <small>지도를 좌우로 밀어 둘러보세요</small></span>
-  <button id="mobileFacilityList">시설 목록 ▤</button>`,$('#s-academy'));
- $('#s-academy .obody').before(office);$('#mobileFacilityList').onclick=mobileHubFacilities;
- const back=make('div','mobileOfficeBack','<button>‹ 사무소 지도</button>',$('#s-academy .opanel'));
- $('#s-academy .opanel').prepend(back);back.querySelector('button').onclick=()=>mobileHubOffice();
- const records=make('nav','mobileRecordsTabs',
-  '<button data-tab="mem">이야기</button><button data-tab="codex">도감</button>',$('#s-academy .opanel'));
- back.after(records);records.querySelectorAll('button').forEach(b=>b.onclick=()=>
-  mobileHubOffice(b.dataset.tab==='mem'?'archive':'vault'));
- const town=make('div','mobileTownBar',`<button id="mobileTownDistrict">구역 선택 ▾</button>
-  <button id="mobileTownSchedule">전체 일정</button>`,$('#s-town'));
- $('#s-town .tbody').before(town);$('#mobileTownDistrict').onclick=mobileHubDistricts;
- $('#mobileTownSchedule').onclick=openSchedule;
- $('#townImg').addEventListener('load',()=>requestAnimationFrame(mobileHubCenterTown));
- make('section','mobileTownList','<h2 id="mobileTownCount"></h2><div id="mobileTownPeople"></div>',$('#s-town .tbody'));
- const sheet=make('div','mobileHubSheet',`<section class="modal-box m-M">
-  <header class="mh"><h3 id="mobileHubSheetTitle"></h3>
-  <button id="mobileHubSheetClose" class="icobtn" aria-label="닫기">✕</button></header>
-  <div id="mobileHubSheetBody" class="mbody"></div></section>`,document.body);
- sheet.className='modal';sheet.hidden=true;sheet.setAttribute('role','dialog');
- sheet.setAttribute('aria-modal','true');sheet.setAttribute('aria-labelledby','mobileHubSheetTitle');
- $('#mobileHubSheetClose').onclick=mobileHubClose;
- sheet.addEventListener('click',e=>{if(e.target===sheet)mobileHubClose();});
- sheet.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){e.preventDefault();e.stopPropagation();mobileHubClose();}
-  if(e.key!=='Tab')return;
-  const items=[...sheet.querySelectorAll('button:not(:disabled),[href],input,select')];
-  const first=items[0],last=items[items.length-1];
-  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}
-  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}
- });
- const rotate=make('div','mobileRotateGate',`<span aria-hidden="true">↻</span>
-  <h2>세로로 돌려 주세요</h2><p>모바일은 세로 화면으로 플레이합니다.</p>
-  <small>진행 중인 원정은 일시정지됩니다.</small>`,document.body);
- rotate.setAttribute('role','dialog');rotate.setAttribute('aria-modal','true');rotate.hidden=true;
- $('#btnSettingsGuide').onclick=()=>{$('#settings').hidden=true;$('#btnHelpTitle').click();};
- GL.mobileHubSync=mobileHubSync;GL.mobileHubTown=mobileHubTown;
- window.addEventListener('resize',mobileHubSync);
- if(window.visualViewport)window.visualViewport.addEventListener('resize',mobileHubSync);
- mobileHubSync();
-}
-
-</script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="b6b0f8112c5c74a8";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="d89ae0bad340ca26";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
