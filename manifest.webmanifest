@@ -3,10 +3,10 @@
   "name": "LoopGirl",
   "short_name": "LoopGirl",
   "lang": "ko",
-  "start_url": "./play.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "any",
+  "orientation": "portrait-primary",
   "background_color": "#102134",
   "theme_color": "#102134"
 }
