@@ -1536,6 +1536,163 @@ button,a,input,select{touch-action:manipulation}
 }
 @media(max-width:720px){.shopbox.unified #shDetail{visibility:visible}.shopbox.unified .odet .dart{display:flex}.shopbox.unified .odet .dinfo{grid-column:2;padding-top:0}.shopbox.unified .odet .dbuy{grid-column:1/-1}.shopbox.unified .squad-only #shParty{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.shopbox.unified .squad-only #shParty>.pm{min-width:0;flex-direction:column;align-items:center;text-align:center;padding:6px 3px}.shopbox.unified .squad-only #shParty>.empty{display:none}.shopbox.unified .squad-only .pmi{align-items:center}.shopbox.unified .squad-only .pmc{justify-content:center}.shopbox.unified .squad-only .pmb{position:static}.shopbox.unified .squad-only .pmb button{font-size:9px;min-height:25px}.shopbox.unified .squad-only .pm b{font-size:10px}}
 @media(max-width:720px){.shopbox.unified .odet .dart img.pt{height:165px}}
+
+/* Pack choices stay readable and scroll inside the sheet on phones. */
+#crate .cratecards{overflow-y:auto;min-height:0;align-content:start;overscroll-behavior:contain}
+#crate .mfoot{flex-shrink:0}
+@media(max-width:600px) and (orientation:portrait){
+ #characterPreviewBadge{display:none}
+ #crate .cratecards{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px}
+ #crate .ccard{min-width:0}
+ #crate .ccard.recruit-card .cart{height:150px}
+ #crate .ccard .cd{font-size:12px;line-height:1.5}
+ #crate .ccard b{font-size:14px}
+}
+
+/* Run HUD: equipment details live in the equipment sheet, not in narrow HP cards. */
+@media(max-width:1100px) and (max-height:600px) and (orientation:landscape),
+ (max-width:600px) and (orientation:portrait){
+ #s-run .side .member-equipment{display:none!important}
+ #s-run .side .member .mi{min-width:0;flex:1}
+ #s-run .side .member .mn{overflow:hidden;text-overflow:ellipsis}
+ #s-run .side .drawer{display:grid;grid-template-columns:92px minmax(0,1fr);gap:4px;height:40px}
+ #s-run .side .drawer>#btnEquipment,#s-run .side .drawer>.dtoggle{
+  min-width:0;width:100%;height:40px;min-height:40px;margin:0;padding:4px;font-size:12px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+ }
+ #s-run .side .drawer>.dbody{grid-column:1/-1;min-height:0}
+ #s-run .side.dopen .drawer{height:100%;grid-template-rows:40px minmax(0,1fr)}
+ #s-run .side.dopen .dbody{height:auto}
+ #s-run .side.inspect>.drawer{display:none}
+}
+#mobileRunNav,#mobileRunSummary,#mobileSheetHead,#mobileMore,#mobileCampNav,#mobileCommandTabs{display:none}
+.roster-box{width:min(700px,96vw);padding:16px;gap:12px;display:flex;flex-direction:column}
+.roster-box .mh{padding:0;justify-content:space-between}
+#rosterNote{margin:0;font-size:13px;line-height:1.6}
+#rosterSlots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;flex-shrink:0}
+#rosterSlots button{display:grid;justify-items:center;gap:5px;padding:9px 4px}
+#rosterSlots img.pt{width:50px;height:50px;object-fit:cover}
+#rosterSlots button.on{outline:2px solid #2787be;background:#dff4ff}
+#rosterMembers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;overflow-y:auto;min-height:0}
+#rosterMembers button{display:flex;text-align:left;gap:10px;padding:10px;align-items:center;min-width:0}
+#rosterMembers img.pt{width:48px;height:60px;object-fit:cover;flex-shrink:0}
+#rosterMembers span{display:grid;gap:4px;min-width:0}
+#rosterMembers small{font-size:11px}#rosterMembers em{font-size:12px;color:#16608c;font-style:normal}
+#rosterMembers button:disabled{opacity:.65}
+#rosterSlots button,#rosterMembers button{
+ border:1px solid #94b2cf;border-radius:9px;background:#edf5ff;color:#193954;font:inherit;cursor:pointer
+}
+#btnRoster{margin-left:auto;min-height:32px}#s-run .squad h4{display:flex;align-items:center;gap:5px}
+
+@media(max-width:600px) and (orientation:portrait){
+ #s-run .tbar{height:52px;min-height:52px;display:flex;gap:12px;padding:4px 10px}
+ #s-run .tbar .ttrack{flex:0 0 auto;width:auto}
+ #s-run .tnum:before{content:'T ';color:#a8bfd7;font-size:12px}
+ #s-run .tbar .track,#s-run .tbar #campaignRunStatus,#s-run .tbar .gchips,
+ #s-run .tbar #btnHelp,#s-run .tbar #mobileFullscreen,#s-run .tbar #btnSynergy,
+ #s-run .tbar #btnRetreat,#s-run .tbar .res>span:last-child{display:none}
+ #s-run .tbar .tres{flex:1;width:auto;justify-content:flex-end;gap:12px}
+ #s-run .tbar #btnSpdCycle{min-width:68px;min-height:42px}
+ #s-run .run-body,body.mobile-battle-expanded:not(.mobile-inspecting) #s-run .run-body{
+  grid-template-areas:'map' 'hand' 'summary' 'nav';
+  grid-template-rows:minmax(0,1fr) 100px 42px 48px;padding:4px 6px 6px;gap:4px
+ }
+ #s-run .risk-overview{display:none}
+ #s-run .map-tools button{height:42px;min-width:42px}
+ #s-run .hand-wrap .ht{height:28px;min-height:28px}
+ #s-run #handPg button{min-height:28px;min-width:40px}
+ #mobileRunSummary{grid-area:summary;display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:5px}
+ #mobileRunSummary button,#mobileRunNav button,#mobileSheetHead button,#mobileMore button,#mobileCampNav button{
+  min-height:42px;border:1px solid #49637e;border-radius:8px;background:#172b43;color:#e7f4ff;
+  font:700 13px 'Noto Sans KR',sans-serif;padding:6px;touch-action:manipulation
+ }
+ #mobileRunSummary button.low{color:#ff9f9f;border-color:#e0637b}
+ #mobileEx:disabled{color:#afc0d4}#mobileEx.ready{background:#8a315c;border-color:#ff93c9}
+ #mobileRunNav{display:grid;grid-area:nav;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+ #mobileRunNav small{font-size:10px;display:block}#mobileRunNav b{font-size:11px;color:#9acaff}
+ #mobileRunNav button[aria-pressed=true],#mobileCampNav button[aria-pressed=true]{
+  color:#fff;background:#215d88;border-color:#69b7ed
+ }
+ #s-run .run-body>.side,#mobileMore{
+  display:none!important;position:absolute;left:6px;right:6px;bottom:100px;
+  height:min(390px,calc(100% - 136px));min-height:0;z-index:25;
+  background:#0f2035;border:1px solid #6a95b9;border-radius:14px;padding:9px;
+  box-shadow:0 -8px 28px #060f2380;overflow:hidden
+ }
+ #s-run[data-mobile-panel=squad] .side,#s-run[data-mobile-panel=records] .side,
+ body.mobile-inspecting #s-run .side{display:flex!important}
+ #mobileSheetHead{display:flex;align-items:center;justify-content:space-between;flex:none;color:#def0ff}
+ #mobileSheetHead button{min-width:64px}
+ #s-run .side .squad{
+  grid-template-columns:1fr;grid-template-rows:36px minmax(60px,1fr) 92px;
+  padding:5px;min-height:0;gap:5px
+ }
+ #s-run .side .squad h4{grid-row:1;grid-column:1;font-size:12px}
+ #s-run .side #stage{grid-column:1;grid-row:2;min-height:0;margin:0}
+ #s-run .side #party{grid-row:3;grid-column:1;min-height:0;overflow:auto;align-content:start;gap:4px}
+ #s-run .side #party .member{padding:5px;margin:0;min-height:40px}
+ #s-run .side #party .mn{font-size:12px!important;line-height:16px!important}
+ #s-run .side #party .hp{height:14px}#s-run .side #party .hp span{font-size:10px}
+ #s-run .side .exbtn,#s-run .side .drawer,#mobileBattleExpand{display:none}
+ #s-run[data-mobile-panel=records] .side .drawer{display:flex;height:auto;flex:1;min-height:0}
+ #s-run[data-mobile-panel=records] .drawer>#btnEquipment,
+ #s-run[data-mobile-panel=records] .drawer>.dtoggle{display:none}
+ #s-run[data-mobile-panel=records] .drawer>.dbody{display:flex;flex-direction:column;height:auto;min-height:0}
+ #s-run[data-mobile-panel=records] .drawer .dtabs{flex-shrink:0}
+ #s-run[data-mobile-panel=records] .drawer .dtabs button{min-height:42px}
+ #s-run[data-mobile-panel=records] .drawer .panel{overflow:auto;min-height:0}
+ #s-run[data-mobile-panel=more] #mobileMore{display:flex!important;flex-direction:column;gap:9px;color:#dceaff}
+ #mobileMore header{display:flex;align-items:center;justify-content:space-between}
+ #mobileMore p{font-size:12px;margin:0;line-height:1.5}#mobileMore strong{font-size:14px;color:#8edaf0}
+ .mobile-more-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;overflow:auto;min-height:0}
+ #mobileMore #mobileMoreRetreat{color:#ffc4a5;border-color:#a56242}
+ body.mobile-inspecting #s-run .run-body{grid-template-rows:minmax(0,1fr) 0 42px 48px}
+ body.mobile-inspecting #mobileSheetHead{display:none}
+ #s-run .side.inspect .insp{padding:0;border:0;box-shadow:none;overflow:hidden}
+ #s-run .side.inspect .ibody{overflow-y:auto}
+ #rosterMembers{grid-template-columns:1fr}#rosterSlots img.pt{width:42px;height:42px}
+ #rosterSlots b{font-size:12px}#rosterSlots button{min-height:85px}
+ .roster-box{padding:12px;max-height:calc(var(--mobile-height,100dvh) - 20px)}
+ #mobileCampNav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:6px;flex-shrink:0}
+ #mobileCampNav button{font-size:12px}
+ .shopbox.unified #shBody>.shpane,.shopbox.unified #shBody>#collectionShop,
+ .shopbox.unified #shBody>#campTools{display:none!important}
+ .shopbox.unified #shBody[data-mobile-camp=tiles]>#collectionShop,
+ .shopbox.unified #shBody[data-mobile-camp=packs]>[data-pane=crates],
+ .shopbox.unified #shBody[data-mobile-camp=team]>[data-pane=offers],
+ .shopbox.unified #shBody[data-mobile-camp=tools]>#campTools{display:block!important}
+ .shopbox.unified #campTools summary{display:none}
+ .shopbox.unified #campTools .shpane{display:block!important}
+ .shopbox.unified .squad-only #shParty{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .shopbox.unified .shbtns{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:7px}
+ .shopbox.unified .shbtns>.btn{min-height:42px;font-size:12px}
+ .shopbox.unified #btnDepart{grid-column:1/-1}
+ .shopbox.unified #btnCampReturn{grid-column:1/-1}
+ #equipmentDialog .modal-box{max-height:calc(var(--mobile-height,100dvh) - 16px)}
+ #s-academy[data-office-detail=true] .obody{
+  grid-template-rows:42px minmax(0,1fr);overflow:hidden
+ }
+ #s-academy[data-office-detail=true] .obody>.omap{display:none}
+ #s-academy[data-office-detail=true] .opanel{min-height:0;overflow:hidden}
+ #s-academy[data-office-detail=true] .atab.on{min-height:0}
+ #s-academy #officeNav{min-height:42px}
+ #s-academy .office-menu{min-height:42px;font-size:12px}
+ #treeTabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+ #treeTabs button{min-width:0;min-height:42px;padding:5px;font-size:12px}
+ #treeTabs .kbd{display:none}
+ #mobileCommandTabs{display:flex;gap:5px;flex-shrink:0;margin:8px 0}
+ #mobileCommandTabs button{
+  flex:1;min-height:42px;font:700 13px sans-serif;border:1px solid #9eb7ce;
+  border-radius:7px;background:#edf5ff;color:#244865
+ }
+ #mobileCommandTabs button[aria-pressed=true]{background:#27638c;color:#fff}
+ #tree .mobile-command-hidden{display:none!important}
+ #tree{overflow-y:auto;min-height:0}#tree .branch.on{display:block;height:auto}
+ #tree .tier{height:auto;min-height:0;margin-bottom:12px}
+ #tree .subs{display:grid;grid-template-columns:1fr;gap:8px}
+ #tree .node{min-height:100px;padding:12px}#tree .nn{font-size:15px}#tree .nd{font-size:13px}
+ #tree .nc{font-size:13px}#tree .node button{min-height:38px}
+}
 </style>
 <style>.character-profile{position:fixed;inset:0;z-index:95;background:#edf2f7;color:#213247;
  display:flex;flex-direction:column}
@@ -2583,6 +2740,7 @@ const BAL={
   * 수치는 모두 시작값이다(시뮬 검증 없음) — 소유자가 밸런스 도구 「재화 개편」 묶음과 플레이로 조정한다. 규칙은 docs/DESIGN.md §27.4-2 · §27.6, 함수는 src/econ.js */
  relicHeal:{medkit:0.12},
  econ2:true,
+ command:{subSp:[1,2,4,6],coreSp:[2,4,8,12]},
  econ:{opMul:100,startOp:1000,contractOp:70,decay:[1,0.75,0.5,0.25],deposit:100,depositSkill:50,discard:25,
   hire:300,hireSlots:3,launchTrain:600,train:[1500,2500],
   price:{recruit:900,ward:400,gear:450,relic:1000,tactic:400,demolish:300,convert:400,upg:[2500,4500],round:10},
@@ -2803,44 +2961,54 @@ const ODDS=[[75,22,3],[60,30,10],[45,35,20],[30,40,30]];
 const SKILLS=[
  {id:'f1a',br:'fire',tier:1,name:'사격 자세',icon:'🔫',desc:'전원 공격 +2',fx:{atk:2}},
  {id:'f1b',br:'fire',tier:1,name:'조준경',icon:'🔭',desc:'치명타 +5%p',fx:{crit:0.05}},
- {id:'f1',br:'fire',tier:1,core:true,name:'조준 훈련',icon:'🎯',desc:'전원 공격 +4',fx:{atk:4}},
+ {id:'f1',br:'fire',tier:1,core:true,name:'조준 훈련',icon:'🎯',desc:'전원 공격 +3',fx:{atk:3}},
  {id:'f2a',br:'fire',tier:2,name:'탄창 개조',icon:'🧰',desc:'공격속도 +8%',fx:{spd:0.08}},
  {id:'f2b',br:'fire',tier:2,name:'철갑 탄두',icon:'💠',desc:'치명 피해 +0.2',fx:{critDmg:0.2}},
- {id:'f2',br:'fire',tier:2,core:true,name:'속사',icon:'⚡',desc:'전원 공격속도 +20%',fx:{spd:0.2}},
+ {id:'f2',br:'fire',tier:2,core:true,name:'속사',icon:'⚡',desc:'전원 공격속도 +12%',fx:{spd:0.12}},
  {id:'f3a',br:'fire',tier:3,name:'마스터 헌팅',icon:'💀',desc:'게이트 마스터에게 피해 +10%',fx:{bossDmg:0.1}},
- {id:'f3b',br:'fire',tier:3,name:'전투 고양',icon:'✨',desc:'처치 시 EX +3',fx:{killEx:3}},
- {id:'f3',br:'fire',tier:3,core:true,name:'급소 사격',icon:'💢',desc:'치명타 +15%p, 치명 피해 ×2.3',fx:{crit:0.15,critDmg:0.5}},
+ {id:'f3b',br:'fire',tier:3,name:'전투 고양',icon:'✨',
+  get desc(){return `처치 시 EX +${+(this.fx.killEx*BAL.exChargeRate).toFixed(2)} (추가 배율 적용 전)`;},fx:{killEx:3}},
+ {id:'f3',br:'fire',tier:3,core:true,name:'급소 사격',icon:'💢',
+  desc:'치명타 +10%p, 치명 피해 배율 +0.3',fx:{crit:0.1,critDmg:0.3}},
  {id:'f4a',br:'fire',tier:4,name:'화력 교리',icon:'📈',desc:'전원 공격 +6%',fx:{atkPct:0.06}},
  {id:'f4b',br:'fire',tier:4,name:'선제 사격',icon:'🎇',desc:'전투 첫 공격 피해 +30%',fx:{firstHit:0.3}},
- {id:'f4',br:'fire',tier:4,core:true,name:'오버드라이브',icon:'🔥',desc:'전원 공격 +10, 처치 시 EX +10 추가',fx:{atk:10,killEx:10}},
- {id:'s1a',br:'surv',tier:1,name:'체력 단련',icon:'🏃',desc:'전원 최대 HP +15',fx:{hp:15}},
- {id:'s1b',br:'surv',tier:1,name:'보호구 착용',icon:'🦺',desc:'전원 방어 +2',fx:{def:2}},
- {id:'s1',br:'surv',tier:1,core:true,name:'기초 체력',icon:'💪',desc:'전원 최대 HP +30',fx:{hp:30}},
+ {id:'f4',br:'fire',tier:4,core:true,name:'오버드라이브',icon:'🔥',
+  get desc(){return `전원 공격 +4, 처치 시 EX +${+(this.fx.killEx*BAL.exChargeRate).toFixed(2)}`;},fx:{atk:4,killEx:6}},
+ {id:'s1a',br:'surv',tier:1,name:'체력 단련',icon:'🏃',desc:'전원 최대 HP +10',fx:{hp:10}},
+ {id:'s1b',br:'surv',tier:1,name:'보호구 착용',icon:'🦺',desc:'전원 방어 +1',fx:{def:1}},
+ {id:'s1',br:'surv',tier:1,core:true,name:'기초 체력',icon:'💪',desc:'전원 최대 HP +20',fx:{hp:20}},
  {id:'s2a',br:'surv',tier:2,name:'야전 정비',icon:'🏕️',desc:'캠프 회복 +5%p',fx:{campHeal:0.05}},
  {id:'s2b',br:'surv',tier:2,name:'전개 보호막',icon:'🔰',desc:'전투 시작 시 보호막 +10',fx:{startShield:10}},
- {id:'s2',br:'surv',tier:2,core:true,name:'방탄 교범',icon:'🛡️',desc:'전원 방어 +4',fx:{def:4}},
+ {id:'s2',br:'surv',tier:2,core:true,name:'방탄 교범',icon:'🛡️',desc:'전원 방어 +3',fx:{def:3}},
  {id:'s3a',br:'surv',tier:3,name:'구조 훈련',icon:'🚑',desc:'캠프 복귀 HP 30% → 50%',fx:{reviveHp:0.2}},
  {id:'s3b',br:'surv',tier:3,name:'피해 분산',icon:'🧱',desc:'받는 피해 −5%',fx:{dmgTaken:0.05}},
  {id:'s3',br:'surv',tier:3,core:true,name:'응급 처치',icon:'🩹',desc:'전투 종료 시 전원 HP 8% 회복',fx:{endHeal:0.08}},
  {id:'s4a',br:'surv',tier:4,name:'강인함',icon:'🦾',desc:'전원 최대 HP +10%',fx:{hpPct:0.1}},
  {id:'s4b',br:'surv',tier:4,name:'회복 증폭',icon:'💚',desc:'편의점·텐트 회복 ×1.5',fx:{healMult:0.5}},
  {id:'s4',br:'surv',tier:4,core:true,name:'불굴',icon:'🕊️',desc:'멤버별 치명상 1회 HP 50% 재기동',fx:{revive:1}},
- {id:'t1a',br:'tac',tier:1,name:'선지급',icon:'💰',desc:'시작 OP +3',fx:{startOp:3}},
+ {id:'t1a',br:'tac',tier:1,name:'선지급',icon:'💰',
+  get desc(){return `시작 OP +${this.fx.startOp*(BAL.econ2?BAL.econ.opMul:1)}`;},fx:{startOp:2}},
  {id:'t1b',br:'tac',tier:1,name:'예비 카드',icon:'🃏',desc:'시작 카드 +1',fx:{startCards:1}},
- {id:'t1',br:'tac',tier:1,core:true,name:'보급 요청',icon:'📦',desc:'시작 OP +5, 시작 카드 +2',fx:{startOp:5,startCards:2}},
- {id:'t2a',br:'tac',tier:2,name:'계약 수당',icon:'📜',desc:'계약 보상 OP +1',fx:{contractOp:1}},
- {id:'t2b',br:'tac',tier:2,name:'마나석 감정',icon:'💎',desc:'마나석 획득 +15%',fx:{manaPct:0.15}},
- {id:'t2',br:'tac',tier:2,core:true,name:'협회 인맥',icon:'🤝',desc:'마나석·OP 획득 +30%',fx:{manaPct:0.3,opPct:0.3}},
+ {id:'t1',br:'tac',tier:1,core:true,name:'보급 요청',icon:'📦',
+  get desc(){return `시작 OP +${this.fx.startOp*(BAL.econ2?BAL.econ.opMul:1)}, 시작 카드 +1`;},
+  fx:{startOp:3,startCards:1}},
+ {id:'t2a',br:'tac',tier:2,name:'계약 수당',icon:'📜',
+  get desc(){return BAL.econ2?`소환 칸 첫 계약금 OP +${BAL.econ.depositSkill}`:'계약 보상 OP +1';},fx:{contractOp:1}},
+ {id:'t2b',br:'tac',tier:2,name:'전리품 감식',icon:'🔎',desc:'장비 드롭 확률 +5%p',fx:{drop:0.05}},
+ {id:'t2',br:'tac',tier:2,core:true,name:'협회 인맥',icon:'🤝',desc:'계약 OP 획득 +15%',fx:{opPct:0.15}},
  {id:'t3a',br:'tac',tier:3,name:'단골 할인',icon:'🏷️',desc:'보급 가격 −10%',fx:{shopDisc:0.1}},
- {id:'t3b',br:'tac',tier:3,name:'리롤 쿠폰',icon:'🎲',desc:'리롤 비용 −1 OP',fx:{rerollDisc:1}},
- {id:'t3',br:'tac',tier:3,core:true,name:'정찰 드론',icon:'🛰️',desc:'보급 롤 희귀도 +1단계, 드랍 +15%p',fx:{rarity:1,drop:0.15}},
+ {id:'t3b',br:'tac',tier:3,name:'리롤 쿠폰',icon:'🎲',
+  get desc(){return `리롤 비용 −${this.fx.rerollDisc*(BAL.econ2?BAL.econ.opMul:1)} OP`;},fx:{rerollDisc:1}},
+ {id:'t3',br:'tac',tier:3,core:true,name:'정찰 드론',icon:'🛰️',
+  desc:'보급 롤 희귀도 +1단계, 장비 드롭 +10%p',fx:{rarity:1,drop:0.1}},
  {id:'t4a',br:'tac',tier:4,name:'연장 작전',icon:'⏱️',desc:'T 회복 상한 +5',fx:{tRecCap:5}},
  {id:'t4b',br:'tac',tier:4,name:'대응 매뉴얼',icon:'📖',desc:'진화 대응책 선택지 +1 (4택1)',fx:{counterExtra:1}},
- {id:'t4',br:'tac',tier:4,core:true,name:'시간 왜곡',icon:'⏳',desc:'시작 카드 +2, T 회복 상한 +5',fx:{startCards:2,tRecCap:5}},
+ {id:'t4',br:'tac',tier:4,core:true,name:'시간 왜곡',icon:'⏳',desc:'시작 카드 +1, T 회복 상한 +5',fx:{startCards:1,tRecCap:5}},
  /* 라운드 2 (d) 상호 배타 양자택일: alt = 짝이 되는 핵심 노드. 같은 비용, 둘 중 하나만. 재설정 = SP 전액·마나석 80% 환급 후 의존 노드까지 해제 */
  {id:'f3x',br:'fire',tier:3,core:true,alt:'f3',name:'관통 사격',icon:'🎯',desc:'전원 공격 +6, 게이트 마스터에게 피해 +15% (급소 사격과 택1)',fx:{atk:6,bossDmg:0.15}},
  {id:'s4x',br:'surv',tier:4,core:true,alt:'s4',name:'철벽 진형',icon:'🧱',desc:'받는 피해 −10%, 전투 시작 시 보호막 +15 (불굴과 택1)',fx:{dmgTaken:0.1,startShield:15}},
 ];
+
 const SKILL_MAX=SKILLS.filter(s=>!s.alt).length; /* 트리 완성 기준 노드 수(양자택일 대체 노드 제외) */
 const altOf=id=>{const s=SKILLS.find(x=>x.id===id);if(!s)return null;if(s.alt)return s.alt;const a=SKILLS.find(x=>x.alt===id);return a?a.id:null;};
 const SUB_COST=[[1,80],[5,300],[11,900],[22,2400]], CORE_COST=[[2,160],[10,600],[22,1800],[44,4800]];
@@ -3141,6 +3309,8 @@ window.LG_OVERRIDES = {
 const BALANCE_GLOBAL_FIELDS=(()=>{
   /* 전역 묶음(카드가 아닌 묶음 — 도구의 「전역 수치」 탭) · hint = 한 줄 설명 · scope = 영향 범위 · chain = 미리보기 대상 체인 */
   const GROUP_DEFS = [
+    {id:'g_command',cat:'global',name:'지휘실 · 강화 비용',icon:'🧭',
+      hint:'SP만 사용 · 기초 1/2/4/6, 핵심 2/4/8/12 · 1계열 52 SP',scope:'신규 구매 비용 · 기존 구매 원장 보존'},
     {id:'g_affection',cat:'global',name:'호감도 · 선물 · 특전',icon:'🎁',
       hint:'원정 1회 8시간 · 3회마다 하루. 대화/선물은 캐릭터별 하루 한 번.',
       scope:'배경화면과 전투 코스튬 · 선물 제작 비용/경험치 · 기존 획득 유지'},
@@ -3433,7 +3603,11 @@ const BALANCE_GLOBAL_FIELDS=(()=>{
     ['BAL.econ.res.gear', '넘친 장비 부품', 'int', [0, 10], [1, 3], '가방이 가득 차 못 받은 드롭 장비 · 분해로 받는 부품', 'g_econ_res'],
     ...['E', 'D', 'C', 'B', 'A', 'S'].map(g => [`BAL.econ.boss.${g}`, `보스 기억 조각 · ${g}`, 'int', [0, 20], [1, 5], '그 게이트 보스를 잡을 때 받는 기억 조각', 'g_econ_res']),
     ['BAL.econ.boss.first', '보스 기억 조각 · 첫 클리어', 'int', [0, 20], [1, 5], '그 게이트를 처음 폐쇄할 때 더 주는 기억 조각', 'g_econ_res'],
-    ['BAL.econ.partyMax', '분대 정원', 'int', [1, 6], [4, 4], '인원에 따른 규칙 가변을 없앤 뒤의 고정 정원', 'g_econ_fix'],
+    ...['subSp','coreSp'].flatMap(k=>[0,1,2,3].map(i=>[
+      `BAL.command.${k}.${i}`,`${i+1}단 ${k==='subSp'?'기초':'핵심'} SP`,'int',[1,100],[1,12],
+      '지휘실 강화 비용 · 소재는 요구하지 않음','g_command'
+    ])),
+    ['BAL.econ.partyMax', '전투 편성 정원', 'int', [1, 6], [4, 4], '초과 영입은 대기 명단에 보관', 'g_econ_fix'],
     ['BAL.econ.packFixed', '무리 크기(고정)', 'int', [1, 8], [2, 4], '인원과 무관한 한 무리의 이형 수(군집 진화면 +1)', 'g_econ_fix'],
     ['BAL.econ.bossHpMul', '보스 HP 배율(고정)', 'mul', [0.5, 5], [2, 3], '인원과 무관한 보스 HP 배율(지금 4인 값 2.5)', 'g_econ_fix', { step: 0.05 }],
     ['BAL.econ.heal.camp', '캠프 정비 회복', 'pct', [0, 1], [0.05, 0.25], '캠프를 지날 때 전원 최대 HP 회복(지금 25% → 낮춘 시작값)', 'g_econ_fix', { step: 0.01 }],
@@ -4856,7 +5030,9 @@ const metaKey=()=>riskSaveKey(econOn()?ECON_KEY:META_KEY);
 const META_DEFAULT=()=>({opening:null,affection:null,onboarding:null,campaign:{},relationships:{},collection:null,office:{},trauma:{},traumaCodes:0,traumaCenter:{cycle:-1,used:0},mana:0,sp:0,skills:[],upg:{range:0,med:0,store:0,lab:0,ops:0,trauma:0},bond:{},runs:0,gate:'E',cleared:{},best:{},growth:{},quests:{},rq:[],sResist:null,sCleared:{},deck:{},decks:{},deckSlot:{},deckUndo:{},codex:{},pauseOnDraw:true,goal:null,pin:null,story:{flags:{},seen:{},memory:[],unlocks:[]},storyInRun:true,unlock:{},evalBest:{},bondXp:{},town:{cycle:-1,met:{}},loop:{missions:0},tips:{}}); /* 카드 가독성 L: tips = 첫 사용 안내를 본 기록 {안내 id: 본 출격 번호}(ui.js FIRST_TIPS) */ /* v1.4 §22: bondXp = 호감 경험치{학생:n}(bond 는 기존 귀환 횟수 그대로 — 경험치로 승계) · town = 학원가 교류 기록{cycle:meta.runs 기준 귀환 주기, met:{학생:true}} · loop.missions = 작전 과제 달성 수(LooP 랭크 점수) */ /* v1.3: unlock = 해금 표(UNLOCKS) 진행 {id:해금된 런 번호} · evalBest = 게이트별 작전 평가 최고 기록(기존 best[gate].score 와 별도 필드) */
 /* econ2 기본 스키마: 마나석 칸이 없고 새 자원(res) · 종류별 소수 누적(resFrac) · SP 소수(spFrac) · 유료 성장 Lv(growthLv — 유효 동행 누적 growth 와 따로) ·
  * 해금 대기 원장(resPending) · 스킬 구매 당시 비용(skillPaid) · 새 최고 기록(best2)을 더한다 */
-const META_DEFAULT2=()=>{const d=META_DEFAULT();delete d.mana;return Object.assign(d,{econ:2,res:{},resFrac:{},spFrac:0,growthLv:{},resPending:{},skillPaid:{},best2:{}});};
+const META_DEFAULT2=()=>{const d=META_DEFAULT();delete d.mana;
+ return Object.assign(d,{econ:2,commandBalance:0,res:{},resFrac:{},spFrac:0,
+  growthLv:{},resPending:{},skillPaid:{},best2:{}});};
 const metaDef=()=>econOn()?META_DEFAULT2():META_DEFAULT();
 let meta=META_DEFAULT();
 /* 옛 세이브·초기화 공통: META_DEFAULT 의 모든 키를 보충한다 (객체 키는 얕은 병합, 배열·스칼라는 타입이 맞을 때만 채택) */
@@ -4882,6 +5058,7 @@ function fillMeta(o){
  if(GL.relationships)GL.relationships.normalize(m);
  if(typeof collectionNormalize==='function')collectionNormalize(m,o);
  if(typeof affectionNormalize==='function')affectionNormalize(m,o);
+ if(typeof commandNormalize==='function')commandNormalize(m);
  return traumaNormalize(m);
 }
 /* ================= v1.4 §22.5 호감도 Lv 1~10 =================
@@ -5325,10 +5502,15 @@ function missionStatus(r,reason){r=r||run;if(!r||!r.mission)return null;const m=
 function checkMission(reason){const s=missionStatus(run,reason);if(!s||run.mission.done||!s.done)return false;run.mission.done=true;
  if(!reason){banner('🎖 작전 과제 달성!',`「${s.m.name}」 — 정산에서 ${missionRewardText(s.m,{run})}`,'#fbbf24',2400);log(`🎖 작전 과제 「${s.m.name}」 달성 — 보상은 정산에서 (${missionRewardText(s.m,{run})})`,'good');}return true;}
 /* 정산: 달성한 과제 보상은 런당 1회 */
-/* §27.6 m 지휘실 비용(econ2): SP 는 그대로, 마나석 자리는 기록 — 3 · 4단은 분기 자원(화력 부품 · 생존 결계석 · 전술 기록) */
+/* Command upgrades use SP; guild materials stay available for buildings. */
 function skillCostRes(s){
  const c=skillCost(s),sp=c[0];
  if(!econOn())return {sp,mana:c[1]};
+ const table=s.core?BAL.command.coreSp:BAL.command.subSp;
+ return {sp:Math.max(1,Math.round(table[Math.max(0,Math.min(3,s.tier-1))]))};
+}
+function legacySkillCostRes(s){
+ const sp=(s.core?[2,10,22,44]:[1,5,11,22])[s.tier-1];
  const t=Math.max(1,Math.min(4,s.tier|0)),core=!!s.core;
  const rec=core?[1,4,8,16][t-1]:[0,3,6,12][t-1];
  const br=t>=3?(core?[0,0,4,8][t-1]:[0,0,4,8][t-1]):0;
@@ -5336,9 +5518,24 @@ function skillCostRes(s){
  const out={sp};
  if(rec)out.rec=(out.rec||0)+rec;
  if(br)out[kind]=(out[kind]||0)+br;
- return out;}
+ return out;
+}
+function commandNormalize(m){
+ if(!econOn()||m.commandBalance>=1)return m;
+ m.skillPaid=m.skillPaid||{};m.res=m.res||{};
+ for(const id of new Set(m.skills||[])){
+  const s=SKILLS.find(x=>x.id===id);if(!s)continue;
+  const old=m.skillPaid[id]||legacySkillCostRes(s),cost=skillCostRes(s);
+  m.sp+=Math.max(0,(Number(old.sp)||0)-cost.sp);
+  for(const [k,n] of Object.entries(old)){
+   if(k!=='sp'&&Number.isFinite(n)&&n>0)m.res[k]=(m.res[k]||0)+n;
+  }
+  m.skillPaid[id]={sp:Math.min(Math.max(0,Number(old.sp)||0),cost.sp)};
+ }
+ m.commandBalance=1;return m;
+}
 const skillCostOk=s=>{const c=skillCostRes(s);return meta.sp>=c.sp&&costOk(Object.fromEntries(Object.entries(c).filter(([k])=>k!=='sp')));};
-function paySkill(s){const c=skillCostRes(s);if(!skillCostOk(s))return false;
+function paySkill(s){commandNormalize(meta);const c=skillCostRes(s);if(!skillCostOk(s))return false;
  meta.sp-=c.sp;payCost(Object.fromEntries(Object.entries(c).filter(([k])=>k!=='sp')));
  meta.skillPaid=meta.skillPaid||{};meta.skillPaid[s.id]=c; /* 구매 당시 비용 — 재설정 환급은 이 값으로(§27.6 g 5) */
  return true;}
@@ -5497,14 +5694,45 @@ function simConvertDead(){
  if(di<0)return false;const opts=convertOffers(di);if(!opts)return false;
  let to=opts[0],bs=-1e9;for(const o of opts){const s=maxS(o)+(CARDS[o].spawn?1:0);if(s>bs){bs=s;to=o;}}
  return convertCard(di,to);}
-function addMember(stu,silent){
+const recruitedMembers=()=>run?[...run.party,...(run.reserve||[])]:[];
+const recruitedMember=id=>recruitedMembers().find(m=>m.stu.id===id);
+function addMember(stu,silent,reserve=false){
  const m={uid:uid(),stu,star:1,hp:1,maxHp:1,cd:0,down:false,first:false,nextMult:1,buffUntil:0,equip:{weapon:null,armor:null,acc:null},crisis:false,joinLap:(run.pos===0&&run.lap===1?0:run.lap),survLaps:0,lapDown:false,growthOk:false,regenAcc:0};
+ if(reserve){
+  (run.reserve||(run.reserve=[])).push(m);m.maxHp=stats(m).maxHp;m.hp=m.maxHp;riskRestoreMember(m);
+  if(!silent)log(`🎓 ${stu.name} 영입 — 대기 명단에서 팀 슬롯에 편성하세요`,'shop');
+  dirty=true;return m;
+ }
  if(GL.relationships)m.relationshipStart=GL.relationships.joinSnapshot(run,stu.id);
  run.party.push(m);assignRow(m);run.maxParty=Math.max(run.maxParty||1,run.party.length);const s=stats(m);m.maxHp=s.maxHp;m.hp=s.maxHp;riskRestoreMember(m);
  run.party.forEach(recalcMember);
  if(!silent)log(`🎓 ${stu.name} 합류! (${CLUBS[stu.club]} · ${ROLES[stu.role]})`,'shop');
  syncSigMorphs();
  dirty=true;return m;
+}
+function canChangeParty(){
+ return !!(run&&!run.ended&&run.state!=='battle'&&!run.battle&&!run.bossPending&&!run.bossSpawned);
+}
+function setPartySlot(slot,memberUid){
+ if(!canChangeParty()||!Number.isInteger(slot)||slot<0||slot>=partyMax()||slot>run.party.length)return false;
+ const active=run.party.findIndex(m=>m.uid===memberUid),bench=run.reserve||[];
+ const waiting=bench.findIndex(m=>m.uid===memberUid),old=run.party[slot];
+ if(active===slot||active<0&&waiting<0||active>=0&&!old)return false;
+ if(active>=0){
+  const next=run.party[active],row=next.row;next.row=old.row;old.row=row;
+  [run.party[slot],run.party[active]]=[next,old];
+ }else{
+  const next=bench.splice(waiting,1)[0];
+  if(old){bench.push(old);run.party[slot]=next;next.row=old.row;}
+  else{run.party.push(next);assignRow(next);}
+  next.joinLap=run.lap;
+  if(!next.relationshipStart&&GL.relationships){
+   next.relationshipStart=GL.relationships.joinSnapshot(run,next.stu.id);
+  }
+ }
+ run.maxParty=Math.max(run.maxParty||1,run.party.length);run._pasKey=null;
+ run.party.forEach(recalcMember);syncSigMorphs();
+ log(`↔ 팀 ${slot+1}번 슬롯: ${run.party[slot].stu.name} 편성`,'shop');dirty=true;return true;
 }
 // ================= v1.0 동아리 강화 · 서명 변신 · 조합 (§17.3 B·F) =================
 /* 동아리 강화 판정: 분대에 그 동아리 학생이 1명 이상(전투불능 무관). 협회 공용은 강화 없음 */
@@ -6891,7 +7119,10 @@ function seedSample(items,n,rng){const pool=items.map(x=>({id:x.id,w:x.w||1})),o
 function crateCands(kind,rng){const n=BAL.crate.pool;
  /* §27.6 d 영입 팩: 보장 칸(부족 역할 · 승급 · 희귀 천장)을 앞 두 자리에 둔 후보열 — 난수는 시드 rng 만 쓴다 */
  if(kind==='recruit'){
-  const pool=STUDENTS.filter(s=>studentUnlocked(s)).map(s=>({id:s.id,rarity:s.rarity,role:s.role,owned:run.party.some(m=>m.stu.id===s.id),star:(run.party.find(m=>m.stu.id===s.id)||{}).star||1}));
+  const pool=STUDENTS.filter(s=>studentUnlocked(s)).map(s=>{
+   const owned=recruitedMember(s.id);
+   return {id:s.id,rarity:s.rarity,role:s.role,owned:!!owned,star:owned?.star||1};
+  });
   const party=run.party.map(m=>({id:m.stu.id,role:m.stu.role,star:m.star,rarity:m.stu.rarity}));
   const pk=ECON.buildPack({rng,pool,party,dry:run.packDry||0,size:n,reserve:3});
   return pk.list.concat(pk.reserve).map(x=>x.id);
@@ -6912,14 +7143,15 @@ const cratePrice=(kind,large)=>econOn()
 function crateView(cr){const n=BAL.crate.picks[GRADES[cr.grade||gradeNow()].n];
  const ok=cr.kind==='relic'?cr.cands.filter(relicOk)
   :cr.kind==='ward'?cr.cands.filter(cardOpen)
-  :cr.kind==='recruit'?cr.cands.filter(id=>{const m=run.party.find(x=>x.stu.id===id);return !m||m.star<3;}) /* ★3 은 확정 후보열에서 뺀다(예비가 대신 들어온다) */
+  :cr.kind==='recruit'?cr.cands.filter(id=>{const m=recruitedMember(id);return !m||m.star<3;})
   :cr.cands;
  return ok.slice(0,n);} /* C-05: 결계 상자도 잠긴 결계는 펼치지 않는다 · C-06: 유물 상자는 relicOk(보유·미해금 제외) */
 function crateRoom(cr){
- if(cr.kind==='recruit')return run.party.length<partyMax()||run.party.some(m=>m.star<3); /* 합류할 자리 또는 승급할 학생(§27.6 d) */
+ if(cr.kind==='recruit')return crateView(cr).some(id=>crateTakeOk(cr,id));
  if(cr.kind==='gear')return true;
  return cr.kind==='ward'?run.hand.length<handMax():cr.kind==='tactic'?run.tactics.length<BAL.tacticSlots:(run.relics.length<BAL.relicSlots&&crateView(cr).length>0);}
-const crateBlock=cr=>cr.kind==='recruit'?'분대 완성':cr.kind==='gear'?'':cr.kind==='ward'?'손패 가득':cr.kind==='tactic'?'전술 슬롯 가득':'유물 슬롯 가득';
+const crateBlock=cr=>cr.kind==='recruit'?'영입·승급 후보 없음':cr.kind==='gear'?'':
+ cr.kind==='ward'?'손패 가득':cr.kind==='tactic'?'전술 슬롯 가득':'유물 슬롯 가득';
 function rollNextCrate(){if(!run||run.ended||!supplyOn()){if(run)run.nextCrate=null;return;}run.supplyN++;run.nextCrate=makeCrate('S'+run.supplyN,0,true);
  if(simMode&&window.__simReserve)run.nextCrate.reserved=!!window.__simReserve(run.nextCrate);dirty=true;}
 function toggleReserve(){
@@ -6971,7 +7203,7 @@ function buyCrate(k){const cr=run.shop&&run.shop.crates&&run.shop.crates[k];if(!
 function openCrate(cr,paidOp){cr.grade=gradeNow();cr.view=crateView(cr);cr.paidOp=paidOp;cr.sold=true;run.crateOpen=cr;
  for(const id of cr.view)if(cr.kind==='relic'){const o=run.relicSeen||(run.relicSeen={});o[id]=(o[id]||0)+1;}
  if(cr.kind==='recruit'){const rare=(cr.view||[]).some(id=>{const st=STUDENTS.find(x=>x.id===id);return st&&st.rarity>=1;});run.packDry=rare?0:(run.packDry||0)+1;}
- if(simMode){takeCrate(window.__simCrate?window.__simCrate(cr):0);return;}
+ if(simMode){if(!takeCrate(window.__simCrate?window.__simCrate(cr):0))skipCrate();return;}
  log(`📦 ${CRATES[cr.kind].name} 개봉 (OP −${paidOp}) — ${GRADES[cr.grade].name} 보급: ${cr.view.length}장 중 1장`,'shop');
  if(typeof renderCrate==='function')renderCrate();MODAL.push('crate',true);if(typeof SFX!=='undefined')for(let i=0;i<cr.view.length;i++)SFX.flip(i);}
 /* §27.6 D-3: 영입 팩은 고르지 않고 닫을 수 있다(환불 없음). 고를 수 있는 후보가 하나도 없을 때도 이 길로 빠져나온다 */
@@ -6982,23 +7214,27 @@ function skipCrate(){
  if(typeof MODAL!=='undefined')MODAL.pop('crate');
  if(!simMode&&run.shop.kind&&typeof renderShop==='function')renderShop();
  dirty=true;return true;}
-/* 이 후보를 지금 받을 수 있는가(영입 팩은 자리 · ★3 여부에 걸린다) */
+/* 영입은 편성 정원과 무관하다. 이미 영입한 ★3 학생만 제외한다. */
 function crateTakeOk(cr,id){
  if(!cr)return false;
- if(cr.kind==='recruit'){const m=run.party.find(x=>x.stu.id===id);return m?m.star<3:run.party.length<partyMax();}
+ if(cr.kind==='recruit'){
+  const m=recruitedMember(id);return STUDENTS.some(s=>s.id===id)&&(!m||m.star<3);
+ }
  if(cr.kind==='relic')return relicOk(id);
  if(cr.kind==='ward')return run.hand.length<handMax();
  if(cr.kind==='tactic')return run.tactics.length<BAL.tacticSlots;
  return true;}
-function takeCrate(i){const cr=run&&!run.ended&&run.crateOpen;if(!cr)return false;const id=cr.view[Math.max(0,Math.min(cr.view.length-1,i|0))];if(!id||!crateTakeOk(cr,id))return false;
+function takeCrate(i){
+ const cr=run&&!run.ended&&run.crateOpen;if(!cr)return false;
+ const id=cr.view[Math.max(0,Math.min(cr.view.length-1,i|0))];if(!id)return false;
+ if(!crateTakeOk(cr,id))return false;
  if(cr.kind==='ward'){run.hand.push(id);if(typeof collectionDiscover==='function')collectionDiscover(id,'pack');run.drawn[id]=(run.drawn[id]||0)+1;if(CARDS[id].cls)run.terrainDrops=(run.terrainDrops||0)+1;log(`🧿 결계 상자 → ${CARDS[id].icon} ${CARDS[id].name} (손패)`,'shop');}
  else if(cr.kind==='tactic'){run.tactics.push(id);log(`🎴 전술 상자 → ${tacticOf(id).icon} ${tacticOf(id).name} (전술 슬롯)`,'shop');}
  else if(cr.kind==='recruit'){
-  const stu=STUDENTS.find(x=>x.id===id),owned=run.party.find(m=>m.stu.id===id);
+  const stu=STUDENTS.find(x=>x.id===id),owned=recruitedMember(id);
   if(!stu)return false;
   if(owned){if(owned.star>=3)return false;owned.star++;recalcMember(owned);run.party.forEach(recalcMember);if(typeof syncSigMorphs==='function')syncSigMorphs();log(`🎓 영입 팩 → ${stu.name} ★${owned.star}(이번 원정만)`,'shop');}
-  else if(run.party.length<partyMax()){addMember(stu);log(`🎓 영입 팩 → ${stu.name} 합류`,'shop');}
-  else return false;
+  else addMember(stu,false,run.party.length>=partyMax());
   run.packDry=(stu.rarity>=1)?0:(run.packDry||0)+0; /* 희귀 천장 기록은 개봉 기준(아래 openCrate 에서) */
  }
  else if(cr.kind==='gear'){addItem(id);log(`🛡 장비 팩 → ${id&&id.name?id.name:'장비'}`,'shop');}
@@ -7037,7 +7273,13 @@ function simRelicScore(id){const R=relicOf(id);if(!R)return 0;if(!R.cond)return 
  if(id==='survey')return 2+hills*1.5;if(id==='scope')return 2+rear*3;if(id==='clubflag')return R.when(run)?6:2;if(id==='medal')return (run.chains||[]).some(c=>c.kind==='battle'&&!c.void)?8:3;
  if(id==='specimen')return 2+coc*2;if(id==='compass')return 2+riverAdjCount()*1.5;return 2;}
 function simCratePick(cr){const v=cr.view;let bi=0,bs=-1e9;v.forEach((id,i)=>{let s=0;
+  if(!crateTakeOk(cr,id))return;
   if(cr.kind==='relic')s=simRelicScore(id);
+  else if(cr.kind==='recruit'){
+   const st=STUDENTS.find(x=>x.id===id),owned=recruitedMember(id);
+   s=st.rarity*2+(owned?8+owned.star:6);
+  }
+  else if(cr.kind==='gear')s=(id.rarity||0)*2+(id.atk||0)+(id.def||0)+(id.hp||0)/10;
   else if(cr.kind==='tactic')s=({clone:4,seal:3,oblivion:(run.cells||[]).some(c=>c.card==='ld_outpost')?5:2,relocate:1}[id]||0)-(run.tactics.includes(id)?2:0);
   else{const c=CARDS[id];s=c.cls?(simLand==='use'?3:0):(c.spawn?2:3);}
   if(s>bs){bs=s;bi=i;}});return bi;}
@@ -7051,7 +7293,6 @@ function simTactics(){if(!run||run.ended||!run.tactics.length)return;const {hp,s
   else if(id==='oblivion'){const t=tacticTargets(id).find(x=>x.card==='ld_outpost'&&!strong)||tacticTargets(id).find(x=>x.card==='ransacked'&&hp<0.45);if(t)useTactic(k,t.i);}
   else if(id==='clone'){if(run.hand.length<=4){const c=tacticTargets(id).filter(t=>!t.off&&CARDS[origCard(t)]&&!CARDS[origCard(t)].spawn);if(c.length)useTactic(k,c[0].i);}}
   else if(id==='relocate'&&run.tactics.length>=BAL.tacticSlots){const src=tacticTargets(id).find(t=>!t.off&&!CARDS[t.card].spawn&&adjSpawnN(t)===0);if(src){const ds=tacticTargets(id,src.i).filter(t=>!t.off),d=ds.find(t=>adjTiles(t).some(o=>o.card&&CARDS[o.card].spawn));if(d)useTactic(k,src.i,d.i);}}}}
-
 
 </script>
 <script>
@@ -7576,10 +7817,13 @@ function buy(ouid,replaceIdx){
  if(o.kind==='relic'&&(run.relics.length>=BAL.relicSlots||!relicOk(o.relic.id)))return; /* 유물 슬롯 5칸 · v1.4 R4 C-06: 보유 중(중복)·미해금 조건부는 살 수 없다 */
  const cost=priceOf(o);
  if(o.kind==='student'){
-  const owned=run.party.find(m=>m.stu.id===o.stu.id);
+  const owned=recruitedMember(o.stu.id);
   if(owned){if(owned.star>=3)return;if(!econOn()&&run.shop.kind==='launch'&&run.party.length<2)return;/* 협회 규정: 동료 먼저 (econ2 에서는 강제하지 않는다 — §27.6 d) */owned.star++;recalcMember(owned);run.party.forEach(recalcMember);syncSigMorphs();run.shake=6;banner(`⭐ ${owned.stu.name} ★${owned.star}`,'스탯 +25% · 시너지는 그대로','#f0b100',1500);log(`⭐ ${owned.stu.name} ★${owned.star} 승급!`,'shop');SFX.star();}
-  else if(run.party.length<partyMax()){addMember(o.stu);SFX.buy();}
-  else{if(replaceIdx==null){o.replacing=true;renderShop();return;}sellMember(replaceIdx);addMember(o.stu);SFX.buy();}
+  else{
+   const member=addMember(o.stu,false,run.party.length>=partyMax());
+   if(Number.isInteger(replaceIdx))setPartySlot(replaceIdx,member.uid);
+   SFX.buy();
+  }
  }else if(o.kind==='relic'){if(!grantRelic(o.relic.id,'shop'))return;log(`🏺 유물 「${o.relic.name}」 획득 — ${o.relic.desc}`,'shop');SFX.buy();}
  else{const s=o.supply;SFX.buy();
   if(s.id==='drink')healAll(0.4,'에너지 드링크',true);
@@ -7656,11 +7900,11 @@ const offerTagTip=o=>o.promo?'승급 후보: 분대 정원을 채운 뒤 매 롤
 function offerState(o){
  const p=priceOf(o),price=o.free?'무료':p+' OP',poor=run.op<p;
  if(o.sold)return {txt:'완료',done:true};
- if(o.kind==='student'){const owned=run.party.find(m=>m.stu.id===o.stu.id);
+ if(o.kind==='student'){const owned=recruitedMember(o.stu.id);
   if(owned){if(owned.star>=3)return {txt:'★ MAX',why:'이미 ★3 — 더 올릴 수 없습니다'};
    if(run.shop.kind==='launch'&&run.party.length<2)return {txt:'동료 먼저',why:'협회 규정: 출격 전 동료를 먼저 확보하세요'};
    return {txt:price,act:`★${owned.star+1} 승급`,can:!poor,poor};}
-  if(run.party.length>=partyMax())return {txt:price,act:'교체',can:!poor,poor,replace:true};
+  if(run.party.length>=partyMax())return {txt:price,act:'영입 · 대기',can:!poor,poor};
   return {txt:price,act:'합류',can:!poor,poor};}
  if(o.kind==='relic'){const r=o.relic;
   if(run.relics.includes(r.id))return {txt:'보유 중',why:'이미 가진 유물입니다 — 같은 유물은 두 번 가질 수 없습니다'};
@@ -7672,7 +7916,7 @@ function offerState(o){
 function offerCardHtml(o,oi,anim){
  const s=offerState(o);let art,name,kind,sub;
  if(o.kind==='student'){
-  const st=o.stu,owned=run.party.find(m=>m.stu.id===st.id);art=recruitPortrait(st);
+  const st=o.stu,owned=recruitedMember(st.id);art=recruitPortrait(st);
   name=`${st.name}${owned?` <i>${'★'.repeat(owned.star)}</i>`:''}`;kind=owned?'보유':'학생';sub=idChipsHtml(st);
  }
  else if(o.kind==='relic'){const r=o.relic;art=`<span class="oi">${r.icon}</span>`;name=r.name;kind='유물';sub=`<span class="kbd">${r.cond?'조건부 · ':''}슬롯 ${run.relics.length}/${BAL.relicSlots}</span>`;}
@@ -7696,7 +7940,9 @@ function offerDetailHtml(o){
  if(!o)return '<div class="kbd dnone">진열이 비었습니다 — 리롤하거나 출발하세요</div>';
  const s=offerState(o),close='<button class="icobtn dclose" data-sclose title="닫기">✕</button>',tip=offerTagTip(o);
  const flag=(o.free||o.pity||o.promo||o.topGrade)?`<span class="dflag"${tip?` data-tip="${escTip(tip)}"`:''}>${offerTag(o)}</span>`:'';
- if(o.kind==='student'){const st=o.stu,owned=run.party.find(m=>m.stu.id===st.id),sc=SCHOOLS[st.school],rc=REACH[st.reach],sy=STYLES[st.style],k=ENEMY_KINDS[st.bane];
+ if(o.kind==='student'){
+  const st=o.stu,owned=recruitedMember(st.id),sc=SCHOOLS[st.school];
+  const rc=REACH[st.reach],sy=STYLES[st.style],k=ENEMY_KINDS[st.bane];
   return `${close}<div class="odet k-stu"><div class="dart">${recruitPortrait(st,'big')}</div>`
   +`<div class="dinfo" data-scroll-ok>
    <div class="dbadges"><span class="rar r${st.rarity}">${RARITY[st.rarity].name}</span>${flag}${owned?`<span class="dflag own">보유 ${'★'.repeat(owned.star)}</span>`:''}</div>
@@ -11874,10 +12120,11 @@ function settleFxTick(){
 function crateCardHtml(cr,id,i){
  if(cr.kind==='ward'){const c=CARDS[id],art=cardArtSrc(id),k=cardClass(id),z=cardZones(id);return `<button class="ccard tile${z?' z-'+z.main:''}" data-ci="${i}" style="--i:${i}" data-tip="${escTip(c.name)} — ${escTip(c.desc)}"><span class="cart">${art?`<img class="ca" src="${artUrl(art)}" alt="">`:`<span class="ci">${c.icon}</span>`}<span class="marks">${cardMarksHtml(id)}</span></span><b>${c.name}</b><span class="rcs">${cardChipsHtml(id)}</span><span class="cd">${c.desc}</span><span class="ck">${c.gate?'게이트 전용':k==='road'?'도로 결계':TILE_CLASS[k]?TILE_CLASS[k].name:''} · <kbd>${i+1}</kbd></span></button>`;}
  if(cr.kind==='tactic'){const T=tacticOf(id);return `<button class="ccard z-control" data-ci="${i}" style="--i:${i}">${T.art?`<img class="ca" src="${artUrl(T.art)}" alt="">`:`<span class="ci">${T.icon}</span>`}<span class="zrow">${zoneMarkHtml(tacticReg(id),T.target==='none'?'전술 — 바로 사용(도로 스폰 정지)':'전술 — 지도의 결계 칸에 사용')}<span class="kd k-control">전술</span></span><b>${T.icon} ${T.name}</b><span class="ck">지도 전술 · 1회 · <kbd>${i+1}</kbd></span><span class="cd">${T.desc}</span></button>`;}
- if(cr.kind==='recruit'){ /* §27.6 d 영입 팩: 학생 후보 — 빈자리면 합류, 보유 중이면 ★ 승급, 둘 다 안 되면 고를 수 없다 */
-  const st=STUDENTS.find(x=>x.id===id),own=run.party.find(m=>m.stu.id===id),ok=crateTakeOk(cr,id);
+ if(cr.kind==='recruit'){
+  const st=STUDENTS.find(x=>x.id===id),own=recruitedMember(id),ok=crateTakeOk(cr,id);
   if(!st)return '';
-  const act=own?(own.star<3?`★ 승급 (지금 ★${own.star})`:'★3 — 더 못 올림'):(run.party.length<partyMax()?'합류':'분대 완성 — 자리 없음');
+  const act=own?(own.star<3?`★ 승급 (지금 ★${own.star})`:'★3 — 더 못 올림'):
+   (run.party.length<partyMax()?'영입 · 바로 편성':'영입 · 대기 명단에 보관');
   return `<button class="ccard recruit-card r${st.rarity}${ok?'':' off'}" data-ci="${i}" ${ok?'':'disabled'} style="--i:${i}" data-tip="${escTip(st.name)} — ${escTip(ROLES[st.role]+' · '+CLUBS[st.club])}">
    <span class="cart">${recruitPortrait(st)}</span><b>${st.name}</b>
    <span class="ck">${RARITY[st.rarity].name} · ${ROLES[st.role]} · <kbd>${i+1}</kbd></span>
@@ -12216,6 +12463,7 @@ const hasSkillOrAlt=id=>meta.skills.includes(id)||(altOf(id)?meta.skills.include
 function canBuySkill(s){if(meta.skills.includes(s.id))return false;const a=altOf(s.id);if(a&&meta.skills.includes(a))return false;return skillReq(s).every(hasSkillOrAlt);}
 /* 재설정: 그 노드와, 그 노드가 빠지면 선행이 깨지는 노드를 연쇄로 해제. SP 전액·마나석 80% 환급 */
 function resetSkill(id){
+ commandNormalize(meta);
  if(!meta.skills.includes(id))return null;
  const keep=new Set(meta.skills);keep.delete(id);const okReq=s=>skillReq(s).every(r=>keep.has(r)||(altOf(r)&&keep.has(altOf(r))));
  let grew=true;while(grew){grew=false;for(const sid of [...keep]){const s=SKILLS.find(x=>x.id===sid);if(s&&!okReq(s)){keep.delete(sid);grew=true;}}}
@@ -12229,17 +12477,21 @@ function resetSkill(id){
  meta.skills=meta.skills.filter(sid=>keep.has(sid));meta.sp+=sp;if(!econOn())meta.mana+=mana;save();return {removed,sp,mana};
 }
 function renderAcademy(){
+ if(econOn()&&meta.commandBalance!==1){commandNormalize(meta);save();}
  $('#acSp').textContent=meta.sp;if($('#acMana'))$('#acMana').textContent=meta.mana||0;if(econOn()&&$('#academyResources'))$('#academyResources').innerHTML=walletHtml();
- {const th=$('#treeHint');if(th)th.textContent=econOn()?'SP + 소재(기록 · 분기 자원)로 영구 스킬 · 분대 레벨 1당 SP +1 · 핵심 노드는 같은 단의 소노드 2개 필요':'SP + 마나석으로 영구 스킬 · 분대 레벨 1당 SP +1 · 핵심 노드는 같은 단의 소노드 2개 필요';}
+ {const th=$('#treeHint');if(th)th.textContent=econOn()?
+  'SP로 강화 · 핵심은 같은 단계 기초 2개 필요 · 재설정 시 SP 전액 반환 · 다음 원정부터 적용':
+  'SP + 마나석으로 영구 스킬 · 핵심 노드는 같은 단의 소노드 2개 필요';}
  const nodeHtml=s=>{const own=meta.skills.includes(s.id),av=canBuySkill(s),[cs,cm]=skillCost(s),poor=av&&(econOn()?!skillCostOk(s):(meta.sp<cs||meta.mana<cm));
   const a=altOf(s.id),altTaken=a&&meta.skills.includes(a);
-  return `<div class="node${own?' owned':av?(poor?' poor':' avail'):''}${a?' alt':''}" data-id="${s.id}"><div class="st">${own?'✔ 습득':altTaken?'택1 · 다른 쪽 선택':av?(poor?'재화 부족':'선택 가능'):'잠김'}</div><div class="nn">${s.icon} ${s.name}</div><div class="nd">${s.desc}</div><div class="nc">${own?(a?`<button class="btn xs ghost" data-reset="${s.id}" title="이 노드와 이를 선행으로 쓰는 노드를 해제 · SP 전액, 마나석 80% 환급">재설정 (💎80%)</button>`:''):`${econOn()?skillCostStr(s):`SP ${cs} + 💎 ${cm}`}<button class="pinb${meta.pin&&meta.pin.kind==='skill'&&meta.pin.id===s.id?' on':''}" data-pin="${s.id}" title="개발 목표로 핀 — 타이틀·원정 HUD·정산에 진행도 표시">📌</button>`}</div></div>`;};
+  return `<div class="node${own?' owned':av?(poor?' poor':' avail'):''}${a?' alt':''}" data-id="${s.id}"><div class="st">${own?'✔ 습득':altTaken?'택1 · 다른 쪽 선택':av?(poor?'재화 부족':'선택 가능'):'잠김'}</div><div class="nn">${s.icon} ${s.name}</div><div class="nd">${s.desc}</div><div class="nc">${own?`<button class="btn xs ghost" data-reset="${s.id}" title="이 강화와 연결된 다음 강화를 해제">${econOn()?'재설정 · SP 반환':'재설정 (💎80%)'}</button>`:`${econOn()?skillCostStr(s):`SP ${cs} + 💎 ${cm}`}<button class="pinb${meta.pin&&meta.pin.kind==='skill'&&meta.pin.id===s.id?' on':''}" data-pin="${s.id}" title="개발 목표로 핀 — 타이틀·원정 HUD·정산에 진행도 표시">📌</button>`}</div></div>`;};
  /* 분기 3개 = 탭(#treeTabs). 한 번에 한 분기(12노드)만 — PC 4열(단)·3행(소노드 2 + 핵심) */
  if(!BRANCH[treeTab])treeTab=Object.keys(BRANCH)[0];
  $('#treeTabs').innerHTML=Object.entries(BRANCH).map(([br,b])=>`<button data-br="${br}" class="${treeTab===br?'on':''}" style="--acc:${b.color}">${b.name} <span class="kbd">${SKILLS.filter(s=>s.br===br&&meta.skills.includes(s.id)).length}/12</span></button>`).join('');
  $$('#treeTabs button').forEach(b=>b.onclick=()=>{treeTab=b.dataset.br;SFX.click();renderAcademy();});
  $('#tree').innerHTML=Object.entries(BRANCH).map(([br,b])=>`<div class="branch${treeTab===br?' on':''}" data-br="${br}" data-scroll-ok><h5 style="background:${b.color}">${b.name} <small>${SKILLS.filter(s=>s.br===br&&meta.skills.includes(s.id)).length}/12</small></h5>${[1,2,3,4].map(t=>{const subs=SKILLS.filter(s=>s.br===br&&s.tier===t&&!s.core),core=SKILLS.find(s=>s.br===br&&s.tier===t&&s.core&&!s.alt),alt=SKILLS.find(s=>s.br===br&&s.tier===t&&s.core&&s.alt);return `<div class="tier"><div class="tl">${t}단</div><div class="subs">${subs.map(nodeHtml).join('')}</div>${alt?`<div class="pair"><div class="pl">택1 — 같은 비용 · 재설정 가능</div>${nodeHtml(core)}${nodeHtml(alt)}</div>`:nodeHtml(core)}</div>`;}).join('')}</div>`).join('');
  $$('#tree [data-reset]').forEach(b=>b.onclick=e=>{e.stopPropagation();resetSkill(b.dataset.reset);SFX.click();renderAcademy();});
+ if(typeof mobileCommandLayout==='function')mobileCommandLayout();
  $$('#tree [data-pin]').forEach(b=>b.onclick=e=>{e.stopPropagation();setPin('skill',b.dataset.pin);SFX.click();renderAcademy();});
  $$('#tree .node.avail').forEach(n=>n.onclick=()=>{const s=SKILLS.find(x=>x.id===n.dataset.id),[cs,cm]=skillCost(s);
  if(!canBuySkill(s))return;
@@ -12264,6 +12516,7 @@ const AC_TITLE={skill:'스킬 트리',fac:'시설',quest:'협회 의뢰',codex:'
 const AC_ORDER=['skill','fac','quest','codex','stu','mem'];
 /* v1.4 C: 방(room) 단위로 연다 — 같은 패널(fac)을 쓰는 방이 여럿이라 room id 를 따로 든다. 패널이 바뀌면 목록 페이지를 다시 맞춘다(§24) */
 function setAcTab(t,room){const next=AC_TITLE[t]?t:'skill',rm=(room&&roomOf(room).t===next)?roomOf(room):ROOMS.find(r=>r.t===next)||ROOMS[0];if(typeof officeRoomOpen==='function'&&!officeRoomOpen(rm)){if(typeof toast==='function')toast(officeFacilityHint(rm.f));return;}acTab=next;HUB.acRoom=rm.id;
+ $('#s-academy').dataset.officeDetail=String(rm.id!=='home');
  $$('#acTabs .at').forEach(b=>b.classList.toggle('on',b.dataset.room===rm.id));$$('#s-academy .atab').forEach(el=>el.classList.toggle('on',el.dataset.t===acTab));
  $('#acTabTitle').textContent=`${rm.icon} ${rm.name}`;{const d=$('#acRoomDesc');if(d)d.textContent=rm.desc;}
  if(acTab==='fac'&&typeof renderFacRoom==='function'){const hint=$('#s-academy .atab[data-t="fac"] .shint');if(hint)hint.textContent=econOn()?'소재로 시설 강화 · 시설 레벨은 LooP 랭크 점수':'마나석으로 시설 강화 · 시설 레벨은 LooP 랭크 점수';renderFacRoom(rm.f);}
@@ -12542,8 +12795,12 @@ function handleKey(e){
  if(space){pd();if(e.repeat)return;}
  if(e.repeat&&top&&!MODAL_LIVE[top]){pd();return;} /* 누른 채 다음 선택창까지 처리하지 않는다. */
  if(top==='equipment'){if(e.key==='Escape'){pd();closeEquipment();}return;}
+ if(top==='roster'){if(e.key==='Escape'){pd();closeRoster();}return;}
  if(top==='tut'){if(e.key==='Enter'||e.key==='Escape'){pd();closeTut();}return;}
- if(top==='crate'){const cr=run.crateOpen,k=+e.key;if(cr&&k>=1&&k<=cr.view.length){pd();takeCrate(k-1);}return;}
+ if(top==='crate'){
+  const cr=run.crateOpen,k=+e.key;
+  if(cr&&k>=1&&k<=cr.view.length){pd();takeCrate(k-1);}return;
+ }
  if(top==='dossier'){if(e.key==='Enter'||e.key==='Escape'){pd();closeDossier();}return;}
  if(top==='shop'){if(e.key==='Enter'){pd();closeShop();}else if(e.key==='r'||e.key==='R'){pd();reroll();}return;}
  if(top==='perk'){const q=run.perkQueue&&run.perkQueue[0],k=+e.key;if(q&&k>=1&&k<=q.length){pd();takePerk(q[k-1]);}return;}
@@ -13790,6 +14047,7 @@ function mobileInspectorPage(page){
 }
 function mobileTick(){
  document.body.classList.toggle('mobile-inspecting',mobilePortrait()&&inspOpen());
+ if(mobilePortrait())mobileRunSummary();
  if(!mobileTouchLayout())return;
  if(MOBILE.lastRun!==run)mobileSync();
  const b=$('#mobileConfirm');b.hidden=true;
@@ -13864,6 +14122,102 @@ if(document.createElement){
  $('#tut .steps').appendChild(guide);
 }
 
+/* Phone navigation has its own information depth; desktop panes stay intact. */
+function mobileRunPanel(panel){
+ if(!run||run.ended)return;
+ if(inspOpen())inspCancel();
+ const screen=$('#s-run');screen.dataset.mobilePanel=panel;
+ const detail=panel==='records',drawer=$('#drawerBody');drawer.hidden=!detail;
+ $('#s-run .side').classList.toggle('dopen',detail);
+ $('#mobileSheetTitle').textContent=detail?'유물 · 가방 · 기록':'분대';
+ $('#mobileMore').hidden=panel!=='more';
+ $$('#mobileRunNav [data-mobile-panel]').forEach(b=>{
+  b.setAttribute('aria-pressed',String(b.dataset.mobilePanel===panel));
+ });
+ mobileRunSummary();fitSide();mobileMapFit();
+}
+function mobileRunSummary(){
+ if(!run||!$('#mobileTeamStatus'))return;
+ const max=run.party.reduce((n,m)=>n+m.maxHp,0);
+ const hp=run.party.reduce((n,m)=>n+(m.down?0:Math.max(0,m.hp)),0);
+ const down=run.party.filter(m=>m.down).length,pct=Math.round(hp/Math.max(1,max)*100);
+ $('#mobileTeamStatus').textContent=`분대 ${run.party.length}명 · HP ${pct}%${down?' · '+down+'명 쓰러짐':''}`;
+ $('#mobileTeamStatus').classList.toggle('low',pct<35||down>0);
+ const ex=$('#mobileEx');ex.textContent=`EX ${run.ex>=100?'발동':Math.round(run.ex)+'%'}`;
+ ex.disabled=run.ex<100||run.state!=='battle';ex.classList.toggle('ready',!ex.disabled);
+ $('#mobileCardCount').textContent=run.hand.length;
+ $('#mobileReserveCount').textContent=(run.reserve||[]).length?'대기 '+run.reserve.length:'';
+ $('#mobileMoreRetreat').disabled=$('#btnRetreat').disabled;
+ $('#mobileMoreScore').textContent='점수 '+Math.round(run.score&&run.score.total||0);
+ $('#mobileMoreGoal').textContent=$('#campaignRunStatus').textContent||'원정을 진행하세요';
+}
+function mobileCampLayout(){
+ const body=$('#shBody');if(!body)return;
+ let nav=$('#mobileCampNav');if(!nav){
+  nav=document.createElement('nav');nav.id='mobileCampNav';nav.setAttribute('aria-label','캠프 메뉴');
+  nav.innerHTML=[['tiles','타일'],['packs','카드팩'],['team','영입·편성'],['tools','정비']]
+   .map(([id,name])=>`<button data-camp-page="${id}">${name}</button>`).join('');
+  body.before(nav);
+  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+   body.dataset.mobileCamp=b.dataset.campPage;mobileCampLayout();body.scrollTop=0;
+  });
+ }
+ if(MOBILE.campShop!==run.shop||MOBILE.campKind!==run.shop.kind){
+  body.dataset.mobileCamp=run.shop.kind==='launch'?'team':'tiles';
+  MOBILE.campShop=run.shop;MOBILE.campKind=run.shop.kind;
+ }
+ nav.querySelectorAll('button').forEach(b=>{
+  b.setAttribute('aria-pressed',String(b.dataset.campPage===body.dataset.mobileCamp));
+ });
+ if(mobilePortrait()&&body.dataset.mobileCamp==='tools')$('#campTools').open=true;
+}
+function mobileCommandLayout(){
+ const tree=$('#tree');if(!tree)return;
+ let tabs=$('#mobileCommandTabs');if(!tabs){
+  tabs=document.createElement('nav');tabs.id='mobileCommandTabs';tabs.setAttribute('aria-label','지휘실 강화 단계');
+  tabs.innerHTML=[1,2,3,4].map(n=>`<button data-command-tier="${n}">${n}단계</button>`).join('');
+  tree.before(tabs);tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+   MOBILE.commandTier=+b.dataset.commandTier;mobileCommandLayout();
+  });
+ }
+ const tier=MOBILE.commandTier||1;
+ tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.commandTier===tier)));
+ tree.querySelectorAll('.branch').forEach(branch=>{
+  branch.querySelectorAll('.tier').forEach((el,i)=>el.classList.toggle('mobile-command-hidden',i!==tier-1));
+ });
+}
+{
+ const body=$('#s-run .run-body'),summary=document.createElement('div');summary.id='mobileRunSummary';
+ summary.innerHTML='<button id="mobileTeamStatus"></button><button id="mobileEx"></button>';
+ body.appendChild(summary);
+ const nav=document.createElement('nav');nav.id='mobileRunNav';nav.setAttribute('aria-label','원정 메뉴');
+ nav.innerHTML=`<button data-mobile-panel="cards" aria-pressed="true">카드 <b id="mobileCardCount"></b></button>
+  <button data-mobile-panel="squad">분대 <small id="mobileReserveCount"></small></button>
+  <button id="mobileGear">장비</button><button data-mobile-panel="more">더보기</button>`;
+ body.appendChild(nav);
+ const head=document.createElement('div');head.id='mobileSheetHead';
+ head.innerHTML='<b id="mobileSheetTitle">분대</b><button id="mobileSheetClose">닫기</button>';
+ $('#s-run .side').prepend(head);
+ const more=document.createElement('section');more.id='mobileMore';more.hidden=true;
+ more.setAttribute('aria-label','원정 상세 메뉴');
+ more.innerHTML=`<header><b>원정 메뉴</b><button id="mobileMoreClose">닫기</button></header>
+  <p id="mobileMoreGoal"></p><strong id="mobileMoreScore"></strong><div class="mobile-more-grid">
+  <button id="mobileMoreRoster">팀 편성</button><button id="mobileMoreRecords">유물 · 기록</button>
+  <button id="mobileMoreSynergy">조합 도감</button><button id="mobileMoreBoss">보스 정보</button>
+  <button id="mobileMoreHelp">플레이 가이드</button><button id="mobileMoreFullscreen">전체 화면</button>
+  <button id="mobileMoreRetreat">귀환</button></div>`;
+ body.appendChild(more);$('#s-run').dataset.mobilePanel='cards';
+ nav.querySelectorAll('[data-mobile-panel]').forEach(b=>b.onclick=()=>mobileRunPanel(b.dataset.mobilePanel));
+ $('#mobileTeamStatus').onclick=()=>mobileRunPanel('squad');$('#mobileEx').onclick=()=>useEx();
+ $('#mobileSheetClose').onclick=$('#mobileMoreClose').onclick=()=>mobileRunPanel('cards');
+ $('#mobileGear').onclick=()=>openEquipment();$('#mobileMoreRoster').onclick=()=>openRoster();
+ $('#mobileMoreRecords').onclick=()=>mobileRunPanel('records');
+ $('#mobileMoreSynergy').onclick=()=>$('#btnSynergy').click();
+ $('#mobileMoreBoss').onclick=()=>$('#bossChip').click();$('#mobileMoreHelp').onclick=()=>$('#btnHelp').click();
+ $('#mobileMoreFullscreen').onclick=mobileFullscreen;
+ $('#mobileMoreRetreat').onclick=()=>$('#btnRetreat').click();
+}
+
 $('#mobileFullscreen').textContent='전체 화면';
 document.addEventListener('fullscreenchange',()=>{const text=document.fullscreenElement?'화면 축소':'전체 화면';$('#mobileFullscreen').textContent=text;$('#mobileTitleFullscreen').textContent='⛶ '+text;mobileSync();});
 
@@ -13917,6 +14271,12 @@ function systemCampLayout(){
  if(run.shop.kind==='camp')$('#shSub').textContent='타일과 팩을 고르세요. 남은 OP는 귀환하면 사라집니다.';
  let gear=$('#campEquipment');if(!gear){gear=document.createElement('button');gear.id='campEquipment';gear.className='btn ghost';$('#btnDepart').before(gear);gear.onclick=()=>openEquipment();}
  gear.textContent=`🎒 장비 ${run.inv.length?`· 가방 ${run.inv.length}개`:''}`;
+ let team=$('#campRoster');if(!team){
+  team=document.createElement('button');team.id='campRoster';team.className='btn ghost';
+  gear.before(team);team.onclick=()=>openRoster();
+ }
+ team.textContent=`팀 편성 · 대기 ${(run.reserve||[]).length}`;
+ if(typeof mobileCampLayout==='function')mobileCampLayout();
 }
 function equipmentSlotsHtml(m,selectable){
  return ['weapon','armor','acc'].map(slot=>{const it=m.equip[slot];return `<button class="equipment-slot${it?' filled':''}" ${selectable?`data-gear-slot="${slot}"`:'disabled'}><span>${SLOT_ICON[slot]} ${SLOT_NAME[slot]}</span><b>${it?escTip(it.name):'빈 슬롯'}</b><small>${it?escTip(statStr(it)):'장비를 골라 장착'}</small></button>`;}).join('');
@@ -13943,11 +14303,58 @@ function closeEquipment(){MODAL.pop('equipment');if(MODAL.has('shop'))renderShop
 function renderSystemRunUI(){
  const b=$('#btnEquipment');if(b&&run){b.textContent=`🎒 장비${run.inv.length?' '+run.inv.length:''}${run.newItems?' ●':''}`;b.classList.toggle('ready',!!run.newItems);b.onclick=()=>openEquipment();}
  $$('#party [data-member-gear]').forEach(el=>el.onclick=()=>openEquipment(+el.dataset.memberGear));
+ let team=$('#btnRoster');if(!team){
+  team=document.createElement('button');team.id='btnRoster';team.className='btn xs ghost';
+  $('#s-run .squad h4').appendChild(team);team.onclick=()=>openRoster();
+ }
+ team.textContent=`편성 · 대기 ${(run.reserve||[]).length}`;
 }
 $('#btnCloseEquipment').onclick=closeEquipment;
 Object.assign(window.GL=window.GL||{},{openEquipment,closeEquipment,renderEquipment,systemCampLayout});
 
+let rosterSlot=0;
+function renderRoster(){
+ if(!run)return;rosterSlot=Math.min(rosterSlot,run.party.length,partyMax()-1);
+ $('#rosterNote').textContent=canChangeParty()?
+  `이번 원정에서 영입한 영웅입니다. 전투에는 ${partyMax()}명만 참여합니다. 팀 슬롯을 누른 뒤 영웅을 고르세요.`:
+  '교전·보스전 중에는 편성을 바꿀 수 없습니다. 전투가 끝나면 교체할 수 있습니다.';
+ $('#rosterSlots').innerHTML=Array.from({length:partyMax()},(_,i)=>{
+  const m=run.party[i];
+  return `<button data-roster-slot="${i}" class="${i===rosterSlot?'on':''}" ${i>run.party.length?'disabled':''}>
+   <small>팀 ${i+1}</small>${m?ptImg(m.stu,'face'):''}<b>${m?escTip(m.stu.name):'빈 슬롯'}</b></button>`;
+ }).join('');
+ $('#rosterMembers').innerHTML=recruitedMembers().map(m=>{
+  const active=run.party.indexOf(m),selected=active===rosterSlot;
+  const action=selected?'현재 편성':active>=0?'자리 바꾸기':`${rosterSlot+1}번에 편성`;
+  return `<button data-roster-member="${m.uid}" ${selected||!canChangeParty()?'disabled':''}>
+   ${ptImg(m.stu,'face')}<span><b>${escTip(m.stu.name)} ★${m.star}</b>
+   <small>${active>=0?'팀 '+(active+1):'대기'} · ${ROLES[m.stu.role]} · HP ${Math.round(m.hp/m.maxHp*100)}%</small>
+   <em>${action}</em></span></button>`;
+ }).join('');
+ $$('#rosterSlots [data-roster-slot]').forEach(b=>b.onclick=()=>{
+  rosterSlot=+b.dataset.rosterSlot;renderRoster();
+ });
+ $$('#rosterMembers [data-roster-member]').forEach(b=>b.onclick=()=>{
+  if(setPartySlot(rosterSlot,+b.dataset.rosterMember)){renderRoster();renderPanels();}
+ });
+}
+function openRoster(slot=0){
+ if(!run||run.ended||run.crateOpen)return;rosterSlot=slot;
+ renderRoster();MODAL.push('roster',true);$('#btnCloseRoster').focus();
+}
+function closeRoster(){MODAL.pop('roster');if(MODAL.has('shop'))renderShop();dirty=true;}
+{
+ const dialog=document.createElement('div');dialog.id='rosterDialog';dialog.className='modal';dialog.hidden=true;
+ dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');
+ dialog.setAttribute('aria-labelledby','rosterTitle');
+ dialog.innerHTML=`<div class="modal-box roster-box"><div class="mh"><h3 id="rosterTitle">팀 편성</h3>
+  <button class="btn ghost" id="btnCloseRoster">닫기</button></div><p id="rosterNote"></p>
+  <div id="rosterSlots"></div><div id="rosterMembers"></div></div>`;
+ document.body.appendChild(dialog);$('#btnCloseRoster').onclick=closeRoster;
+ MODAL_EL.roster='#rosterDialog';MODAL_BLOCK.roster=1;MODAL_PRIO.roster=5;
+}
+
 </script>
-<div style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="bc73132040e7b63b";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
+<script>(()=>{const version="d89ae0bad340ca26";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
