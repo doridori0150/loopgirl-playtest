@@ -4028,7 +4028,7 @@ const RELICS=[
   desc:'피로를 감수한 일반 교전에서 공격 강화 · E 클리어 후'},
  {id:'frailty_plate',name:'균열 장갑',icon:'🛡️',rarity:1,
   desc:'취약으로 잃은 기본 HP를 일반 교전 시작 보호막으로 전환 · B 클리어 후'},
- {id:'exposure_seal',name:'노출 인장',icon:'🔺',rarity:2,
+ {id:'exposure_seal',name:'노출 인장',icon:'🔺',rarity:2,challengeOnly:true,
   desc:'노출된 원래 무리의 공격을 견디고 소탕하면 도전 곱배수 · C 클리어 후'},
  /* v1.3 §21.10 기존 10종 재조정(상자로 유물을 고르기 쉬워진 만큼 평면 수치를 낮춘다) */
  {id:'halo',name:'결계 조각',icon:'🔷',rarity:0,desc:'계약 보상마다 OP +1'}, /* v1.4 R4 §18 헤일로 금지: 표시명·아이콘만 바꾼다(저장 ID halo 유지) */
@@ -7700,6 +7700,7 @@ relics: {
       "name": "노출 인장",
       "after": "C",
       "hazard": "exposure",
+      "challengeOnly": true,
       "role": "score",
       "pivotTags": [
         "facility"
@@ -12035,7 +12036,7 @@ const RECIPE_RELICS=(()=>{
    +`(최대 +${pct(cfg.atkCap)}%) · 피로 감소 없음`;
   if(id==='frailty_plate')return `취약으로 잃은 기본 HP의 ${pct(cfg.shieldPerLostHp)}%를 시작 보호막으로`
    +`(인당 최대 ${number(cfg.shieldCap)}) · 최대 HP 감소 유지`;
-  if(id==='exposure_seal')return `노출된 원래 무리의 공격을 실제 피해·보호막으로 견디고 소탕하면`
+  if(id==='exposure_seal')return `도전 전용 · 노출된 원래 무리의 공격을 실제 피해·보호막으로 견디고 소탕하면`
    +` 적 공격 증가 ${pct(cfg.riskStep)}%당 도전 ×배수 +${number(cfg.stepBp)/10000}`
    +`(최대 ×${number(cfg.maxBp)/10000}) · 무리당 1회`;
   return '';
@@ -12632,6 +12633,7 @@ function seedRng(key){let a=hashStr(String(run.seed)+'|'+key);return ()=>{a=(a+0
 /* §27.6 F: 재화 개편 전용 유물(적금 통장 등)은 스위치를 켠 판에서만, 마나석 전용 유물은 끔에서만 */
 const relicOk=id=>{const R=relicOf(id);if(!R||!run||run.relics.includes(id))return false;
  if(R.econ&&!econOn())return false;
+ if(R.challengeOnly&&run.mode!=='challenge')return false;
  if(econOn()&&(R.id==='contract'))return false;
  if(!curriculumRelicOpen(id))return false;
  return !R.cond||unlocked('relic2');};
@@ -22011,5 +22013,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="29a93dc48d942d18";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="c29912ea710efc58";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
