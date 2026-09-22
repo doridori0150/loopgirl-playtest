@@ -2436,6 +2436,58 @@ button,a,input,select{touch-action:manipulation}
  #s-academy #tree .branch.on { display:block; }
  .command-extra { grid-template-columns:1fr; }
 }
+/* Camp is a bounded supply console: one category and one selected tile. */
+#shop .camp-console { height:min(850px,96dvh);display:flex;flex-direction:column; }
+#shop .camp-console #shTabs { display:none!important; }
+#shop .camp-console #mobileCampNav { display:flex!important;flex:none;gap:6px;padding:10px 18px;background:#e1edf7; }
+#shop .camp-console #mobileCampNav button { flex:1;min-height:42px;border:1px solid #a9c5dc;
+ border-radius:9px;background:#f8fcff;color:#31536f;font-weight:800; }
+#shop .camp-console #mobileCampNav button[aria-pressed=true] { background:#245f8c;color:white; }
+#campStatus { display:flex;gap:18px;align-items:center;padding:10px 20px;background:#dceaf5;color:#254a65;font-size:12px; }
+#campStatus span { flex:1; }
+#shop .camp-console #shBody { display:grid!important;grid-template-columns:minmax(0,1fr) 250px;
+ gap:16px;overflow:auto;min-height:0;flex:1;padding:16px;align-content:start; }
+#shop .camp-console #shParty { grid-column:2;grid-row:1;display:flex;flex-direction:column;margin:0; }
+#shop .camp-console #shBody>:not(#shParty) { grid-column:1;grid-row:1;margin:0; }
+#shop .camp-console [hidden] { display:none!important; }
+#shop .camp-console .shpane:not([hidden]) { display:block!important; }
+#shop .camp-console .shstu:not([hidden]) { display:grid!important; }
+#shop .camp-console #collectionShop .draft-section { margin:10px 0 0;padding:12px; }
+#shop .draft-mode { display:flex;gap:6px; }
+#shop .draft-mode button { flex:1; }
+#shop #collectionShop .draft-mode button[aria-pressed=true] { background:#254f76;color:#fff; }
+#shop .draft-picker { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0; }
+#shop #collectionShop .draft-choice { display:block;padding:6px;min-width:0;background:#eaf3fc; }
+#shop #collectionShop .draft-choice[aria-pressed=true] { border:2px solid #188ad0;background:#d9efff; }
+#shop .draft-choice .draft-card-art { height:80px; }
+#shop .draft-choice .draft-card-name { margin-top:6px; }
+#shop .draft-choice .draft-card-name b { font-size:12px; }
+#shop .draft-choice .draft-card-name small { display:none; }
+#shop #collectionShop .draft-selected { display:block;margin:0; }
+#shop .draft-selected .draft-card-art { display:none; }
+#shop #collectionShop .draft-selected .draft-card { gap:6px; }
+#shop .draft-balance { font-variant-numeric:tabular-nums; }
+#shop .camp-console .mfoot { flex:none; }
+@media(max-width:720px){
+ #shop .camp-console { height:98dvh;max-height:98dvh; }
+ #shop .camp-console>.mh { padding:9px 12px; }
+ #shop .camp-console .mh .tag,#shop .camp-console .msub { display:none; }
+ #campStatus { padding:7px 12px;display:block;font-size:11px; }
+ #campStatus span { display:block;max-height:32px;overflow:auto;margin-top:3px; }
+ #shop .camp-console #mobileCampNav { padding:6px 10px;gap:4px; }
+ #shop .camp-console #shBody { display:block!important;padding:10px; }
+ #shop .camp-console #shParty { display:none; }
+ #shop .camp-console[data-camp-page=team] #shParty { display:grid;grid-template-columns:1fr 1fr;margin-bottom:10px; }
+ #shop .camp-console #collectionShop .draft-section>summary { display:none; }
+ #shop .draft-choice .draft-card-art { height:62px; }
+ #shop .draft-choice .draft-card-art>span { font-size:9px;padding:2px;left:2px;top:2px; }
+ #shop .camp-console .shbtns { padding:7px;gap:5px; }
+ #shop .camp-console .shbtns .btn { min-height:38px;font-size:12px; }
+}
+#shop .draft-priority { display:block;margin-top:4px;color:#36638a;font-size:10px; }
+#shop .draft-card-name small { color:#47667e!important; }
+#shop .camp-console #collectionShop .draft-card p { min-height:0; }
+#campStatus small { color:#355876; }
 </style>
 <style>/* Region and leader guidance share one compact surface across pointer and touch layouts. */
 .meta-run-toolbar{position:absolute;left:10px;top:8px;z-index:6;display:flex;gap:8px;align-items:center;
@@ -18761,6 +18813,47 @@ function renderRunDraft(host){
    action==='relocate'?api.relocate(ui.from,+host.querySelector('#draftMoveTo').value):false;
   if(ok)renderShop();
  });
+ compactRunDraft(host);
+}
+function compactRunDraft(host){
+ const ui=RUN_DRAFT_UI,sections=[...host.querySelectorAll(':scope>.draft-section')];
+ ui.section=ui.section||0;
+ const nav=document.createElement('nav');nav.className='draft-mode';
+ nav.setAttribute('aria-label','타일 구매 방식');
+ nav.innerHTML=['새 타일','손패 보충','타일 강화'].map((s,i)=>
+  `<button data-mode="${i}" aria-pressed="${ui.section===i}">${s}</button>`).join('');
+ host.prepend(nav);
+ const ordered=[sections[1],sections[0],sections[2]];
+ ordered.forEach((s,i)=>{s.hidden=ui.section!==i;if(s.tagName==='DETAILS')s.open=true;});
+ nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{ui.section=+b.dataset.mode;renderRunDraft(host);});
+ const grid=host.querySelector('.collection-grid'),cards=[...grid.children];
+ const picker=document.createElement('div');picker.className='draft-picker';
+ const offers=RUN_DRAFT.shop().offers,deckTags=new Set(run.deckList.flatMap(id=>RUN_DRAFT.tags(id)));
+ const priority=i=>{
+  const o=offers[i];if(!o)return 2;
+  const tags=RUN_DRAFT.tags(o.id);
+  if(tags.some(t=>['heal','shield'].includes(t)&&!deckTags.has(t)))return 0;
+  return tags.some(t=>deckTags.has(t))?1:2;
+ };
+ ui.selected=Math.min(ui.selected||0,Math.max(0,cards.length-1));
+ cards.forEach((card,i)=>{
+  const b=document.createElement('button');b.className='draft-choice';b.dataset.draftSelect=i;
+  b.setAttribute('aria-pressed',String(i===ui.selected));
+  b.innerHTML=card.querySelector('.draft-card-art').outerHTML+card.querySelector('.draft-card-name').outerHTML;
+  const rank=priority(i);b.style.order=rank;
+  b.innerHTML+=`<small class="draft-priority">${['생존 보완','빌드 강화','새 조합 실험'][rank]}</small>`;
+  b.onclick=()=>{ui.selected=i;renderRunDraft(host);};picker.appendChild(b);card.hidden=i!==ui.selected;
+  card.querySelectorAll('[data-draft-hand],[data-draft-buy]').forEach(action=>{
+   const price=Number(action.querySelector('.supply-price').textContent.replace(/[^0-9]/g,''));
+   const note=document.createElement('small');note.className='draft-balance';
+   note.textContent=run.op>=price?`구매 후 ${run.op-price} OP · 다른 투자에 쓸 OP ${price} 소비`:
+    `${price-run.op} OP 부족 · 보유 ${run.op} OP`;
+   action.after(note);
+  });
+ });
+ grid.before(picker);grid.classList.add('draft-selected');
+ const summary=host.querySelector(':scope>.supply-heading');if(summary)summary.hidden=true;
+ const intro=host.querySelector(':scope>p');if(intro)intro.hidden=true;
 }
 function runDraftRelocateHtml(){
  const s=RUN_DRAFT.init();if(!s.pivotUsed||s.relocated)return '';
@@ -20836,6 +20929,38 @@ function systemCampLayout(){
  }
  team.innerHTML=supplyIcon('team')+`<span>팀 편성 · 대기 ${(run.reserve||[]).length}</span>`;
  if(typeof mobileCampLayout==='function')mobileCampLayout();
+ systemCampConsole();
+}
+function systemCampConsole(){
+ const box=$('#shop .shopbox'),body=$('#shBody'),camp=run.shop.kind==='camp';
+ box.classList.toggle('camp-console',camp);
+ let status=$('#campStatus');
+ if(!status){status=document.createElement('div');status.id='campStatus';$('#shTabs').before(status);}
+ status.hidden=!camp;
+ const team=$('#shParty');
+ if(!camp){
+  if(team.parentElement===body)body.querySelector('.shlist').prepend(team);
+  body.querySelectorAll(':scope>.shpane').forEach(p=>p.hidden=false);
+  $('#campTools').hidden=false;return;
+ }
+ const down=run.party.filter(m=>m.down).length;
+ const hurt=run.party.filter(m=>!m.down&&m.hp<m.maxHp).length;
+ const rule=typeof leaderRuleOf==='function'?leaderRuleOf(run):null;
+ const tags=new Set(run.deckList.flatMap(id=>RUN_DRAFT.tags(id)));
+ const missing=[['heal','회복'],['shield','보호'],['tempo','카드·순환']]
+  .filter(([tag])=>!tags.has(tag)).map(([,name])=>name);
+ status.innerHTML=`<b>생존 ${run.party.length-down} · 부상 ${hurt} · 전투불능 ${down}</b>`+
+  `<span>${rule?escTip(rule.name+' · '+rule.action):'리더 규칙 없음'}</span>`+
+  `<small>덱 보완: ${missing.join(' · ')||'회복·보호·순환 보유'}</small>`;
+ const nav=$('#mobileCampNav');
+ if(nav){nav.classList.add('camp-console-tabs');nav.onclick=()=>systemCampConsole();}
+ if(team.parentElement!==body)body.prepend(team);
+ const tab=body.dataset.mobileCamp||'tiles';box.dataset.campPage=tab;
+ body.querySelectorAll(':scope>.shpane').forEach(p=>{
+  p.hidden=p.dataset.pane!==(tab==='packs'?'crates':tab==='team'?'offers':'none');
+ });
+ $('#collectionShop').hidden=tab!=='tiles';$('#campTools').hidden=tab!=='tools';
+ if(tab==='tools')$('#campTools').open=true;
 }
 function equipmentSlotsHtml(m,selectable){
  return ['weapon','armor','acc'].map(slot=>{const it=m.equip[slot];return `<button class="equipment-slot${it?' filled':''}" ${selectable?`data-gear-slot="${slot}"`:'disabled'}><span>${SLOT_ICON[slot]} ${SLOT_NAME[slot]}</span><b>${it?escTip(it.name):'빈 슬롯'}</b><small>${it?escTip(statStr(it)):'장비를 골라 장착'}</small></button>`;}).join('');
@@ -21208,5 +21333,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="9a34ccc9b07bdfb9";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="563fdc5898af4235";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
