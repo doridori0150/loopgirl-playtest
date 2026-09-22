@@ -1,7 +1,7 @@
 {
   "channel": "character-b",
-  "version": "1d1d6ebc846325d0",
-  "builtAt": "2026-09-22T13:57:20.898Z",
+  "version": "29a93dc48d942d18",
+  "builtAt": "2026-09-22T14:22:42.019Z",
   "students": [
     "harin",
     "chaewon",
@@ -27,6 +27,8 @@
   "baseline_sha256": "57c4161501d735a7d5fde4bd74bfaeaa7b50f5afa7a2d06327e053f77ba0b970",
   "acquisitionVersion": 3,
   "packResearchVersion": 1,
-  "scoreRules": "challenge-v3.1-space",
-  "tileSpaceVersion": 4
+  "scoreRules": "challenge-v3.2-recipes",
+  "tileSpaceVersion": 4,
+  "recipeVersion": 5,
+  "enemyGrowthEditorVersion": 1
 }

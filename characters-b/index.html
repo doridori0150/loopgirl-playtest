@@ -2639,6 +2639,51 @@ button,a,input,select{touch-action:manipulation}
  #mobileOfficeBar #mobileFacilityList{padding:8px 9px}
 }
 </style>
+<style>#codex.recipe-codex{display:block;flex:none;overflow:visible;min-width:0;color:#eaf1fd}
+.rcx-shell{border:1px solid #405b79;background:#101e32;border-radius:12px;padding:12px;margin:10px 0}
+.rcx-heading{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.rcx-heading h3{font-size:17px;margin:0 0 5px;color:#f1f7ff}
+.rcx-heading h3 span{font-size:12px;font-weight:500;color:#8cdcc8;white-space:nowrap}
+.rcx-heading p,.rcx-empty{font-size:12px;line-height:1.55;color:#adbed6;margin:0}
+.rcx-heading>.btn{flex:none;white-space:nowrap}
+.rcx-filters{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.rcx-filters label{display:flex;align-items:center;gap:6px;font-size:12px;color:#c4d4e9}
+.rcx-filters select{background:#1e324d;border:1px solid #617a9a;border-radius:7px;color:#f2f6fc;
+ padding:8px;min-height:36px;font:inherit}
+.rcx-layout{display:grid;grid-template-columns:minmax(180px,.85fr) minmax(230px,1.15fr);gap:12px}
+.rcx-list{display:flex;flex-direction:column;gap:6px;max-height:470px;overflow:auto;padding:1px 5px 1px 1px}
+.rcx-item{display:flex;gap:9px;align-items:center;flex-shrink:0;text-align:left;min-width:0;min-height:62px;
+ background:#182941;border:1px solid #425571;border-radius:9px;color:#b5c7df;padding:8px;cursor:pointer}
+.rcx-item:hover,.rcx-item:focus-visible{background:#213951;border-color:#a5c9ff;outline-offset:2px}
+.rcx-item.is-found{color:#edf4ff}.rcx-item.is-selected{border-color:#68dec2;box-shadow:inset 3px 0 #68dec2}
+.rcx-item>span:last-child{min-width:0}.rcx-item b{font-size:13px;line-height:1.35;display:block}
+.rcx-item small{display:block;margin-top:4px;font-size:11px;color:#a6b9d1;line-height:1.35}
+.rcx-thumb{flex:none;width:40px;height:40px;display:grid;place-items:center;border-radius:6px;
+ background:#0d1728;font-size:24px;overflow:hidden}.rcx-thumb img{width:100%;height:100%;object-fit:contain}
+.rcx-unknown{color:#8498b5;font-weight:700}.rcx-detail-host{min-width:0}
+.rcx-detail{border-radius:9px;padding:12px;background:#182941;border:1px solid #425571}
+.rcx-detail header{display:flex;gap:10px;align-items:center}.rcx-detail header>div{min-width:0}
+.rcx-detail-art{flex:none;display:grid;place-items:center;width:64px;height:64px;background:#0e192b;
+ border:1px solid #425571;border-radius:8px;font-size:32px}
+.rcx-detail-art img{width:100%;height:100%;object-fit:contain}.rcx-detail h4{margin:4px 0;font-size:16px}
+.rcx-detail small{font-size:11px;color:#a6b9d1}.rcx-recorded{font-size:11px;color:#83dec1}
+.rcx-detail h5{font-size:12px;color:#b7d3f4;margin:14px 0 5px}
+.rcx-detail p{font-size:12px;color:#dbe6f6;line-height:1.65;margin:4px 0;overflow-wrap:anywhere}
+.rcx-materials{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.rcx-materials>span{display:flex;align-items:center;gap:4px;border:1px solid #536982;border-radius:6px;
+ padding:4px 6px;font-size:11px}.rcx-materials img{width:25px;height:25px;object-fit:contain}
+.rcx-effects{display:grid;gap:8px;margin-top:12px}.rcx-effects>section{background:#123a36;border-radius:7px;padding:9px}
+.rcx-effects h5{margin:0 0 4px;color:#9af0cc}.rcx-effects .rcx-cost{background:#392e31}
+.rcx-cost h5{color:#ffc39d}.rcx-related{border-top:1px solid #425571;margin-top:12px}
+.rcx-related p{padding:6px 0}.rcx-related p span,.rcx-related p small{display:block;margin-top:4px}
+.rcx-empty{padding:16px}.collection-recipe-entry{margin:0 0 10px}
+@media(max-width:700px){
+ .rcx-heading{flex-wrap:wrap}.rcx-heading>.btn{min-height:36px}
+ .rcx-layout{grid-template-columns:1fr}.rcx-list{max-height:230px}
+ .rcx-shell{padding:10px}.rcx-detail{padding:10px}.rcx-heading h3{font-size:16px}
+ .rcx-filters{gap:8px}.rcx-detail-art{width:54px;height:54px}
+}
+</style>
 </head>
 <body>
 
@@ -2862,7 +2907,7 @@ button,a,input,select{touch-action:manipulation}
         <div class="fac" id="quests"></div>
       </div>
       <div class="atab" data-t="codex">
-        <div class="kbd shint">유물 풀(해금 표) · 서명 변신 24 + 조합 13 + 체인 5 · 첫 발견 시 마나석 20</div>
+        <div class="kbd shint">발견한 타일과 조합을 기록합니다. 미발견 조합은 ??로 표시됩니다.</div>
         <div class="relicpool" id="relicPool"></div>
         <div id="collectionCodex"></div><div class="codex" id="codex"></div>
       </div>
@@ -3194,7 +3239,7 @@ const GATES=[
 {const CT={E:['wall','tent','drone'],D:['gate','clinic','sig_ara'],C:['heliport','bunker','sig_seoyul'],B:['spring','altar','scope'],A:['hq','rally','sig_eunha'],S:['lens','flag','sig_dahye']};for(const g of GATES)g.counter=CT[g.id]||[];}
 const gate=()=>{const g=GATES.find(g=>g.id===meta.gate)||GATES[0];return typeof campaignGate==='function'?campaignGate(g):g;};
 // 게이트 배율은 랩 1~3에 점진 적용(랩 4부터 100%) — 상위 게이트의 초반 급사 방지
-const gateMult=base=>1+(base-1)*clamp((run.lap-1)/3,0,1);
+const gateMult=(base,lap=run.lap)=>1+(base-1)*clamp((lap-1)/Math.max(.01,BAL.enemyGrowth.gateRampLaps),0,1);
 /* §27.6 i 4인 기준 고정(econ2): 정원은 인원 가변 없이 BAL.econ.partyMax. 작전실은 출격 고용 후보 +1 로 바뀐다(i-2) */
 const partyMax=()=>(BAL.econ2?BAL.econ.partyMax:3+(meta.upg.ops||0));
 const RARITY=[{name:'일반',color:'#6f7d9c'},{name:'희귀',color:'#128cff'},{name:'영웅',color:'#a855f7'}];
@@ -3638,19 +3683,58 @@ function configureTileSpaceV4(){
    desc:'{spawn:이름} 무리 · 해당 무리 소탕 후 생존자 HP {clearHeal} 회복(타일·랩 회복 한도 공유)'},
   sd_archive:{club:'assoc',cls:'side',type:'side',name:'임시 서고',icon:'📚',src:'sd_books',
    spaceUnlock:'D',w:2,archiveUses:3,
-   desc:'인접 도로 첫 통과마다 카드 1장 교환(랩 1회) · 3회 사용하면 사념을 부르는 금서 서고로 변질'},
+   desc:'인접 도로 첫 통과마다 카드 1장 교환(랩 1회) · {archiveUses}회 사용하면 사념을 부르는 금서 서고로 변질'},
   ld_training:{club:'assoc',cls:'land',type:'land',name:'훈련 구획',icon:'🎯',src:'hq',
    spaceUnlock:'E',w:3,trainingXp:1,
-   desc:'보상 있는 무리 소탕 XP +{trainingXp}(시설 합계 +8) · 2×2 배치 시 한 칸이 합동 훈련장으로'},
+   desc:'보상 있는 무리 소탕 XP +{trainingXp}(시설 합계 +{BAL.recipeV5.trainingXpCap}) · 2×2 배치 시 한 칸이 합동 훈련장으로'},
   sd_forbidden:{club:'assoc',cls:'side',type:'side',tile:true,name:'금서 서고',icon:'📕',src:'sd_books',
    sideSpawn:'phantom',contract:{op:1,xp:12,card:1},
    desc:'랩마다 인접 도로에 사념 1체 · 소탕 OP {contract.op}·XP {contract.xp}·카드 {contract.card}장'},
   ld_campus:{club:'assoc',cls:'land',type:'land',tile:true,name:'합동 훈련장',icon:'🏫',src:'hq',
-   trainingXp:4,desc:'훈련 구획 2×2 유지 시 무리 소탕 XP +{trainingXp}(시설 합계 +8)'},
+   trainingXp:4,desc:'훈련 구획 2×2 유지 시 무리 소탕 XP +{trainingXp}(시설 합계 +{BAL.recipeV5.trainingXpCap})'},
   ld_oasis:{club:'assoc',cls:'land',type:'field',tile:true,name:'정화 수로',icon:'💧',src:'ld_river',
    field:{radius:1,slow:.06},selfSlow:.01,
-   desc:'먼지 지대 + 물길 인접 · 주변 {field.radius}칸 이형 공속 −{field.slow%}% · 아군 −{selfSlow%}%(최대 −5%)'}
+   desc:'먼지 지대 + 물길 인접 · 주변 {field.radius}칸 이형 공속 −{field.slow%}% · 아군 −{selfSlow%}%(최대 −{BAL.recipeV5.selfSlowCap%}%)'}
  });
+ configureRecipeV5();
+}
+/* v5: result cards are discovered on the board, never drawn from packs. */
+function configureRecipeV5(){
+ const add=(id,from,adj,after,name,icon,effects,desc,priority=10)=>{
+  const b=CARDS[from];
+  CARDS[id]={club:b.club,cls:b.cls,type:b.cls==='side'?'side':'land',tile:true,
+   name,icon,src:b.src||from,recipe:{from,adj,after,need:1,priority},...effects,desc};
+ };
+ add('r_sanctuary','tent','ld_park','E','유인 치료소','🏥',
+  {field:{radius:1,heal:12,riskAtk:.08}},
+  '주변 {field.radius}칸 교전 회복 {field.heal} · 대가: 해당 일반 이형 공격 +{field.riskAtk%}%');
+ add('r_thicket','ld_trees','ld_park','E','수호 수림','🌳',
+  {field:{radius:1,shield:8},selfSlow:.01},
+  '주변 {field.radius}칸 교전 보호막 {field.shield} · 대가: 아군 공속 −{selfSlow%}%');
+ add('r_ash','ld_trees','bf_turret','D','잿빛 포격림','🔥',
+  {field:{radius:1,dmg:3,riskAtk:.15}},
+  '주변 {field.radius}칸 추가 피해 {field.dmg} · 대가: 해당 일반 이형 공격 +{field.riskAtk%}%',20);
+ add('r_trial','ld_training','ld_dust','D','극한 훈련장','🎯',
+  {trainingXp:3,selfSlow:.02},
+  '보상 있는 무리 소탕 XP +{trainingXp}(시설 합산 상한) · 대가: 아군 공속 −{selfSlow%}%');
+ add('r_sluice','sd_archive','ld_river','C','침수 자료실','📘',
+  {relocated:true,enter:{card:1},field:{radius:1,riskAtk:.12}},
+  '인접 도로 첫 통과 카드 +{enter.card}(랩 1회) · 대가: 주변 {field.radius}칸 일반 이형 공격 +{field.riskAtk%}%');
+ add('r_quarry','ld_hill','rd_scrapyard','C','위험 채굴장','⛏️',
+  {field:{radius:1,xp:.30},selfHpCost:.03},
+  '주변 {field.radius}칸 소탕 XP +{field.xp%}% · 대가: 기본 최대 HP −{selfHpCost%}%');
+ add('r_thorns','wall','sd_blood','B','가시 방벽','🌵',
+  {relocated:true,sup:{shield:18},field:{radius:1,riskAtk:.20}},
+  '인접 교전 주지원 보호막 {sup.shield} · 대가: 주변 {field.radius}칸 일반 이형 공격 +{field.riskAtk%}%');
+ add('r_prism','vein','ld_river','B','균열 결정원','🔮',
+  {relocated:true,pas:{crit:.06},selfHpCost:.04},
+  '전원 치명타 +{pas.crit%}%(동일 시설 최강 1곳) · 대가: 기본 최대 HP −{selfHpCost%}%');
+ add('r_forbidden_hq','hq','sd_forbidden','A','금서 지휘소','📕',
+  {field:{radius:2,dmg:5,xp:.15,riskAtk:.12}},
+  '주변 {field.radius}칸 추가 피해 {field.dmg}·XP +{field.xp%}% · 대가: 일반 이형 공격 +{field.riskAtk%}%');
+ add('r_tide_engine','bf_capacitor','ld_oasis','A','역류 충전소','🌊',
+  {field:{radius:1,killEx:3,slow:.04},selfSlow:.03},
+  '주변 {field.radius}칸 처치 EX +{field.killEx}·이형 공속 −{field.slow%}% · 대가: 아군 공속 −{selfSlow%}%');
 }
 const LAND_RULES={
  thresholds:[{id:'outpost',card:'ld_hill',icon:'⛰',name:'이형 전초기지',need:()=>BAL.land.hillPer,repeat:true,desc:'언덕 N개마다 전초기지 자동 생성(랩마다 정예)'},
@@ -3788,6 +3872,10 @@ const contractStr=c=>{const k=c.contract;if(!k)return '';const p=[`${BAL.econ2?'
  * GL.progress smart 12계정×200런 첫 S P50 = 시드 1·2·3·4 → 60·59·58·67, 트리·시설 소진 P50 47~51런. missionMana 90 → 70 = 런 중 마나 감소분(×1.15/1.5)만큼 과제 목표를 같이 낮춤.
  * v1.4 R4 지형 결계(land): 기본 능력치 기준 가산(base) + 합계 상한(hpCap 0.40 · spdCap 0.18) + 언덕 0.05 → 0.10 · 가로수 0.04 → 0.06 — 결계 − 체인(360런/셀) E +12.0 · C +9.4 · S +11.4(옛 곱셈 +10.0 · +11.1 · +28.9) */
 const BAL={
+ enemyGrowth:{bossHpPerLap:.05,bossAtkPerLap:1,bossDefPerLap:.4,bossEvoAtkRatio:.5,gateRampLaps:3},
+ recipeV5:{selfSlowCap:.12,selfHpCap:.20,trainingXpCap:12,relics:{
+  fatigue_coil:{atkPerSlow:3,atkCap:.3},frailty_plate:{shieldPerLostHp:.75,shieldCap:30},
+  exposure_seal:{riskStep:.05,stepBp:5000,maxBp:30000}}},
  riskSpawnMs:30000,riskFieldHeal:0.5,riskForecastFightMs:30000,
  trauma:{hpKeep:0.6,atkKeep:0.6,minWins:3,returnCodes:1,bossCodes:2,codeCost:1},
  /* v1.4 §22.5·§22.10 호감도: 경험치 = 동행 출전(xpRun, 주 수급) + 학원가 교류(xpVisit) + 대화 선택지(xpTalk × n). lv[k] = Lv(k+1) 도달에 필요한 누적 경험치(Lv1~10). 능력치 보너스 = Lv당 statPer, 최대 statMax(HP·공격)
@@ -3936,6 +4024,12 @@ const HERO_DESCRIPTIONS={
 };
 for(const s of STUDENTS){const ds=HERO_DESCRIPTIONS[s.id];Object.defineProperty(s.trait,'desc',{enumerable:true,get:ds[0]});Object.defineProperty(s.ex,'desc',{enumerable:true,get:ds[1]});}
 const RELICS=[
+ {id:'fatigue_coil',name:'피로 코일',icon:'🌀',rarity:1,
+  desc:'피로를 감수한 일반 교전에서 공격 강화 · E 클리어 후'},
+ {id:'frailty_plate',name:'균열 장갑',icon:'🛡️',rarity:1,
+  desc:'취약으로 잃은 기본 HP를 일반 교전 시작 보호막으로 전환 · B 클리어 후'},
+ {id:'exposure_seal',name:'노출 인장',icon:'🔺',rarity:2,
+  desc:'노출된 원래 무리의 공격을 견디고 소탕하면 도전 곱배수 · C 클리어 후'},
  /* v1.3 §21.10 기존 10종 재조정(상자로 유물을 고르기 쉬워진 만큼 평면 수치를 낮춘다) */
  {id:'halo',name:'결계 조각',icon:'🔷',rarity:0,desc:'계약 보상마다 OP +1'}, /* v1.4 R4 §18 헤일로 금지: 표시명·아이콘만 바꾼다(저장 ID halo 유지) */
  {id:'contract',name:'협회 계약서',icon:'📜',rarity:0,desc:'마나석 획득 ×1.3'},
@@ -3997,11 +4091,14 @@ const RELIC_DESCRIPTIONS={
  scope:()=>`살아 있는 후열 원거리 학생당 전원 치명 +${tunePct(relicTune('scope').crit)}%p`,
 };
 for(const r of RELICS){
+ const originalDesc=Object.getOwnPropertyDescriptor(r,'desc');
  Object.defineProperty(r,'desc',{enumerable:true,get:()=>{
+  const recipeText=globalThis.RECIPE_RELICS?.describe?.(r.id);if(recipeText)return recipeText;
   const revised=['savings','plate','lucky','lens','stamp','ledger','neardeath','frontmap',
    'survey','specimen','scope'];
   const definition=globalThis.CHALLENGE_V2?.relicDefinition?.(r.id);
-  return definition&&revised.includes(r.id)?definition.desc:RELIC_DESCRIPTIONS[r.id]();
+  return definition&&revised.includes(r.id)?definition.desc:
+   RELIC_DESCRIPTIONS[r.id]?.()||(originalDesc?.get?originalDesc.get.call(r):originalDesc?.value)||'';
  }});
  if(r.cond)r.now=(run,ctx)=>r.when(run,ctx)?`현재 효과: ${r.target==='score'||r.target==='xp'?'×':'+'}${['atkPct','heal','drop','crit'].includes(r.target)?tunePct(r.mult(run,ctx))+'%':+r.mult(run,ctx).toFixed(3)}`:'조건 미달 — '+r.desc;
 }
@@ -4404,6 +4501,12 @@ window.LG_OVERRIDES = {
 const BALANCE_GLOBAL_FIELDS=(()=>{
   /* 전역 묶음(카드가 아닌 묶음 — 도구의 「전역 수치」 탭) · hint = 한 줄 설명 · scope = 영향 범위 · chain = 미리보기 대상 체인 */
   const GROUP_DEFS = [
+    {id:'g_enemy_growth',cat:'global',name:'이형 · 루프 성장',icon:'📈',
+      hint:'일반 이형과 보스의 랩 성장 · 지역 배율 적용 속도 · 보스 진화',
+      scope:'1랩은 성장 0회 · 일반 HP는 지역 h 우선 · 기존에 생성된 적은 유지'},
+    {id:'g_recipe_v5',cat:'global',name:'단계형 조합 · 위험 전환',icon:'⚗',
+      hint:'아군 공속·HP 대가와 훈련 XP 합계 상한 · 위험 전환 유물',
+      scope:'실제 배치·일반 전투 증명·해당 무리 점수에 적용 · 영구 보상과 분리'},
     {id:'g_command',cat:'global',name:'지휘실 · 강화 비용',icon:'🧭',
       hint:'SP만 사용 · 기초 1/2/4/6, 핵심 2/4/8/12 · 1계열 52 SP',scope:'신규 구매 비용 · 기존 구매 원장 보존'},
     {id:'g_affection',cat:'global',name:'호감도 · 선물 · 특전',icon:'🎁',
@@ -4464,6 +4567,26 @@ const BALANCE_GLOBAL_FIELDS=(()=>{
     ['perk.counter.0','특성 · 반격 확률','pct',0,1,'g_style'],['perk.counter.1','특성 · 반격 피해 계수','mul',0,10,'g_style'],
   ];
   const BAL_ITEMS = [
+    ['BAL.recipeV5.selfSlowCap','아군 공속 감소 합계 상한','pct',[0,.8],[0,.3],
+      '위험 타일의 selfSlow를 합산한 뒤 제한','g_recipe_v5'],
+    ['BAL.recipeV5.selfHpCap','기본 최대 HP 감소 합계 상한','pct',[0,.8],[0,.4],
+      '위험 타일의 selfHpCost를 합산한 뒤 제한','g_recipe_v5'],
+    ['BAL.recipeV5.trainingXpCap','소탕 훈련 XP 합계 상한','int',[0,100],[0,30],
+      '보상 무리 1회 소탕에서 지도 훈련 XP 합계를 제한','g_recipe_v5'],
+    ['BAL.recipeV5.relics.fatigue_coil.atkPerSlow','피로 코일 · 공속 대가당 공격 계수','num',[0,10],[0,10],
+      '실제 적용된 아군 공속 감소 × 계수만큼 공격 증가','g_recipe_v5'],
+    ['BAL.recipeV5.relics.fatigue_coil.atkCap','피로 코일 · 공격 증가 상한','pct',[0,1],[0,1],
+      '위험 전환으로 얻는 공격 증가율 상한','g_recipe_v5'],
+    ['BAL.recipeV5.relics.frailty_plate.shieldPerLostHp','취약 판금 · 잃은 기본 HP당 보호막','num',[0,5],[0,5],
+      '실제 기본 HP 감소량 × 계수 · 교전 시작에 적용','g_recipe_v5'],
+    ['BAL.recipeV5.relics.frailty_plate.shieldCap','취약 판금 · 보호막 상한','int',[0,200],[0,200],
+      '유물의 전투 시작 보호막 최대값','g_recipe_v5'],
+    ['BAL.recipeV5.relics.exposure_seal.riskStep','노출 인장 · 적 공격 증가 구간','pct',[.01,1],[.01,1],
+      '실제 일반 전투의 적 공격 증가율을 이 간격으로 나눔','g_recipe_v5'],
+    ['BAL.recipeV5.relics.exposure_seal.stepBp','노출 인장 · 구간당 곱배수 증가(bp)','int',[0,20000],[0,20000],
+      '10000 bp = ×1 · 실제 위험 전투를 거친 원본 무리 소탕에만 적용','g_recipe_v5'],
+    ['BAL.recipeV5.relics.exposure_seal.maxBp','노출 인장 · 점수 곱배수 상한(bp)','int',[10000,80000],
+      [10000,80000],'10000 bp = ×1 · 다른 유물의 곱배수는 별도','g_recipe_v5'],
     ['BAL.affection.wallpaperLevel','호감 특전 · 배경화면 레벨','int',[2,10],[2,10],
       '캐릭터별 로비 일러스트 지급 · 이미 받은 보상은 유지','g_affection'],
     ['BAL.affection.costumeLevel','호감 특전 · 전투 코스튬 레벨','int',[2,10],[2,10],
@@ -4525,9 +4648,30 @@ const BALANCE_GLOBAL_FIELDS=(()=>{
     ['BAL.econ.wisp.front','재화 v2 · 전선 위스프 확률','pct',[0,1],[0.2,0.6],'재화 v2에서 전선 무리에 위스프가 합류할 확률','g_tension'],
     ['BAL.econ.dry.need','재화 v2 · 캠프 보충 손패 기준','int',[0,10],[1,3],'캠프 통과 때 손패 + 이번 루프 처분 수가 이 수 이하이면 카드 보충','g_tension'],
     ['BAL.econ.dry.give','재화 v2 · 캠프 보충 카드 수','int',[0,5],[1,2],'손패 부족 조건을 만족할 때 캠프에서 주는 카드 수','g_tension'],
-    ['BAL.lapHpMul','루프 HP 성장 배율','mul',[0,5],[0.5,1.5],'게이트의 HP 루프 계수에 곱한다. 이미 생성된 적은 유지','g_tension',{step:0.05}],
-    ['BAL.atkScale','루프당 적 공격 증가','num',[0,30],[1,5],'일반 적의 기본 공격에 루프마다 더함(게이트·과밀 배율 전)','g_tension',{step:0.1}],
-    ['BAL.defScale','루프당 적 방어 증가','num',[0,10],[0,2],'일반 적의 기본 방어에 루프마다 더함','g_tension',{step:0.1}],
+    ['BAL.lapHpMul','일반 HP · 지역 성장 공통 배율','mul',[0,5],[0.5,1.5],
+      '지역 h × 이 값 × (랩−1)을 기본 HP에 더함 · 모든 지역 일반 이형에 적용','g_enemy_growth',{step:.05}],
+    ['BAL.hpScale','일반 HP · 지역 계수 누락 시 기본값','pct',[0,2],[0,.6],
+      '지역 h가 없을 때만 사용 · 현재 E~S는 모두 지역 h를 사용','g_enemy_growth',{step:.01}],
+    ['BAL.atkScale','일반 · 루프당 기본 공격 증가','num',[0,30],[0,5],
+      '일반 적 기본 공격에 (랩−1)회 더함 · 이후 지역/난도/과밀 배율 적용','g_enemy_growth',{step:.1}],
+    ['BAL.defScale','일반 · 루프당 기본 방어 증가','num',[0,10],[0,2],
+      '일반 적 기본 방어에 (랩−1)회 더함 · 지역 HP/공격 배율과 무관','g_enemy_growth',{step:.1}],
+    ['BAL.enemyGrowth.bossHpPerLap','보스 · 루프당 기본 HP 증가율','pct',[0,2],[0,.3],
+      '복리 없이 기본 HP × (1 + 증가율 × (랩−1)) · 이후 지역/인원/진화 보정','g_enemy_growth'],
+    ['BAL.enemyGrowth.bossAtkPerLap','보스 · 루프당 기본 공격 증가','num',[0,30],[0,5],
+      '기본 공격에 (랩−1)회 더함 · 일반 공격 성장값과 별도','g_enemy_growth',{step:.1}],
+    ['BAL.enemyGrowth.bossDefPerLap','보스 · 루프당 기본 방어 증가','num',[0,10],[0,2],
+      '기본 방어에 (랩−1)회 더함 · 일반 방어 성장값과 별도','g_enemy_growth',{step:.1}],
+    ['BAL.enemyGrowth.gateRampLaps','지역 배율 · 완전 적용까지 추가 랩','num',[.01,30],[1,10],
+      '기본 3이면 1랩 0% → 4랩 100% 적용 · 일반/보스·일반/위험 난도 공통','g_enemy_growth',{step:.1}],
+    ['BAL.bossEvo','보스 · 진화 1회당 HP 증가율','pct',[0,2],[0,.3],
+      '발생한 이형 진화 수만큼 HP에 가산 · 루프 성장과 별개','g_enemy_growth'],
+    ['BAL.enemyGrowth.bossEvoAtkRatio','보스 · 진화 공격 성장 비중','mul',[0,5],[0,2],
+      '보스 진화 HP 증가율 × 이 비중 × 진화 수만큼 공격 증가','g_enemy_growth'],
+    ['BAL.bossN.0','기존 경제 · 보스 HP 기본 배율','mul',[0,5],[0,2],
+      '재화 개편 OFF에서만 적용 · 개편 ON은 고정 보스 HP 배율 사용','g_enemy_growth'],
+    ['BAL.bossN.1','기존 경제 · 분대 1인당 보스 HP 배율','mul',[0,5],[0,2],
+      '재화 개편 OFF에서만 인원에 비례 · 개편 ON은 인원 영향 없음','g_enemy_growth'],
     ['BAL.star','별 승급 성장률','pct',[0,1],[0.1,0.4],'학생 별 등급당 기본 HP·공격·방어 성장률','g_tension',{step:0.01}],
     ...STUDENTS.flatMap(s=>[
       ['hp','기본 HP','int',1,5000],['atk','기본 공격','int',1,500],['def','기본 방어','int',0,200],['spd','공격속도 배율 (1 = 0.8초)','mul',0.1,5],['crit','기본 치명타','pct',0,1]
@@ -4537,7 +4681,9 @@ const BALANCE_GLOBAL_FIELDS=(()=>{
     ].map(([k,n,t,lo,hi])=>[`ENEMIES.${id}.${k}`,n,t,[lo,hi],[Math.max(lo,e[k]*0.5),Math.min(hi,e[k]*1.5)],'보정 전 기본값 · 무리 계약 보상은 타일에서 조절','enemy_'+id,{step:t==='int'?1:0.01}])),
     ...GATES.flatMap(g=>[
       ['hp','적 HP 배율','mul',0.1,30],['atk','적 공격 배율','mul',0.1,30],['h','일반 적 HP 루프 계수','pct',0,2],['T','시작 T','int',30,2000],['reward','기본 보상 배율','mul',0,10]
-    ].map(([k,n,t,lo,hi])=>[`GATES.${g.id}.${k}`,n,t,[lo,hi],[Math.max(lo,g[k]*0.5),Math.min(hi,g[k]*1.5)],'게이트 보정값 · 일반 적 배율은 초반 루프에 점진 적용','gate_'+g.id,{step:t==='int'?1:0.01}])),
+    ].map(([k,n,t,lo,hi])=>[`GATES.${g.id}.${k}`,n,t,[lo,hi],[Math.max(lo,g[k]*.5),Math.min(hi,g[k]*1.5)],
+      k==='h'?'일반 HP 성장의 우선 계수 · 공통 HP 성장 배율과 곱함 · 보스에는 미적용'
+      :'지역 보정값 · HP/공격은 일반/보스 모두 초반 랩에 점진 적용','gate_'+g.id,{step:t==='int'?1:.01}])),
     ['BAL.placeBrake', '도로 소환 배치 브레이크', 'pct', [0, 0.2], [0.01, 0.06], '소환 카드를 놓을 때 줄어드는 브레이크(시작 T 대비). 도로 지원 카드는 무료', 'g_place', { step: 0.005 }],
     ['BAL.brake.side', '길가 배치 브레이크', 'pct', [0, 0.2], [0.01, 0.04], '길가 결계를 놓을 때 줄어드는 브레이크(시작 T 대비, 최소 T 1)', 'g_place', { step: 0.005 }],
     ['BAL.brake.land', '지형 배치 브레이크', 'pct', [0, 0.2], [0.005, 0.03], '지형 결계를 놓을 때 줄어드는 브레이크(시작 T 대비, 최소 T 1)', 'g_place', { step: 0.005 }],
@@ -4755,6 +4901,15 @@ const BALANCE_GLOBAL_FIELDS=(()=>{
   };
   /* 카드 필드 규격: [카드 기준 경로, 이름, 종류, 허용 [min,max], 설명, 추가{rec 권장 고정, only 대상 카드 조건, opts 목록}] — 쓰임새는 game.js 에서 확인한 것만 */
   const CARD_FIELDS = [
+    ['recipe.after','조합 해금 단계','enum',null,'해당 지역 첫 클리어 이후 · 발견 기록은 별도',
+      {opts:['E','D','C','B','A'],labels:['E 클리어','D 클리어','C 클리어','B 클리어','A 클리어']}],
+    ['recipe.need','인접 재료 필요 수','int',[1,8],'주변 8칸에서 필요한 인접 재료 개수'],
+    ['recipe.priority','조합 우선순위','int',[0,1000],'동시에 성립하는 레시피 중 큰 값 우선'],
+    ['selfSlow','대가 · 아군 공속 감소','pct',[0,.8],'지도에 놓인 위험 타일 합산 · 전역 공속 감소 상한 적용'],
+    ['selfHpCost','대가 · 기본 최대 HP 감소','pct',[0,.8],'기본 HP 기준 감소 · 전역 HP 감소 상한 적용'],
+    ['trainingXp','소탕 훈련 XP','int',[0,100],'보상 무리 소탕마다 추가 · 전역 훈련 XP 상한 적용'],
+    ['clearHeal','소탕 고정 회복','int',[0,100],'이 타일 무리 소탕 후 생존자 HP 회복 · 타일/랩 회복 한도 공유'],
+    ['archiveUses','서고 변질까지 사용 수','int',[1,20],'랩 첫 통과 교환 누적 횟수 · 도달하면 금서 서고로 변질'],
     ['field.radius','지원 반경','int',[1,4],'보드 시설 범위 안의 도로에 적용 · 같은 시설은 가장 강한 하나'],
     ['field.targets','지원 도로 칸 수','int',[1,8],'반경 내 가까운 도로부터 선택 · 같은 거리면 도로 진행 순서'],
     ['field.dmg','범위 추가 피해','num',[0,50],'보드 시설 범위 안의 도로에 적용 · 같은 시설은 가장 강한 하나'],
@@ -4900,7 +5055,8 @@ const BALANCE_GLOBAL_FIELDS=(()=>{
     const g = cardGroup(id), e = { path: `CARDS.${id}.${pathRel || rel}`, name: (prefix || '') + name, kind, def: v, group: g.id, card: id, desc };
     if (kind === 'enum') {
       e.opts = extra.opts || (rel === 'spawn' ? ENEMY_OPTS : [v]);
-      e.labels = rel === 'spawn' ? e.opts.map(k => ENEMIES[k].name) : e.opts.map(o => ({ 1: '1칸', h2: '가로 2칸', v2: '세로 2칸' }[o] || o));
+      e.labels = extra.labels || (rel === 'spawn' ? e.opts.map(k => ENEMIES[k].name)
+        : e.opts.map(o => ({ 1: '1칸', h2: '가로 2칸', v2: '세로 2칸' }[o] || o)));
       e.rec = rel === 'spawn' ? SPAWN_REC.slice() : e.opts.slice();
     } else {
       e.min = hard[0]; e.max = hard[1];
@@ -7511,6 +7667,54 @@ relics: {
   "version": 3,
   "relics": [
     {
+      "id": "fatigue_coil",
+      "name": "피로 코일",
+      "after": "E",
+      "hazard": "fatigue",
+      "role": "pivot",
+      "pivotTags": [
+        "facility"
+      ],
+      "desc": "실제 피로를 감수한 일반 교전에서 공격 강화 · 공격속도 감소 유지",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "frailty_plate",
+      "name": "균열 장갑",
+      "after": "B",
+      "hazard": "frailty",
+      "role": "pivot",
+      "pivotTags": [
+        "shield",
+        "facility"
+      ],
+      "desc": "취약으로 잃은 기본 HP를 일반 교전 시작 보호막으로 전환 · 최대 HP 감소 유지",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "exposure_seal",
+      "name": "노출 인장",
+      "after": "C",
+      "hazard": "exposure",
+      "role": "score",
+      "pivotTags": [
+        "facility"
+      ],
+      "score": {
+        "kind": "multiply",
+        "proof": "recipeExposure",
+        "desc": "노출된 원래 무리의 공격을 실제 피해·보호막으로 견디고 소탕하면 곱배수 · 무리당 1회"
+      },
+      "desc": "실제 적 공격 증가 위험을 견디면 도전 점수 증폭 · 전투·영구 재화 보상은 그대로",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
       "id": "halo",
       "role": "support",
       "pivotTags": [],
@@ -7950,6 +8154,8 @@ const META_V2=(()=>{
  }
  const systemOpen=(m,id)=>!!state(m).systems[id]||!!m.unlock?.[id];
  function relicOpen(m,id){
+  const after=config().relics?.relics?.find(r=>r.id===id)?.after;
+  if(after)return !!m.cleared?.[after]||!!state(m).seen['relic:'+id];
   const task=config().progression.relics[id]||'start';
   if(task==='deferred')return false;
   return task==='start'||!!state(m).tasks[task]||!!state(m).seen['relic:'+id];
@@ -8106,8 +8312,9 @@ const CHALLENGE_V2=(()=>{
   'ld_hill','ld_trees','ld_park','ld_river','ld_dust',
   'rd_scrapyard','rd_nursery','sd_archive','ld_training'];
  const RELIC_IDS=['halo','savings','medkit','plate','core','lucky','battery','lens','drone','stamp',
-  'ledger','neardeath','regular','medal','frontmap','clubflag','survey','compass','specimen','scope'];
- const RULES_VERSION='challenge-v3.1-space',POWER_VERSION='normalized-v2.1',POOL_VERSION='public-v2.1';
+  'ledger','neardeath','regular','medal','frontmap','clubflag','survey','compass','specimen','scope',
+  'fatigue_coil','frailty_plate','exposure_seal'];
+ const RULES_VERSION='challenge-v3.2-recipes',POWER_VERSION='normalized-v2.1',POOL_VERSION='public-v2.2';
  const BALANCE_VERSION='meta-v2.1',MAX_SCORE=9000000000000;
  const number=v=>Number.isFinite(+v)?Math.max(0,+v):0;
  const integer=v=>Math.floor(number(v));
@@ -8140,7 +8347,9 @@ const CHALLENGE_V2=(()=>{
    allowedPoolVersion:POOL_VERSION,maxLoops:6,bossLap:6,maxMs:600000,bossMaxMs:120000,
    startOp:1800,startHand:8,growthLevel:[0,2,3,4,6,7][i],facilityLevel:[0,1,2,3,4,5][i],
    commandTier:i<2?1:2,supplyRisk:'normal',fixedStep:50,packCapPerTileLap:3,packCapPerLap:24,
-   students:STUDENT_IDS.slice(),cards:CARD_IDS.slice(),relics:RELIC_IDS.slice()};
+   students:STUDENT_IDS.slice(),cards:CARD_IDS.slice(),relics:RELIC_IDS.filter(id=>{
+    const after=relicDefinition(id)?.after;return !after||i>=REGIONS.indexOf(after);
+   })};
  }
  function roster(m,def){
   return def.students.filter(id=>{
@@ -8344,6 +8553,10 @@ const CHALLENGE_V2=(()=>{
    const config=relicScore('specimen');
    additions.push({source:'specimen',label:'원래 배치된 적 무리 정리',
     bp:Math.min(number(config.cap),number(e.nativeKills)-1)*number(config.stepBp)});
+  }
+  if(owns('exposure_seal')&&typeof RECIPE_RELICS!=='undefined'){
+   const bp=RECIPE_RELICS.claimScore(r,e);
+   if(bp>10000)multipliers.push({source:'exposure_seal',label:'노출 위험을 견딘 원래 무리 소탕',bp});
   }
   const replay=owns('regular')&&(elite||boss)?Math.min(1,c.regularTokens):0;
   if(replay)c.regularTokens=0;
@@ -10378,7 +10591,9 @@ function pinStatus(extraMana=0,extraSp=0,extraRes={}){
 function bossBase(g,n=3){const b=ENEMIES.boss;return {hp:Math.round(b.hp*g.hp*bossPartyMul(n)),atk:Math.round(b.atk*g.atk),def:b.def,spd:b.spd};}
 /* 보스 생성(조우·승산 모의 공용): t 의 일반 이형을 치우고 보스(쌍둥이 포함)를 세운다. 실제 조우의 연출·성장 판정은 enterTile 에 남긴다 */
 function spawnBoss(t){
- const b=makeEnemy('boss');const n=Math.max(1,run.party.length),bm=bossPartyMul(n)*(1+BAL.bossEvo*run.evos.length);b.hp=b.maxHp=Math.round(b.maxHp*bm);b.atk=Math.round(b.atk*(1+BAL.bossEvo*0.5*run.evos.length));b.packId=-1;b.mech=gate().mech||null;t.enemies=t.enemies.filter(x=>x.boss);t.enemies.push(b);
+ const b=makeEnemy('boss'),n=Math.max(1,run.party.length),growth=bossGrowthMultipliers(n,run.evos.length);
+ const bm=growth.hp;b.hp=b.maxHp=Math.round(b.maxHp*bm);b.atk=Math.round(b.atk*growth.atk);
+ b.packId=-1;b.mech=gate().mech||null;t.enemies=t.enemies.filter(x=>x.boss);t.enemies.push(b);
  if(b.mech==='twins'){const b2=makeEnemy('boss');b2.hp=b2.maxHp=Math.round(b.maxHp*0.55);b.hp=b.maxHp=Math.round(b.maxHp*0.55);b2.atk=b.atk=Math.round(b.atk*0.8);b2.packId=-1;b2.mech='twins';b.twin='L';b2.twin='R';b.name=`${b.name} · 좌(장갑)`;b2.name=`${b2.name.replace('게이트 마스터 ','')} · 우(광폭)`;b.def+=8;b2.spd*=1.3;b2.color='#f97316';t.enemies.push(b2);if(simMode)run.focusUid=b2.uid;}
  return bm;
 }
@@ -10448,8 +10663,11 @@ function refreshOdds(why,force){
  return run.bossOdds;
 }
 /* 현재 랩·분대·진화 기준의 보스 수치(도시에 표시용, 개체를 만들지 않는다 — makeEnemy('boss') + spawnBoss 와 같은 식) */
-function bossNow(){const g=gate(),b=ENEMIES.boss,L=run.lap-1,n=Math.max(1,run.party.length),bm=bossPartyMul(n)*(1+BAL.bossEvo*run.evos.length);
- return {hp:Math.round(Math.round(b.hp*(1+0.05*L)*gateMult(g.hp))*bm),atk:Math.round(Math.round((b.atk+L)*gateMult(g.atk))*(1+BAL.bossEvo*0.5*run.evos.length)),def:Math.round(b.def+0.4*L),spd:b.spd};}
+function bossNow(){
+ const b=enemyGrowthStats('boss',{lap:run.lap,gateData:gate()}),n=Math.max(1,run.party.length);
+ const growth=bossGrowthMultipliers(n,run.evos.length);
+ return {hp:Math.round(b.hp*growth.hp),atk:Math.round(b.atk*growth.atk),def:b.def,spd:b.spd};
+}
 const oddsTrend=()=>run&&run.oddsLog.length?run.oddsLog.map(o=>`L${o.lap} ${Math.round(o.win*100)}%`).join(' → '):'측정 없음';
 /* 라운드 3 (M 8): 시뮬 정책이 새 기능을 쓰는지 — 결전 거점(마지막 드론에서 pickStronghold) · 목표 조합(출격 시 pickGoal, 배치 점수 +4) · 재설계(죽은 지원 카드를 3장 중 최고점으로 변환) · 추천 대응 카드(덱에 counterInto). focus/spread 기본 ON, run.js --features 0 으로 끈다 */
 let simFeatures=false;
@@ -10636,15 +10854,36 @@ function stats(m){
   else{if(lf.hpPct)s.maxHp*=Math.max(0.5,1+lf.hpPct);if(lf.spdPct)s.spd*=1+lf.spdPct;}}
  if(m.buffUntil>run.time)s.atk*=heroTune('seoyoon').atk; /* 발도 — S 선제 저항은 보스 대상에만 무효(memberAttack 에서 대상별 처리) */
  if(traumaActive(st.id)){s.maxHp*=BAL.trauma.hpKeep;s.atk*=BAL.trauma.atkKeep;}
- s.maxHp=Math.round(s.maxHp);s.atk=Math.round(s.atk);
+ s.maxHp-=recipePenalty(run,'selfHpCost','selfHpCap')*st.hp*sm*lv;
+ if(typeof RECIPE_RELICS!=='undefined')s.atk*=RECIPE_RELICS.attackMultiplier(run);
+ s.maxHp=Math.max(1,Math.round(s.maxHp));s.atk=Math.round(s.atk);
  return s;
 }
 const hasTraitM=(m,id)=>stats(m).traits.some(t=>t.id===id);
 /* 최대 HP 변화 시 HP 비율을 유지 — 장비 착탈·시너지 변동 반복으로 HP가 생성되지 않는다 (Codex R2) */
 function recalcMember(m){const old=m.maxHp,nm=stats(m).maxHp;m.maxHp=nm;if(!m.down&&old>0&&nm!==old){const ratio=(m.hpR!=null&&Math.round(m.hpR*old)===m.hp)?m.hpR:m.hp/old;m.hpR=ratio;m.hp=Math.round(ratio*nm);}m.hp=clamp(m.hp,0,m.maxHp);}
+function bossGrowthMultipliers(partySize,evos){
+ return {hp:bossPartyMul(Math.max(1,partySize))*(1+BAL.bossEvo*evos),
+  atk:1+BAL.bossEvo*BAL.enemyGrowth.bossEvoAtkRatio*evos};
+}
+// Pure growth quote. The editor and real spawn use the same rounding and gate ramp.
+function enemyGrowthStats(type,{lap=1,gateData=GATES[0],danger=1,dust=1}={}){
+ const b=ENEMIES[type],L=Math.max(0,lap-1),g=gateData,cfg=BAL.enemyGrowth;
+ const rate=b.boss?cfg.bossHpPerLap:(g.h!=null?g.h:BAL.hpScale)*BAL.lapHpMul;
+ const hpScale=1+rate*L,atkAdd=(b.boss?cfg.bossAtkPerLap:BAL.atkScale)*L;
+ const defAdd=(b.boss?cfg.bossDefPerLap:BAL.defScale)*L;
+ const hpGate=gateMult(g.hp,lap),atkGate=gateMult(g.atk,lap),dm=b.boss?1:danger;
+ return {hp:Math.round(b.hp*hpScale*hpGate*dm*(b.boss?1:dust)),
+  atk:Math.round((b.atk+atkAdd)*atkGate*dm),def:Math.round(b.def+defAdd),spd:b.spd,
+  growth:{rate,hpScale,atkAdd,defAdd,hpGate,atkGate,danger:dm,dust:b.boss?1:dust}};
+}
 function makeEnemy(type){
- const b=ENEMIES[type],g=gate(),L=run.lap-1,sc=b.boss?1+0.05*L:1+(g.h!=null?g.h:BAL.hpScale)*BAL.lapHpMul*L,dm=b.boss?1:dangerMult(),dust=b.boss?1:1-Math.min(0.5,landFx().enemyHp),hp=Math.round(b.hp*sc*gateMult(g.hp)*dm*dust);
- const e={uid:uid(),type,kind:b.boss?(g.bossKind||null):(b.kind||null),name:b.boss?`게이트 마스터 「${g.boss}」`:b.name,hp,maxHp:hp,atk:Math.round((b.atk+(b.boss?1:BAL.atkScale)*L)*gateMult(g.atk)*dm),def:Math.round(b.def+(b.boss?0.4:BAL.defScale)*L),spd:b.spd,color:b.color,shape:b.shape,mana:b.mana,drop:b.drop,boss:!!b.boss,xp:b.xp,cd:0,evoN:0};
+ const b=ENEMIES[type],g=gate();
+ const s=enemyGrowthStats(type,{lap:run.lap,gateData:g,danger:dangerMult(),
+  dust:1-Math.min(0.5,landFx().enemyHp)});
+ const e={uid:uid(),type,kind:b.boss?(g.bossKind||null):(b.kind||null),
+  name:b.boss?`게이트 마스터 「${g.boss}」`:b.name,hp:s.hp,maxHp:s.hp,atk:s.atk,def:s.def,spd:b.spd,
+  color:b.color,shape:b.shape,mana:b.mana,drop:b.drop,boss:!!b.boss,xp:b.xp,cd:0,evoN:0};
  if(run.evos)for(const id of run.evos)applyEvo(e,id);
  if(hasCounter('slow')&&!e.boss)e.spd*=0.7;
  if(BAL.form2&&!b.boss){const mx=(BAL.form.mix||{})[g.id]||0;e.pat=b.pat2&&mx>0&&Math.random()<mx?b.pat2:(b.pat||'melee');} /* §28 공격 방식: 게이트별 비율로 전술 개체(pat2) — 끔이면 굴리지 않는다 */
@@ -11274,10 +11513,10 @@ function sideNear(t,id){
 }
 /* v1.5 위치 바리에이션 길가형(tent_side 등 — 칸 src = 원본 카드)은 Lv1 고정 · 물길·시계탑·특성 증폭 없음(DESIGN §25.11) → 배율 1(지도 ×2 배지·칸 메뉴가 없는 증폭을 알리지 않게 — 규칙은 원래 이 배율을 쓰지 않는다) */
 const isFormCard=id=>!!(id&&Object.values(BOARD_VARIANTS).includes(id));
-function cellMul(c,day){if(isFormCard(c.card))return 1;let m=1;const adj=mapOf(run).offAdj[c.k];if(c.card!=='ld_river'&&adj.some(k=>run.cells[k].card==='ld_river'))m*=BAL.land.riverMul;if(day&&c.card!=='sd_clock'&&adj.some(k=>run.cells[k].card==='sd_clock'))m*=BAL.land.clockMul;
+function cellMul(c,day,state=run){if(isFormCard(c.card))return 1;let m=1;const adj=mapOf(state).offAdj[c.k];if(c.card!=='ld_river'&&adj.some(k=>state.cells[k].card==='ld_river'))m*=BAL.land.riverMul;if(day&&c.card!=='sd_clock'&&adj.some(k=>state.cells[k].card==='sd_clock'))m*=BAL.land.clockMul;
  if(c.card&&CARDS[c.card]&&CARDS[c.card].cls==='side')m*=BAL.upgSup[tileLv(c)-1];
  if(c.chU)m*=chainSupMul(c);
- return +(Math.min(BAL.land.mulMax,m)*(1+BAL.perk.ward*perkN('ward'))).toFixed(3);}
+ return +(Math.min(BAL.land.mulMax,m)*(1+BAL.perk.ward*(state.perks?.ward||0))).toFixed(3);}
 const sideMulNear=(t,id,day)=>sideNear(t,id).reduce((a,c)=>Math.max(a,cellMul(c,day)),0);
 const dayMulTile=t=>t.off?cellMul(t,true)/cellMul(t,false)
  :sideNear(t,'sd_clock').length?BAL.land.clockMul:1;
@@ -11289,7 +11528,7 @@ function landFx(){
   if(id==='ld_hill'){f.hpPct+=L.hillHp*cellMul(c,false);f.hills++;}else if(id==='ld_peak'){f.hpPct+=L.peakHp*cellMul(c,false);f.hills++;}
   else if(id==='ld_trees'){f.spdPct+=L.treeSpd*cellMul(c,false);f.trees++;}else if(id==='ld_park')f.dayHeal+=L.parkHeal*cellMul(c,true);else if(id==='ld_flower')f.dayHeal+=L.flowerHeal*cellMul(c,true);
   else if(id==='ld_dust'){f.enemyHp+=L.dustEnemy*cellMul(c,false);f.hpPct-=L.dustSelf;}else if(id==='sd_field')f.fields++;}
- f.spdPct-=Math.min(.05,run.cells.reduce((n,c)=>n+(CARDS[c.card]?.selfSlow||0),0));
+ f.spdPct-=recipePenalty(run,'selfSlow','selfSlowCap');
  for(const k of ['hpPct','spdPct','enemyHp','dayHeal'])f[k]=+f[k].toFixed(4);
  /* v1.4 R4: 총량 상한(BAL.land.hpCap·spdCap, null 이면 없음) — 런이 긴 S 에서 언덕·봉우리가 계속 쌓여(보스 조우 시 HP +50%대, P90 +87%) 결계가 다른 선택을 압도하던 것 */
  f.hpRaw=f.hpPct;f.spdRaw=f.spdPct;if(L.hpCap!=null&&f.hpPct>L.hpCap)f.hpPct=L.hpCap;if(L.spdCap!=null&&f.spdPct>L.spdCap)f.spdPct=L.spdCap;
@@ -11317,12 +11556,12 @@ function peakProgress(at){let best={n:0,k:-1,cells:[]};for(let k=0;k<mapOf(run).
 function flowerAt(k,at,roadAt){if(at(k)!=='ld_park')return false;return mapOf(run).offAdj[k].some(j=>{const id=at(j);return !!id&&id!=='ld_park'&&id!=='ld_flower';})||mapOf(run).roadAdj[k].some(i=>i!==0&&!!roadAt(i)&&roadAt(i)!=='mark');}
 const ransackable=t=>!!(t&&!t.off&&t.i!==0&&t.card&&!t.delay&&!t.combo&&LAND_RULES.delays[0].from.includes(t.card));
 function sideFx(kind){run.sideFx=run.sideFx||{};run.sideFx[kind]=(run.sideFx[kind]||0)+1;dispatchRuleEvent('sideFx',{kind});}
-function landDiscover(id,how,c){const d=CARDS[id];if(!meta.codex[id]){meta.codex[id]=true;run.codexNew.push(id);banner(`✨ 발견! 「${d.name}」`,`${how} → ${d.desc}`,'#fbbf24',2600);log(`✨ 발견! ${d.icon} ${d.name} — ${how}. 학원 도감에 기록 (💎${BAL.codexMana})`,'good');SFX.star();}
+function landDiscover(id,how,c){const d=CARDS[id];if(!meta.codex[id]){meta.codex[id]=true;run.codexNew.push(id);banner(`✨ 발견! 「${d.name}」`,`${how} → ${d.desc}`,'#fbbf24',2600);log(`✨ 발견! ${d.icon} ${d.name} — ${how}. 학원 도감에 기록 (💎${BAL.codexMana})`,'good');SFX.star();save();}
  else log(`🔀 ${d.icon} ${d.name} — ${how}`,'good');dispatchRuleEvent('landMorph',{id,i:c?c.i:null});}
 function makeOutpost(){const free=run.cells.filter(c=>!c.card&&!mapBlocked(run,c.i)),near=free.filter(c=>c.roadAdj),pool=near.length?near:free;run.outposts=(run.outposts||0)+1;if(!pool.length)return false;
- const c=pool[Math.floor(Math.random()*pool.length)];c.card='ld_outpost';c.base=null;c.lv=1;sideFx('outpost');
+ const c=pool[Math.floor(Math.random()*pool.length)];c.card='ld_outpost';c.base=null;c.lv=1;sideFx('outpost');recipeRecord('ld_outpost');
  banner('🏴 이형 전초기지 출현',`잔해 언덕 ${BAL.land.hillPer}개 — 랩마다 정예 무리가 나옵니다 (망각으로 지울 수 있음)`,'#ef4444',2800);log(`🏴 임계 부작용: 잔해 언덕 ${landFx().hills}개 → 이형 전초기지 생성 — 랩마다 정예 무리`,'imp');return true;}
-function ransack(t){const from=CARDS[t.card].name;t.base=t.base||t.card;t.card='ransacked';t.combo=true;t.link=null;t.delay={to:'county',lap:run.lap+BAL.delay.laps};sideFx('ransack');
+function ransack(t){const from=CARDS[t.card].name;t.base=t.base||t.card;t.card='ransacked';t.combo=true;t.link=null;t.delay={to:'county',lap:run.lap+BAL.delay.laps};sideFx('ransack');recipeRecord('ransacked');
  if(!(run.battle&&run.battle.tile===t)&&!(run.sealLap===run.lap))spawnPack(t,'ransacked');
  banner('🥀 약탈당한 거점',`폐가 옆 ${from} — ${BAL.delay.laps}랩 동안 구울·회복 없음, 버티면 백작의 영지`,'#a78bfa',2800);log(`🥀 지연 변신: ${t.i}번 ${from} → 약탈당한 거점 (폐가 인접). ${BAL.delay.laps}랩 뒤 백작의 영지`,'imp');}
 function recomputeLand(){
@@ -11337,8 +11576,8 @@ function recomputeLand(){
   const f=landFx(),fl=run.flags||(run.flags={});
   for(let g=0;g<4&&(run.outposts||0)<Math.floor(f.hills/BAL.land.hillPer);g++){makeOutpost();run.mapVer++;}
   const forest=f.trees>=BAL.land.treesMin,echo=f.fields>=BAL.land.fieldMin;
-  if(forest&&!fl.forest){sideFx('forest');banner('🌳 숲속 매점','가로수가 우거져 편의점류가 변질 — 회복 ↓ · 카드 ↑','#22c55e',2600);log(`🌳 임계 부작용: 가로수 ${f.trees}개 → 편의점류가 숲속 매점으로(회복 ×${BAL.land.forestHeal} · 랩당 카드 +1)`,'imp');}
-  if(echo&&!fl.echo){sideFx('echo');banner('👻 잔류 사념','격전 흔적 과밀 — 랩마다 사념 무리가 나타납니다','#a78bfa',2600);log(`👻 임계 부작용: 격전 흔적 ${f.fields}개 → 잔류 사념 상시 출현`,'imp');}
+  if(forest&&!fl.forest){sideFx('forest');recipeRecord('terrain_forest');banner('🌳 숲속 매점','가로수가 우거져 편의점류가 변질 — 회복 ↓ · 카드 ↑','#22c55e',2600);log(`🌳 임계 부작용: 가로수 ${f.trees}개 → 편의점류가 숲속 매점으로(회복 ×${BAL.land.forestHeal} · 랩당 카드 +1)`,'imp');}
+  if(echo&&!fl.echo){sideFx('echo');recipeRecord('terrain_echo');banner('👻 잔류 사념','격전 흔적 과밀 — 랩마다 사념 무리가 나타납니다','#a78bfa',2600);log(`👻 임계 부작용: 격전 흔적 ${f.fields}개 → 잔류 사념 상시 출현`,'imp');}
   fl.forest=forest;fl.echo=echo;
   for(const t of run.tiles)if(ransackable(t)&&sideNear(t,'sd_manor').length){
    if(mapDeferMorph(run,'road:'+t.i,t.card,'ransacked'))continue;
@@ -11352,6 +11591,12 @@ function mapSettleMorph(state,pending){
  const [kind,key]=String(pending.targetId).split(':'),index=Number(key);
  const tile=kind==='off'?state.cells?.[index]:kind==='road'?state.tiles?.[index]:null;
  if(!tile||tile.card!==pending.change.from)return false;
+ if(kind==='off'&&CARDS[pending.change.to]?.recipe){
+  const row=recipeRows().find(r=>r.id===pending.change.to);
+  if(!row||!recipeMatches(row,tile,state))return false;
+  tile.base=tile.card;tile.card=row.id;state.mapVer=(state.mapVer||0)+1;
+  landDiscover(row.id,'유예한 조합 정착',tile);return true;
+ }
  if(kind==='road'&&pending.change.to==='ransacked'){
   if(!ransackable(tile))return false;
   ransack(tile);return true;
@@ -11362,6 +11607,7 @@ function mapSettleMorph(state,pending){
  }
  if(kind==='off'&&['ld_oasis','ld_campus'].includes(pending.change.to)){
   const to=pending.change.to;
+  if(!recipeOpen(to,state))return false;
   const valid=to==='ld_oasis'
    ?tile.card==='ld_dust'&&tileSpaceAdjacent(tile,state).some(c=>c.card==='ld_river')
    :tile.card==='ld_training'&&tileSpaceCanCampus(tile,state);
@@ -11483,6 +11729,7 @@ function tileSpaceCanCampus(c,state=run){
 }
 // Deterministic spatial transformations, reused by placement preview without touching run/meta.
 function tileSpaceMorphs(state,onChange){
+ recipeMorphs(state,onChange);
  for(const c of state.cells||[]){
   let to=null,need='';
   if(c.card==='ld_dust'&&tileSpaceAdjacent(c,state).some(o=>o.card==='ld_river')){
@@ -11492,7 +11739,7 @@ function tileSpaceMorphs(state,onChange){
     to='ld_campus';need='훈련 구획 2×2';
    }
   }
-  if(!to)continue;
+  if(!to||!recipeOpen(to,state))continue;
   const from=c.card;
   if(mapDeferMorph(state,'off:'+c.k,from,to))continue;
   c.base=from;c.card=to;
@@ -11507,10 +11754,10 @@ function tileSpaceRecompute(){
 function tileSpaceTraining(state=run){
  let total=0;
  for(const c of state?.cells||[]){
-  if(c.card==='ld_training'||(c.card==='ld_campus'&&tileSpaceCampusActive(c,state)))
+  if(CARDS[c.card]?.trainingXp&&(c.card!=='ld_campus'||tileSpaceCampusActive(c,state)))
    total+=CARDS[c.card].trainingXp||0;
  }
- return Math.min(8,total);
+ return Math.min(BAL.recipeV5.trainingXpCap,total);
 }
 function tileSpaceEnter(t){
  for(const c of tileSpaceAdjacent(t).filter(o=>o.off&&o.card)){
@@ -11527,7 +11774,7 @@ function tileSpaceEnter(t){
   drawCard();log('📚 임시 서고: 카드 1장 교환','good');
   if(c.archiveUsed>=d.archiveUses){
    c.base='sd_archive';c.card='sd_forbidden';run.mapVer++;
-   landDiscover(c.card,'서고 3회 사용 — 앞으로 사념 소탕으로 카드 획득',c);
+   landDiscover(c.card,`서고 ${d.archiveUses}회 사용 — 앞으로 사념 소탕으로 카드 획득`,c);
    recomputeChains();
   }
  }
@@ -11601,9 +11848,12 @@ function tileSpacePreviewEffects(id,t,B,fx,warn){
  }
  if(d.archiveUses)fx('+','진입 시',d.desc,'카드 교환',rs);
  if(d.sideSpawn)fx('-','랩마다',d.desc,'사념 +1',rs);
- if(d.trainingXp)fx('+','처치 시',`훈련 XP 합계 +${tileSpaceTraining(state)} / 최대 +8`,
+ if(d.trainingXp)fx('+','처치 시',`훈련 XP 합계 +${tileSpaceTraining(state)} / 최대 +${BAL.recipeV5.trainingXpCap}`,
   `XP +${tileSpaceTraining(state)}`,[]);
- if(d.selfSlow)fx('-','상시','아군 공격속도 −1%(정화 수로 합계 −5% 한도)','공속 −1%',[]);
+ if(d.selfSlow)fx('-','상시',`아군 공속 −${d.selfSlow*100}% (합계 한도 −${BAL.recipeV5.selfSlowCap*100}%)`,
+  `공속 −${d.selfSlow*100}%`,[]);
+ if(d.selfHpCost)fx('-','상시',`기본 최대 HP −${d.selfHpCost*100}% (합계 한도 −${BAL.recipeV5.selfHpCap*100}%)`,
+  `기본 HP −${d.selfHpCost*100}%`,[]);
 }
 function tileSpaceScore(id,c){
  const d=CARDS[id],adj=tileSpaceAdjacent(c),roads=tileSpaceRoads(c).map(i=>run.tiles[i]);
@@ -11616,10 +11866,183 @@ function tileSpaceScore(id,c){
   for(const o of [c,...adj])if(comboFor(o,{[c.i]:id}))n+=2;
   return n;
  }
- if(d.trainingXp)return tileSpaceTraining()>=8?0:1.5+adj.filter(o=>o.card==='ld_training').length*.5;
+ if(d.trainingXp)return tileSpaceTraining()>=BAL.recipeV5.trainingXpCap?0:1.5+adj.filter(o=>o.card==='ld_training').length*.5;
  if(d.archiveUses)return 1.5+roads.length*.15;
  return 0;
 }
+
+</script>
+<script>
+'use strict';
+// Shared, pure recipe eligibility: story completion and discovery are different states.
+function recipeRows(){
+ return Object.entries(CARDS).filter(([,c])=>c.recipe).map(([id,c])=>({id,...c.recipe}));
+}
+function recipeFound(id,account=meta){return !!account?.codex?.[id];}
+function recipeRecord(id){
+ if(!meta.codex[id]){meta.codex[id]=true;run.codexNew.push(id);save();}
+}
+function recipeStage(id){return CARDS[id]?.recipe?.after||(['ld_oasis','ld_campus'].includes(id)?'E':null);}
+function recipeOpen(id,state=run,account=meta){
+ const after=recipeStage(id);if(!after)return true;
+ if(state?.mode==='challenge'){
+  const ranks=['E','D','C','B','A','S'];
+  return ranks.indexOf(state.challenge?.rule?.region)>=ranks.indexOf(after);
+ }
+ return recipeFound(id,account)||!!account?.cleared?.[after];
+}
+function recipeHint(id){const after=recipeStage(id);return after?`${after} 지역 클리어 후 해금`:'처음부터 발견 가능';}
+function recipeIngredient(c,id){
+ // Flowering is the same park material, but an already specialised result is not its old base.
+ return c?.card===id||(id==='ld_park'&&c?.card==='ld_flower');
+}
+function recipeMatches(row,c,state=run){
+ const materials=new Set(tileSpaceAdjacent(c,state).filter(o=>recipeIngredient(o,row.adj))
+  .map(o=>o.fp?'fp:'+o.fp.a:'cell:'+o.i));
+ return c.card===row.from&&recipeOpen(row.id,state)&&materials.size>=row.need;
+}
+function recipeCandidate(c,state=run){
+ return recipeRows().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id))
+  .find(row=>recipeMatches(row,c,state));
+}
+function recipeMorphs(state,onChange){
+ // Snapshot all candidates first. Newly created ingredients cannot chain in this transaction.
+ const changes=(state.cells||[]).map(c=>({c,row:recipeCandidate(c,state)})).filter(x=>x.row);
+ for(const {c,row} of changes){
+  if(mapDeferMorph(state,'off:'+c.k,c.card,row.id))continue;
+  const from=c.card;c.base=from;c.card=row.id;
+  onChange?.({cell:c.i,from,to:row.id,
+   need:`${CARDS[row.from].name} + ${CARDS[row.adj].name} 인접 ${row.need}개`});
+ }
+}
+function recipePenalty(state,key,cap){
+ const unique=new Map();
+ for(const c of state?.cells||[]){const id=c.fp?'fp:'+c.fp.a:'cell:'+c.i;if(!unique.has(id))unique.set(id,c);}
+ return Math.min(Number(BAL.recipeV5?.[cap])||0,
+  [...unique.values()].reduce((n,c)=>n+Math.max(0,Number(CARDS[c.card]?.[key])||0),0));
+}
+function recipePreviewEffects(t,B,fx,warn){
+ const id=B.cell[t.k],d=CARDS[id];tileSpacePreviewEffects(id,t,B,fx,warn);
+ if(d.field){
+  const state=tileSpaceStateB(B),roads=fieldRoads(id,t,state);
+  const parts=cardDesc(id).split(' · 대가: ');
+  fx('+','범위 지원',parts[0],`도로 ${roads.length}칸`,roads);
+  if(d.field.riskAtk)fx('-','교전 시',`해당 이형 공격 +${d.field.riskAtk*100}%`,
+   `공격 +${d.field.riskAtk*100}%`,roads);
+  if(!roads.length)warn('지원 범위에 도로가 없습니다. 전역 대가는 그대로 적용됩니다');
+ }
+}
+
+</script>
+<script>
+'use strict';
+/* Risk conversion reads the same physical sources and caps as the combat penalty. */
+function recipeHazardsAt(state,tile){
+ const cfg=BAL.recipeV5||{},number=v=>Math.max(0,Number(v)||0),unique=new Map();
+ for(const cell of state?.cells||[])if(cell.card){
+  const key=cell.fp?'fp:'+cell.fp.a:'cell:'+cell.i;if(!unique.has(key))unique.set(key,cell);
+ }
+ const cells=[...unique.values()];
+ const sum=(field,cap)=>{
+  let left=number(cap);const sources=[];
+  for(const cell of cells){const value=Math.min(left,number(CARDS[cell.card]?.[field]));
+   if(value>0){sources.push({id:cell.card,index:cell.i,value});left-=value;}}
+  return {value:sources.reduce((n,s)=>n+s.value,0),sources};
+ };
+ const fatigue=sum('selfSlow',cfg.selfSlowCap),frailty=sum('selfHpCost',cfg.selfHpCap);
+ const best=new Map(),exposure={value:0,sources:[]};
+ if(tile&&!tile.off&&tile.i>0)for(const cell of cells){
+  const field=CARDS[cell.card]?.field;
+  if(!(field?.riskAtk>0)||!fieldRoads(cell.card,cell,state).includes(tile.i))continue;
+  const value=field.riskAtk*cellMul(cell,false,state),old=best.get(cell.card);
+  if(!old||old.value<value)best.set(cell.card,{id:cell.card,index:cell.i,value});
+ }
+ let left=number(BAL.field.riskAtk);
+ for(const source of best.values()){
+  const value=Math.min(left,source.value);if(!(value>0))continue;
+  exposure.sources.push({...source,value});exposure.value+=value;left-=value;
+ }
+ return {fatigue,frailty,exposure};
+}
+const RECIPE_RELICS=(()=>{
+ const ids=['fatigue_coil','frailty_plate','exposure_seal'];
+ const number=v=>Math.max(0,Number(v)||0),tune=id=>BAL.recipeV5?.relics?.[id]||{};
+ const nativeOrigin=value=>!value||value==='native';
+ const enabled=r=>!!r&&!r.god&&nativeOrigin(r.ruleOrigin);
+ function nativePack(r,tile,enemy){
+  if(!enemy||enemy.summoned||enemy.boss||!nativeOrigin(enemy.origin))return null;
+  const pack=r.packs?.[enemy.packId];
+  return pack&&pack.uid===enemy.packId&&pack.tile===tile.i&&pack.reward&&!pack.summoned
+   &&nativeOrigin(pack.origin)?pack:null;
+ }
+ function start(r){
+  const b=r?.battle,tile=b?.tile;if(!b||!enabled(r)||b.recipeStarted)return;
+  b.recipeStarted=true;const packs=new Map();
+  for(const enemy of tile.enemies||[]){
+   const pack=nativePack(r,tile,enemy);
+   if(pack&&!pack.paid&&pack.alive>0&&enemy.hp>0)packs.set(pack.uid,pack);
+  }
+  if(!packs.size)return;
+  const hazards=recipeHazardsAt(r,tile);b.recipeHazards=hazards;b.recipePacks=[...packs.keys()];
+  if(typeof estMode==='undefined'||!estMode)for(const pack of packs.values()){
+   pack.recipeProof={battleId:b.battleId,tileIndex:tile.i,hazards,
+    enemies:tile.enemies.filter(e=>nativePack(r,tile,e)===pack&&e.hp>0).map(e=>e.uid),
+    damage:0,exposure:0,scored:false};
+  }
+  if((r.relics||[]).includes('frailty_plate')&&hazards.frailty.value>0){
+   const cfg=tune('frailty_plate');
+   for(const member of r.party||[]){if(member.down)continue;
+    const lost=number(member.stu?.hp)*(1+BAL.star*(Math.max(1,number(member.star))-1))
+     *(1+.015*Math.max(0,number(r.level)-1))*hazards.frailty.value;
+    const value=Math.min(number(cfg.shieldCap),Math.round(lost*number(cfg.shieldPerLostHp)));
+    if(value>0)b.shield[member.uid]=(b.shield[member.uid]||0)+value;
+   }
+  }
+ }
+ function attackMultiplier(r){
+  if(!enabled(r)||!(r.relics||[]).includes('fatigue_coil')||!r.battle?.recipePacks?.length)return 1;
+  const cfg=tune('fatigue_coil'),value=recipeHazardsAt(r,r.battle.tile).fatigue.value;
+  return 1+Math.min(number(cfg.atkCap),value*number(cfg.atkPerSlow));
+ }
+ function damage(r,enemy,amount,absorbed,source){
+  const b=r?.battle;if(!b||!enabled(r)||source!=='attack'||number(amount)+number(absorbed)<=0)return;
+  if(!b.tile.enemies?.includes(enemy))return;
+  const pack=nativePack(r,b.tile,enemy),proof=pack?.recipeProof;
+  if(!proof||proof.battleId!==b.battleId||!proof.enemies?.includes(enemy.uid)||pack.paid||pack.alive<=0)return;
+  const applied=Math.min(number(proof.hazards?.exposure?.value),recipeHazardsAt(r,b.tile).exposure.value);
+  if(!(applied>0))return;
+  proof.exposure=Math.max(proof.exposure,applied);proof.damage+=number(amount)+number(absorbed);
+ }
+ function scoreMultiplier(r,event){
+  if(!r||r.god||event.origin!=='native'||event.summoned||event.boss)return 10000;
+  const pack=r.packs?.[event.packId],proof=pack?.recipeProof;
+  if(!pack||!pack.reward||pack.summoned||!nativeOrigin(pack.origin)||!pack.paid||pack.alive>0
+   ||String(pack.uid)!==String(event.packId)||!proof||proof.scored||proof.battleId!==event.battleId
+   ||!Array.isArray(proof.enemies)||proof.tileIndex!==pack.tile||!(pack.nativeKills>=proof.enemies.length)
+   ||!(proof.damage>0)||!(proof.exposure>0)||!proof.enemies.length)return 10000;
+  if((r.tiles?.[pack.tile]?.enemies||[]).some(e=>e.hp>0&&proof.enemies.includes(e.uid)))return 10000;
+  const cfg=tune('exposure_seal'),steps=Math.floor((proof.exposure+1e-9)/Math.max(.0001,number(cfg.riskStep)));
+  return Math.max(10000,Math.min(number(cfg.maxBp),10000+steps*number(cfg.stepBp)));
+ }
+ function claimScore(r,event){
+  const value=scoreMultiplier(r,event);
+  if(value>10000)r.packs[event.packId].recipeProof.scored=true;
+  return value;
+ }
+ function describe(id){
+  const cfg=tune(id),pct=n=>+(number(n)*100).toFixed(2);
+  if(id==='fatigue_coil')return `실제 피로 1%당 교전 공격 +${number(cfg.atkPerSlow)}%`
+   +`(최대 +${pct(cfg.atkCap)}%) · 피로 감소 없음`;
+  if(id==='frailty_plate')return `취약으로 잃은 기본 HP의 ${pct(cfg.shieldPerLostHp)}%를 시작 보호막으로`
+   +`(인당 최대 ${number(cfg.shieldCap)}) · 최대 HP 감소 유지`;
+  if(id==='exposure_seal')return `노출된 원래 무리의 공격을 실제 피해·보호막으로 견디고 소탕하면`
+   +` 적 공격 증가 ${pct(cfg.riskStep)}%당 도전 ×배수 +${number(cfg.stepBp)/10000}`
+   +`(최대 ×${number(cfg.maxBp)/10000}) · 무리당 1회`;
+  return '';
+ }
+ return {ids,tune,start,attackMultiplier,damage,scoreMultiplier,claimScore,describe};
+})();
+if(typeof window==='object')window.RECIPE_RELICS=RECIPE_RELICS;
 
 </script>
 <script>
@@ -11732,7 +12155,7 @@ function chainDiff(a,b){
 }
 /* 변신 목록(계약 morphs) — 이름·결과 효과(desc)는 도감과 무관하게 공개(undiscovered = 이번이 첫 발견) */
 function pvMorphs(ev){const out=[],seen=new Set();for(const e of ev){if(e.flag||!CARDS[e.to])continue;const d=CARDS[e.to],nw=!meta.codex[e.to]&&!seen.has(e.to);seen.add(e.to);
- out.push({cell:e.cell,from:e.from,to:e.to,delayLaps:e.delayLaps||0,name:d.name,need:e.need||'',text:d.desc,undiscovered:nw,random:!!e.random});}return out;}
+ out.push({cell:e.cell,from:e.from,to:e.to,delayLaps:e.delayLaps||0,name:!meta.codex[e.to]?'??':d.name,need:e.need||'',text:d.desc,undiscovered:nw,random:!!e.random});}return out;}
 const pvMorphLine=m=>`◎ ${m.random?'위치 미정 · ':''}${m.from&&CARDS[m.from]?CARDS[m.from].name+' → ':''}「${m.name}」${m.delayLaps?` ${m.delayLaps}랩 뒤`:''}${m.need?` (${m.need})`:''}${m.undiscovered?' · 새 발견':''}`;
 const pvCostLine=c=>`브레이크 +${c.breakPct}%p (T −${c.t})`;
 function packN(pc){return packSizeOf({small:pc&&pc.small});}
@@ -11796,7 +12219,8 @@ function pvBuild(id,ti){
  if(!canPlaceCard(id,t))return pvShape(id,ti,{reason:spotBlockReason(id,t)});
  const P=pvCore(id,t),R=P.R,B=P.B,E=[],W=[],fx=(sign,when,text,value,cells)=>{E.push({text,value:value==null?'':String(value),sign,when,cells:(cells||[]).filter(i=>i!=null)});},warn=s=>W.push({text:s});
  const chF=P.chF,morphs=P.morphs,cc=P.cc,bcc=P.bcc,fm=R.form,k=fm&&fm.formId!==id?'form':cardClass(id),pc=pvPct,isSp=x=>!!(x&&x!=='mark'&&CARDS[x]&&CARDS[x].spawn);
- if(k==='form'){ /* v1.5 위치 바리에이션: 원본 도로 카드를 도로에 닿은 빈 칸에 → 길가형(효과 문구 = board.js boardFormFx, GL.board.preview 와 같다) */
+ if(t.off&&CARDS[B.cell[t.k]]?.recipe)recipePreviewEffects(t,B,fx,warn);
+ else if(k==='form'){ /* v1.5 위치 바리에이션: 원본 도로 카드를 도로에 닿은 빈 칸에 → 길가형(효과 문구 = board.js boardFormFx, GL.board.preview 와 같다) */
   const ff=boardFormFx(fm.formId,fm.cells,i=>isSp(B.road[i]));
   if(ff){for(const e of ff.effects)fx(e.k==='risk'?'-':'+',e.when,e.text,e.value,e.cells);for(const n of ff.notes)fx('','상시',n,'',[]);for(const w of ff.warnings)warn(w);}}
  else if(k==='road'){
@@ -11958,10 +12382,10 @@ const guideChainDef=x=>{const k=x.to||x.type;return CHAINS[k]||(typeof BOARD_CHA
 /* 결과 계약 하나 → 기회 목록(두 모양 모두: morphs.cell | morphs.cells · chainChanges.to | .type) */
 function oppsOf(O,id,ti){
  const out=[],seen={};if(!O||!O.ok)return out;
- for(const m of O.morphs||[]){if(m.random||m.delayLaps||!CARDS[m.to])continue;const combo=COMBOS.some(cb=>cb.to===m.to);if(!combo&&!GUIDE_SHAPES.includes(m.to))continue;
+ for(const m of O.morphs||[]){if(m.random||m.delayLaps||!CARDS[m.to])continue;const combo=COMBOS.some(cb=>cb.to===m.to);if(!combo&&!GUIDE_SHAPES.includes(m.to)&&!CARDS[m.to].recipe)continue;
   const cells=m.cell!=null?[m.cell]:(m.cells||[]),kind=combo?(meta.goal===m.to?'goal':'combo'):'shape',key=kind+':'+m.to;
   if(seen[key]){for(const i of cells)if(!seen[key].cells.includes(i))seen[key].cells.push(i);continue;}
-  out.push(seen[key]={kind,to:m.to,name:CARDS[m.to].name,icon:CARDS[m.to].icon,pri:GUIDE_PRI[kind],spot:ti,cardId:id,cells:cells.slice(),undiscovered:!!m.undiscovered});}
+  out.push(seen[key]={kind,to:m.to,name:m.name,icon:CARDS[m.to].recipe&&m.undiscovered?'?':CARDS[m.to].icon,pri:GUIDE_PRI[kind],spot:ti,cardId:id,cells:cells.slice(),undiscovered:!!m.undiscovered});}
  for(const x of O.chainChanges||[]){if(x.kind==='break'||x.void)continue;const d=guideChainDef(x);if(!d)continue;const kind=x.type?(x.toggle?'upgrade':x.ext?'grow':'form'):x.kind==='upgrade'?'upgrade':x.kind==='grow'?'grow':'form'; /* v1.5 보드 체인: 광장 활성 = 「완성」 · 변경 = 연장 */
   out.push({kind,to:x.to||x.type,name:d.name,icon:d.icon,color:d.color,pri:GUIDE_PRI[kind],spot:ti,cardId:id,cells:(x.cells||[]).slice(),chain:true,from:x.from||null});}
  return out;}
@@ -12771,6 +13195,7 @@ function startBattle(t){
  fxEvent('battleStart',{t,enemies:t.enemies}); /* §28 표시 이벤트(무대 화면) — 규칙 이벤트 boardEvent('battleStart')와 별개 */
  if(BAL.form2)f2BattleStart(); /* §28 진형 v2: 전열 탱커 도발 표시 · 전열이 이미 없으면 후열 노출 */
  dispatchRuleEvent('battleStart',{t,battleId:run.battle.battleId,stat:run.battle.ruleStat});
+ if(typeof RECIPE_RELICS!=='undefined')RECIPE_RELICS.start(run);
  if(ls?.slow)run.battle.ruleStat.controlCount+=t.enemies.filter(e=>e.slowed&&!e.boss).length;
 }
 function enrage(e){
@@ -12902,6 +13327,7 @@ function damageMember(target,dmg,e,src){
  if(run.f2st)f2Took(target,dmg);
  if(dmg>0){if(run._est)run._est.dmg+=dmg;target.hp-=dmg;target.hurt=150;gainEx(1.5);floater(p.x-14,p.y-28,(src==='wave'?'🌊':'')+'-'+dmg,src==='wave'?'#38bdf8':'#f87171');SFX.hurt();}
  recordBattleDamage(target,effectiveTaken,ab);
+ if(typeof RECIPE_RELICS!=='undefined')RECIPE_RELICS.damage(run,e,effectiveTaken,ab,src);
  if(target.hp<=0&&memberFall(target,b,p))return true;
  /* 반사 3종(아라·장갑판·장비 thorn)은 해일 광역에도 동일하게 적용 (Codex R2: 규칙 통일) */
  if(target.stu.id==='ara'&&e.hp>0){bsDeal(target,e,heroTune('ara').reflect);e.hp-=heroTune('ara').reflect;if(e.hp<=0){onKill(e,target);return true;}}
@@ -12930,7 +13356,9 @@ function enemyAttack(e){
   if(fr.length&&bk.length){const pf=ENEMIES[e.type]&&ENEMIES[e.type].flying?1-BAL.form.frontHit:BAL.form.frontHit;pool=Math.random()<pf?fr:bk;}
   if(Math.random()<0.6)target=pool[0];else target=pick(pool);}
  const s=stats(target),hp0=target.hp;
- const dmg=Math.max(1,Math.round(e.atk*(run.lapMod==='storm'?1.4:1)*(e.boss?1:(run.battle&&run.battle.atkMul)||1)*(0.85+Math.random()*0.3)-s.def));
+ const exposure=e.boss?0:fieldEffects(run.battle.tile).riskAtk;
+ const dmg=Math.max(1,Math.round(e.atk*(1+exposure)*(run.lapMod==='storm'?1.4:1)*
+  (e.boss?1:run.battle?.atkMul||1)*(0.85+Math.random()*0.3)-s.def));
  const ended=damageMember(target,dmg,e,'attack');
  if(!ended&&e.hp>0&&ENEMIES[e.type]&&ENEMIES[e.type].leech&&target.hp<hp0)e.hp=Math.min(e.maxHp,e.hp+Math.round((hp0-target.hp)*ENEMIES[e.type].leech)); /* 흡혈 사념 */
 }
@@ -14030,6 +14458,10 @@ function renderCollectionCodex(host,filter){
  host.classList.add('collection-panel');host.innerHTML=`<h4>🃏 타일 수집 도감 · ${summary.owned}/${summary.total}</h4><p>수집 기록은 영구 보존됩니다. 출격 덱 편성은 카드별 조건을 따르며, 지역 전용 카드는 해당 지역 원정에서만 획득·사용합니다.</p><select data-collection-filter aria-label="수집 카드 보기"><option value="all">전체</option><option value="owned">수집 완료</option><option value="new">새로 수집</option><option value="missing">미발견</option></select><div class="collection-grid collection-codex">${ids.map(id=>collectionCardHtml(id,{codex:true})).join('')||'<p>해당 카드가 없습니다.</p>'}</div>${summary.fresh?'<button data-collection-read>새 카드 확인 완료</button>':''}`;
  const select=host.querySelector('[data-collection-filter]');select.value=mode;select.onchange=()=>renderCollectionCodex(host,select.value);
  const read=host.querySelector('[data-collection-read]');if(read)read.onclick=()=>{collectionClearNew();renderCollectionCodex(host,mode);};
+ if(typeof openRecipeCodex==='function'){
+  const entry=document.createElement('button');entry.className='collection-recipe-entry';
+  entry.textContent='조합 발견 도감 ↑';entry.onclick=openRecipeCodex;host.prepend(entry);
+ }
 }
 
 </script>
@@ -14210,7 +14642,10 @@ function boardRecompute(){
  if(estMode)return;
  const diff=boardChainDiff(prev,next);if(!diff.length)return;const st=boardStats();
  for(const d of diff){const B=BOARD_CHAINS[d.type];
-  if(d.kind==='form'&&!d.ext){st.formed[d.type]=(st.formed[d.type]||0)+1;let T=0;
+  if(d.kind==='form'&&!d.ext){
+   const key='board_chain_'+d.type;
+   recipeRecord(key);
+   st.formed[d.type]=(st.formed[d.type]||0)+1;let T=0;
    if(d.type==='fort'){T=boardFortT();if(T>0){spendT(T,'place');st.formT+=T;}}
    banner(`${B.icon} 보드 체인 「${B.name}」`,`${B.eff()} / 대가: ${B.cost()}`,B.color,2400);
    log(`${B.icon} 보드 체인 형성: ${d.text}${T?` · 형성 T −${T}`:''}`,'good');}
@@ -16284,11 +16719,11 @@ function riskDecisionHtml(p){
  let h=`<div class="risk-decision"><div class="risk-pair"><div><small>${spawn?'즉시 출현':'배치 효과'}</small><strong class="threat">${esc(immediate)}</strong></div><div><small>${quote?'첫 계약 · 계약금 포함':s.reward?'계약 기본값':'이 위치의 이득'}</small><strong class="reward">${esc(reward)}</strong></div></div>`;
  for(const w of p.warnings||[])h+=`<p class="threat">⚠ ${esc(w.text)}</p>`;
  for(const e of (p.effects||[]).filter(e=>e.sign==='-'&&e.when!=='즉시'&&/위험보상|연결할 소환 타일 없음/.test(e.text)))h+=`<p class="threat">${esc(e.text)}</p>`;
- for(const m of (p.morphs||[]).slice(0,2))h+=`<p>◎ ${esc(m.name||(CARDS[m.to]||{}).name||m.text||'변신')}${m.delayLaps?' · '+m.delayLaps+'랩 뒤':''}${CARDS[m.to]?`<span class="signature-result">${CARDS[m.to].icon} ${esc(cardDesc(m.to))}</span>`:''}</p>`;
+ for(const m of (p.morphs||[]).slice(0,2))h+=`<p>◎ ${esc(previewDiscoveredText(m.name||(CARDS[m.to]||{}).name||m.text||'변신',p))}${m.delayLaps?' · '+m.delayLaps+'랩 뒤':''}${CARDS[m.to]?`<span class="signature-result">${CARDS[m.to].icon} ${esc(previewDiscoveredText(cardDesc(m.to),p))}</span>`:''}</p>`;
  if(spawn){const a=riskPlacementArrival(p);h+=`<p class="threat">${a?riskArrivalText(a):''}</p><small>이동만~교전 포함 추정 · ${RISK_AB.intervalMs/1000}초마다 보충${a&&a.crossCamp?' · 캠프 특수 스폰 별도':''}</small>`;}
  if(extra)h+=`<p>연결된 기존 타일에도 ${s.additions.map(a=>`${a.i}번 ${a.grade} +${a.n}`).join(' · ')}</p>`;
- if(rule)h+=`<p class="chain-read">${CHAINS[chain.to].icon} ${esc(CHAINS[chain.to].name)} · ${chain.cells.length}칸<br>무리당 ${chain.to==='battle'?'엘리트':'정예'} +1 · HP ×${rule.hp||1} / 공격 ×${rule.atk||1}<br>계약 ×${rule.reward} · 기존 미적용 무리에도 추가</p>`;
- for(const e of s.benefits)h+=`<p class="position-benefit">＋ ${esc(e.text)}${e.cells?.length?` · ${e.cells.length}칸`:''}</p>`;
+ if(rule)h+=`<p class="chain-read">${CHAINS[chain.to].icon} ${esc(meta.codex?.['chain_'+chain.to]?CHAINS[chain.to].name:'??')} · ${chain.cells.length}칸<br>무리당 ${chain.to==='battle'?'엘리트':'정예'} +1 · HP ×${rule.hp||1} / 공격 ×${rule.atk||1}<br>계약 ×${rule.reward} · 기존 미적용 무리에도 추가</p>`;
+ for(const e of s.benefits)h+=`<p class="position-benefit">＋ ${esc(previewDiscoveredText(e.text,p))}${e.cells?.length?` · ${e.cells.length}칸`:''}</p>`;
  if(econOn()&&s.reward)h+='<small>처치해야 획득 · 첫 정산 기준, 이후 감쇠 · 길가 배율·전투 중 효과는 별도</small>';
  h+=`<p>배치 T −${s.cost} · ${placementResumeHint()}</p></div>`;
  return h;
@@ -16904,7 +17339,7 @@ function drawPreviewFx(ts){
    drawVariantMark(to,x-TILE/2+14,y+TILE/2-24);
    ctx.strokeStyle='#fbbf24';ctx.lineWidth=3;rr(ctx,x-s/2-5,y-s/2-5,s+10,s+10,14);ctx.stroke();ctx.lineWidth=1.5;rr(ctx,x-s/2-1,y-s/2-1,s+2,s+2,11);ctx.stroke();}
   if(later.length){ctx.setLineDash([5,4]);ctx.strokeStyle='#c4b5fd';ctx.lineWidth=2.5;rr(ctx,x-s/2-9,y-s/2-9,s+18,s+18,16);ctx.stroke();ctx.setLineDash([]);}
-  let ly=y+s/2+10*k;const nm=m=>m.name||(CARDS[m.to]&&CARDS[m.to].name)||m.text||m.to;
+  let ly=y+s/2+10*k;const nm=m=>previewDiscoveredText(m.name||(CARDS[m.to]&&CARDS[m.to].name)||m.text||m.to,preview);
   for(const m of now){pills.push([x,ly,`◎ ${nm(m)}${m.undiscovered?' · 새':''}`,'#fde68a','#fbbf24']);ly+=22*k;}
   for(const m of later){pills.push([x,ly,`⏳ ${nm(m)} · ${m.delayLaps}랩 뒤`,'#ddd6fe','#a78bfa']);ly+=22*k;}}
  /* 5) ＋/− 기호 · 배지(맨 위) */
@@ -16918,7 +17353,7 @@ function drawPreviewFx(ts){
  *   칸을 가리키면 그 칸은 지도 예고(drawPreviewFx)가 맡고 다른 기회 칸은 ◆만. 칸 안쪽 선 = 결과 색(목표 = 금색 실선 · 조합·모양 = 금색 점선 · 체인 = 체인 색 점선), ◆ = 칸 오른쪽 아래
  * 검사 패널: 칸을 안 가리키면 「이 카드로 만들 수 있는 것」(누르면 그 칸 미리보기) + 「덱에서 한 장 더 오면」(부족 재료) · 가리킨 칸이 기회면 머리 한 줄 + 체인 다음 단계
  * 목표 줄: 재료 ✔/모자람 + 부족 재료 한 줄(「붕괴 구역 1장 더 — 덱에 2장 · 손패 0장」) · 손패 카드: 조합·체인 승급을 완성할 수 있는 카드에 ◆(목표 🎯) 배지 */
-const oppLabel=o=>o.kind==='goal'?`🎯 ${o.name}`:(o.kind==='combo'||o.kind==='shape')?`◎ ${o.name}${o.undiscovered?' · 새':''}`:`${o.icon} ${o.name} ${o.kind==='upgrade'?'완성':o.kind==='grow'?'연장':'형성'}`;
+const oppLabel=o=>o.kind==='goal'?`🎯 ${guideRecipeName(o)}`:(o.kind==='combo'||o.kind==='shape')?`◎ ${guideRecipeName(o)}${o.undiscovered?' · 새':''}`:`${o.icon} ${guideRecipeName(o)} ${o.kind==='upgrade'?'완성':o.kind==='grow'?'연장':'형성'}`;
 const oppColor=o=>o.chain?(o.color||'#fde68a'):'#fbbf24';
 /* 부족 재료 한 줄 — mats = [{name, k(모자란 장수)}] · 덱 = 뽑을 더미(deckPile) */
 const lackStr=(mats,n,hand)=>`${mats.map(m=>`${m.name} ${m.k}장`).join(' · ')} 더 — ${n>0?`덱에 ${n}장`:'덱에 없음'} · 손패 ${hand}장`;
@@ -16952,15 +17387,15 @@ function guideInspHtml(id){
  const L=Object.values(mine).sort((a,b)=>b.o.pri-a.o.pri||a.spots[0]-b.spots[0]);let h='';
  if(L.length)h+=`<h5>이 카드로 만들 수 있는 것 <em class="gsub">누르면 그 칸 미리보기</em></h5><div class="gops">${L.slice(0,5).map(({o,spots})=>`<button class="gopb k-${o.kind}" data-spot="${spots[0]}" style="--oc:${oppColor(o)}"><b>${escTip(oppLabel(o))}</b><em>${spots.length>1?`${spots.length}곳`:escTip(spotName(spotAt(spots[0])))}</em></button>`).join('')}</div>`;
  const gs=run._goal,mat=gs&&!gs.paid&&!gs.spots.size&&gs.mats.some(m=>m.wild?CARDS[id].club===m.wild:m.id===id);
- if(mat)h+=`<p class="glk goal">🎯 목표 「${escTip(CARDS[gs.cb.to].name)}」 재료 — ${escTip(goalLackStr(gs))}</p>`;
- const lk=G.lack.slice(0,4);
+ if(mat&&meta.codex?.[gs.cb.to])h+=`<p class="glk goal">🎯 목표 「${escTip(CARDS[gs.cb.to].name)}」 재료 — ${escTip(goalLackStr(gs))}</p>`;
+ const lk=G.lack.filter(g=>guideRecipeName(g)!=='??').slice(0,4);
  if(lk.length)h+=`<h5>덱에서 한 장 더 오면</h5>${lk.map(g=>`<p class="glk">${g.icon} ${escTip(g.name)}까지 ${escTip(lackStr([{name:g.mat,k:1}],g.n,0))}</p>`).join('')}`;
  return h;}
 /* 검사 패널(칸을 가리킴): 그 칸이 기회면 머리 한 줄 「이 칸에 두면 격전지 완성」 · 전선·보급선이 생기거나 늘면 다음 단계(「격전지까지 소환 1장 더 — 덱에 3장 · 손패 1장」) */
 function guideHoverHtml(id,ti,p){const G=guideNow();let top='';const nx=[];
  const os=G?(G.card[id]||[]).filter(o=>o.spot===ti&&o.pri>=3).sort((a,b)=>b.pri-a.pri):[];
- if(os.length)top=`<div class="ghit">✔ 이 칸에 두면 ${os.map(o=>escTip(o.kind==='goal'?`목표 「${o.name}」 완성`:o.chain?`${o.name} 완성`:`「${o.name}」 완성`)).join(' · ')}</div>`;
- for(const x of (p&&p.chainChanges)||[]){if(x.kind==='break'||x.void)continue;const q=chainNextInfo(x,selectedCard);if(q)nx.push(`<p class="gnext">다음 — ${q.icon} ${escTip(q.name)}까지 ${escTip(lackStr([{name:q.mat,k:q.k}],q.n,q.hand))}</p>`);}
+ if(os.length)top=`<div class="ghit">✔ 이 칸에 두면 ${os.map(o=>escTip(o.kind==='goal'?`목표 「${guideRecipeName(o)}」 완성`:o.chain?`${guideRecipeName(o)} 완성`:`「${guideRecipeName(o)}」 완성`)).join(' · ')}</div>`;
+ for(const x of (p&&p.chainChanges)||[]){if(x.kind==='break'||x.void)continue;const q=chainNextInfo(x,selectedCard);if(q&&meta.codex?.['chain_'+q.to])nx.push(`<p class="gnext">다음 — ${q.icon} ${escTip(q.name)}까지 ${escTip(lackStr([{name:q.mat,k:q.k}],q.n,q.hand))}</p>`);}
  return {top,nx};} /* nx = pvHtml 의 변화 묶음(체인 변화 바로 뒤)에 붙는다 */
 /* ----- 첫 사용 안내(한 번만 — meta.tips 에 기록) -----
  * 검사 패널이 열려 있으면 패널 안 한 줄(#inspTip), 아니면 손패 머리 줄의 상황 안내 자리(#handHint — 기존 SITU_HINTS 와 같은 줄). 지도·카드를 가리지 않고 시간을 멈추지 않는다.
@@ -16970,7 +17405,7 @@ const FIRST_TIPS={
  land:()=>'⛰ 보드 카드: 도로 밖 빈 땅에 배치 — 지형은 성장, 시설은 빛나는 도로를 지원',
  chain:()=>'🔗 체인: 같은 계열을 도로에 연달아 — 구간이 함께 강해지고 대가도',
  morph:()=>'◎ 변신: 금색 링 칸이 그 타일로 바뀜 — 첫 조합은 도감에 기록',
- delay:()=>`⏳ 약탈: 지금은 회복 없는 거점 — ${BAL.delay.laps}랩 버티면 백작의 영지`,
+ delay:()=>`⏳ 약탈: 지금은 회복 없는 거점 — ${BAL.delay.laps}랩 뒤 새로운 변형`,
  supply:()=>'📊 작전 평가·📦 소형 보급 — 랩 점수가 보급 등급, 상자는 칩으로 예약',
  guide:()=>'◆ 금색 표식 = 손패로 조합·체인이 완성되는 칸 — 배지에 결과 이름',
 };
@@ -17042,6 +17477,8 @@ const iconSrc=n=>`assets/ui/icons/${n}.webp`,iconImg=n=>ART.img(iconSrc(n));
 const MORPH_STAGE={};
 for(const st of STUDENTS){const m=CARDS[st.sig]&&CARDS[st.sig].morph;if(!m)continue;MORPH_STAGE[m.tile]={label:'★1',color:st.halo||'#7cc4ff'};MORPH_STAGE[m.star2]={label:'★2',color:st.halo||'#7cc4ff'};}
 for(const cb of COMBOS)if(!MORPH_STAGE[cb.to])MORPH_STAGE[cb.to]={label:'⚗',color:'#c084fc'};
+for(const [id,c] of Object.entries(CARDS))if(c.recipe)MORPH_STAGE[id]={
+ label:'⚗',color:c.selfHpCost?'#fb7185':c.selfSlow?'#38bdf8':'#fbbf24'};
 /* 그림 기준점(라운드 2): 원본의 투명 여백을 고려한 실제 점유 폭.
  * 직선 도로 원본은 불투명 띠가 높이의 41%, 띠 중심이 높이의 77% 지점 → 그림 높이 1.7×CELL 로 그리고 띠 중심을 타일 중심에 맞춘다(실제 두께 ≈ 45px, 이전 21px).
  * 모서리 원본(서·북 연결)은 팔꿈치 중심이 (0.70, 0.78) → 그 점을 타일 중심에 맞춘다. 두 경우 모두 자기 칸으로 클립해 이웃 도로와 정확히 이어진다.
@@ -17635,7 +18072,7 @@ function traitChipsHtml(st,row,idx,hint){
  return `<span class="chips">${rowChip}<span class="chip" data-tip="${escTip(rc.name)}: ${escTip(rc.desc())}">${chipImg('reach_'+st.reach,rc.name)}${hint?ihTxt(rc.name):''}</span><span class="chip bane" data-tip="특효: ${escTip(k.name)} 유형에 피해 +${Math.round(BAL.bane*100)}%">${chipImg('icon_bane','특효')}${chipImg('type_'+st.bane,k.name)}</span><span class="chip" data-tip="${escTip(sy.name)}: ${escTip(sy.desc())}">${chipImg('style_'+st.style,sy.name)}</span></span>`;}
 /* v1.0 손패 카드 HTML (본 화면·보급 화면 공용). 동아리 문장·강화·변신 설명 */
 function cardDescHtml(id){const c=CARDS[id],e=effOf(id),on=e.enhanced;let m='';
- if(c.sig&&c.morph){const st=STUDENTS.find(s=>s.id===c.sig),has=run&&run.party.find(x=>x.stu.id===c.sig),ids=has?[has.star>=2?c.morph.star2:c.morph.tile]:[c.morph.tile,c.morph.star2];m=`<div class="cm">✨ ${st.name} 서명${has?' · 합류 중':' · 합류하면 변신'}${ids.map((to,i)=>`<div class="signature-result"><b>${CARDS[to].icon} ${CARDS[to].name}${!has?' · ★'+(i+1):''}</b><span>${cardDesc(to)}</span></div>`).join('')}</div>`;}
+ if(c.sig&&c.morph){const st=STUDENTS.find(s=>s.id===c.sig),has=run&&run.party.find(x=>x.stu.id===c.sig),ids=has?[has.star>=2?c.morph.star2:c.morph.tile]:[c.morph.tile,c.morph.star2];m=`<div class="cm">✨ ${st.name} 서명${has?' · 합류 중':' · 합류하면 변신'}${ids.map((to,i)=>!meta.codex?.[to]?'<div class="signature-result"><b>??</b><span>원정에서 발견</span></div>':`<div class="signature-result"><b>${CARDS[to].icon} ${CARDS[to].name}${!has?' · ★'+(i+1):''}</b><span>${cardDesc(to)}</span></div>`).join('')}</div>`;}
  else if(c.enh){m=`<div class="cm">${on?'★ 강화 중':'강화 조건'}: ${CLUBS[c.club]} 학생 합류 → ${enhStr(c.enh)}</div>`;}
  if(isTerrain(id)){const k=cardClass(id),tc=TILE_CLASS[k];m=`<div class="cm">${k==='control'?'🌫 제어 카드 — 지도의 칸에 사용(브레이크 없음)':`${tc.icon} ${tc.name} — ${tc.where}${cardCostNote(id)}`}</div>`;}
  return tileVariantDetailHtml(id)+`<div class="cd">${c.desc}</div>`+
@@ -17675,9 +18112,9 @@ function handCardsHtml(shop){
  return run.hand.map((id,i)=>{const why=cardBlockReason(id);return cardHtml(id,{i,sel:selectedCard===i&&!shop,isNew:run.paused&&run.pendingCard===id&&i===run.hand.lastIndexOf(id),discard:!shop,gist:!shop,blocked:!!why,note:why?`<div class="cm">⛔ ${escTip(why)}</div>`:'',badge:shop||why?'':handOppBadge(id)});}).join('')||'<div class="kbd">손패 없음 — 무리를 전멸시키면 카드가 떨어집니다 (캠프 통과 +1)</div>'; /* 카드 가독성 L: 지금 완성할 수 있는 카드 = ◆ 배지(원정 손패) */
 }
 /* 목표 조합 HUD: 재료 보유(지도/손패/덱)·배치 가능 칸 수·달성 여부. 캠프(보급 화면)·작전실에서 setGoal 로 바꾼다 */
-function goalOptions(cur){return '<option value="">목표 조합 없음</option>'+COMBOS.map(cb=>`<option value="${cb.to}"${cur===cb.to?' selected':''}>${CARDS[cb.to].icon} ${CARDS[cb.to].name} — ${cb.need}</option>`).join('');}
+function goalOptions(cur){return '<option value="">목표 조합 없음</option>'+COMBOS.filter(cb=>meta.codex?.[cb.to]).map(cb=>`<option value="${cb.to}"${cur===cb.to?' selected':''}>${CARDS[cb.to].icon} ${CARDS[cb.to].name} — ${cb.need}</option>`).join('');}
 function renderGoalBox(){const el=$('#goalBox');const g=run&&run._goal;
- if(!g){el.hidden=true;el.innerHTML='';return;}el.hidden=false; /* 카드 가독성 S: 목표가 없으면 줄을 숨긴다 — 큰 손패 카드만큼 지도 높이를 지킨다(목표는 보급 화면 「손패·목표·서비스」에서) */
+ if(!g||!meta.codex?.[g.cb.to]){el.hidden=true;el.innerHTML='';return;}el.hidden=false; /* 카드 가독성 S: 목표가 없으면 줄을 숨긴다 — 큰 손패 카드만큼 지도 높이를 지킨다(목표는 보급 화면 「손패·목표·서비스」에서) */
  /* 카드 가독성 L: 재료 칩 = ✔(지도+손패로 다 있음) 또는 있는 수/필요 수(지도·손패·덱 장수는 툴팁) + 부족 재료 한 줄(goalStateStr) */
  const mats=g.mats.map(m=>{const ok=m.map+m.hand>=m.n;return `<span class="gm${ok?' ok':''}" title="지도 ${m.map} · 손패 ${m.hand} · 덱 ${m.deck}">${CARDS[m.id].icon}${m.wild?CLUBS[m.wild]+' 카드':CARDS[m.id].name}${m.n>1?'×'+m.n:''} <i>${ok?'✔':`${m.map+m.hand}/${m.n}`}</i></span>`;}).join('');
  el.innerHTML=`<b>🎯 목표 「${CARDS[g.cb.to].name}」</b> ${mats} <span class="glk${g.paid?' ok':g.spots.size?' now':''}">${escTip(goalStateStr(g))}</span>`;}
@@ -17758,16 +18195,28 @@ function inspCostText(id,p){if(p&&p.ok&&p.cost){const t=p.cost.t||0;return t>0?`
  if(cs)return cs.map(q=>`${ZONE_NAME[q.zone]}${q.n>1?` ${q.n}칸`:''} ${q.t>0?'T −'+q.t:'무료'}`).join(' · ');
  const pc=placeCost(id);return pc>0?`배치 T −${pc}`:'배치 무료';}
 /* 카드 가독성 M: 검사 패널 미리보기 = 결과 계약만 읽는다 — 경고 → 변화(변신 · 체인 변화 · 중립) → 이득 → 대가 → 비용(T 지금 → 뒤 · 브레이크 %p). 줄 앞 칩 = 시점(즉시 · 진입 시 · 교전 시 …).
- * 미발견 조합도 이름·결과 효과를 공개(소유자 결정 2026-09-20 — 「새 발견 · 공개」 표시). v1.5 board.js 결과(effects.k · morphs.cells · chainChanges.type)도 같은 틀로 그린다 */
+ * 미발견 조합은 결과 이름을 숨기고 실제 이득·대가는 예고한다. 보드 체인도 같은 틀로 그린다. */
+function previewDiscoveredText(text,preview){
+ let value=String(text||'');
+ for(const m of preview?.morphs||[]){
+  const name=CARDS[m.to]?.name;if(name&&!meta.codex?.[m.to])value=value.replaceAll(name,'??');
+ }
+ for(const change of preview?.chainChanges||[]){
+  const id=change.type||change.to,def=change.type?BOARD_CHAINS[id]:CHAINS[id];
+  const key=(change.type?'board_chain_':'chain_')+id;
+  if(def&&!meta.codex?.[key])value=value.replaceAll(def.name,'??');
+ }
+ return value;
+}
 function pvHtml(p,more){ /* more = 변화 묶음의 체인 변화 바로 뒤에 붙일 줄(카드 가독성 L — 체인 다음 단계) */
  if(!p)return '';if(!p.ok)return `<div class="pvw">⛔ ${escTip(p.reason||'이 칸에는 놓을 수 없음')}</div>`;
  const G={change:[],gain:[],risk:[]},wh=(w,c)=>w?`<span class="wh${c?' '+c:''}">${escTip(w)}</span>`:'';let h='';
  for(const w of p.warnings||[])h+=`<div class="pvw">${escTip(w.text)}</div>`;
- for(const m of p.morphs||[]){const nm=m.name||(CARDS[m.to]&&CARDS[m.to].name)||'',fr=m.from&&CARDS[m.from]?CARDS[m.from].name:'';
-  G.change.push(`<p class="pvm${m.delayLaps?' dl':''}">${m.delayLaps?wh(m.delayLaps+'랩 뒤','dl'):m.random?wh('위치 미정','dl'):wh('즉시')}<b>◎ ${nm?`${fr?escTip(fr)+' → ':''}「${escTip(nm)}」`:escTip(m.text||'')}</b>${m.undiscovered?'<span class="nw">새 발견 · 공개</span>':''}${m.need?` <small>(${escTip(m.need)})</small>`:''}${nm&&m.text?`<em>${escTip(m.text)}</em>`:''}</p>`);}
- for(const x of p.chainChanges||[]){const brk=x.kind==='break';G[brk?'risk':'change'].push(`<p class="pvc"><span class="cb" style="--cc:${brk?'#fb7185':pvChainColor(x)}">${brk?'✕':(x.type&&BOARD_CHAINS[x.type]?BOARD_CHAINS[x.type].icon:x.to&&CHAINS[x.to]?CHAINS[x.to].icon:'🔗')} ${escTip(x.text)}</span></p>`);}
+ for(const m of p.morphs||[]){const nm=previewDiscoveredText(m.name||(CARDS[m.to]&&CARDS[m.to].name)||'',p),fr=m.from&&CARDS[m.from]?CARDS[m.from].name:'';
+  G.change.push(`<p class="pvm${m.delayLaps?' dl':''}">${m.delayLaps?wh(m.delayLaps+'랩 뒤','dl'):m.random?wh('위치 미정','dl'):wh('즉시')}<b>◎ ${nm?`${fr?escTip(fr)+' → ':''}「${escTip(nm)}」`:escTip(previewDiscoveredText(m.text||'',p))}</b>${m.undiscovered?'<span class="nw">새 발견 예정</span>':''}${m.need?` <small>(${escTip(previewDiscoveredText(m.need,p))})</small>`:''}${nm&&m.text?`<em>${escTip(previewDiscoveredText(m.text,p))}</em>`:''}</p>`);}
+ for(const x of p.chainChanges||[]){const brk=x.kind==='break';G[brk?'risk':'change'].push(`<p class="pvc"><span class="cb" style="--cc:${brk?'#fb7185':pvChainColor(x)}">${brk?'✕':(x.type&&BOARD_CHAINS[x.type]?BOARD_CHAINS[x.type].icon:x.to&&CHAINS[x.to]?CHAINS[x.to].icon:'🔗')} ${escTip(previewDiscoveredText(x.text,p))}</span></p>`);}
  if(more)G.change.push(...more);
- for(const e of p.effects||[]){const sg=pvSign(e);G[sg==='+'?'gain':sg==='-'?'risk':'change'].push(`<p>${wh(e.when)}${escTip(e.text)}</p>`);}
+ for(const e of p.effects||[]){const sg=pvSign(e);G[sg==='+'?'gain':sg==='-'?'risk':'change'].push(`<p>${wh(e.when)}${escTip(previewDiscoveredText(e.text,p))}</p>`);}
  for(const [k,nm] of [['change','변화'],['gain','이득'],['risk','대가']])if(G[k].length)h+=`<div class="pvg k-${k}"><i>${nm}</i><div>${G[k].join('')}</div></div>`;
  const c=p.cost||{},t=c.t||0,parts=(c.parts||[]).filter(q=>q.t>0);
  h+=`<div class="pvg k-cost"><i>비용</i><div>${t>0?`<p><b>T ${run.t} → ${Math.max(0,run.t-t)}</b> · 브레이크 +${c.breakPct}%p${parts.length>1?` <small>(${parts.map(q=>escTip(q.text)+' −'+q.t).join(' · ')})</small>`:''}</p>`:'<p>T 소모 없음 — 무료 배치</p>'}</div></div>`;
@@ -18079,7 +18528,7 @@ const POOL_FILTERS=[['council','🏛️ 학생회'],['shield','🛡️ 방패조
 const DECK_POOL=()=>[...CARD_POOL,...TERRAIN_POOL];
 function poolMatch(id,f){const c=CARDS[id];if(f==='terrain')return isTerrain(id);if(isTerrain(id))return f==='all';if(f==='all')return true;if(f==='spawn')return !!c.spawn;if(f==='support')return !c.spawn&&c.club!=='assoc';if(f==='mats')return COMBO_MATS.includes(id);return c.club===f;}
 function dcardHtml(id,cls,cnt){const c=CARDS[id],st=c.sig?STUDENTS.find(s=>s.id===c.sig):null,lk=!collectionDeckOpen(id); /* v1.4 R4 C-05: 잠긴 결계는 자물쇠 · 풀에서 추가 불가 · 자유 덱에 남아 있으면 출격 시 제외 */
- const sub=lk?`🔒 ${collectionLockHint(id)}${cls==='free'?' · 출격 시 제외':''}`:isTerrain(id)?(cardClass(id)==='control'?'제어 카드':TILE_CLASS[cardClass(id)].name+' · '+TILE_CLASS[cardClass(id)].where):c.contract?'📜 '+contractStr(c):(c.sig?`${st.name} 합류 시 「${CARDS[c.morph.tile].name}」 변신`:c.enh?'강화: '+enhStr(c.enh):'협회 공용');
+ const sub=lk?`🔒 ${collectionLockHint(id)}${cls==='free'?' · 출격 시 제외':''}`:isTerrain(id)?(cardClass(id)==='control'?'제어 카드':TILE_CLASS[cardClass(id)].name+' · '+TILE_CLASS[cardClass(id)].where):c.contract?'📜 '+contractStr(c):(c.sig?`${st.name} 합류 시 「${meta.codex?.[c.morph.tile]?CARDS[c.morph.tile].name:'??'}」 변신`:c.enh?'강화: '+enhStr(c.enh):'협회 공용');
  return cardHtml(id,{id,cls:'dcard '+cls+(lk?' lock':'')+(deckHL===id?' lghl':''),cnt, /* 카드 가독성 L: 조합 패널 재료 칩으로 찾은 카드 = 강조(lghl) */desc:`<div class="cd">${c.desc}</div><div class="ct">${sub}</div>`,badge:lk?`<span class="lockb" data-tip="${escTip(collectionLockHint(id))}${cls==='free'?' — 출격 시 덱에서 빠지고 기본 카드로 채웁니다':''}">🔒</span>`:''});}
 /* ===== 작전실 3단계 「조합·시너지」 패널(2026-09-20 소유자 요청) — 덱 15장(고정 4 + 자유 11)으로 타일 조합 재료가 얼마나 갖춰졌는지 + 동아리 강화·분대 시너지. 표시만(COMBOS·SYNERGY 규칙 그대로) =====
  * comboStatusForDeck(ids) = 순수 함수(회귀 「덱 조합·시너지 패널」): 조합마다 재료(mats, 중복 = 필요 장수)를 덱 카드 수로 채워 보고 모자란 카드 id 를 낸다.
@@ -18104,6 +18553,8 @@ function renderDeckCombo(s,all){
  const rank={ok:0,near:1,far:2},rows=comboStatusForDeck(all).map((r,i)=>({...r,i})).sort((a,b)=>(b.to===meta.goal)-(a.to===meta.goal)||rank[a.state]-rank[b.state]||a.i-b.i); /* 카드 가독성 L: 목표 조합이 맨 위(멂이어도 접지 않는다) */
  const free=freeOf(s.id),room=free.length<DECK_FREE,nOk=rows.filter(r=>r.state==='ok').length,nNear=rows.filter(r=>r.state==='near').length;
  const row=r=>{const c=CARDS[r.to],art=cardArtSrc(r.to),found=!!(meta.codex&&meta.codex[r.to]),goal=meta.goal===r.to,wild=COMBO_WILD[r.to]||{},nm=id=>wild[id]?CLUBS[wild[id]]+' 카드':CARDS[id].name;
+  if(!found)return '<div class="dcb"><span class="ca">?</span>'+
+   '<div class="ct"><b>??</b><p>원정에서 조합을 발견하면 조건과 효과가 기록됩니다.</p></div></div>';
   /* 카드 가독성 L: 재료 칩(덱에 있는 장수/필요 — 누르면 그 카드가 있는 풀 탭으로 옮겨 강조, deckGo) + 빠진 재료 「+ 넣기」(1장 부족 · 자리 있음 = 자유 덱에) + 부족 재료 한 줄 */
   const mats=r.mats.map(m=>{const ok=m.have>=m.need,dup=all.filter(x=>x===m.id).length>=DECK_DUP_MAX,lk=!collectionDeckOpen(m.id),can=!ok&&r.state==='near'&&room&&!dup&&!lk;
    const why=lk?cardLockHint(m.id):dup?`같은 카드는 ${DECK_DUP_MAX}장까지`:!room?`자유 덱 ${DECK_FREE}장이 찼습니다 — 자유 덱에서 한 장을 빼면 넣을 수 있습니다`:'눌러서 자유 덱에 넣기';
@@ -18375,6 +18826,7 @@ function fitTree(){
 }
 function renderCodex(){
  if(typeof renderCollectionCodex==='function')renderCollectionCodex($('#collectionCodex'));
+ if(typeof renderRecipeCodex==='function'){renderRecipeCodex($('#codex'));return;}
  const sigs=[],combos=COMBOS.map(cb=>({id:cb.to,need:cb.need}));
  for(const st of STUDENTS){const c=CARDS[st.sig];sigs.push({id:c.morph.tile,need:`${st.name} 합류 + 「${c.name}」 배치`});sigs.push({id:c.morph.star2,need:`${st.name} ★2 + 「${c.name}」 배치`});}
  /* v1.1 체인 5종도 도감에 기록(meta.codex['chain_'+kind]) */
@@ -18408,6 +18860,184 @@ if(document.addEventListener){
  document.addEventListener('pointerdown',e=>{clearTimeout(TIP.pressT);if(!e.target||!e.target.closest)return;const t=e.target.closest(TIP_SEL);if(e.pointerType==='mouse'){if(TIP.cur)TIP.hide();return;}TIP.hide();if(!t)return;
   if(t.dataset&&t.dataset.tip&&!t.classList.contains('card'))TIP.show(t,true);else TIP.pressT=setTimeout(()=>TIP.show(t,true),380);});
  for(const ev of ['pointerup','pointercancel','scroll'])document.addEventListener(ev,()=>clearTimeout(TIP.pressT),true);
+}
+
+</script>
+<script>
+'use strict';
+/* Discovery controls every visible field. Unlocking a recipe does not reveal it. */
+const RECIPE_CODEX_UI={filter:'all',stage:'all',selected:null};
+function recipeCodexEsc(value){
+ return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
+  '"':'&quot;',"'":'&#39;'}[c]));
+}
+function recipeCodexRows(){
+ const rows=[],seen=new Set(),add=row=>{if(!seen.has(row.id)){seen.add(row.id);rows.push(row);}};
+ for(const row of typeof recipeRows==='function'?recipeRows():[]){
+  add({...row,kind:'단계 조합',stage:row.after||'',mats:[row.from,row.adj],
+   need:()=>`${CARDS[row.from].name} 옆에 ${CARDS[row.adj].name} ${row.need||1}개 배치`});
+ }
+ for(const cb of COMBOS)add({id:cb.to,kind:'타일 조합',mats:cb.mats,need:()=>cb.need});
+ for(const st of STUDENTS){
+  const card=CARDS[st.sig],m=card?.morph;if(!m)continue;
+  add({id:m.tile,kind:'캐릭터 변신',mats:[st.sig],need:()=>`${st.name} 합류 + ${card.name} 배치`});
+  add({id:m.star2,kind:'캐릭터 변신',mats:[st.sig],need:()=>`${st.name} ★2 + ${card.name} 배치`});
+ }
+ for(const shape of LAND_RULES.shapes.filter(s=>s.to))add({id:shape.to,kind:'지형 변형',
+  mats:[shape.card],need:()=>`${CARDS[shape.card].name} · ${shape.need}`});
+ for(const r of LAND_RULES.thresholds){
+  const id=r.id==='outpost'?'ld_outpost':'terrain_'+r.id;
+  add({id,kind:'지형 누적',mats:[r.card],data:{name:r.name,icon:r.icon,
+   need:()=>`${CARDS[r.card].name} ${r.need()}개${r.repeat?'마다':' 이상'} · 지도 전체 누적`,
+   eff:()=>r.id==='forest'?`편의점류 랩당 카드 +1`:r.id==='echo'?
+    '매 랩 추가 무리 출현':CARDS.ld_outpost.desc,
+   cost:()=>r.id==='forest'?`편의점류 회복 ×${BAL.land.forestHeal}`:r.id==='echo'?
+    '격전 흔적 인접 도로에 사념 무리 추가':'매 랩 정예 무리 출현'}});
+ }
+ add({id:'ld_campus',kind:'지형 변형',stage:'E',mats:['ld_training'],
+  need:()=>'훈련 구획 4개를 2×2로 배치 → 북서 구획 1개가 변형'});
+ add({id:'ld_oasis',kind:'지형 변형',stage:'E',mats:['ld_dust','ld_river'],
+  need:()=>`${CARDS.ld_dust.name} 옆에 ${CARDS.ld_river.name} 배치 → ${CARDS.ld_dust.name} 변형`});
+ add({id:'sd_forbidden',kind:'누적 변형',mats:['sd_archive'],
+  need:()=>`${CARDS.sd_archive.name}의 손패 교체 ${CARDS.sd_archive.archiveUses}회 사용`});
+ for(const delay of LAND_RULES.delays){
+  add({id:delay.to,kind:'시간 변형',mats:[...delay.from,delay.adj],
+   need:()=>`${delay.from.map(id=>CARDS[id].name).join(' / ')} 옆에 ${CARDS[delay.adj].name}`});
+  add({id:delay.then,kind:'시간 변형',mats:[delay.to],
+   need:()=>`${CARDS[delay.to].name} 상태로 ${delay.laps()}랩 경과`});
+ }
+ for(const [id,data] of Object.entries(CHAINS))add({id:'chain_'+id,kind:'도로 체인',data});
+ for(const [id,data] of Object.entries(BOARD_CHAINS))add({id:'board_chain_'+id,kind:'길가 체인',data});
+ return rows.filter(row=>row.data||CARDS[row.id]);
+}
+function recipeCodexFound(row,account=meta){
+ return typeof recipeFound==='function'?recipeFound(row.id,account):!!account?.codex?.[row.id];
+}
+function guideRecipeName(opportunity){
+ const id=opportunity.to;
+ const key=CHAINS[id]?'chain_'+id:BOARD_CHAINS[id]?'board_chain_'+id:id;
+ return key&&!meta.codex?.[key]?'??':opportunity.name;
+}
+function recipeCodexHint(row){
+ if(row.stage)return `${row.stage} 지역 첫 클리어 후`;
+ return '원정에서 발견';
+}
+function recipeCodexClue(row,account=meta){
+ if(!CARDS[row.id]?.recipe||!recipeOpen(row.id,null,account))return '';
+ return `<small>탐색 단서 · ${recipeCodexEsc(CARDS[row.from].name)}</small>`;
+}
+function recipeCodexArt(id){
+ const c=CARDS[id],src=cardArtSrc(id)||c?.recipe&&cardArtSrc(c.recipe.from);
+ return src?`<img src="${recipeCodexEsc(artUrl(src))}" alt="" loading="lazy">`:
+  `<span class="rcx-symbol" aria-hidden="true">${recipeCodexEsc(c?.icon||'🔗')}</span>`;
+}
+function recipeCodexEffects(row){
+ if(row.data)return {gain:row.data.eff(),cost:row.data.cost()};
+ const c=CARDS[row.id],f=c.field||{},gain=[],cost=[],pc=n=>Math.round(n*100);
+ if(!c.recipe)return {gain:cardDesc(row.id),cost:'추가 조건과 대가는 위 효과 설명을 확인하세요.'};
+ const radius=f.radius?`반경 ${f.radius}칸 전투`:'인접 전투';
+ if(f.heal)gain.push(`${radius} 후 생존자 HP +${f.heal}`);
+ if(f.shield)gain.push(`${radius} 시작 보호막 +${f.shield}`);
+ if(c.sup?.shield)gain.push(`인접 교전 주지원 보호막 +${c.sup.shield}`);
+ if(f.dmg)gain.push(`${radius} 추가 피해 +${f.dmg}`);
+ if(f.xp)gain.push(`${radius} 계약 XP +${pc(f.xp)}%`);
+ if(f.killEx)gain.push(`${radius} 처치 EX +${f.killEx}`);
+ if(f.slow)gain.push(`${radius} 적 공격 속도 −${pc(f.slow)}%`);
+ if(c.trainingXp)gain.push(`소탕 XP +${c.trainingXp}`);
+ if(c.enter?.card)gain.push(`인접 도로 랩 첫 통과 카드 +${c.enter.card}`);
+ if(c.pas?.crit)gain.push(`전원 치명타 +${pc(c.pas.crit)}%p`);
+ if(c.pas?.atk)gain.push(`전원 공격 +${c.pas.atk}`);
+ if(c.selfSlow)cost.push(`피로 · 전원 공격 속도 −${pc(c.selfSlow)}%`);
+ if(c.selfHpCost)cost.push(`취약 · 전원 기본 최대 HP −${pc(c.selfHpCost)}%`);
+ if(f.riskAtk)cost.push(`노출 · ${radius} 보스 외 적 공격 +${pc(f.riskAtk)}%`);
+ return {gain:gain.join(' · ')||cardDesc(row.id),cost:cost.join(' · ')||'추가 대가 없음'};
+}
+function recipeCodexRelics(row){
+ const c=CARDS[row.id];if(!c)return '';
+ const pairs=[['fatigue_coil',c.selfSlow,'피로'],['frailty_plate',c.selfHpCost,'취약'],
+  ['exposure_seal',c.field?.riskAtk,'노출']].filter(p=>p[1]);
+ if(!pairs.length)return '';
+ return '<section class="rcx-related"><h5>대가를 활용하는 유물</h5>'+pairs.map(([id,,label])=>{
+  const open=typeof curriculumRelicOpen==='function'&&curriculumRelicOpen(id);
+  if(!open)return `<p>${label} 전환 유물 · ?? <small>유물 해금 후 확인</small></p>`;
+  const relic=RELICS.find(r=>r.id===id);
+  const desc=typeof RECIPE_RELICS!=='undefined'?RECIPE_RELICS.describe(id):relic?.desc||'';
+  return `<p><b>${recipeCodexEsc(relic?.name||'??')}</b><span>${recipeCodexEsc(desc)}</span></p>`;
+ }).join('')+'</section>';
+}
+function recipeCodexCard(row,index,selected,account=meta){
+ const found=recipeCodexFound(row,account),active=selected===row.id;
+ const common=`class="rcx-item${found?' is-found':''}${active?' is-selected':''}"`+
+  ` data-rcx-select="${index}" aria-pressed="${active}"`;
+ if(!found)return `<button ${common}><span class="rcx-thumb rcx-unknown" aria-hidden="true">?</span>`+
+  `<span><b>??</b><small>${recipeCodexHint(row)}</small>${recipeCodexClue(row,account)}</span></button>`;
+ const c=row.data||CARDS[row.id];
+ return `<button ${common}><span class="rcx-thumb">${!CARDS[row.id]?
+  `<span aria-hidden="true">${c.icon}</span>`:recipeCodexArt(row.id)}</span>`+
+  `<span><b>${recipeCodexEsc(c.name)}</b><small>${row.kind} · 발견 완료</small></span></button>`;
+}
+function recipeCodexDetail(row,account=meta){
+ if(!row)return '<div class="rcx-empty">기록을 선택하면 발견한 조합의 조건과 효과를 확인할 수 있습니다.</div>';
+ if(!recipeCodexFound(row,account))return '<section class="rcx-detail"><h4>??</h4>'+ 
+  `<p>${recipeCodexHint(row)}</p>${recipeCodexClue(row,account)}`+
+  '<p>아직 발견하지 않은 조합입니다.</p></section>';
+ const c=row.data||CARDS[row.id],effects=recipeCodexEffects(row);
+ const need=row.data?(typeof row.data.need==='function'?row.data.need():row.data.need):row.need();
+ const mats=row.mats||[];
+ return `<section class="rcx-detail"><header><span class="rcx-detail-art">${!CARDS[row.id]?
+  `<span aria-hidden="true">${c.icon}</span>`:recipeCodexArt(row.id)}</span>`+
+  `<div><small>${row.kind} · ${recipeCodexHint(row)}</small><h4>${recipeCodexEsc(c.name)}</h4>`+
+  '<span class="rcx-recorded">✓ 발견 기록 보존됨</span></div></header>'+
+  `<h5>만드는 방법</h5><p>${recipeCodexEsc(need)}</p>`+
+  (mats.length?'<div class="rcx-materials">'+[...new Set(mats)].map(id=>
+   `<span>${recipeCodexArt(id)}${recipeCodexEsc(CARDS[id]?.name||id)}</span>`).join('')+'</div>':'')+
+  `<div class="rcx-effects"><section><h5>이득</h5><p>${recipeCodexEsc(effects.gain)}</p></section>`+
+  `<section class="rcx-cost"><h5>대가 · 조건</h5><p>${recipeCodexEsc(effects.cost)}</p></section></div>`+
+  recipeCodexRelics(row)+'<p><small>타일 기본 수치입니다. 중첩·승급·실제 범위는 배치 예고에서 확인하세요.</small></p>'+
+  '</section>';
+}
+function openRecipeCodex(){
+ const host=document.querySelector('#codex');if(!host)return;
+ host.scrollIntoView({block:'start'});host.querySelector('h3')?.focus({preventScroll:true});
+}
+function renderRecipeCodex(host=document.querySelector('#codex')){
+ if(!host)return;const all=recipeCodexRows(),u=RECIPE_CODEX_UI;
+ const found=all.filter(row=>recipeCodexFound(row)).length;
+ const rows=all.filter(row=>(u.filter==='all'||recipeCodexFound(row)===(u.filter==='found'))&&
+  (u.stage==='all'||(row.stage||'base')===u.stage));
+ if(!rows.some(row=>row.id===u.selected))u.selected=rows.find(row=>recipeCodexFound(row))?.id||null;
+ const count=document.querySelector('#codexCount');if(count)count.textContent=`${found}/${all.length}`;
+ host.classList.add('recipe-codex');host.removeAttribute?.('data-pager');
+ const collection=document.querySelector('#collectionCodex');
+ if(collection&&host.parentNode&&collection.parentNode===host.parentNode){
+  host.parentNode.insertBefore(host,collection);
+ }
+ const options=[['all','모든 단계'],['base','기본 발견'],...['E','D','C','B','A','S'].map(s=>[s,`${s} 클리어 후`])];
+ host.innerHTML='<div class="rcx-shell"><header class="rcx-heading"><div>'+ 
+  `<h3 tabindex="-1">조합 발견 도감 <span>${found} / ${all.length}</span></h3>`+
+  '<p>원정에서 직접 발견한 조합을 기록합니다. 해금만 된 조합은 ??로 남습니다.</p></div>'+
+  '<button class="btn sm" data-rcx-collection>타일 수집 보기 ↓</button></header>'+
+  '<div class="rcx-filters"><label>기록 <select data-rcx-filter>'+ 
+  '<option value="all">전체</option><option value="found">발견 완료</option>'+
+  '<option value="unknown">미발견 ??</option></select></label><label>단계 <select data-rcx-stage>'+
+  options.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')+'</select></label></div>'+
+  `<div class="rcx-layout"><div class="rcx-list" aria-label="조합 발견 목록">`+
+  (rows.map((row,i)=>recipeCodexCard(row,i,u.selected)).join('')||'<p class="rcx-empty">해당 기록이 없습니다.</p>')+
+  '</div><div class="rcx-detail-host" aria-live="polite">'+
+  recipeCodexDetail(rows.find(row=>row.id===u.selected))+'</div></div></div>';
+ const filter=host.querySelector('[data-rcx-filter]'),stage=host.querySelector('[data-rcx-stage]');
+ filter.value=u.filter;stage.value=u.stage;
+ filter.onchange=()=>{u.filter=filter.value;renderRecipeCodex(host);};
+ stage.onchange=()=>{u.stage=stage.value;renderRecipeCodex(host);};
+ host.querySelectorAll('[data-rcx-select]').forEach(button=>button.onclick=()=>{
+  const row=rows[Number(button.dataset.rcxSelect)];u.selected=row.id;
+  host.querySelectorAll('[data-rcx-select]').forEach(b=>{
+   const active=b===button;b.classList.toggle('is-selected',active);b.setAttribute('aria-pressed',String(active));
+  });
+  const detail=host.querySelector('.rcx-detail-host');detail.innerHTML=recipeCodexDetail(row);
+  if(window.innerWidth<700)detail.scrollIntoView({block:'nearest'});
+ });
+ host.querySelector('[data-rcx-collection]').onclick=()=>collection?.scrollIntoView({block:'start'});
 }
 
 </script>
@@ -18837,6 +19467,9 @@ function renderRunDraft(host){
 }
 function compactRunDraft(host){
  const ui=RUN_DRAFT_UI,sections=[...host.querySelectorAll(':scope>.draft-section')];
+ const grid=host.querySelector('.collection-grid');
+ // Presentation requires the rendered sections; simulation hosts may omit their DOM.
+ if(sections.length<3||!grid||!grid.children)return;
  ui.section=ui.section||0;
  const nav=document.createElement('nav');nav.className='draft-mode';
  nav.setAttribute('aria-label','타일 구매 방식');
@@ -18846,7 +19479,7 @@ function compactRunDraft(host){
  const ordered=[sections[1],sections[0],sections[2]];
  ordered.forEach((s,i)=>{s.hidden=ui.section!==i;if(s.tagName==='DETAILS')s.open=true;});
  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{ui.section=+b.dataset.mode;renderRunDraft(host);});
- const grid=host.querySelector('.collection-grid'),cards=[...grid.children];
+ const cards=[...grid.children];
  const picker=document.createElement('div');picker.className='draft-picker';
  const offers=RUN_DRAFT.shop().offers,deckTags=new Set(run.deckList.flatMap(id=>RUN_DRAFT.tags(id)));
  const priority=i=>{
@@ -20104,6 +20737,22 @@ Object.assign(window.GL=window.GL||{},{openingState,openingEnter,openingDrain,op
 'use strict';
 /* Read-only recipe browser. Readiness comes from the actual placement resolver. */
 let synergyFilter=null,synergyPage=0,synergyExtra=null;
+function synergyDiscoveryKey(r){
+ if(r.kind==='도로 체인')return 'chain_'+r.id;
+ if(r.kind==='길가 체인')return 'board_chain_'+r.id;
+ if(r.kind==='지형 누적')return r.id==='outpost'?'ld_outpost':'terrain_'+r.id;
+ return CARDS[r.id]?.tile?r.id:null;
+}
+function synergyMask(r){
+ const key=synergyDiscoveryKey(r);
+ if(r.kind==='지연 변신')for(const d of LAND_RULES.delays)if(!meta.codex?.[d.then]){
+  r={...r,rule:r.rule.replaceAll(CARDS[d.then].name,'??')};
+ }
+ if(!key||meta.codex?.[key])return r;
+ const hint=typeof recipeHint==='function'?recipeHint(key):'원정에서 발견';
+ return {...r,unknown:true,name:'??',icon:'?',need:hint,rule:'직접 발견하면 조합 조건이 기록됩니다.',
+  effect:'??',cost:'??'};
+}
 function synergyCatalog(){
  const recipes=COMBOS.map(c=>({id:c.to,name:CARDS[c.to].name,icon:CARDS[c.to].icon,kind:'변신 조합',need:c.need,mats:c.mats,rule:'지도에서 가로·세로·대각선 인접. 조건이 겹치면 조합표의 앞쪽 변신이 우선합니다.',effect:CARDS[c.to].desc,cost:CARDS[c.to].spawn?'변신 후 소환되는 적과 계약도 바뀝니다. 배치 예고에서 적 수를 확인하세요.':'원래 타일 효과가 변신 타일 효과로 교체됩니다.'}));
  for(const [id,c] of Object.entries(CHAINS))recipes.push({id,name:c.name,icon:c.icon,kind:'도로 체인',need:c.need,mats:[],rule:'도로를 걷는 순서로 연속해야 합니다. 캠프·빈칸·표식은 연결을 끊습니다. 지원 칸은 소환 타일 인접도 필요합니다.',effect:id==='battle'&&econOn()?`엘리트 확정 · 카드 위스프 ${BAL.econ.wisp.battle}체 · 계약 보상 +${Math.round((BAL.chain.battle.reward-1)*100)}%`:c.eff(),cost:c.cost()});
@@ -20112,7 +20761,7 @@ function synergyCatalog(){
  for(const r of LAND_RULES.delays)recipes.push({id:r.to,name:CARDS[r.to].name,icon:CARDS[r.to].icon,kind:'지연 변신',need:`${CARDS[r.adj].name} + ${r.from.map(id=>CARDS[id].name).join(' / ')}`,mats:[r.adj,...r.from],rule:`인접한 지원 타일이 약탈된 뒤 ${r.laps()}랩 후 ${CARDS[r.then].name}으로 변합니다.`,effect:CARDS[r.to].desc,cost:'즉시 완성되지 않습니다. 원래 지원 효과를 잃습니다.'});
  if(BAL.board15)for(const [id,c] of Object.entries(BOARD_CHAINS))recipes.push({id,name:c.name,icon:c.icon,kind:'길가 체인',need:c.need(),mats:[],rule:'도로 순서가 아닌 길가 칸의 실제 모양으로 판정합니다.',effect:c.eff(),cost:c.cost()});
  for(const [id,c] of Object.entries(CARDS))if(c.field)recipes.push({id,name:c.name,icon:c.icon,kind:'보드 지원',need:`보드의 빈 칸 · 주변 ${c.field.radius}칸 도로`,mats:[id],rule:'가로·세로·대각선 거리 기준. 같은 시설은 강한 효과 하나만 적용합니다.',effect:c.desc,cost:c.field.riskAtk?'범위 안 일반 적의 공격도 강해집니다.':'보드 공간 사용 · 범위 밖 도로에는 효과 없음'});
- return recipes;
+ return recipes.map(synergyMask);
 }
 function synergyRelated(r,id){
  if(!id)return true;if(r.id===id||r.mats.includes(id))return true;
@@ -20134,10 +20783,12 @@ function synergyCard(id,label,icon,count=1){
  return `<span class="recipe-card"><span class="recipe-art">${art?`<img src="${artUrl(art)}" alt="">`:`<span>${icon||(c&&c.icon)||'◈'}</span>`}${count!==1?`<b class="recipe-count">×${count}</b>`:''}</span><strong>${escTip(name)}</strong></span>`;
 }
 function synergyRecipeCard(r){
+ if(r.unknown)return synergyCard('','??','?');
  const id=r.kind==='지형 누적'?(r.id==='outpost'?'ld_outpost':''):r.kind==='도로 체인'||r.kind==='길가 체인'||r.kind==='분대 시너지'?'':r.id==='river'?'ld_river':r.id;
  return synergyCard(id,r.name,r.icon);
 }
 function synergyFormula(r){
+ if(r.unknown)return '<div class="recipe-formula" aria-label="미발견 조합">??</div>';
  const plus='<b class="recipe-sign" aria-label="더하기">+</b>',arrow='<b class="recipe-sign" aria-label="결과">→</b>';
  const card=(id,n=1)=>synergyCard(id,null,null,n),generic=(name,icon,n=1)=>synergyCard('',name,icon,n);
  let parts=[],tail='',result=synergyRecipeCard(r);
@@ -20161,8 +20812,9 @@ function synergyFormula(r){
  }else if(r.kind==='지연 변신'){
   const rule=LAND_RULES.delays.find(x=>x.to===r.id||x.then===r.id);
   parts=[card(rule.adj),`<span class="recipe-alternatives"><small>아래 중 하나</small><span>${rule.from.map(id=>card(id)).join('<em>또는</em>')}</span></span>`];
-  tail=`약탈 직후 ${CARDS[rule.to].name} → ${rule.laps()}랩 뒤 ${CARDS[rule.then].name}`;
-  result=card(rule.to)+arrow+card(rule.then);
+  const later=meta.codex?.[rule.then];
+  tail=`약탈 직후 ${CARDS[rule.to].name} → ${rule.laps()}랩 뒤 ${later?CARDS[rule.then].name:'??'}`;
+  result=card(rule.to)+arrow+(later?card(rule.then):generic('??','?'));
  }else if(r.kind==='길가 체인'){
   parts=[generic(r.id==='fort'?'길가 타일':'광장 재료','◈',r.id==='fort'?BAL.board.fort.len:3)];tail=r.need;
  }else if(r.kind==='분대 시너지'){
@@ -20208,7 +20860,7 @@ function renderSynergy(){
  const rows=synergyCatalog().filter(r=>synergyRelated(r,synergyFilter));synergyPage=clamp(synergyPage,0,Math.max(0,rows.length-1));const r=synergyExtra||rows[synergyPage];
  $('#synergySelect').innerHTML=rows.map((x,i)=>`<option value="${i}">${x.kind} · ${x.name}</option>`).join('');$('#synergySelect').value=String(synergyPage);
  $('#synergyScope').textContent=synergyFilter?CARDS[synergyFilter].name+' 관련':'조합 도감';$('#synergyPager').textContent=synergyExtra?'활성 효과':`${rows.length?synergyPage+1:0} / ${rows.length}`;
- const list=$('#synergyCards'),listKey=rows.map(x=>x.kind+':'+x.id).join('|');
+ const list=$('#synergyCards'),listKey=rows.map((x,i)=>i+':'+x.kind+':'+!!x.unknown).join('|')+'|'+(synergyFilter||'all');
  if(list.dataset.recipeKey!==listKey){list.dataset.recipeKey=listKey;list.innerHTML=rows.map((x,i)=>`<button type="button" class="recipe-choice" data-recipe-index="${i}">${synergyRecipeCard(x)}<small>${x.kind}</small></button>`).join('');list.scrollTop=0;}
  for(const b of list.querySelectorAll('[data-recipe-index]')){const selected=!synergyExtra&&+b.dataset.recipeIndex===synergyPage;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected));}
  if(!r){$('#synergyBody').innerHTML='<p>이 타일의 전용 조합이 없습니다. 전체 목록에서 다른 조합을 확인하세요.</p>';return;}
@@ -21359,5 +22011,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="1d1d6ebc846325d0";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="29a93dc48d942d18";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
