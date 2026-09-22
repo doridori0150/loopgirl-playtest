@@ -17090,8 +17090,9 @@ function drawSd(c,x,y,st,face,ts){
  const im=charImg(st.id,'sd');
  c.fillStyle='rgba(0,0,0,.35)';c.beginPath();c.ellipse(x,y+13,11,4,0,0,Math.PI*2);c.fill();
  if(!ART.ok(im)){drawChibi(c,x,y,30,st,ts);return;}
- const h=52,w=h*im.naturalWidth/im.naturalHeight;
- c.save();c.translate(x,y+14);if(face>0)c.scale(-1,1);c.drawImage(im,-w/2,-h,w,h);c.restore();
+ const b=sdBounds(im),h=52,w=h*b.w/b.h;
+ c.save();c.translate(x,y+14);if(face>0)c.scale(-1,1);
+ c.drawImage(im,b.x,b.y,b.w,b.h,-w/2,-h,w,h);c.restore();
 }
 function drawTile(t,ts){
  const {x,y}=tileCenter(t.i),s=TILE;
@@ -17245,6 +17246,25 @@ function enemyAt(x,y){if(!run||run.state!=='battle'||!run.battle)return null;let
 const ART={_c:{},img(p){let im=this._c[p];if(!im){im=new Image();im.src=(window.ASSET_DATA&&ASSET_DATA[p])||p;this._c[p]=im;}return im;},ok(im){return !!(im&&im.complete&&im.naturalWidth);}};
 const CHAR_ART=id=>({face:`assets/characters/v1/${id}_face.webp`,full:`assets/characters/v1/${id}_full.webp`,sd:`assets/characters/v1/${id}_sd.webp`});
 const charImg=(id,kind)=>ART.img(affectionCostumeArt(id,kind,CHAR_ART(id)[kind]));
+// Measure the displayed asset, including redesign aliases and costumes, once per image.
+const SD_BOUNDS=new WeakMap();
+function sdBounds(im){
+ if(SD_BOUNDS.has(im))return SD_BOUNDS.get(im);
+ const w=im.naturalWidth,h=im.naturalHeight,full={x:0,y:0,w,h};
+ if(!w||!h)return full;
+ let bounds=full;
+ try{
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+  const c=cv.getContext('2d',{willReadFrequently:true});c.drawImage(im,0,0);
+  const pixels=c.getImageData(0,0,w,h).data;
+  let left=w,top=h,right=-1,bottom=-1;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(pixels[(y*w+x)*4+3]>32){
+   left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+  }
+  if(right>=left)bounds={x:left,y:top,w:right-left+1,h:bottom-top+1};
+ }catch(e){/* Cross-origin artwork remains drawable with the full-image fallback. */}
+ SD_BOUNDS.set(im,bounds);return bounds;
+}
 const bgImg=g=>ART.img(`assets/env/bg_${g}.webp`);
 const tileImg=t=>ART.img(`assets/env/tile_${t}.webp`);
 const BADGE_SRC='assets/ui/badge.webp',KEYVISUAL_SRC='assets/keyvisual_v4.webp';
@@ -20529,7 +20549,12 @@ function stagePose(a,now,anim){
 function stageSprite(c,a,p){
  const isM=a.kind==='m',im=isM?(a.m?charImg(a.m.stu.id,'sd'):null):(a.e?spriteOf(a.e):null),ok=ART.ok(im);
  let h=(a.hBase||60)*p.s,w=h*0.55;
- if(ok){const ar=im.naturalWidth/im.naturalHeight,wc=isM?STAGE.w*0.2:a.e&&a.e.boss?STAGE.w*0.38:STAGE.w*0.27;w=h*ar;if(w>wc){w=wc;h=w/ar;}}
+ const crop=ok&&isM?sdBounds(im):null;
+ if(ok){
+  const ar=crop?crop.w/crop.h:im.naturalWidth/im.naturalHeight;
+  const wc=a.e&&a.e.boss?STAGE.w*0.38:STAGE.w*0.27;w=h*ar;
+  if(!isM&&w>wc){w=wc;h=w/ar;}
+ }
  a.w=w;a.h=h;
  c.save();c.globalAlpha=clamp(p.alpha,0,1);
  c.fillStyle='rgba(0,0,0,.38)';c.beginPath();c.ellipse(p.x,a.foot+1,w*0.34,Math.max(2.5,h*0.045),0,0,Math.PI*2);c.fill(); /* 그림자는 바닥에 */
@@ -20539,7 +20564,8 @@ function stageSprite(c,a,p){
  const hasF='filter' in c;
  if(p.filter&&hasF)c.filter=p.filter==='hurt'?'brightness(1.2) drop-shadow(0 0 5px #ef4444)':p.filter==='hit'?'brightness(1.9)':'grayscale(1) brightness(.75)';
  if(!isM&&a.e)riskEnemyMark(c,0,0,a.e,h);
- if(ok)c.drawImage(im,-w/2,-h,w,h);
+ if(ok&&crop)c.drawImage(im,crop.x,crop.y,crop.w,crop.h,-w/2,-h,w,h);
+ else if(ok)c.drawImage(im,-w/2,-h,w,h);
  else if(isM&&a.m)drawChibi(c,0,-h*0.45,h*0.6,a.m.stu,0);
  else if(a.e)drawEnemy(c,0,-h*0.42,a.e,Math.max(8,Math.min(w,h)*0.4));
  if(hasF&&p.filter)c.filter='none';
@@ -21333,5 +21359,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="563fdc5898af4235";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="1d1d6ebc846325d0";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
