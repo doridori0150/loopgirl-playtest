@@ -1658,7 +1658,17 @@ button,a,input,select{touch-action:manipulation}
  #mobileMore p{font-size:12px;margin:0;line-height:1.5}#mobileMore strong{font-size:14px;color:#8edaf0}
  .mobile-more-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;overflow:auto;min-height:0}
  #mobileMore #mobileMoreRetreat{color:#ffc4a5;border-color:#a56242}
- body.mobile-inspecting #s-run .run-body{grid-template-rows:minmax(0,1fr) 0 42px 48px}
+ /* 배치 중 상세창은 지도 위에 뜨지 않고 자기 행을 차지한다. 아래쪽 빈 칸도 터치 가능. */
+ body.mobile-inspecting #s-run .run-body{
+  grid-template-areas:'map' 'side' 'summary' 'nav';
+  grid-template-rows:minmax(140px,1fr) min(330px,42dvh) 42px 48px
+ }
+ body.mobile-inspecting #s-run .hand-wrap{display:none!important}
+ body.mobile-inspecting #s-run .run-body>.side{
+  position:relative;grid-area:side;left:auto;right:auto;bottom:auto;height:100%;width:auto
+ }
+ body.mobile-inspecting #s-run .mapwrap{padding-bottom:48px}
+ body.mobile-inspecting #s-run .meta-run-toolbar{display:none}
  body.mobile-inspecting #mobileSheetHead{display:none}
  #s-run .side.inspect .insp{padding:0;border:0;box-shadow:none;overflow:hidden}
  #s-run .side.inspect .ibody{overflow-y:auto}
@@ -2516,6 +2526,20 @@ button,a,input,select{touch-action:manipulation}
 #collectionShop button{min-height:36px}
 #crateRelicExchange{padding:10px;color:#dbeafe;background:#152137;border-radius:8px;margin:8px 0}
 #crateRelicExchange label,#crateRelicExchange small{display:block;margin:4px 0}
+/* 원본 그림을 공유하는 변형도 색상 없이 글자로 구분한다. 모바일의 숨겨진 marks와 독립. */
+.tile-variant-badge{position:absolute;right:4px;bottom:4px;z-index:2;display:inline-flex;
+ align-items:center;justify-content:center;padding:2px 5px;border:1px solid var(--variant-color);
+ border-radius:4px;background:#101c30ed;color:var(--variant-color);font:700 10px/1.2 "Noto Sans KR",sans-serif;
+ white-space:nowrap;pointer-events:none}
+.tile-variant-detail{display:block;margin:5px 0;color:var(--variant-color);font-size:11px;line-height:1.4}
+.insp .iart,.collection-art-wrap{position:relative}
+#shop .draft-card-art>span.tile-variant-badge{top:auto;left:auto;right:6px;bottom:6px;padding:3px 6px;
+ border-color:var(--variant-color);background:#101c30ed;color:var(--variant-color)}
+.hand .card:has(.gop) .tile-variant-badge{right:32px}
+@media(max-width:600px){
+ .hand .card .tile-variant-badge{right:2px;bottom:1px;padding:1px 3px;font-size:9px}
+ .hand .card:has(.gop) .tile-variant-badge{right:auto;left:2px}
+}
 </style>
 <style>.progression-dialog{width:min(900px,94vw);max-height:88dvh;padding:20px;border:1px solid #bbd4ed;
  border-radius:18px;background:#f7fbff;color:#233b56;box-sizing:border-box;overflow:auto}
@@ -3491,6 +3515,7 @@ ruin:{club:'council',name:'붕괴 구역',icon:'🏚️',type:'spawn',spawn:'gol
  wander:{name:'떠돌이 이형',icon:'👣',type:'wild',desc:'빈 도로를 떠도는 무리 — 계약 OP 없음, XP·마나석·장비만',contract:{op:0,xp:5,mana:2,drop:0.18}},
  mark:{name:'협회 표식',icon:'📍',type:'spawn',spawn:'slime',cap:1,bg:'#1e3a5f',bd:'#7cc4ff',desc:'{spawn:이름} 무리(약체)',contract:{op:1,xp:12,drop:0.15},small:true},
 };
+configureTileSpaceV4();
 for(const [id,c] of Object.entries(CARDS)){c.id=id;if(!c.bg&&c.club){c.bg=CLUB_BG[c.club][0];c.bd=CLUB_BG[c.club][1];}}
 /* 카드 가독성 M · §26.5 수치의 단일 출처: 카드 설명(desc)은 문구 틀(descT) + 데이터(카드 필드 · BAL)로 만든다 — 기본값에서는 예전 문구와 같다(회귀 「기본값 설명 = 기존 문구」).
  * 틀 문법: {경로} 값 · {경로%} ×100 반올림 · {경로+%} (배율 − 1)×100 · {경로/1000} ms → 초 · {spawn:이름} 소환 이형의 짧은 이름(SPAWN_SHORT — 밸런스 도구가 이형 종류도 바꾼다). 첫 마디가 BAL 이면 BAL, 아니면 그 카드의 필드(contract.op · sup.heal …). 규칙 상수(랩당 1회 · 3초마다 · 1체)는 글자 그대로.
@@ -3503,14 +3528,78 @@ function fillDesc(tpl,c){return String(tpl).replace(/\{(BAL\.)?([A-Za-z0-9_.]+?)
 function cardDesc(id){if(typeof id==='string'&&id.indexOf('chain_')===0){const d=typeof CHAINS!=='undefined'&&CHAINS[id.slice(6)];return d?`${d.eff()} · 대가: ${d.cost()}`:'';}
  const c=CARDS[id];if(!c)return '';const T=c.descT;if(T==null)return c.desc||'';return typeof T==='function'?T.call(c):fillDesc(T,c);}
 for(const [id,c] of Object.entries(CARDS)){const d=Object.getOwnPropertyDescriptor(c,'desc');if(!d)continue;c.descT=d.get||d.value;Object.defineProperty(c,'desc',{get(){return cardDesc(id);},enumerable:true,configurable:true});}
-const CARD_POOL=Object.keys(CARDS).filter(id=>CARDS[id].club&&!CARDS[id].tile&&!CARDS[id].gate&&!CARDS[id].cls&&CARDS[id].type!=='control');
+const CARD_POOL=Object.keys(CARDS).filter(id=>{
+ const c=CARDS[id];return c.club&&!c.tile&&!c.gate&&(!c.cls||c.relocated)&&c.type!=='control';
+});
 /* v1.2 §20.2 타일 3분류 — road(길 위: 기존 소환·지원 카드) · side(도로 인접 비도로 칸) · land(아무 비도로 칸). 배치 브레이크 = BAL.placeBrake(도로 소환) / BAL.brake.side / BAL.brake.land */
 const TILE_CLASS={road:{name:'도로 결계',icon:'🛣',where:'길 위'},side:{name:'길가 결계',icon:'🏮',where:'도로에 인접한 비도로 칸'},land:{name:'지형 결계',icon:'⛰',where:'아무 비도로 칸(물길은 도로 비인접)'}};
 const cardClass=id=>{const c=CARDS[id];return !c?null:c.type==='control'?'control':(c.cls||'road');};
-const TERRAIN_POOL=Object.keys(CARDS).filter(id=>CARDS[id].cls&&!CARDS[id].tile); /* v1.3: 제어 카드(망각·봉인)는 전술 카드(TACTICS)로 이관 — 공용 풀 13장 */
+const TERRAIN_POOL=Object.keys(CARDS).filter(id=>{
+ const c=CARDS[id];return c.cls&&!c.tile&&!c.relocated&&!c.gate;
+});
 const isTerrain=id=>!!(CARDS[id]&&(CARDS[id].cls||CARDS[id].type==='control'));
 const isDeckable=id=>CARD_POOL.includes(id)||TERRAIN_POOL.includes(id);
 /* 임계 부작용 · 지연 변신 · 군집 형태 표(§20.3) — 수치는 BAL.land/BAL.delay, 판정은 game.js recomputeLand */
+/* Space v4: roads create encounters; facilities support them from outside the road. */
+function configureTileSpaceV4(){
+ const visits=new Set(['store','clinic','heliport','cache','checkpoint','ge_vending','gd_kiosk']);
+ const describe=c=>{
+  const d=Object.getOwnPropertyDescriptor(c,'desc'),original=d?.get||d?.value||'';
+  const text=(body,self)=>{
+   const first=String(body).replace(/첫 진입 시/g,'첫 인접 도로 통과 시');
+   return (self.cls==='side'?'길가 배치 · ':'보드 배치 · ')+first
+    .replace(/진입 시/g,'인접 도로 첫 통과(랩 1회) 시').replace(/연결 교전/g,'인접 교전');
+  };
+  if(typeof original!=='function'){
+   Object.defineProperty(c,'desc',{value:text(original,c),writable:true,enumerable:true,configurable:true});
+   return;
+  }
+  Object.defineProperty(c,'desc',{enumerable:true,configurable:true,get(){
+   return text(fillDesc(original.call(this),this),this);
+  }});
+ };
+ const moved=[];
+ for(const [id,c] of Object.entries(CARDS)){
+  if(c.tile||c.spawn||c.cls||c.type==='control'||!c.club||visits.has(id))continue;
+  c.cls=c.sup||c.enter?'side':'land';c.relocated=true;moved.push(id);
+  describe(c);
+ }
+ for(const id of moved){
+  const c=CARDS[id];
+  for(const form of [c.morph?.tile,c.morph?.star2])if(CARDS[form]){
+   CARDS[form].cls=c.cls;CARDS[form].relocated=true;
+   describe(CARDS[form]);
+  }
+ }
+ const combos={fieldcamp:'tent',crystal:'vein',grove:'vein',observatory:'scope',
+  wallline:'wall',evac:'tent',command:'hq'};
+ for(const [id,base] of Object.entries(combos))if(CARDS[id]){
+  CARDS[id].cls=CARDS[base].cls;CARDS[id].relocated=true;
+  describe(CARDS[id]);
+ }
+ Object.assign(CARDS,{
+  rd_scrapyard:{club:'assoc',type:'spawn',name:'불안정 회수장',icon:'⚙️',src:'ruin',
+   spawn:'golem',cap:2,spaceUnlock:'D',risk:{hp:1.25,atk:1.15},contract:{op:3,xp:24,drop:.8},
+   desc:'{spawn:이름} 무리 · 이형 HP +{risk.hp+%}%·공격 +{risk.atk+%}% · 장비 계약 확률 {contract.drop%}%'},
+  rd_nursery:{club:'rescue',type:'spawn',name:'변이 온실',icon:'🌱',src:'ld_park',
+   spawn:'spider',cap:2,spaceUnlock:'E',clearHeal:5,contract:{op:2,xp:14,drop:.2},
+   desc:'{spawn:이름} 무리 · 해당 무리 소탕 후 생존자 HP {clearHeal} 회복(타일·랩 회복 한도 공유)'},
+  sd_archive:{club:'assoc',cls:'side',type:'side',name:'임시 서고',icon:'📚',src:'sd_books',
+   spaceUnlock:'D',w:2,archiveUses:3,
+   desc:'인접 도로 첫 통과마다 카드 1장 교환(랩 1회) · 3회 사용하면 사념을 부르는 금서 서고로 변질'},
+  ld_training:{club:'assoc',cls:'land',type:'land',name:'훈련 구획',icon:'🎯',src:'hq',
+   spaceUnlock:'E',w:3,trainingXp:1,
+   desc:'보상 있는 무리 소탕 XP +{trainingXp}(시설 합계 +8) · 2×2 배치 시 한 칸이 합동 훈련장으로'},
+  sd_forbidden:{club:'assoc',cls:'side',type:'side',tile:true,name:'금서 서고',icon:'📕',src:'sd_books',
+   sideSpawn:'phantom',contract:{op:1,xp:12,card:1},
+   desc:'랩마다 인접 도로에 사념 1체 · 소탕 OP {contract.op}·XP {contract.xp}·카드 {contract.card}장'},
+  ld_campus:{club:'assoc',cls:'land',type:'land',tile:true,name:'합동 훈련장',icon:'🏫',src:'hq',
+   trainingXp:4,desc:'훈련 구획 2×2 유지 시 무리 소탕 XP +{trainingXp}(시설 합계 +8)'},
+  ld_oasis:{club:'assoc',cls:'land',type:'field',tile:true,name:'정화 수로',icon:'💧',src:'ld_river',
+   field:{radius:1,slow:.06},selfSlow:.01,
+   desc:'먼지 지대 + 물길 인접 · 주변 {field.radius}칸 이형 공속 −{field.slow%}% · 아군 −{selfSlow%}%(최대 −5%)'}
+ });
+}
 const LAND_RULES={
  thresholds:[{id:'outpost',card:'ld_hill',icon:'⛰',name:'이형 전초기지',need:()=>BAL.land.hillPer,repeat:true,desc:'언덕 N개마다 전초기지 자동 생성(랩마다 정예)'},
   {id:'forest',card:'ld_trees',icon:'🌳',name:'숲속 매점',need:()=>BAL.land.treesMin,desc:'편의점류 회복 ↓ · 카드 ↑'},
@@ -3554,7 +3643,9 @@ const COMBO_MATS=[...new Set(COMBOS.flatMap(cb=>cb.mats))];
 const clubOf=id=>id&&CARDS[id]?CARDS[id].club||null:null;
 /* 덱 15 = 리더 고정 4(서명·적 공급·규칙 매개·공용) + 자유 11. 같은 카드 최대 3장 */
 const DECK_SIZE=15, DECK_FREE=11, DECK_DUP_MAX=3;
-const DECK=['ruin','nest','rift','store','drone','vein','tent']; /* 기본 자유 7장(덱 편집 초기값) */
+const DECK=['ruin','nest','rift','patrol','kennel','store','clinic','tent','wall','rally',
+ 'drone','vein','ld_hill','ld_park'];
+ /* 기본 자유 7장(덱 편집 초기값) */
 const V09_DECK=['ruin','ruin','ruin','nest','nest','nest','rift','rift','store','store','store','drone','drone','vein','vein','tent','tent','beacon']; /* v0.9 고정 18장 — 시뮬 기준선(b)용, 리더 고정 8·서명 없음 */
 const LEADER_MEDIATOR={
  harin:'tent',chaewon:'wall',seoyul:'tent',somi:'store',yuna:'drone',seoyoon:'tent',
@@ -3568,7 +3659,7 @@ function fixedFor(leaderId){
 /* v1.5 §25.5: 스위치(BAL.board15)가 켜지고 길가가 열리면 새 덱 프리셋(기본·집중·분산)에 길가 1장(board.js boardPresetSide) — 꺼져 있으면 deckPresetBase 그대로 */
 function deckPreset(mode,leaderId){
  const preset=deckPresetBase(mode,leaderId);if(mode==='v09')return preset;
- const base=typeof boardPresetSide==='function'?boardPresetSide(mode,preset):preset;
+ const base=mode!=='default'&&typeof boardPresetSide==='function'?boardPresetSide(mode,preset):preset;
  const out=deckNorm(leaderId,base),count={};
  for(const id of [...fixedFor(leaderId),...out])count[id]=(count[id]||0)+1;
  for(const id of [...DECK,...DECK,...DECK]){
@@ -3586,7 +3677,21 @@ function deckPresetBase(mode,leaderId){
   out.push(s.sig);for(const id of su)out.push(id);return out.slice(0,DECK_FREE);} /* 동아리 소환 ×2씩 + 동아리 서명 + 지원 */
  if(mode==='land'){const f=deckPreset('focus',leaderId).slice(0,DECK_FREE-3);return ['ld_hill','ld_hill','ld_park',...f];} /* v1.2 시뮬 land 덱: 집중 4장 + 지형 3장(자유 7장에 협회 공용 결계를 넣는 빌드) */
  if(mode==='spread'){const out=[];for(const cl of ['council','shield','rescue','astro'])if(cl!==s.club)out.push(...CLUB_CARDS[cl].slice(0,2));out.push('store');return out;}
- return ['ruin','ruin','nest','nest','rift','store','store','drone','vein','tent','tent'];
+ return tileSpacePreset(leaderId);
+}
+function tileSpacePreset(leaderId){
+ const cls=id=>CARDS[id].cls||(CARDS[id].spawn?'fight':'visit');
+ const target={fight:6,visit:2,side:3,land:4},out=[],count={};
+ for(const id of fixedFor(leaderId)){target[cls(id)]--;count[id]=(count[id]||0)+1;}
+ const pools={fight:['ruin','nest','rift','patrol','kennel','fort'],visit:['store','clinic'],
+  side:['tent','wall','rally'],land:['drone','ld_hill','ld_park','bf_barrier']};
+ for(const [kind,ids] of Object.entries(pools))for(let n=0;n<3&&target[kind]>0;n++)for(const id of ids){
+  if(target[kind]<=0||out.length>=DECK_FREE)break;
+  if((count[id]||0)>=DECK_DUP_MAX)continue;
+  if(typeof collectionOwned==='function'&&!collectionOwned(id))continue;
+  out.push(id);count[id]=(count[id]||0)+1;target[kind]--;
+ }
+ return out;
 }
 /* 자유 목록 정규화(편집용): 풀에 없는 id 제거 · 고정 4 포함 같은 카드 ≤3 · 최대 11. 보충하지 않는다 — 미완성 덱은 그대로 남긴다 */
 function deckNorm(leaderId,list){
@@ -4129,7 +4234,7 @@ const BOARD_FP_NAME={one:'1칸',h2:'가로 2칸',v2:'세로 2칸'};
 /* 위치 바리에이션(§25.8 — 3장 · 도로/길가 두 형태): 원본 도로 카드 → 길가 형태. 형태는 카드 표에 tile:true 로 두어 덱·드롭 풀(CARD_POOL·TERRAIN_POOL)에 들어가지 않는다 */
 const BOARD_VARIANTS={tent:'tent_side',drone:'drone_side',ruin:'ruin_side'};
 /* L자 보급 광장의 재료 = 길가 지원(Codex 검토 B: 텐트·포탑·정비소·헌책방) */
-const BOARD_PLAZA_MATS=['tent_side','drone_side','sd_garage','sd_books'];
+const BOARD_PLAZA_MATS=['tent','fieldcamp','evac','tent_side','drone_side','sd_garage','sd_books','sd_archive'];
 Object.assign(CARDS,{
  tent_side:{tile:true,src:'tent',zone:'side',club:'rescue',cls:'side',type:'side',name:'응급 텐트(길가)',icon:'⛺',get desc(){const f=BAL.board.form.tent_side;return `인접 도로 교전이 끝나면 생존자 HP +${f.heal}(구조부 강화 +${f.enh}) · 이 타일 랩당 1회(지도 회복 한도 공유) · 같은 교전의 도로 주지원 회복과는 강한 쪽 하나`;}},
  drone_side:{tile:true,src:'drone',zone:'side',club:'shield',cls:'side',type:'side',name:'드론 포탑(길가)',icon:'🛰️',get desc(){const f=BAL.board.form.drone_side;return `인접 도로 교전이 시작되면 일반 이형 1체에 피해 ${f.dmg}(방패조 강화 +${f.enh} · 방어 적용 · 최소 1) · 교전당 1발(포탑이 여럿이어도) · 보스 제외`;}},
@@ -4656,7 +4761,7 @@ const BALANCE_GLOBAL_FIELDS=(()=>{
   const FIELD_BY_REL = {};
   for (const f of CARD_FIELDS) FIELD_BY_REL[f[0]] = f;
   const ENH_GROUPS = ['contract', 'enter', 'sup', 'pas', 'camp'];
-  const SPAWN_REC = ['slime', 'hound', 'golem', 'wisp', 'ghoul'];
+  const SPAWN_REC = ['slime', 'hound', 'golem', 'wisp', 'ghoul', 'spider'];
   const {GROUP_DEFS,BAL_ITEMS}=BALANCE_GLOBAL_FIELDS;
   /* 여러 항목에 걸친 규칙(경고만 — 저장은 막지 않는다). g(경로) = 지금 값. 문제가 없으면 '' */
   const RULES = [
@@ -6866,9 +6971,11 @@ function mapSupportEffects(tile,state) {
  const m=mapOf(state),out={dmg:0,shield:0,enemyAtk:1};
  if(!state||!tile||tile.off||tile.i===m.camp||m.id==='legacy')return out;
  const p=m.path[tile.i],near=(q,n)=>Math.max(Math.abs(p[0]-q[0]),Math.abs(p[1]-q[1]))<=n;
- const support=(state.tiles||[]).filter(t=>t.i!==0&&t.card&&CARDS[t.card]?.sup);
+ const sources=typeof tileSpaceAll==='function'?tileSpaceAll(state):(state.tiles||[]);
+ const support=sources.filter(t=>t.i!==0&&t.card&&CARDS[t.card]?.sup);
  const facilities=(state.cells||[]).filter(c=>c.card&&CARDS[c.card]?.field);
- const supporting=support.filter(t=>near([t.c,t.r],1));
+ const nearby=support.filter(t=>t.off?tileSpaceRoads(t,state).includes(tile.i):near([t.c,t.r],1));
+ const supporting=[...new Map(nearby.map(t=>[t.fp?'fp:'+t.fp.a:'tile:'+t.i,t])).values()];
  const fields=facilities.filter(c=>typeof fieldRoads==='function'&&fieldRoads(c.card,c,state).includes(tile.i));
  const linked=supporting.length+fields.length>0;
  if(m.mechanic==='support'&&supporting.length>=2)out.shield=4;
@@ -6889,10 +6996,11 @@ function mapSupportEffects(tile,state) {
 }
 function mapCardClassify(id) {
  const c=CARDS[id];if(!c)return null;
- const form=!!(c.tile&&c.src),ownedPool=typeof isPlayable==='function'&&isPlayable(id);
+ const form=typeof isFormCard==='function'&&isFormCard(id);
+ const ownedPool=typeof isPlayable==='function'&&isPlayable(id);
  const placement=c.type==='control'?(c.ctl==='seal'?['road']:['road','side','board']):c.cls==='side'?['side']:
   c.cls==='land'?['board']:['road'];
- const producers=['sd_cocoon','sd_manor','sd_echo','ld_outpost','ld_peak'];
+ const producers=['sd_cocoon','sd_manor','sd_echo','ld_outpost','ld_peak','sd_forbidden'];
  const role=c.type==='control'?'control':c.field?'facility':c.spawn||c.floor||producers.includes(id)?'enemy':
   c.cls==='land'?'terrain':'support';
  const range=c.field?'area':c.cls==='land'?'map':c.cls==='side'?'adjacent':c.camp?'loop':'battle';
@@ -6927,28 +7035,55 @@ function mapDeferMorph(state,target,from,to) {
 </script>
 <script>
 'use strict';
-/* The same graph joins full segments in actual play and hypothetical placement previews. */
-function metaChainGroups(cardAt) {
- const tiles=Array.from({length:N},(_,i)=>({i,kind:i===0?'empty':
-  chainClass(cardAt(i))==='S'?'spawn':chainClass(cardAt(i))==='U'?'support':'empty'}));
- const links={spawn:META_RULES.boardLinks(run,tiles,'spawn'),support:META_RULES.boardLinks(run,tiles,'support')};
+/* Road nodes retain physical support IDs, so one side tile cannot become several supply tiles. */
+function metaChainGroups(cardAt,state=run) {
+ const size=state.tiles.length;
+ const tiles=Array.from({length:size},(_,i)=>({i,kind:i===0?'empty':
+  chainClass(cardAt(i))==='S'?'spawn':chainClass(cardAt(i))==='U'?'support':'empty',
+  supports:[],received:[]}));
+ for(const tile of tiles)if(tile.kind==='support')tile.supports.push(tile.i);
+ const seen=new Set();
+ for(const cell of state.cells||[]){
+  const c=CARDS[cell.card],key=cell.fp?.a??cell.i;
+  if(seen.has(key)||!c||c.spawn||c.floor||c.type==='control'||!(c.sup||c.enter||c.pas||c.camp||c.field))continue;
+  seen.add(key);
+  for(const i of META_RULES.sourceRoads(state,cell)){
+   if(!tiles[i]||i===0)continue;
+   tiles[i].received.push(key);
+   if(tiles[i].kind!=='spawn')tiles[i].supports.push(key);
+  }
+ }
+ const links={spawn:META_RULES.boardLinks(state,tiles,'spawn'),
+  support:META_RULES.boardLinks(state,tiles,'support')};
  if(!links.spawn.length&&!links.support.length)return null;
  const out=[];
  for(const kind of ['spawn','support']){
-  const parent=Array.from({length:N},(_,i)=>i),root=i=>parent[i]===i?i:(parent[i]=root(parent[i]));
+  const parent=Array.from({length:size},(_,i)=>i),root=i=>parent[i]===i?i:(parent[i]=root(parent[i]));
   const join=(a,b)=>{parent[root(a)]=root(b);};
-  for(let i=1;i<N-1;i++)if(tiles[i].kind===kind&&tiles[i+1].kind===kind)join(i,i+1);
+  const projected=new Set(links[kind].flatMap(([a,,b])=>[a,b]));
+  const member=i=>tiles[i].kind===kind||(kind==='support'&&projected.has(i)&&tiles[i].supports.length);
+  for(let i=1;i<size-1;i++)if(member(i)&&member(i+1))join(i,i+1);
   for(const [a,,b] of links[kind])join(a,b);
+  if(kind==='support'){
+   const first=new Map();
+   for(let i=1;i<size;i++)if(member(i))for(const source of tiles[i].supports){
+    if(first.has(source))join(i,first.get(source));else first.set(source,i);
+   }
+  }
   const groups=new Map();
-  for(let i=1;i<N;i++)if(tiles[i].kind===kind){
+  for(let i=1;i<size;i++)if(member(i)){
    const key=root(i);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(i);
   }
-  for(const cells of groups.values())if(cells.length>=2){
-   const tag=kind==='spawn'?(cells.length>=3?'battle':'front'):(cells.length>=3?'base':'supply');
-   out.push({kind:tag,tiles:cells});
+  for(const cells of groups.values()){
+   const sources=kind==='support'?[...new Set(cells.flatMap(i=>tiles[i].supports))]:cells;
+   if(sources.length<2)continue;
+   const tag=kind==='spawn'?(sources.length>=3?'battle':'front'):(sources.length>=3?'base':'supply');
+   const chain={kind:tag,tiles:cells};
+   if(kind==='support')chain.supportSources=sources.filter(i=>i>=size);
+   out.push(chain);
   }
  }
- for(let i=2;i<N-1;i++)if(tiles[i].kind==='support'
+ for(let i=2;i<size-1;i++)if(tiles[i].kind==='support'
   &&tiles[i-1].kind==='spawn'&&tiles[i+1].kind==='spawn')out.push({kind:'cycle',tiles:[i-1,i,i+1]});
  return out;
 }
@@ -7916,10 +8051,11 @@ const CHALLENGE_V2=(()=>{
   'gs_ring','gs_antigrav','gs_echo','gs_core','bf_turret','bf_barrier','bf_medical','bf_radar','bf_frost',
   'bf_capacitor','bf_dispatch','bf_beacon','sd_cocoon','sd_manor','sd_field','sd_lamp','sd_blood',
   'sd_garage','sd_books','fac_slime','fac_golem','fac_hound','fac_wisp','sd_clock',
-  'ld_hill','ld_trees','ld_park','ld_river','ld_dust'];
+  'ld_hill','ld_trees','ld_park','ld_river','ld_dust',
+  'rd_scrapyard','rd_nursery','sd_archive','ld_training'];
  const RELIC_IDS=['halo','savings','medkit','plate','core','lucky','battery','lens','drone','stamp',
   'ledger','neardeath','regular','medal','frontmap','clubflag','survey','compass','specimen','scope'];
- const RULES_VERSION='challenge-v3.0',POWER_VERSION='normalized-v2.1',POOL_VERSION='public-v2.1';
+ const RULES_VERSION='challenge-v3.1-space',POWER_VERSION='normalized-v2.1',POOL_VERSION='public-v2.1';
  const BALANCE_VERSION='meta-v2.1',MAX_SCORE=9000000000000;
  const number=v=>Number.isFinite(+v)?Math.max(0,+v):0;
  const integer=v=>Math.floor(number(v));
@@ -7984,11 +8120,20 @@ const CHALLENGE_V2=(()=>{
    bal:BAL,gates:typeof GATES!=='undefined'?GATES:[],
    leaders:typeof LEADER_RULES!=='undefined'?LEADER_RULES:{},
    progression:typeof META_V2_CONFIG!=='undefined'?META_V2_CONFIG:{},
-   maps:typeof MAP_DEFINITIONS!=='undefined'?MAP_DEFINITIONS:[]
+   maps:typeof MAP_DEFINITIONS!=='undefined'?MAP_DEFINITIONS:[],cards:cardRules()
   });
   return {...def,allowed,key:recordKey(def),available:available(m,region),
    label:`성장 Lv${def.growthLevel} · 사격장/의무실 Lv${def.facilityLevel} · 지휘실 ${def.commandTier}단계`,
    next:'6번째 루프에 보스 진입 · 최대 6루프 · 영구 재화 보상 없음'};
+ }
+ function cardRules(){
+  if(typeof CARDS==='undefined')return {};
+  // Read data descriptors only: UI getters depend on the active run and must not enter the rules key.
+  const ignored=new Set(['id','name','desc','icon','bg','bd','color','image','art']);
+  return Object.fromEntries(Object.keys(CARDS).sort().map(id=>[id,Object.fromEntries(
+   Object.entries(Object.getOwnPropertyDescriptors(CARDS[id]))
+    .filter(([key,d])=>!ignored.has(key)&&Object.hasOwn(d,'value')&&typeof d.value!=='function')
+    .sort(([a],[b])=>a.localeCompare(b)).map(([key,d])=>[key,d.value]))]));
  }
  function draftContext(m,region,leaderId){
   const rule=preview(m,region);
@@ -8712,8 +8857,18 @@ const META_RULES = (() => {
    (rule.id==='mina'&&kind==='support'));if(!matches)return [];
   const links=[];
   for(let i=2;i<tiles.length-1;i++){
-   if(tiles[i-1].kind===kind&&tiles[i+1].kind===kind&&tiles[i].kind===
-    (kind==='spawn'?'support':'spawn'))links.push([i-1,i,i+1]);
+   const left=tiles[i-1],mid=tiles[i],right=tiles[i+1];
+   if(left.kind===kind&&right.kind===kind&&mid.kind===
+    (kind==='spawn'?'support':'spawn')){links.push([i-1,i,i+1]);continue;}
+   if(kind==='spawn'&&left.kind==='spawn'&&right.kind==='spawn'&&mid.kind==='empty'){
+    if((mid.supports||[]).some(source=>left.received?.includes(source)&&right.received?.includes(source)))
+     links.push([i-1,i,i+1]);
+   }
+   if(kind==='support'&&mid.kind==='spawn'){
+    const a=(left.supports||[]).filter(source=>source===i-1||mid.received?.includes(source));
+    const b=(right.supports||[]).filter(source=>source===i+1||mid.received?.includes(source));
+    if(a.some(source=>b.some(other=>other!==source)))links.push([i-1,i,i+1]);
+   }
   }
   return links;
  }
@@ -8723,11 +8878,35 @@ const META_RULES = (() => {
  }
  function supportSource(r,road,candidates){
   const d=leaderRuleOf(r),target=r.metaRules&&r.metaRules.choice.target;
-  if(!d||d.id!=='bora'||target==null||Math.abs(road-target)!==1)return candidates;
+  if(!d||d.id!=='bora'||target==null||!Number.isInteger(road)||road<=0)return candidates;
+  const source=sourceAt(r,target);
+  if(!source?.card)return candidates;
+  const roads=source.off||source.k!=null?sourceRoads(r,source):[source.i];
+  if(!roads.some(i=>Math.abs(i-road)===1))return candidates;
+  if(r.tiles?.length&&road>=r.tiles.length)return candidates;
   return [...new Set([...candidates,target])];
  }
+ function sourceAt(r,key){
+  if(key==null)return null;
+  if(typeof key==='string'&&key.includes(':')){
+   const [kind,index]=key.split(':');return kind==='off'?r.cells?.[+index]:r.tiles?.[+index];
+  }
+  return [...(r.tiles||[]),...(r.cells||[])].find(tile=>tile.i===key)||null;
+ }
+ function sourceRoads(r,source){
+  if(!source)return [];
+  if(!source.off&&source.k==null)return source.i>0?[source.i]:[];
+  if(typeof CARDS!=='undefined'&&CARDS[source.card]?.field&&typeof fieldRoads==='function')
+   return fieldRoads(source.card,source,r);
+  if(typeof tileSpaceRoads==='function'){
+   const parts=source.fp?(r.cells||[]).filter(cell=>cell.fp?.a===source.fp.a):[source];
+   return [...new Set(parts.flatMap(cell=>tileSpaceRoads(cell,r)))];
+  }
+  return (r.tiles||[]).filter(tile=>tile.i>0&&Number.isFinite(source.c)&&Number.isFinite(source.r)
+   &&Math.max(Math.abs(tile.c-source.c),Math.abs(tile.r-source.r))<=1).map(tile=>tile.i);
+ }
  return {createState,calculate,discount,critBonus,synDiscount,choose,boardLinks,facilityRadius,supportSource,
-  leaderRuleOf,number,copy};
+  sourceAt,sourceRoads,leaderRuleOf,number,copy};
 })();
 if(typeof module!=='undefined')module.exports=META_RULES;
 
@@ -8741,18 +8920,24 @@ Object.assign(META_RULES,(() => {
   const d=leaderRuleOf(r);if(!d)return [];
   const classify=id=>typeof mapCardClassify==='function'?mapCardClassify(id):null;
   const cards=typeof CARDS!=='undefined'?CARDS:{};
-  if(d.target==='terrain')return [...(r.cells||[]).filter(c=>c.card==='ld_hill').map(c=>'off:'+c.k),
-   ...(r.tiles||[]).filter(t=>['store','tent'].includes(t.card)).map(t=>'road:'+t.i)];
+  const spots=[...(r.tiles||[]),...(r.cells||[])].filter(t=>t.card&&t.i!==0);
+  const delays=typeof LAND_RULES!=='undefined'?LAND_RULES.delays.flatMap(x=>x.from):['store','tent'];
+  if(d.target==='terrain')return spots.filter(t=>['ld_hill','ld_training','ld_dust'].includes(t.card)
+   ||delays.includes(t.card))
+   .map(t=>t.off||t.k!=null?'off:'+t.k:'road:'+t.i);
   if(d.target==='facility')return (r.cells||[]).filter(c=>{
    const v=classify(c.card);return v?v.role===d.target:d.target==='facility'?!!cards[c.card]?.field:
     c.card&&c.card.startsWith('ld_');
   }).map(c=>c.i==null?c.k:c.i);
-  return (r.tiles||[]).filter(t=>{
+  if(!['road','heal','control','support'].includes(d.target))return [];
+  return spots.filter(t=>{
    if(!t.i||!t.card)return false;const c=cards[t.card]||{},v=classify(t.card);
-   if(d.target==='road')return true;
-   if(d.target==='heal')return !!(c.sup?.heal||c.enter?.heal||c.heal);
-   if(d.target==='control')return !!(c.sup?.slow||c.slow||v?.role==='control'||c.sup);
-   return v?v.role==='support':!!c.sup;
+   if(d.target==='road')return !t.off&&t.k==null;
+   if(d.target==='heal'&&c.clearHeal)return true;
+   if(c.spawn||c.type==='control'||c.floor||v?.role==='enemy')return false;
+   if(d.target==='heal')return !!(c.sup?.heal||c.enter?.heal||c.field?.heal||c.heal);
+   if(d.target==='control')return !!(c.sup?.slow||c.field?.slow||c.slow||c.sup);
+   return !!(c.sup||c.enter||c.pas||c.camp||c.field||v?.role==='support');
   }).map(t=>t.i);
  }
  function autoChoice(r){
@@ -8770,10 +8955,15 @@ Object.assign(META_RULES,(() => {
   const enemy=event.e||t?.enemies?.find(e=>e.uid===event.targetId);
   const selected=s.choice.target;
   const support=t&&typeof battleSupTile==='function'?battleSupTile(t):null;
+  const source=META_RULES.sourceAt(r,selected),healing=event.type==='heal';
+  // Healing must name the source that actually healed, not another facility near that fight.
+  const atSource=!source?.card?false:healing?selected===event.sourceTile:
+   selected===t?.i||selected===support?.i||
+    !!((source.off||source.k!=null)&&META_RULES.sourceRoads(r,source).includes(t?.i));
   return {enabled:r.leaderRulesEnabled!==false,relics:r.relics||[],inBattle:!!r.battle,
    healCapacity:(r.party||[]).filter(m=>!m.down&&m.hp>0)
     .reduce((sum,m)=>sum+Math.max(0,m.maxHp-m.hp),0),
-   atTarget:selected!=null&&(selected===event.sourceTile||selected===t?.i||selected===support?.i),
+   atTarget:selected!=null&&atSource,
    strongTarget:!!(enemy&&(enemy.boss||enemy.elite||enemy.vet)),boss:!!t?.enemies?.some(e=>e.boss),
    enemies:t?.enemies||[],defense:event.m&&typeof stats==='function'?stats(event.m).def:0};
  }
@@ -8956,7 +9146,7 @@ Object.assign(META_RULES,(() => {
   for(const cell of r.cells||[]){
    if(['ld_hill','ld_peak'].includes(cell.card)){
     for(const facility of facilities){
-     if((map.offAdj[cell.k]||[]).includes(facility.k))linked.add(facility.card);
+     if((map.offAdj[cell.k]||[]).includes(facility.k))linked.add(cardFamily(facility));
     }
    }
    if(cell.card!=='ld_river')continue;
@@ -8966,6 +9156,12 @@ Object.assign(META_RULES,(() => {
    for(const i of map.roadAdj[cell.k]||[]){if(r.tiles?.[i]?.card)rivers.add('road:'+i);}
   }
   return {hillFacilityCount:linked.size,riverLinks:rivers.size};
+ }
+ function cardFamily(tile){
+  const cards=typeof CARDS!=='undefined'?CARDS:{},seen=new Set();let id=tile.base||tile.src||tile.card;
+  while(cards[id]?.src&&!seen.has(id)){seen.add(id);id=cards[id].src;}
+  const signature=Object.keys(cards).find(key=>[cards[key].morph?.tile,cards[key].morph?.star2].includes(id));
+  return signature||id;
  }
  function relicNow(r,id,ctx={}){
   const s=r?.metaRules?.relic;if(!s)return '';
@@ -9124,14 +9320,14 @@ const RUN_DRAFT=(()=>{
  function pool(){return collectionPool().filter(legal);}
  function tags(id){
   const c=CARDS[id]||{},t=[];
-  if(c.spawn)t.push('chain');
+  if(c.spawn||c.trainingXp)t.push('chain');
   if(['slime','spider','hound'].includes(c.spawn))t.push('swarm');
   if(c.spawn==='phantom'||c.sup?.slow||c.enter?.ex||c.pas?.ex)t.push('focus');
   if(c.sup?.shield||c.enter?.shield||c.pas?.def)t.push('shield');
-  if(c.sup?.heal||c.enter?.heal||c.camp?.heal||c.pas?.hp)t.push('heal');
+  if(c.sup?.heal||c.enter?.heal||c.camp?.heal||c.pas?.hp||c.clearHeal)t.push('heal');
   if(c.field||c.cls==='side'||c.pas?.drone)t.push('facility');
   if(c.camp?.op||c.pas?.contractOp||c.spawn==='golem')t.push('recruit');
-  if(c.enter?.ex||c.camp?.card||c.pas?.spd||c.spawn==='wisp')t.push('tempo');
+  if(c.enter?.ex||c.camp?.card||c.pas?.spd||c.spawn==='wisp'||c.archiveUses)t.push('tempo');
   return [...new Set(t)];
  }
  function note(kind,data){
@@ -10266,10 +10462,14 @@ const cardClubOn=id=>!!(CARDS[id]&&CARDS[id].enh&&clubOn(CARDS[id].club));
 /* 같은 패시브 타일은 중첩되지 않는다 — v1.1: 같은 카드가 여럿이면 지원 배율(tileMul)이 가장 높은 하나만 */
 /* 성능: stats() 가 틱마다 여러 번 부르므로 (시각·지도 버전·분대 인원·랩) 키로 캐시한다 — 지도 버전(run.mapVer)은 recomputeChains 가 올린다 */
 function mapPas(){if(!run)return {};const key=run.time+'|'+(run.mapVer||0)+'|'+run.party.length+'|'+run.lap;if(run._pas&&run._pasKey===key)return run._pas;const s=mapPasRaw();run._pas=s;run._pasKey=key;return s;}
-function mapPasRaw(){const s={};const best={};for(const t of run.tiles){if(!t.card)continue;const c=CARDS[t.card];if(!c||!c.pas)continue;const m=tileMul(t);if(!best[t.card]||m>best[t.card].m)best[t.card]={t,m};}
+function mapPasRaw(){const s={},best={};
+ const all=typeof tileSpaceAll==='function'?tileSpaceAll():run.tiles;
+ for(const t of all){if(!t.card)continue;const c=CARDS[t.card];if(!c||!c.pas)continue;
+  const m=tileMul(t);if(!best[t.card]||m>best[t.card].m)best[t.card]={t,m};}
  for(const {t} of Object.values(best)){const e=tileEff(t);for(const [k,v] of Object.entries(e.pas))s[k]=+((s[k]||0)+v).toFixed(3);}return s;}
 /* 소환 타일의 주지원 효과: 연결 시점의 kind 가 아니라 지금 그 타일에 있는 카드로 판정(변신 반영) */
-function linkSup(t){if(!t||!t.link)return null;const o=run.tiles[t.link.i];if(!o||!o.card)return null;const e=tileEff(o);return e&&e.sup?e.sup:null;}
+function linkSup(t){if(!t||!t.link)return null;const o=spotAt(t.link.i);
+ if(!o||!o.card)return null;const e=tileEff(o);return e&&e.sup?e.sup:null;}
 const tileFx=t=>(t&&t.card&&CARDS[t.card])||{};
 /* 교전 지원 효과(라운드 3 규칙 ①): 소환 타일은 주지원 연결(linkSup), 지원 타일 위에서 싸우면(결전 거점·보스 조우) 그 타일 자신의 sup. 이름은 battleSupName */
 function battleSup(t){
@@ -10279,11 +10479,16 @@ function battleSup(t){
 /* 교전 지원을 주는 타일(회복 발동 제한의 기준): 연결된 지원 타일, 없으면 그 타일 자신 */
 function battleSupTile(t){
  if(t&&typeof META_RULES!=='undefined'){
-  const selected=META_RULES.supportSource(run,t.i,[]).map(i=>run.tiles[i])
+  const selected=META_RULES.supportSource(run,t.i,[]).map(i=>spotAt(i))
    .find(tile=>tile?.card&&tileEff(tile)?.sup);
   if(selected)return selected;
  }
- if(t?.link&&run.tiles[t.link.i]?.card)return run.tiles[t.link.i];return t;
+ if(!t)return null;
+ const candidates=typeof tileSpaceSupport==='function'?tileSpaceSupport(t):adjTiles(t).filter(o=>isSupCard(o.card));
+ const linked=t.link&&candidates.find(o=>o.i===t.link.i&&tileEff(o)?.sup);
+ if(linked)return linked;
+ if(t.card&&tileEff(t)?.sup)return t;
+ return candidates.find(o=>tileEff(o)?.sup)||t;
 }
 function battleSupName(t){const source=battleSupTile(t);return source?.card?CARDS[source.card].name:'';}
 /* 8차: 어느 타일(t)이 무엇(from)에서 바뀌었는지 배너에 표시하고 ui 에 morph 연출을 알린다 */
@@ -10297,7 +10502,7 @@ function discover(id,how,t,from){
 /* 서명 변신: 학생 합류 시 서명 타일 → 변신 타일(★2면 2단계), 이탈 시 원복. 조합으로 바뀐 타일은 제외 */
 function syncSigMorphs(){
  if(!run||run.ended)return;let changed=false;
- for(const t of run.tiles){
+ for(const t of (typeof tileSpaceAll==='function'?tileSpaceAll():run.tiles)){
   const base=t.base||t.card;if(!base||t.combo)continue;const c=CARDS[base];if(!c||!c.sig||!c.morph)continue;
   const m=run.party.find(x=>x.stu.id===c.sig);const target=m?(m.star>=2&&c.morph.star2?c.morph.star2:c.morph.tile):base;
   if(t.card===target)continue;
@@ -10314,14 +10519,21 @@ function relinkAll(){
  if(!run)return;let n=0;
  for(const t of run.tiles){
   if(!t.card||!CARDS[t.card]||!CARDS[t.card].spawn){if(t.link)t.link=null;continue;}
-  if(t.link){const o=run.tiles[t.link.i];if(!o||!isSupCard(o.card))t.link=null;else if(t.link.kind!==o.card)t.link.kind=o.card;}
-  if(!t.link){const s=adjTiles(t).find(o=>isSupCard(o.card));if(s){t.link={i:s.i,kind:s.card};n++;}}
+  const supports=typeof tileSpaceSupport==='function'?tileSpaceSupport(t):adjTiles(t).filter(o=>isSupCard(o.card));
+  if(t.link){const o=supports.find(o=>o.i===t.link.i);
+   if(!o||!isSupCard(o.card))t.link=null;else if(t.link.kind!==o.card)t.link.kind=o.card;}
+  if(!t.link){const s=supports.find(o=>isSupCard(o.card));if(s){t.link={i:s.i,kind:s.card};n++;}}
  }
  if(n)dirty=true;return n;
 }
 /* 조합 판정. ov = {tileIdx:cardId} 미리보기 오버라이드 */
-function comboFor(t,ov){const at=o=>(ov&&ov[o.i]!==undefined)?ov[o.i]:o.card;if(t.i===0||!at(t)||t.combo)return null;const adj=adjTiles(t);for(const cb of COMBOS){if(cb.when(t,adj,at,run))return cb;}return null;}
-function checkCombos(tiles){
+function comboFor(t,ov){
+ const at=o=>(ov&&ov[o.i]!==undefined)?ov[o.i]:o.card;
+ if(t.i===0||!at(t)||t.combo)return null;
+ const adj=typeof tileSpaceAdjacent==='function'?tileSpaceAdjacent(t):adjTiles(t);
+ for(const cb of COMBOS){if(cb.when(t,adj,at,run))return cb;}return null;
+}
+function checkCombos(tiles=typeof tileSpaceAll==='function'?tileSpaceAll():run.tiles){
  let n=0;for(const t of tiles){const cb=comboFor(t);if(!cb)continue;const fromId=t.card,from=CARDS[t.card].name;t.base=t.base||t.card;t.card=cb.to;t.combo=true;run.combos++;n++;discover(cb.to,`${cb.need}: ${from}`,t,fromId);dispatchRuleEvent('combo',{id:cb.to});
   /* 라운드 3 (차단 4): 달성 기록은 조합 id 별(run.goalDone[id]) · 보상 수령은 따로(run.goalPaid[id], 같은 조합은 런당 1회). 목표를 바꿔도 다른 조합이 달성으로 보이지 않는다 */
   run.goalDone[cb.to]=true;
@@ -10537,6 +10749,11 @@ function levelUp(){
  log(`⬆ 분대 레벨 ${run.level}! (분대 전투력 상승)`,'good');run.party.forEach(recalcMember);
  if(!estMode&&BAL.perkEvery>0&&run.level%BAL.perkEvery===0)offerPerk(); /* v1.2 특성 3택1 */
 }
+function withTileHealSource(t,action){
+ const had=Object.prototype.hasOwnProperty.call(run,'healSourceTile'),previous=run.healSourceTile;
+ run.healSourceTile=t?.i;
+ try{return action();}finally{if(had)run.healSourceTile=previous;else delete run.healSourceTile;}
+}
 function healM(m,n,src,camp=false){
  if(n<=0||run.ended||m.down)return 0;const b=m.hp;const want=Math.min(n,Math.max(0,m.maxHp-b));m.hp=clamp(m.hp+(camp?want:riskHealAmount(m,want)),0,m.maxHp);const g=m.hp-b;
  if(run._est)run._est.heal+=g;
@@ -10544,7 +10761,7 @@ function healM(m,n,src,camp=false){
  m.enemyDebt=Math.max(0,(m.enemyDebt||0)-effectiveHeal);
  if(typeof recordBattleHeal==='function')recordBattleHeal(effectiveHeal);
  dispatchRuleEvent('heal',{m,amount:g,enemyDebt:effectiveHeal,unused:Math.max(0,n-g),
-  sourceTile:run.healSourceTile??(run.battle?battleSupTile(run.battle.tile)?.i:run.pos),camp});
+  sourceTile:run.healSourceTile??null,camp});
  {const r=g>0?bsM(m):null;if(r)r.healed+=g;}
  if(g>0){const p=memberXY(m);floater(p.x,p.y-36,`+${g}`,'#4ade80');if(src)log(`💚 ${src}: ${m.stu.name} HP +${g}`);}
  return g;
@@ -10690,8 +10907,13 @@ const isSupCard=id=>!!(id&&CARDS[id]&&CARDS[id].sup);
 // 주지원 연결: 소환 타일은 인접 지원(sup) 타일 중 하나에만 연결된다 (중첩 없음, Codex R2). 효과는 사용 시점의 카드로 판정(변신 반영)
 function linkSupports(t){
  const c=CARDS[t.card];if(!c)return;
- if(c.spawn){if(!t.link){const s=adjTiles(t).find(o=>isSupCard(o.card));if(s)t.link={i:s.i,kind:s.card};}}
- else if(c.sup){for(const o of adjTiles(t)){if(o.card&&CARDS[o.card].spawn&&!o.link)o.link={i:t.i,kind:t.card};}}
+ const adjacent=typeof tileSpaceAdjacent==='function'?tileSpaceAdjacent(t):adjTiles(t);
+ if(c.spawn){if(!t.link){
+  const sources=typeof tileSpaceSupport==='function'?tileSpaceSupport(t):adjacent;
+  const s=sources.find(o=>isSupCard(o.card));if(s)t.link={i:s.i,kind:s.card};
+ }}else if(c.sup){
+  for(const o of adjacent)if(!o.off&&o.card&&CARDS[o.card].spawn&&!o.link)o.link={i:t.i,kind:t.card};
+ }
 }
 function placeCard(t,idx){
  const id=run.hand[idx];if(!id||!canPlaceCard(id,t))return;
@@ -10710,7 +10932,7 @@ function placeCard(t,idx){
  log(`🃏 배치: ${c.icon} ${c.name}${e.enhanced?' (동아리 강화)':''}${c.contract?` · 계약 ${contractStr(e)}`:''}${lk}`);
  /* v1.0 변신: 서명(학생 합류 여부) → 조합(놓은 타일과 인접 타일) */
  if(c.sig){t.base=id;syncSigMorphs();}
- checkCombos([t,...adjTiles(t)]);
+ checkCombos([t,...(typeof tileSpaceAdjacent==='function'?tileSpaceAdjacent(t):adjTiles(t))]);
  recomputeChains();run.party.forEach(recalcMember); /* 변신·조합 뒤의 최종 타일 상태로 다시 — 인접 소환 수가 바뀌면 지원 패시브 배율도 바뀐다 */
  if(run.paused&&!simMode)resumeFromCard();
  dirty=true;
@@ -10726,14 +10948,16 @@ function previewPlace(id,ti){
 function previewSim(id,ti){
  const none={tiles:new Set(),morph:null,links:0,chains:[]};if(isTerrain(id)||ti>=N)return none;
  const t=run.tiles[ti],c=CARDS[id];if(!t||!c)return none;
- const adj=adjTiles(t).filter(o=>o.card),hits=[];let links=0;
+ const adj=(typeof tileSpaceAdjacent==='function'?tileSpaceAdjacent(t):adjTiles(t))
+  .filter(o=>o.card),hits=[];let links=0;
  if(c.spawn){const sup=adj.filter(o=>isSupCard(o.card));if(sup.length){hits.push(sup[0]);links=1;}}
  if(c.sup){const free=adj.filter(o=>CARDS[o.card].spawn&&!o.link);hits.push(...free);links=free.length;}
  if(run.cells){const pk=mapOf(run).nearOff[ti].map(k=>run.cells[k]).filter(o=>o.card==='ld_park');if(pk.length)hits.push(...pk);}
  let morph=null;
  if(c.sig&&c.morph){const m=run.party.find(x=>x.stu.id===c.sig);if(m){const to=m.star>=2?c.morph.star2:c.morph.tile;morph={to,name:CARDS[to].name,need:`${STUDENTS.find(s=>s.id===c.sig).name} 합류`,tile:ti};}}
  if(!morph){const ov={[ti]:id};const cb=comboFor(t,ov);if(cb)morph={to:cb.to,name:CARDS[cb.to].name,need:cb.need,tile:ti};
-  else for(const o of adjTiles(t)){if(!o.card)continue;const cb2=comboFor(o,ov);if(cb2){morph={to:cb2.to,name:CARDS[cb2.to].name,need:cb2.need,tile:o.i,from:CARDS[o.card].name};hits.push(o);break;}}}
+  else for(const o of adj){const cb2=comboFor(o,ov);if(cb2){
+   morph={to:cb2.to,name:CARDS[cb2.to].name,need:cb2.need,tile:o.i,from:CARDS[o.card].name};hits.push(o);break;}}}
  return {tiles:new Set(hits.map(o=>o.i)),morph,links,chains:previewChains(id,ti)};
 }
 function supStr(s){const p=[];if(s.dmg)p.push(`공격마다 +${s.dmg}`);if(s.shield)p.push(`시작 보호막 ${s.shield}`);if(s.heal)p.push(`교전 후 HP +${s.heal}`);if(s.revive)p.push('기절 복귀');if(s.slow)p.push(`이형 속도 −${Math.round(s.slow*100)}%`);return p.join('·');}
@@ -10798,8 +11022,14 @@ function simUpgrade(mode){
 function goalSpots(goalId,hand,tiles){
  const spots=new Set();if(!goalId)return spots;
  for(const id of new Set(hand||[])){
-  for(const t of tiles){if(!canPlace(t))continue;const ov={[t.i]:id};const c1=comboFor(t,ov);if(c1&&c1.to===goalId){spots.add(t.i);continue;}
-   for(const o of adjTiles(t)){if(!o.card)continue;const c2=comboFor(o,ov);if(c2&&c2.to===goalId){spots.add(t.i);break;}}}}
+  for(const t of tiles){
+   if(!canPlaceCard(id,t))continue;const ov={[t.i]:id},c1=comboFor(t,ov);
+   if(c1&&c1.to===goalId){spots.add(t.i);continue;}
+   for(const o of tileSpaceAdjacent(t)){
+    if(!o.card)continue;const c2=comboFor(o,ov);if(c2&&c2.to===goalId){spots.add(t.i);break;}
+   }
+  }
+ }
  return spots;
 }
 /* 카드 가독성 L(화면 전용 — 시뮬은 goalSpots 그대로): spots = 결과 계약으로 찾은 목표 완성 칸(guideNow — 약탈이 먼저 일어나는 칸 등 예고 = 실제) · cards = 그 칸에 놓을 손패 카드.
@@ -10809,12 +11039,16 @@ function goalStatus(){
  const cb=COMBOS.find(c=>c.to===meta.goal);if(!cb||!run)return null;
  const need={};for(const m of cb.mats)need[m]=(need[m]||0)+1;
  const wild=(typeof COMBO_WILD!=='undefined'&&COMBO_WILD[cb.to])||{},pile=deckPile(),is=m=>wild[m]?(x=>!!x&&!!CARDS[x]&&CARDS[x].club===wild[m]&&!need[x]):(x=>x===m);
- const mats=Object.entries(need).map(([id,n])=>{const f=is(id);return {id,n,wild:wild[id]||null,map:run.tiles.filter(t=>f(t.base||t.card)).length,hand:run.hand.filter(f).length,deck:pile.filter(f).length};});
+ const mats=Object.entries(need).map(([id,n])=>{
+  const f=is(id);return {id,n,wild:wild[id]||null,map:tileSpaceAll().filter(t=>f(t.base||t.card)).length,
+   hand:run.hand.filter(f).length,deck:pile.filter(f).length};
+ });
  const G=guideNow(),gn=G&&G.goal.now,gl=G&&G.goal.lack,spots=new Set(gn?gn.spots:[]);
  let lack=null;
  if(!spots.size){if(gl)lack={one:true,mats:[{id:gl.cards.length===1?gl.cards[0]:null,name:gl.mat,k:1}],n:gl.n,hand:0};
   else{const sh=mats.map(m=>({...m,k:Math.max(0,m.n-m.map-m.hand)})).filter(m=>m.k>0);lack={one:false,mats:sh.map(m=>({id:m.id,name:m.wild?CLUBS[m.wild]+' 카드':CARDS[m.id].name,k:m.k})),n:sh.reduce((a,m)=>a+m.deck,0),hand:sh.reduce((a,m)=>a+m.hand,0)};}}
- return {cb,mats,spots,cards:gn?gn.cards:[],lack,done:!!(run.goalDone&&run.goalDone[cb.to]),paid:!!(run.goalPaid&&run.goalPaid[cb.to]),onMap:run.tiles.filter(t=>t.card===cb.to).length};
+ return {cb,mats,spots,cards:gn?gn.cards:[],lack,done:!!run.goalDone?.[cb.to],paid:!!run.goalPaid?.[cb.to],
+  onMap:tileSpaceAll().filter(t=>t.card===cb.to).length};
 }
 function setGoal(id){meta.goal=COMBOS.some(c=>c.to===id)?id:null;save();dirty=true;}
 /* 보급 드론 서비스(런당 BAL.serviceMax 회 합산): 타일 철거 = OP 3, 카드 회수(변신·조합 결과는 원래 카드로), 무리는 보상 없이 소멸 / 카드 변환 = OP 4, 같은 동아리의 다른 카드로 */
@@ -10851,7 +11085,16 @@ function convertCard(idx,to){
  run.op-=convertCost();run.services++;run.converted=(run.converted||0)+1;run.hand[idx]=to;if(typeof collectionDiscover==='function')collectionDiscover(to,'convert');run.drawn[to]=(run.drawn[to]||0)+1;run.svcOffer=null;if(run.svcCache)delete run.svcCache[convertKey(id)];
  log(`🔁 카드 변환: ${CARDS[id].name} → ${CARDS[to].name} (OP −${convertCost()} · ${opts.length}장 중 선택)`,'shop');dirty=true;return true;
 }
-function discardCard(idx){const id=run.hand[idx];if(!id)return;run.hand.splice(idx,1);if(selectedCard===idx)selectedCard=null;else if(selectedCard>idx)selectedCard--;const g=isTerrain(id)?0:(econOn()?BAL.econ.discard:1);run.op+=g;run.discards++;if(run.discardLap!==run.lap){run.discardLap=run.lap;run.discardN=0;}run.discardN=(run.discardN||0)+1;log(g?`🗑 ${CARDS[id].name} 처분 → OP +${g}`:`🗑 ${CARDS[id].name} 처분 (협회 공용 결계 — OP 없음)`);dirty=true;} /* v1.2: 추가 드롭인 결계 카드는 처분해도 OP 가 없다(지형 미사용이 이득이 되지 않게) */
+const discardValue=id=>isTerrain(id)&&!CARDS[id]?.relocated?0:(econOn()?BAL.econ.discard:1);
+function discardCard(idx){
+ const id=run.hand[idx];if(!id)return;run.hand.splice(idx,1);
+ if(selectedCard===idx)selectedCard=null;else if(selectedCard>idx)selectedCard--;
+ const g=discardValue(id);run.op+=g;run.discards++;
+ if(run.discardLap!==run.lap){run.discardLap=run.lap;run.discardN=0;}
+ run.discardN=(run.discardN||0)+1;
+ log(g?`🗑 ${CARDS[id].name} 처분 → OP +${g}`:`🗑 ${CARDS[id].name} 처분 (지형 카드 — OP 없음)`);
+ dirty=true;
+}
 
 /* ================= v1.1 §19.3 유틸 조건화 · 타일 승급 · 회복 발동 제한 =================
  * 지원 타일(소환이 아닌 내 타일)의 효과 배율 tileMul(t) = 조건화(BAL.supAdj — 인접 소환 타일 0개 50% / 1개 100% / 2개+ 150%(§19.3 초안 130% → 시뮬 조정), 인접 = 격자 8방 — 도로상 앞뒤 포함) × 타일 Lv(upgSup) × 체인(보급선·거점, §19.4). 상한 BAL.supMulMax.
@@ -10862,7 +11105,12 @@ const isSupportTile=t=>!!(t&&t.i!==0&&t.card&&t.card!=='mark'&&CARDS[t.card]&&!C
 const adjSpawnN=(t,at)=>adjTiles(t).filter(o=>{const id=at?at(o):o.card;return !!(id&&id!=='mark'&&CARDS[id]&&CARDS[id].spawn);}).length;
 const tileLv=t=>(t&&t.lv)||1;
 const dangerFreeNow=()=>Math.max(1,BAL.dangerFree-(typeof chainSpawnCap==='function'?chainSpawnCap():0));
-function tileMul(t){if(!isSupportTile(t))return 1;const n=adjSpawnN(t);let m=BAL.supAdj[Math.min(n,2)]*BAL.upgSup[tileLv(t)-1];if(n>0&&typeof chainSupMul==='function')m*=chainSupMul(t);return +Math.min(BAL.supMulMax,m).toFixed(3);}
+function tileMul(t){
+ if(!isSupportTile(t))return 1;if(t.off)return cellMul(t,false);
+ const n=adjSpawnN(t);let m=BAL.supAdj[Math.min(n,2)]*BAL.upgSup[tileLv(t)-1];
+ if(n>0&&typeof chainSupMul==='function')m*=chainSupMul(t);
+ return +Math.min(BAL.supMulMax,m).toFixed(3);
+}
 const MUL_KEYS={enter:['heal','mana','op','ex','shield'],sup:['dmg','shield','heal','slow'],pas:null,camp:['op','heal']};
 function scaleFx(o,keys,m){if(!o||m===1)return o;const r={...o};for(const k of keys||Object.keys(r)){if(r[k]==null)continue;const v=r[k]*m;r[k]=Math.abs(r[k])<1?+v.toFixed(3):(m<1?Math.floor(v+1e-9):Math.round(v));}return r;}
 function tileEff(t){const e=t&&t.card?effOf(t.card):null;if(!e)return null;const m=tileMul(t);if(m===1)return e;const o={...e,mul:m};for(const g of Object.keys(MUL_KEYS))if(e[g])o[g]=scaleFx(e[g],MUL_KEYS[g],m);return o;}
@@ -10893,8 +11141,8 @@ function applyMods(e,md){if(md.hp!==1){e.hp=e.maxHp=Math.round(e.maxHp*md.hp);}i
  * recomputeChains(): 배치·철거·변신·조합·승급·소진 때마다 run.chains 와 타일 캐시(t.chS 소환 계열·t.chU 지원 계열·t.chC 순환)를 다시 만든다. 첫 발견은 도감(meta.codex['chain_'+kind]).
  * 효과 적용 지점(각 1곳): 이형 배율·정예 = spawnPack(tileEnemyMods/chainVet) · 보상 = payPack(packRewardMul/chainPay) · 지원 효과 = tileMul(chainSupMul) · 미니 캠프 = enterTile(chainBaseCamp) · EX = endBattle(chainCycleEx) · 소환 최대치 = dangerFreeNow(chainSpawnCap) */
 const chainClass=id=>(!id||id==='mark'||!CARDS[id])?null:(CARDS[id].spawn?'S':'U');
-function chainsFor(cardAt){
- const linked=typeof META_RULES!=='undefined'?metaChainGroups(cardAt):null;
+function chainsFor(cardAt,state=run){
+ const linked=state&&typeof META_RULES!=='undefined'?metaChainGroups(cardAt,state):null;
  if(linked)return linked;
  const cls=[];for(let i=0;i<N;i++)cls[i]=i===0?null:chainClass(cardAt(i));
  const out=[];let i=1;
@@ -10908,9 +11156,15 @@ function recomputeChains(){
  if(!run)return [];run.mapVer=(run.mapVer||0)+1;const prev=(run.chains||[]).map(c=>c.kind+':'+c.tiles.join(','));
  run.chains=chainsFor(i=>run.tiles[i].card);
  for(const t of run.tiles){t.chS=null;t.chU=null;t.chC=false;}
+ for(const t of run.cells||[])t.chU=null;
  for(const c of run.chains)for(const i of c.tiles){const t=run.tiles[i];if(c.kind==='cycle')t.chC=true;else if(c.kind==='front'||c.kind==='battle')t.chS=c.kind;else t.chU=c.kind;}
+ for(const c of run.chains)if(c.kind==='supply'||c.kind==='base'){
+  for(const i of c.supportSources||[]){const t=spotAt(i);if(t?.off)t.chU=c.kind;}
+ }
  /* 보급선·거점: 구간 안에 인접 소환 타일이 있는 칸이 하나도 없으면 무효 표시(void) — 칸별 효과는 tileMul 이 판정 */
- for(const c of run.chains)if(c.kind==='supply'||c.kind==='base')c.void=!c.tiles.some(i=>adjSpawnN(run.tiles[i])>0);
+ for(const c of run.chains)if(c.kind==='supply'||c.kind==='base'){
+  c.void=!(c.supportSources?.length||c.tiles.some(i=>adjSpawnN(run.tiles[i])>0));
+ }
  run.chainsMax=Math.max(run.chainsMax||0,run.chains.length);
  for(const c of run.chains){const key=c.kind+':'+c.tiles.join(',');if(prev.includes(key))continue;run.chainsMade=(run.chainsMade||0)+1;discoverChain(c);
   /* 새로 전선·격전지가 된 구간의 기존 무리(체인 표식 없음)도 정예·배율을 받는다 — 교전 중인 타일은 다음 무리부터 */
@@ -10967,11 +11221,14 @@ function sideNear(t,id){
  return mapOf(run).nearOff[t.i].map(k=>run.cells[k]).filter(c=>c.card===id);
 }
 /* v1.5 위치 바리에이션 길가형(tent_side 등 — 칸 src = 원본 카드)은 Lv1 고정 · 물길·시계탑·특성 증폭 없음(DESIGN §25.11) → 배율 1(지도 ×2 배지·칸 메뉴가 없는 증폭을 알리지 않게 — 규칙은 원래 이 배율을 쓰지 않는다) */
-const isFormCard=id=>!!(id&&CARDS[id]&&CARDS[id].tile&&CARDS[id].src&&CARDS[id].cls==='side');
+const isFormCard=id=>!!(id&&Object.values(BOARD_VARIANTS).includes(id));
 function cellMul(c,day){if(isFormCard(c.card))return 1;let m=1;const adj=mapOf(run).offAdj[c.k];if(c.card!=='ld_river'&&adj.some(k=>run.cells[k].card==='ld_river'))m*=BAL.land.riverMul;if(day&&c.card!=='sd_clock'&&adj.some(k=>run.cells[k].card==='sd_clock'))m*=BAL.land.clockMul;
- if(c.card&&CARDS[c.card]&&CARDS[c.card].cls==='side')m*=BAL.upgSup[tileLv(c)-1];return +(Math.min(BAL.land.mulMax,m)*(1+BAL.perk.ward*perkN('ward'))).toFixed(3);}
+ if(c.card&&CARDS[c.card]&&CARDS[c.card].cls==='side')m*=BAL.upgSup[tileLv(c)-1];
+ if(c.chU)m*=chainSupMul(c);
+ return +(Math.min(BAL.land.mulMax,m)*(1+BAL.perk.ward*perkN('ward'))).toFixed(3);}
 const sideMulNear=(t,id,day)=>sideNear(t,id).reduce((a,c)=>Math.max(a,cellMul(c,day)),0);
-const dayMulTile=t=>sideNear(t,'sd_clock').length?BAL.land.clockMul:1; /* 시계탑 옆 도로 타일의 캠프 효과(camp{}) 2배 */
+const dayMulTile=t=>t.off?cellMul(t,true)/cellMul(t,false)
+ :sideNear(t,'sd_clock').length?BAL.land.clockMul:1;
 const LAND0={hpPct:0,spdPct:0,enemyHp:0,dayHeal:0,hills:0,trees:0,fields:0};
 function landFx(){
  if(!run||!run.cells)return LAND0;const key=(run.mapVer||0)+'|'+perkN('ward');if(run._land&&run._landKey===key)return run._land;
@@ -10980,6 +11237,7 @@ function landFx(){
   if(id==='ld_hill'){f.hpPct+=L.hillHp*cellMul(c,false);f.hills++;}else if(id==='ld_peak'){f.hpPct+=L.peakHp*cellMul(c,false);f.hills++;}
   else if(id==='ld_trees'){f.spdPct+=L.treeSpd*cellMul(c,false);f.trees++;}else if(id==='ld_park')f.dayHeal+=L.parkHeal*cellMul(c,true);else if(id==='ld_flower')f.dayHeal+=L.flowerHeal*cellMul(c,true);
   else if(id==='ld_dust'){f.enemyHp+=L.dustEnemy*cellMul(c,false);f.hpPct-=L.dustSelf;}else if(id==='sd_field')f.fields++;}
+ f.spdPct-=Math.min(.05,run.cells.reduce((n,c)=>n+(CARDS[c.card]?.selfSlow||0),0));
  for(const k of ['hpPct','spdPct','enemyHp','dayHeal'])f[k]=+f[k].toFixed(4);
  /* v1.4 R4: 총량 상한(BAL.land.hpCap·spdCap, null 이면 없음) — 런이 긴 S 에서 언덕·봉우리가 계속 쌓여(보스 조우 시 HP +50%대, P90 +87%) 결계가 다른 선택을 압도하던 것 */
  f.hpRaw=f.hpPct;f.spdRaw=f.spdPct;if(L.hpCap!=null&&f.hpPct>L.hpCap)f.hpPct=L.hpCap;if(L.spdCap!=null&&f.spdPct>L.spdCap)f.spdPct=L.spdCap;
@@ -11018,6 +11276,7 @@ function ransack(t){const from=CARDS[t.card].name;t.base=t.base||t.card;t.card='
 function recomputeLand(){
  if(!run||!run.cells||run._landBusy||estMode)return;run._landBusy=true;let again=false;
  try{
+  tileSpaceRecompute();
   const at=k=>run.cells[k].card,roadAt=i=>run.tiles[i].card;
   for(const k of peakCenters(at)){const c=run.cells[k];if(c.card==='ld_peak')continue;
    if(mapDeferMorph(run,'off:'+k,c.card,'ld_peak'))continue;
@@ -11049,6 +11308,15 @@ function mapSettleMorph(state,pending){
   tile.base=tile.card;tile.card='ld_peak';state.mapVer=(state.mapVer||0)+1;sideFx('peak');
   landDiscover('ld_peak','유예한 폐허 봉우리 정착',tile);return true;
  }
+ if(kind==='off'&&['ld_oasis','ld_campus'].includes(pending.change.to)){
+  const to=pending.change.to;
+  const valid=to==='ld_oasis'
+   ?tile.card==='ld_dust'&&tileSpaceAdjacent(tile,state).some(c=>c.card==='ld_river')
+   :tile.card==='ld_training'&&tileSpaceCanCampus(tile,state);
+  if(!valid)return false;
+  tile.base=tile.card;tile.card=to;state.mapVer=(state.mapVer||0)+1;
+  landDiscover(to,'유예한 공간 변형 정착',tile);return true;
+ }
  return false;
 }
 /* 길가·지형이 도로 칸 t 에 만드는 추가 무리 — 보상은 그 결계 카드의 contract(pk.side: 타일 카드가 아니라 pk.cardId 로 정산) */
@@ -11068,6 +11336,7 @@ const lampCut=t=>{const m=sideMulNear(t,'sd_lamp',false);return m>0?BAL.side.lam
 const capOf=t=>{const c=CARDS[t.card];if(!c||!c.cap)return 0;return Math.max(1,c.cap-lampCut(t))+((econOn()&&econFloorOf(t.i)>0)?ECON.floorCap(true):0);};
 function landDay(sealed){
  if(!run.cells)return;const f=landFx();
+ tileSpaceDay(sealed);
  if(f.dayHeal>0)healAll(f.dayHeal,'🌿 공원·꽃밭');
  {let op=0;for(const c of run.cells)if(c.card==='sd_field')op+=Math.max(1,Math.round(BAL.side.fieldOp*cellMul(c,true)));if(op>0){const g=gainOp(op);log(`⚔ 격전 흔적 보급 상자: OP +${g}`,'good');}}
  if(!sealed){let n=0;
@@ -11093,6 +11362,7 @@ function tuneGear(){const items=[];for(const m of run.party)for(const s of ['wea
  if(!/ ⚙\d+$/.test(it.name))it.name+=' ⚙1';else it.name=it.name.replace(/ ⚙\d+$/,' ⚙'+it.plus);recalcMember(m);log(`🔧 정비소: ${m.stu.name}의 ${it.name} 강화`,'good');}
 function bookSwap(){if(run.hand.length>=handMax()){const out=run.hand.shift();run.deck.push(out);if(selectedCard!==null)selectedCard=selectedCard>0?selectedCard-1:null;log(`📚 헌책방: ${CARDS[out].name} → 새 카드로 교체`);}else log('📚 헌책방: 카드 +1','good');drawCard();}
 function sideEnter(t){if(!run.cells||t.off)return;
+ tileSpaceEnter(t);
  if(econOn()&&mapOf(run).nearOff[t.i]){for(const k of mapOf(run).nearOff[t.i]){const c=run.cells[k];if(c&&c.card&&c.passLap!==run.lap){c.passLap=run.lap;gainResTag('pass',{});}}} /* §27.6 l: 길가 옆 도로 통과 → 기록(칸마다 랩 1회) */
  for(const c of sideNear(t,'sd_garage')){if(c.usedLap===run.lap)continue;c.usedLap=run.lap;const n=Math.max(1,Math.round(cellMul(c,false)));for(let k=0;k<n;k++)tuneGear();}
  for(const c of sideNear(t,'sd_books')){if(c.usedLap===run.lap)continue;c.usedLap=run.lap;const n=Math.max(1,Math.round(cellMul(c,false)));for(let k=0;k<n;k++)bookSwap();}}
@@ -11105,12 +11375,15 @@ function useControl(id,t){const c=CARDS[id];run.controlsUsed=(run.controlsUsed||
 function placeTerrain(t,idx){
  const id=run.hand[idx],c=CARDS[id];run.hand.splice(idx,1);if(selectedCard===idx)selectedCard=null;else if(selectedCard>idx)selectedCard--;
  if(c.type==='control')useControl(id,t);
- else{t.card=id;t.base=null;t.lv=1;t.bornLap=run.lap;econPlaceN(t,id);run.cardsPlaced++;run.terrainPlaced=(run.terrainPlaced||0)+1;
+ else{t.card=id;t.base=id;t.combo=false;t.lv=1;t.bornLap=run.lap;econPlaceN(t,id);
+  delete t.archiveUsed;delete t.archiveLap;delete t.spacePassLap;
+  run.cardsPlaced++;run.terrainPlaced=(run.terrainPlaced||0)+1;
   if(econOn()&&c.cls==='land')gainResTag('terrain',{}); /* §27.6 l: 지형 배치 → 결계석 */
   log(`🧭 배치: ${c.icon} ${c.name} (${TILE_CLASS[c.cls].name}${placeCost(id)>0?` · 브레이크 T −${placeCost(id)}`:''})`);}
  run.placedBy[id]=(run.placedBy[id]||0)+1;if(placeCost(id)>0)spendT(placeCost(id),'place');SFX.click();pendingTile=null;
  dispatchRuleEvent('place',{id,i:t.i,cls:cardClass(id)});
- recomputeChains();run.party.forEach(recalcMember);
+ relinkAll();recomputeChains();syncSigMorphs();
+ checkCombos([t,...tileSpaceAdjacent(t)]);recomputeChains();run.party.forEach(recalcMember);
  if(run.paused&&!simMode)resumeFromCard();dirty=true;
 }
 /* 미리보기(순수): 길가·지형·제어 카드 — 카드 가독성 M 부터 도로 카드와 같은 결과 계약(pvBuild). 옛 이름은 호출부 호환으로 남긴다 */
@@ -11123,6 +11396,177 @@ function landStatus(){
  if(f.fields)counters.push({id:'echo',icon:'⚔',name:'격전 흔적',cur:Math.min(f.fields,BAL.land.fieldMin),need:BAL.land.fieldMin,total:f.fields,on:f.fields>=BAL.land.fieldMin});
  const timers=run.tiles.filter(t=>t.delay).map(t=>({i:t.i,name:CARDS[t.delay.to].name,left:Math.max(0,t.delay.lap-run.lap)}));
  return {counters,timers,peak:peakProgress(k=>run.cells[k].card),placed:run.cells.filter(c=>c.card).length,sealed:run.sealLap>run.lap};
+}
+
+</script>
+<script>
+'use strict';
+// Road encounters, adjacent facilities, and board variations share one geometry contract.
+function tileSpaceAll(state=run){return state?[...(state.tiles||[]),...(state.cells||[])]:[];}
+function tileSpaceAdjacent(t,state=run){
+ return tileSpaceAll(state).filter(o=>o.i!==t.i&&Math.abs(o.c-t.c)<=1&&Math.abs(o.r-t.r)<=1);
+}
+function tileSpaceRoads(c,state=run){
+ if(!c||!state)return [];
+ return (state.tiles||[]).filter(t=>t.i!==0&&t.i!==c.i&&Math.abs(t.c-c.c)<=1
+  &&Math.abs(t.r-c.r)<=1).map(t=>t.i);
+}
+function tileSpaceSupport(t,state=run){
+ return tileSpaceAdjacent(t,state).filter(c=>c.card&&CARDS[c.card]?.sup)
+  .sort((a,b)=>a.i-b.i);
+}
+function tileSpaceSquare(c,state=run){
+ const xy=new Map((state.cells||[]).map(o=>[o.c+','+o.r,o]));
+ return [[0,0],[1,0],[0,1],[1,1]].map(([x,y])=>xy.get((c.c+x)+','+(c.r+y)));
+}
+function tileSpaceCampusActive(c,state=run){
+ const cells=tileSpaceSquare(c,state);
+ return cells.every((o,i)=>o&&o.card===(i===0?'ld_campus':'ld_training'));
+}
+function tileSpaceCanCampus(c,state=run){
+ const block=tileSpaceSquare(c,state);
+ if(!block.every(o=>o?.card==='ld_training'))return false;
+ return !(state.cells||[]).some(o=>o.card==='ld_campus'&&tileSpaceCampusActive(o,state)
+  &&tileSpaceSquare(o,state).some(x=>block.includes(x)));
+}
+// Deterministic spatial transformations, reused by placement preview without touching run/meta.
+function tileSpaceMorphs(state,onChange){
+ for(const c of state.cells||[]){
+  let to=null,need='';
+  if(c.card==='ld_dust'&&tileSpaceAdjacent(c,state).some(o=>o.card==='ld_river')){
+   to='ld_oasis';need='먼지 지대 + 물길 인접';
+  }else if(c.card==='ld_training'){
+   if(tileSpaceCanCampus(c,state)){
+    to='ld_campus';need='훈련 구획 2×2';
+   }
+  }
+  if(!to)continue;
+  const from=c.card;
+  if(mapDeferMorph(state,'off:'+c.k,from,to))continue;
+  c.base=from;c.card=to;
+  if(onChange)onChange({cell:c.i,from,to,need});
+ }
+}
+function tileSpaceRecompute(){
+ tileSpaceMorphs(run,e=>{
+  run.mapVer=(run.mapVer||0)+1;landDiscover(e.to,e.need,spotAt(e.cell));
+ });
+}
+function tileSpaceTraining(state=run){
+ let total=0;
+ for(const c of state?.cells||[]){
+  if(c.card==='ld_training'||(c.card==='ld_campus'&&tileSpaceCampusActive(c,state)))
+   total+=CARDS[c.card].trainingXp||0;
+ }
+ return Math.min(8,total);
+}
+function tileSpaceEnter(t){
+ for(const c of tileSpaceAdjacent(t).filter(o=>o.off&&o.card)){
+  const d=CARDS[c.card];
+  if(d.relocated&&c.spacePassLap!==run.lap){
+   c.spacePassLap=run.lap;enterEffects(c);
+  }
+  if(!d.archiveUses||c.archiveLap===run.lap)continue;
+  c.archiveLap=run.lap;c.archiveUsed=(c.archiveUsed||0)+1;
+  if(run.hand.length){
+   const out=run.hand.shift();run.deck.push(out);
+   if(selectedCard!==null)selectedCard=selectedCard>0?selectedCard-1:null;
+  }
+  drawCard();log('📚 임시 서고: 카드 1장 교환','good');
+  if(c.archiveUsed>=d.archiveUses){
+   c.base='sd_archive';c.card='sd_forbidden';run.mapVer++;
+   landDiscover(c.card,'서고 3회 사용 — 앞으로 사념 소탕으로 카드 획득',c);
+   recomputeChains();
+  }
+ }
+}
+function tileSpaceDay(sealed){
+ if(sealed)return;
+ for(const c of run.cells||[])if(CARDS[c.card]?.sideSpawn){
+  const t=pickSpawnRoad(tileSpaceRoads(c).map(i=>run.tiles[i]));
+  if(t)spawnSidePack(t,c.card,CARDS[c.card].sideSpawn,{n:1});
+ }
+}
+function tileSpacePackClear(pk){
+ if(!pk||pk.uid==null||!pk.reward||pk.summoned||pk.alive!==0||run.packs[pk.uid]!==pk)return;
+ if(pk.origin&&pk.origin!=='native')return;
+ if(run.ruleOrigin&&!['native','leader','relic'].includes(run.ruleOrigin))return;
+ const seen=run.spacePaid||(run.spacePaid={});if(seen[pk.uid])return;seen[pk.uid]=true;
+ const xp=tileSpaceTraining();if(xp){gainXp(xp);run.trainingXp=(run.trainingXp||0)+xp;}
+ const d=CARDS[pk.cardId],t=run.tiles[pk.tile];
+ if(!d?.clearHeal||!t||!healGate(t))return;
+ const before=run.healSourceTile;run.healSourceTile=t.i;
+ try{for(const m of alive())healM(m,d.clearHeal);}finally{run.healSourceTile=before;}
+}
+RULE_HOOKS.push((kind,data)=>{if(kind==='packClear')tileSpacePackClear(data.pk);});
+
+// Preview board B keeps the original save untouched, including off-road signature/combo states.
+function tileSpaceStateB(B){
+ return {...run,metaRules:B.metaRules,
+  tiles:run.tiles.map(t=>({...t,card:B.road[t.i],combo:B.combo[t.i]})),
+  cells:(run.cells||[]).map(c=>({...c,card:B.cell[c.k],combo:!!B.cellCombo?.[c.k]}))};
+}
+function tileSpaceMorphB(B,ev){
+ const state=tileSpaceStateB(B);
+ tileSpaceMorphs(state,e=>{B.cell[e.cell-N]=e.to;ev.push(e);});
+}
+function tileSpaceSignaturesB(B,ev,placedId,placed){
+ const state=tileSpaceStateB(B);
+ for(const t of tileSpaceAll(state)){
+  const real=spotAt(t.i),base=t.i===placed.i?placedId:(real.base||real.card),d=CARDS[base];
+  if(!d?.sig||!d.morph||t.combo)continue;
+  const m=run.party.find(x=>x.stu.id===d.sig);
+  const to=m?(m.star>=2&&d.morph.star2?d.morph.star2:d.morph.tile):base;
+  if(t.card===to)continue;
+  ev.push({cell:t.i,from:t.card,to,need:m?`${m.stu.name} 합류`:'서명 학생 이탈'});
+  if(t.off)B.cell[t.k]=to;else B.road[t.i]=to;
+ }
+}
+function tileSpaceCombosB(B,ev,t){
+ for(const o of [t,...tileSpaceAdjacent(t)]){
+  const cb=comboB(B,o);if(!cb)continue;
+  const from=o.off?B.cell[o.k]:B.road[o.i];
+  ev.push({cell:o.i,from,to:cb.to,need:cb.need,combo:true});
+  if(o.off){B.cell[o.k]=cb.to;B.cellCombo[o.k]=true;}
+  else{B.road[o.i]=cb.to;B.combo[o.i]=true;}
+ }
+}
+function tileSpacePreviewEffects(id,t,B,fx,warn){
+ const finalId=B.cell[t.k],d=CARDS[finalId];if(!d)return;
+ const state=tileSpaceStateB(B),rs=tileSpaceRoads(t,state),m=cellMulB(B,t.k,finalId,false);
+ const e=effScaled(finalId,m);
+ if(d.relocated){
+  const sig=econOn()?econSigOf(finalId):null;
+  if(sig){
+   fx('+','진입 시',`인접 도로 첫 통과 시 서명 교본 +${sig.morphed?2:1}(랩 1회)`,'서명 교본',rs);
+   if(!rs.length)warn('인접 도로가 없어 서명 교본을 얻을 수 없습니다');
+  }
+  if(e.sup){fx('+','교전 시',`인접 도로 주지원: ${supVal(e.sup)}(교전당 시설 1곳)`,supVal(e.sup),rs);
+   if(!rs.length)warn('인접 도로가 없어 교전을 지원할 수 없습니다');}
+  if(e.enter)fx('+','진입 시',`인접 도로 첫 통과(랩 1회): ${enterVal(e.enter)}`,enterVal(e.enter),rs);
+  if(e.pas)fx('+','상시',`전역 효과: ${pasVal(e.pas)}(같은 시설은 가장 강한 1곳)`,pasVal(e.pas),[]);
+  if(e.camp)fx('+','캠프 통과 시',campVal(e.camp),campVal(e.camp),[]);
+ }
+ if(d.archiveUses)fx('+','진입 시',d.desc,'카드 교환',rs);
+ if(d.sideSpawn)fx('-','랩마다',d.desc,'사념 +1',rs);
+ if(d.trainingXp)fx('+','처치 시',`훈련 XP 합계 +${tileSpaceTraining(state)} / 최대 +8`,
+  `XP +${tileSpaceTraining(state)}`,[]);
+ if(d.selfSlow)fx('-','상시','아군 공격속도 −1%(정화 수로 합계 −5% 한도)','공속 −1%',[]);
+}
+function tileSpaceScore(id,c){
+ const d=CARDS[id],adj=tileSpaceAdjacent(c),roads=tileSpaceRoads(c).map(i=>run.tiles[i]);
+ if(d.relocated){
+  let n=0;
+  if(d.sup)n+=roads.filter(isSpawnTile).reduce((v,t)=>v+(tileSpaceSupport(t).length?.3:2),0);
+  if(d.enter)n+=roads.length?1.4:0;
+  if(d.pas||d.camp)n+=tileSpaceAll().some(t=>t.card===id)?0:2.5;
+  if(d.sig&&run.party.some(m=>m.stu.id===d.sig))n+=1;
+  for(const o of [c,...adj])if(comboFor(o,{[c.i]:id}))n+=2;
+  return n;
+ }
+ if(d.trainingXp)return tileSpaceTraining()>=8?0:1.5+adj.filter(o=>o.card==='ld_training').length*.5;
+ if(d.archiveUses)return 1.5+roads.length*.15;
+ return 0;
 }
 
 </script>
@@ -11141,11 +11585,14 @@ function landStatus(){
  *   실제 run·meta·난수·uid·연출·캐시는 건드리지 않는다(순수). 회귀 「카드 가독성 M · 예고 = 실제」가 무작위 판에서 이 결과와 실제 배치(placeCard) 결과(판·변신·체인·T)를 대조한다 */
 const PV_WHEN=['즉시','진입 시','교전 시','처치 시','캠프 통과 시','랩마다','상시','다음 랩','범위 지원'];
 function boardNow(){return {metaRules:run.metaRules?JSON.parse(JSON.stringify(run.metaRules)):null,road:run.tiles.map(t=>t.card||null),combo:run.tiles.map(t=>!!t.combo),delay:run.tiles.map(t=>t.delay?{to:t.delay.to,lap:t.delay.lap}:null),
+ placed:-1,
+ cellCombo:(run.cells||[]).map(c=>!!c.combo),
  cell:run.cells?run.cells.map(c=>c.card||null):[],src:run.cells?run.cells.map(c=>c.src||null):[],fp:run.cells?run.cells.map(c=>c.fp?{a:c.fp.a,cells:c.fp.cells.slice(),fp:c.fp.fp}:null):[], /* v1.5: 칸의 원본 카드·발자국(보드 체인 · 발자국 정리) */
  outposts:run.outposts||0,rand:0,flags:{forest:!!(run.flags&&run.flags.forest),echo:!!(run.flags&&run.flags.echo)}};}
 /* recomputeLand 를 판 B 에서 — ev 에 변신({cell,from,to,need,delayLaps?,random?})·임계({flag,on,n})를 일어나는 순서로 적는다. 약탈이 생기면 실제처럼 한 번 더 돈다 */
 function landB(B,ev){
  if(!run.cells||estMode)return;
+ tileSpaceMorphB(B,ev);
  const deferred={...run,metaRules:B.metaRules,tiles:run.tiles.map(t=>({...t})),
   cells:run.cells.map(c=>({...c}))};
  for(let g=0;g<8;g++){
@@ -11167,24 +11614,32 @@ function landB(B,ev){
    B.road[i]='ransacked';B.combo[i]=true;B.delay[i]={to:'county',lap:run.lap+BAL.delay.laps};again=true;}
   if(!again)break;}
 }
-function comboB(B,o){if(o.i===0||!B.road[o.i]||B.combo[o.i])return null;const at=x=>B.road[x.i],adj=adjTiles(o);for(const cb of COMBOS)if(cb.when(o,adj,at,run))return cb;return null;}
+function comboB(B,o){
+ const at=x=>x.off?B.cell[x.k]:B.road[x.i];
+ if(o.i===0||!at(o)||(o.off?B.cellCombo[o.k]:B.combo[o.i]))return null;
+ const adj=tileSpaceAdjacent(o);
+ for(const cb of COMBOS)if(cb.when(o,adj,at,run))return cb;
+ return null;
+}
 /* 배치 판정(순수) → {B(최종 판), ev(변신·임계 — 일어나는 순서), cost{breakPct,t,parts}, ch0(지금 체인), ch1(비용 판정 시점 체인), chS(놓은 칸의 소환 체인), link0(소환 카드의 주지원 후보), removed(망각으로 지우는 카드),
  *   v1.5(스위치 BAL.board15): form(길가형·다칸 발자국이면 resolvePlacement 결과 — 그 밖 null) · bch0/bch1(보드 체인 전·후) · bdiff(boardChainDiff — 요새선이 새로 생길 때마다 형성 T 를 cost 에)}
  * 켬 상태: placeCard 의 boardPlace(형태·칸·비용) → recomputeChains 의 boardRecompute(발자국 정리 → 보드 체인, recomputeLand 앞)를 판 B 에서 — 회귀 「카드 가독성 M ② 예고 = 실제(v1.5 켬)」 */
 function resolvePlace(id,spot){
  const c=CARDS[id],t=typeof spot==='number'?spotAt(spot):spot;if(!run||!c||!t)return null;
  const B=boardNow(),ev=[],pc0=placeCost(id),R={B,ev,t,ti:t.i,cost:{breakPct:0,t:pc0,parts:pc0>0?[{text:isTerrain(id)?TILE_CLASS[c.cls].name+' 배치':'소환 배치',t:pc0}]:[]},ch0:chainsFor(i=>run.tiles[i].card),ch1:null,chS:null,link0:null,removed:null,form:null,bch0:null,bch1:null,bdiff:[]};
+ B.placed=t.i;
  R.cost.breakPct=Math.round(100*((c.spawn&&!isTerrain(id)?BAL.placeBrake:0)+(c.cls&&BAL.brake[c.cls]?BAL.brake[c.cls]:0)));
  const b15=!!(boardOn()&&typeof resolvePlacement==='function'),land=()=>{if(b15)boardRepairB(B);landB(B,ev);}; /* 스위치 꺼짐 = landB 그대로 */
  if(b15){const rp=resolvePlacement(id,t);if(rp.ok&&(rp.formId!==id||rp.cells.length>1))R.form=rp;}
  if(R.form){const f=R.form,multi=f.cells.length>1; /* boardPlace: 모든 칸 = 형태 · src = 손패 카드 · 발자국 {a,cells,fp} · 비용 = 길가 비용 × 칸 수 */
   for(const i of f.cells){const k=i-BGRID.roadN();B.cell[k]=f.formId;B.src[k]=id;B.fp[k]=multi?{a:f.cells[0],cells:f.cells.slice(),fp:f.fp}:null;}
   R.cost={breakPct:f.cost.breakPct,t:f.cost.t,parts:f.cost.t>0?[{text:multi?`길가 배치 · 발자국 ${BOARD_FP_NAME[f.fp]}`:'길가형 배치',t:f.cost.t}]:[]};
-  land();R.ch1=chainsFor(i=>B.road[i]);}
+  land();R.ch1=chainsFor(i=>B.road[i],tileSpaceStateB(B));}
  else if(isTerrain(id)){
   if(c.type==='control'){if(c.ctl!=='seal'){R.removed=t.card||null;if(t.off)B.cell[t.k]=null;else{B.road[t.i]=null;B.combo[t.i]=false;B.delay[t.i]=null;}}}
-  else B.cell[t.k]=id;
-  land();R.ch1=chainsFor(i=>B.road[i]);}
+  else {B.cell[t.k]=id;B.cellCombo[t.k]=false;}
+  land();tileSpaceSignaturesB(B,ev,id,t);land();tileSpaceCombosB(B,ev,t);land();
+  R.ch1=chainsFor(i=>B.road[i],tileSpaceStateB(B));}
  else resolveRoadB(id,c,t,B,ev,R,land);
  if(b15){R.bch0=run.bchains||[];R.bch1=boardChainsOfB(B);R.bdiff=boardChainDiff(R.bch0,R.bch1);
   const nf=R.bdiff.filter(d=>d.kind==='form'&&!d.ext&&d.type==='fort').length; /* boardRecompute: 새로 생긴 요새선마다 형성 T(연장·변경은 없음) */
@@ -11195,9 +11650,10 @@ function resolvePlace(id,spot){
 function resolveRoadB(id,c,t,B,ev,R,land){
  B.road[t.i]=id;B.combo[t.i]=false;B.delay[t.i]=null;
  land();
- R.ch1=chainsFor(i=>B.road[i]);{const s=R.ch1.find(x=>(x.kind==='front'||x.kind==='battle')&&x.tiles.includes(t.i));R.chS=s?s.kind:null;}
+ R.ch1=chainsFor(i=>B.road[i],tileSpaceStateB(B));
+ {const s=R.ch1.find(x=>(x.kind==='front'||x.kind==='battle')&&x.tiles.includes(t.i));R.chS=s?s.kind:null;}
  if(c.spawn&&R.chS==='battle'&&chainBrakeCost()>0){R.cost.t+=chainBrakeCost();R.cost.breakPct+=Math.round(BAL.chain.battle.brake*100);R.cost.parts.push({text:'격전지 구간',t:chainBrakeCost()});}
- if(c.spawn){const s=adjTiles(t).find(o=>isSupCard(B.road[o.i]));R.link0=s?s.i:null;}
+ if(c.spawn){const s=tileSpaceSupport(t,tileSpaceStateB(B))[0];R.link0=s?s.i:null;}
  /* 서명 변신(syncSigMorphs): 조합·약탈 칸 제외 · 대상 = 분대의 그 학생(★2 면 2단계), 없으면 원래 카드 */
  if(c.sig){let ch=false;
   for(let i=1;i<N;i++){const base=i===t.i?id:(run.tiles[i].base||run.tiles[i].card);if(!base||B.combo[i])continue;const bc=CARDS[base];if(!bc||!bc.sig||!bc.morph)continue;
@@ -11205,8 +11661,7 @@ function resolveRoadB(id,c,t,B,ev,R,land){
    const st=STUDENTS.find(s=>s.id===bc.sig);ev.push({cell:i,from:B.road[i],to:target,need:m?`${st.name}${m.star>=2?' ★2':''} 합류`:`${st.name} 이탈`});B.road[i]=target;ch=true;}
   if(ch)land();}
  /* 조합(checkCombos([t,…adjTiles(t)])) */
- let nc=0;for(const o of [t,...adjTiles(t)]){const cb=comboB(B,o);if(!cb)continue;ev.push({cell:o.i,from:B.road[o.i],to:cb.to,need:cb.need,combo:true});B.road[o.i]=cb.to;B.combo[o.i]=true;nc++;}
- if(nc)land();
+ tileSpaceCombosB(B,ev,t);land();
  land();
 }
 /* 체인 변화 전(a) → 후(b): form 새로 생김 · grow 같은 체인이 길어짐 · upgrade 전선 → 격전지·보급선 → 주둔지 · break 사라지거나 줄거나 격이 내려감 */
@@ -11230,12 +11685,18 @@ const pvMorphLine=m=>`◎ ${m.random?'위치 미정 · ':''}${m.from&&CARDS[m.fr
 const pvCostLine=c=>`브레이크 +${c.breakPct}%p (T −${c.t})`;
 function packN(pc){return packSizeOf({small:pc&&pc.small});}
 /* tileMul 을 최종 판 B · 체인 chF 로(놓은 칸 ti 는 Lv1) */
-function tileMulB(B,chF,i,ti){const id=B.road[i];if(i===0||!id||id==='mark'||!CARDS[id]||CARDS[id].spawn)return 1;
+function tileMulB(B,chF,i,ti){
+ if(i>=N)return cellMulB(B,i-N,B.cell[i-N],false);
+ const id=B.road[i];if(i===0||!id||id==='mark'||!CARDS[id]||CARDS[id].spawn)return 1;
  const t=run.tiles[i],n=adjSpawnN(t,o=>B.road[o.i]),lv=i===ti?1:tileLv(t);let m=BAL.supAdj[Math.min(n,2)]*BAL.upgSup[lv-1];
  const ch=chF.find(x=>(x.kind==='supply'||x.kind==='base')&&x.tiles.includes(i));if(n>0&&ch)m*=BAL.chain[ch.kind].mul;return +Math.min(BAL.supMulMax,m).toFixed(3);}
 function effScaled(id,m){const e=effOf(id);if(!e||m===1)return e;const o={...e,mul:m};for(const g of Object.keys(MUL_KEYS))if(e[g])o[g]=scaleFx(e[g],MUL_KEYS[g],m);return o;}
 /* cellMul 을 판 B 로(새 칸 = Lv1) */
 function cellMulB(B,k,id,day){if(isFormCard(id))return 1;let m=1;const adj=mapOf(run).offAdj[k];if(id!=='ld_river'&&adj.some(j=>B.cell[j]==='ld_river'))m*=BAL.land.riverMul;if(day&&id!=='sd_clock'&&adj.some(j=>B.cell[j]==='sd_clock'))m*=BAL.land.clockMul;
+ if(CARDS[id]?.cls==='side')m*=BAL.upgSup[(B.placed===N+k?1:tileLv(run.cells[k]))-1];
+ const ch=(B.finalChains||[]).find(c=>c.supportSources?.includes(N+k)
+  &&(c.kind==='base'||c.kind==='supply'));
+ if(ch)m*=BAL.chain[ch.kind].mul;
  return +(Math.min(BAL.land.mulMax,m)*(1+BAL.perk.ward*perkN('ward'))).toFixed(3);}
 /* 효과 짧은 값(지도 배지·칩) */
 const pvPct=v=>Math.round(v*100);
@@ -11260,8 +11721,13 @@ function pvShape(id,ti,o){const c=CARDS[id];return Object.assign({ok:false,reaso
  text:'',lines:[],next:null,tiles:new Set(),morph:null,links:0,chains:[]},o||{});}
 /* 결과 계약의 「무엇이 바뀌나」 부분(판정 resolvePlace → 최종 판 B · 최종 체인 chF · 변신 morphs · 체인 변화 cc · v1.5 보드 체인 변화 bcc) — pvBuild 와 카드 가독성 L 의 목표 조합 안내(pvOutcome)가 같이 쓴다(판정 하나).
  * cc[].void = 보급선·주둔지인데 구간에 인접 소환 타일이 없음(무효 — 문구 「(무효)」와 경고는 pvBuild 가 붙인다) · bcc = 스위치(BAL.board15)가 켜졌을 때만(꺼지면 []) */
-function pvCore(id,t){const R=resolvePlace(id,t),B=R.B,chF=chainsFor(i=>B.road[i]),cc=chainDiff(R.ch0,chF);
- for(const x of cc)if((x.to==='supply'||x.to==='base')&&!x.cells.some(i=>adjSpawnN(run.tiles[i],o=>B.road[o.i])>0))x.void=true;
+function pvCore(id,t){
+ const R=resolvePlace(id,t),B=R.B,chF=chainsFor(i=>B.road[i],tileSpaceStateB(B)),cc=chainDiff(R.ch0,chF);
+ B.finalChains=chF;
+ for(const x of cc)if(x.to==='supply'||x.to==='base'){
+  const chain=chF.find(c=>c.kind===x.to&&c.tiles.join(',')===x.cells.join(','));
+  if(!chain?.supportSources?.length&&!x.cells.some(i=>adjSpawnN(run.tiles[i],o=>B.road[o.i])>0))x.void=true;
+ }
  return {R,B,chF,cc,bcc:pvBoardChanges(R),morphs:pvMorphs(R.ev)};}
 /* v1.5 보드 체인 변화(resolvePlace 의 bdiff) → 결과 계약 chainChanges 항목(board.js boardChangeOf — type·verb·ext·toggle·active·color) + 문구 · roads = 효과 범위 도로.
  * 비활성으로 생기거나 바뀌는 광장 = void(효과 없음 — pvBuild 는 경고, 카드 가독성 L 은 기회로 세지 않는다) */
@@ -11301,8 +11767,11 @@ function pvBuild(id,ti){
    if(fe.enter)fx('+','진입 시',`진입 시 ${enterStr(fe.enter)}`,enterVal(fe.enter),[ti]);
    if(fe.pas)fx('+','상시',`지도에 있는 동안 전원 ${pasStr(fe.pas)}`,pasVal(fe.pas),[]);
    if(fe.camp)fx('+','캠프 통과 시',`캠프 통과 시 ${campStr(fe.camp)}`,campVal(fe.camp),[ti]);
-   const L=R.link0!=null&&isSupCard(B.road[R.link0])?R.link0:(adjTiles(t).find(o=>isSupCard(B.road[o.i]))||{}).i;
-   if(L!=null){const se=(effScaled(B.road[L],tileMulB(B,chF,L,ti))||{}).sup;fx('+','교전 시',`주지원 ${CARDS[B.road[L]].name} 연결 — ${supStr(se||{})}`,supVal(se),[L]);}
+   const support=tileSpaceSupport(t,tileSpaceStateB(B))[0];
+   if(support){
+    const L=support.i,se=(effScaled(support.card,tileMulB(B,chF,L,ti))||{}).sup;
+    fx('+','교전 시',`주지원 ${CARDS[support.card].name} 연결 — ${supStr(se||{})}`,supVal(se),[L]);
+   }
   } else {
    const mm=tileMulB(B,chF,ti,ti),se=effScaled(F,mm)||{},adjS=adjTiles(t).filter(o=>isSp(B.road[o.i]));
    if(se.sup){const free=adjS.filter(o=>!o.link),busy=adjS.filter(o=>o.link);
@@ -11335,6 +11804,7 @@ function pvBuild(id,ti){
   if(c.ctl==='seal')fx('+','다음 랩','다음 캠프 통과 때 스폰 정지(리스폰·떠돌이·고치·전초기지) — 한 랩','스폰 0',[]);
   else{fx('','즉시',`${t.card?CARDS[t.card].name:'떠돌이 이형'} 제거 — 이형·보상 없이 사라집니다`,'제거',[ti]);if(t.card&&t.enemies.length)fx('','즉시',`이 칸 이형 ${t.enemies.length}체도 함께 사라짐(보상 없음)`,`${t.enemies.length}체`,[ti]);}
  } else {
+  tileSpacePreviewEffects(id,t,B,fx,warn);
   /* v1.5 발자국(여러 칸): 인접 = 칸들의 합집합 · 배율은 칸마다(물길·시계탑) — 도로마다 닿은 칸의 높은 배율(규칙 sideMulNear), 같은 배율끼리 한 줄(byMul). 1칸이면 전과 같다 */
   const fpN=!!(fm&&fm.cells.length>1),n0=fpN?BGRID.roadN():N,ks=fpN?fm.cells.map(i=>i-n0):[t.k],kk=ks[0],uq=a=>[...new Set(a)].sort((x,y)=>x-y), /* 발자국 = 격자 조회 BGRID(칸 → 인접 비도로·도로) */
    adjC=fpN?uq(fm.cells.flatMap(i=>BGRID.offAdj(i))).map(i=>i-n0).filter(j=>!ks.includes(j)):mapOf(run).offAdj[kk],adjR=fpN?uq(fm.cells.flatMap(i=>BGRID.roadAdj(i))).filter(i=>i!==BGRID.camp):mapOf(run).roadAdj[kk].filter(i=>i!==0),
@@ -11425,7 +11895,8 @@ function boardMorphsNow(B0,ti,placed){const out=[];if(!run)return out;
  * guideScan() → {now[], lack[], card{id:[opp]}, goal{now,lack}, n} — now·lack 은 같은 결과(종류·대상)를 모은 묶음 {kind,to,name,icon,pri,chain,spots[],cards[],hand(손패 장수),n(덱 장수),mat(재료 말),undiscovered}.
  *   now = 손패 카드로 지금 완성 · lack = 손패로는 안 되고 덱(뽑을 더미)의 카드 한 장이면 되는 것 — 「격전지까지 소환 1장 더 — 덱에 3장 · 손패 0장」.
  * guideNow() = 판·손패·덱·목표·도감이 그대로면 다시 계산하지 않는 캐시(화면이 매 프레임 부른다). 표시 전용 — 시뮬 배치 점수는 옛 goalSpots 그대로(시뮬 결과 불변) */
-const GUIDE_PRI={goal:6,combo:5,shape:4,upgrade:3,form:2,grow:1},GUIDE_SHAPES=['ld_peak','ld_flower'];
+const GUIDE_PRI={goal:6,combo:5,shape:4,upgrade:3,form:2,grow:1};
+const GUIDE_SHAPES=['ld_peak','ld_flower','ld_campus','ld_oasis'];
 /* 가벼운 결과 계약 {ok, cardId, formId, zone, cells, morphs, chainChanges, cost} — 효과 문구·참고 추정은 만들지 않는다(칸 하나 ≈ pvBuild 의 1/3). 못 놓는 칸 = null */
 function pvOutcome(id,ti){
  const t=run&&ti!=null&&ti>=0?spotAt(ti):null;if(!CARDS[id]||!t||!canPlaceCard(id,t))return null;
@@ -11595,7 +12066,7 @@ function scoreCell(id,c){
  const adjC=(map?map.offAdj[c.k]:ADJ_CC[c.k]).map(k=>run.cells[k]);
  const adjR=(map?map.roadAdj[c.k]:ADJ_CR[c.k]).map(i=>run.tiles[i]).filter(t=>t.i!==0);
  const river=id!=='ld_river'&&adjC.some(o=>o.card==='ld_river')?1.6:1,sp=adjR.filter(isSpawnTile).length;
- const at=k=>k===c.k?id:run.cells[k].card;let s=0;
+ const at=k=>k===c.k?id:run.cells[k].card;let s=tileSpaceScore(id,c);
  if(id==='ld_hill'){const pp=peakProgress(at);s=2*river+(pp.cells.includes(c.k)?pp.n*0.25:0);if((f.hills+1)%BAL.land.hillPer===0&&!strong)s-=5;}
  else if(id==='ld_trees')s=1.6*river;
  else if(id==='ld_park')s=(flowerAt(c.k,at,i=>run.tiles[i].card)?3:2)*river;
@@ -11647,8 +12118,11 @@ const unlocked=id=>simUnlockAll||!!(meta.unlock&&meta.unlock[id])||
 /* v1.4 R4 C-05: 카드 해금 판정 하나 — 길가(side)·지형(land) 결계는 해금 표(UNLOCKS)의 그 층이 열려야 쓴다.
  * 덱 편집(DECK_EDIT.add·풀 자물쇠) · 출격 덱(deckFor — 잠긴 카드는 빠지고 기본 카드로 채움 + 안내) · 배치(canPlaceCard/validSpots) · 드롭(terrainOpen/terrainPick) · 결계 상자(crateView)가 모두 이것만 본다 */
 const cardOpen=id=>{const c=CARDS[id];if(!c)return false;if(c.econ&&!econOn())return false; /* §27.6 k: 재화 개편 전용 카드(공장류)는 스위치를 켠 판에서만 */
- return !!c.starter||!(c.cls==='side'||c.cls==='land')||unlocked(typeof boardCardLayer==='function'?boardCardLayer(id):c.cls);}; /* v1.5: 스위치가 켜지면 길가 결계의 층이 단순 길가/나머지로 나뉜다(board.js) */
+ if(c.spaceUnlock)return simUnlockAll||!!meta.cleared?.[c.spaceUnlock];
+ return !!c.starter||!!c.relocated||DECK.includes(id)||!(c.cls==='side'||c.cls==='land')
+  ||unlocked(typeof boardCardLayer==='function'?boardCardLayer(id):c.cls);};
 const cardLockHint=id=>{
+ if(CARDS[id]?.spaceUnlock)return `${CARDS[id].spaceUnlock} 지역 첫 클리어 후 원정에서 발견`;
  const layer=typeof boardCardLayer==='function'?boardCardLayer(id):CARDS[id]?.cls;
  const u=UNLOCKS.find(x=>x.id===layer);
  return u?`${u.icon} ${u.name} — ${curriculumSystemHint(u.id)}`:'';
@@ -12020,7 +12494,16 @@ function onCamp(){
  run.lap++;if(run.party.length>=4)run.lap4=Math.max(run.lap4||0,run.lap);run.lapMod=null;run.camps++;dispatchRuleEvent('camp',{});if(!run.hand.length)run.emptyCamps++;
  {const rv=0.3+FX().reviveHp+(hasPassive('gaeul')?0.1:0);for(const m of run.party){if(m.down){m.down=false;m.hp=Math.round(m.maxHp*rv);log(`🚑 구조대가 ${m.stu.name}을(를) 복귀시켰습니다 (HP ${Math.round(rv*100)}%)`,'good');}}}
  /* v1.0 캠프 효과 집계: camp{t,heal,op,card} 타일 합산 · 포위된 캠프는 회복 ×2 */
- const cp={t:0,heal:0,op:0,card:0};let healMul=1;for(const t of run.tiles){if(!t.card)continue;const e=tileEff(t),dm=dayMulTile(t);if(e.camp)for(const k of Object.keys(cp))cp[k]+=(e.camp[k]||0)*dm;if(e.campHealMul)healMul=Math.max(healMul,e.campHealMul);}
+ const cp={t:0,heal:0,op:0,card:0},campSources={};let healMul=1;
+ for(const t of (typeof tileSpaceAll==='function'?tileSpaceAll():run.tiles)){
+  if(!t.card)continue;const e=tileEff(t);if(!e.camp&&!e.campHealMul)continue;
+  const m=tileMul(t)*dayMulTile(t),old=campSources[t.card];
+  if(!old||m>old.m)campSources[t.card]={t,e,m};
+ }
+ for(const {t,e} of Object.values(campSources)){
+  const dm=dayMulTile(t);if(e.camp)for(const k of Object.keys(cp))cp[k]+=(e.camp[k]||0)*dm;
+  if(e.campHealMul)healMul=Math.max(healMul,e.campHealMul);
+ }
  {const ch=((econOn()?BAL.econ.heal.camp:BAL.campHeal)+(run.campHealBonus||0)+FX().campHeal+(hasPassive('mina')?0.05:0)+cp.heal)*healMul;if(ch>0)healAll(ch,healMul>1?'캠프 정비 (포위된 캠프 ×2)':'캠프 정비',false,true);}
  if(hasRelic('medkit'))healAll(econOn()?BAL.econ.heal.medkit:BAL.relicHeal.medkit,'구급 키트');
  {const cv=relicVal('compass',{riverAdj:riverAdjCount()});if(cv>0)healAll(cv,'물길 나침반');}
@@ -12047,13 +12530,14 @@ function onCamp(){
  /* §17.3 D: 랩당 드로우 폐지 → 캠프 통과 +1(BAL.campCards). 소환 타일 ≤1이고 손패에 소환 카드가 없으면 그 1장은 소환 카드 보장 */
  for(let k=0;k<BAL.campCards+cp.card;k++){
   if(spawnTiles(true).length<=1&&!run.hand.some(h=>CARDS[h].spawn)){addToHand(drawFromDeck(id=>CARDS[id].spawn));log('🃏 캠프 드로우: 소환 카드 보장 (소환 타일 부족)');}
-  else if(k===0&&run.tiles.some(t=>t.card==='rift'&&nearby(t,'beacon')))offerDrawChoice(); // 균열–비콘 인접: 캠프 드로우 계열 선택 (Codex R2)
+  else if(k===0&&run.tiles.some(t=>t.card==='rift'
+   &&tileSpaceAdjacent(t).some(o=>o.card==='beacon')))offerDrawChoice();
   else drawCard();}
  if(hasRelic('drone'))for(let i=0;i<relicTune('drone').cards;i++)drawCard();
  if(run.lap>=2&&Math.random()<0.4)rollAnomaly();
  if(EVO_LAPS.includes(run.lap))rollEvolution();
  if(run.lap===4&&run.lapMod!=='elite'&&!sealed)spawnElite('📡 협회 정기 경보 (랩 4)'); // 이변 변이체와 같은 랩 중복 금지 (Codex R1)
- checkCombos(run.tiles.filter(t=>t.card)); /* 랩 조건 조합(관측소 등) */
+ checkCombos((typeof tileSpaceAll==='function'?tileSpaceAll():run.tiles).filter(t=>t.card));
  log(`🔁 LAP ${run.lap} · 캠프 통과 · 리스폰 ${respawn}무리 · 떠돌이 ${wand}무리 · 카드 +${run.hand.length-before} · T ${run.t}`);
  if(simMode&&window.__simPlace)window.__simPlace();
  smallSupply(); /* 예약한 소형 보급(도착해서만 정지) → 다음 랩 상자 공개 */
@@ -12077,6 +12561,12 @@ function holdFx(t){const ls=battleSup(t)||{},fx=tileFx(t),e=effOf(t.card)||{},on
  if(ls.shield){on.push(`시작 보호막 ${ls.shield}`);s+=2;}if(ls.dmg){on.push(`연결 피해 +${ls.dmg}`);s+=2;}
  if(fx.first){on.push(`첫 공격 +${Math.round(fx.first*100)}%`);s+=2;}if(fx.aoe){on.push(`광역 ${Math.round(fx.aoe*100)}%`);s+=2;}if(fx.killEx){on.push(`처치 EX +${fx.killEx}`);s+=1;}
  if(ls.heal)off.push(`교전 후 HP +${ls.heal}`);if(ls.revive)off.push('기절 복귀');if(ls.slow)off.push(`둔화 −${Math.round(ls.slow*100)}%`);if(e.enter)off.push(`진입 ${enterStr(e.enter)}`);if(e.pas)off.push('지도 패시브(이미 적용)');
+ const source=battleSupTile(t);
+ if(source&&source!==t){
+  const effect=tileEff(source);
+  if(effect?.enter)off.push(`인접 첫 통과 ${enterStr(effect.enter)}`);
+  if(effect?.pas&&!e.pas)off.push('지도 패시브(이미 적용)');
+ }
  return {on,off,score:s};}
 /* 시뮬 정책용 거점 점수 = 보스전 적용 효과만 */
 function scoreHold(t){return holdFx(t).score;}
@@ -12113,7 +12603,11 @@ function enterEffects(t){
  if(c.tile)run.adjEvents++; /* 변신 타일 진입 = 유효 조합 효과 */
  const forest=!!(run.flags&&run.flags.forest&&LAND_RULES.storeLike.includes(t.card)); /* v1.2 임계 부작용 「숲속 매점」: 회복 ↓ · 랩당 카드 +1 */
  if(forest&&t.forestL!==run.lap){t.forestL=run.lap;log(`🌳 숲속 매점(${c.name}): 카드 +1`,'good');drawCard();}
- if(en.heal){if(healGate(t)){healAll(en.heal*(econOn()?BAL.econ.heal.enterMul:1)*(forest?BAL.land.forestHeal:1)*(1+FX().healMult),(forest?'숲속 매점 ':'')+c.name+mulStr(t));if(typeof boardEvent==='function')boardEvent('tileHeal',{t});}else log(`💤 ${c.name}: 이번 랩 회복 발동 한도(타일 ${BAL.healTile}회 · 지도 ${BAL.healLap}회)`);}
+ if(en.heal){if(healGate(t)){
+  withTileHealSource(t,()=>healAll(en.heal*(econOn()?BAL.econ.heal.enterMul:1)
+   *(forest?BAL.land.forestHeal:1)*(1+FX().healMult),(forest?'숲속 매점 ':'')+c.name+mulStr(t)));
+  if(typeof boardEvent==='function')boardEvent('tileHeal',{t});
+ }else log(`💤 ${c.name}: 이번 랩 회복 발동 한도(타일 ${BAL.healTile}회 · 지도 ${BAL.healLap}회)`);}
  if(en.revive){for(const m of run.party){if(m.down&&riskRevive(m,m.maxHp*en.revive)){log(`🚑 ${c.name}: ${m.stu.name} 복귀 (HP ${Math.round(en.revive*100)}%)`,'good');}}}
  if(en.mana){
   if(econOn()){ /* §27.6 f: 마나석 진입 보상 → 광맥(결계석) · 관측소(마력 코어) 태그 + 진입 OP */
@@ -12141,7 +12635,8 @@ function enterEffects(t){
 'use strict';
 const metaCombatOn=()=>!!(run&&run.metaRules&&run.leaderRulesEnabled!==false);
 function newBattleRuleStat(t){
- const support=typeof battleSupTile==='function'?battleSupTile(t):null;
+ const candidate=typeof battleSupTile==='function'?battleSupTile(t):null;
+ const support=candidate&&tileEff(candidate)?.sup?candidate:null;
  const facilities=typeof fieldSources==='function'?fieldSources(t):[];
  const traits=[...new Set(run.party.flatMap(m=>stats(m).traits.map(x=>x.id)))];
  const sup=battleSup(t)||{};
@@ -13454,7 +13949,17 @@ function collectionStyle(){
 function collectionCardHtml(id,extra){
  const c=CARDS[id],owned=collectionOwned(id),fresh=!!collectionSync().fresh[id],masked=!!(extra&&extra.codex&&!owned);
  const deck=masked?'획득하면 편성 조건을 확인할 수 있습니다':c.gate?collectionLockHint(id):collectionDeckOpen(id)?'출격 덱 편성 가능':!owned?'첫 획득 후 덱 편성 가능':collectionLockHint(id);
- return `<article class="collection-card${owned?'':' is-unknown'}${extra&&extra.sold?' is-sold':''}">${!masked?`<div class="collection-art-wrap">${cardArtSrc(id)?`<img class="collection-art" src="${artUrl(cardArtSrc(id))}" alt="${collectionEsc(c.name)}">`:`<span class="collection-art-fallback">${c.icon}</span>`}</div>`:''}<b>${masked?'❔ 미발견 타일':collectionEsc(c.icon)+' '+collectionEsc(c.name)}</b><small>${c.cls==='land'?'보드':c.cls==='side'?'길가':'도로'}${owned?' · 발견·소유 완료':' · 미발견'}</small>${fresh?'<span class="collection-badge">NEW · 새로 수집</span>':''}<p>${masked?'원정·캠프에서 새 카드를 획득하면 정보가 등록됩니다.':collectionEsc(cardDesc(id))}</p><small>${collectionEsc(deck)}</small>${extra&&extra.button||''}</article>`;
+ const art=cardArtSrc(id),picture=art?
+  `<img class="collection-art" src="${artUrl(art)}" alt="${collectionEsc(c.name)}">`:
+  `<span class="collection-art-fallback">${c.icon}</span>`;
+ const heading=masked?'❔ 미발견 타일':collectionEsc(c.icon)+' '+collectionEsc(c.name);
+ const desc=masked?'원정·캠프에서 새 카드를 획득하면 정보가 등록됩니다.':collectionEsc(cardDesc(id));
+ return `<article class="collection-card${owned?'':' is-unknown'}${extra&&extra.sold?' is-sold':''}">`+
+  (masked?'':`<div class="collection-art-wrap">${picture}${tileVariantBadgeHtml(id)}</div>`)+
+  `<b>${heading}</b><small>${c.cls==='land'?'보드':c.cls==='side'?'길가':'도로'}`+
+  `${owned?' · 발견·소유 완료':' · 미발견'}</small>`+
+  `${fresh?'<span class="collection-badge">NEW · 새로 수집</span>':''}<p>${desc}</p>`+
+  `<small>${collectionEsc(deck)}</small>${extra&&extra.button||''}</article>`;
 }
 function renderCollectionShop(){
  const anchor=document.querySelector('#shTabs');if(!anchor)return;
@@ -13698,7 +14203,9 @@ function boardChainsFor(S){
  for(const o of S.cells){if(!isMat(o))continue;const xy=BGRID.xy(o.i);
   for(let d=0;d<4;d++){const u=DIRS[d],v=DIRS[(d+1)%4],a=cellAt(xy[0]+u[0],xy[1]+u[1]),b=cellAt(xy[0]+v[0],xy[1]+v[1]);
    if(!isMat(a)||!isMat(b))continue;const trio=[a,o,b];
-   if(new Set(trio.map(tileOf)).size<3||!trio.some(x=>x.card==='tent_side')||new Set(trio.map(srcOf)).size<P.kinds)continue;
+   const tentIds=['tent','fieldcamp','evac','tent_side'];
+   if(new Set(trio.map(tileOf)).size<3||!trio.some(x=>tentIds.includes(x.card))
+    ||new Set(trio.map(srcOf)).size<P.kinds)continue;
    Ls.push(trio.map(x=>x.i));}}
  const groups=[];for(const l of Ls){const hit=groups.filter(gp=>l.some(i=>gp.has(i))),gp=new Set(l);for(const h of hit){for(const i of h)gp.add(i);groups.splice(groups.indexOf(h),1);}groups.push(gp);}
  for(const gp of groups){const cells=[...gp].sort((a,b)=>a-b),roads=roadsOf(cells),os=cells.map(i=>BGRID.spot(S,i));
@@ -13759,7 +14266,9 @@ function boardBattleEnd(t,supHeal){
  if(!t||t.off)return;const tents=boardNear(t.i).filter(o=>o.card==='tent_side');let healed=supHeal>0;
  if(tents.length){const f=BAL.board.form.tent_side,amt=Math.round((f.heal+(clubOn(CARDS.tent.club)?f.enh:0))*(1+FX().healMult)),extra=Math.max(0,amt-supHeal);
   if(extra>0){const src=tents.find(o=>healGate(o));
-   if(src){for(const m of alive())healM(m,extra,null);healed=true;boardStats().tent++;log(`⛺ 응급 텐트(길가): 생존자 HP +${extra}${supHeal>0?` (도로 주지원 회복 ${supHeal}보다 강한 만큼)`:''}`,'good');}
+   if(src){withTileHealSource(src,()=>{for(const m of alive())healM(m,extra,null);});
+    healed=true;boardStats().tent++;
+    log(`⛺ 응급 텐트(길가): 생존자 HP +${extra}${supHeal>0?` (도로 주지원 회복 ${supHeal}보다 강한 만큼)`:''}`,'good');}
    else log('💤 응급 텐트(길가): 이번 랩 회복 발동 한도');}}
  if(healed)boardPlazaHeal(t);
 }
@@ -13910,7 +14419,8 @@ function fieldAfterBattle(t){
  const used=new Set();let left=BAL.field.heal;
  for(const c of sources){if(used.has(c.card)||left<=0)continue;used.add(c.card);
   const n=Math.min(left,Math.round(CARDS[c.card].field.heal*cellMul(c,false)));if(n<=0||!healGate(c))continue;
-  left-=n;run.adjEvents++;for(const m of alive())healM(m,Math.round(n*(1+FX().healMult)),CARDS[c.card].name);
+  left-=n;run.adjEvents++;
+  withTileHealSource(c,()=>{for(const m of alive())healM(m,Math.round(n*(1+FX().healMult)),CARDS[c.card].name);});
  }
 }
 function fieldSummary(id){return CARDS[id].desc+(id==='drone'?'':' · 같은 시설은 강한 효과 하나만 적용');}
@@ -16320,7 +16830,10 @@ function drawPreviewFx(ts){
   ctx.globalAlpha=0.22;ctx.fillStyle=CLS_COLOR.side;rr(ctx,g.x-g.w/2,g.y-g.h/2,g.w,g.h,10);ctx.fill();ctx.globalAlpha=1;
   ctx.strokeStyle='#ff6fae';ctx.lineWidth=3;ctx.setLineDash([6,4]);rr(ctx,g.x-g.w/2-3,g.y-g.h/2-3,g.w+6,g.h+6,12);ctx.stroke();ctx.setLineDash([]);
   if(ART.ok(im)){ctx.globalAlpha=0.55;drawCellArt(im,fid,g);ctx.globalAlpha=1;}}
- else if(ok(ti)&&!mc[ti]&&!spotAt(ti).card){const fid=p.formId||p.cardId,im=tileArt(fid),c=tileCenter(ti);if(ART.ok(im)){ctx.globalAlpha=0.5;if(FLOOR_ART.has(fid))drawFloorArt(im,c.x,c.y);else drawObjectArt(im,c.x,c.y,ART_FIT.tile);ctx.globalAlpha=1;}
+ else if(ok(ti)&&!mc[ti]&&!spotAt(ti).card){
+  const fid=p.formId||p.cardId,im=tileArt(fid),c=tileCenter(ti);
+  if(ART.ok(im)){ctx.globalAlpha=0.5;drawPlacementArt(im,fid,c.x,c.y);ctx.globalAlpha=1;}
+  drawVariantMark(fid,c.x-TILE/2+14,c.y+TILE/2-24);
   if(isFormCard(fid))drawSideMark(c.x-(TILE-6)/2+2,c.y-(TILE-6)/2+2);}
  /* 3) 체인 변화: 구간 점선 윤곽 + 연결 점선 + 배지 하나 · v1.5 보드 체인(type) = 요새선은 구간을 감싼 점선 윤곽 하나 · 광장은 칸 윤곽 + 닿은 칸 잇기, 짧은 배지(「🧱 요새선 형성」 — 긴 설명은 검사 패널) */
  for(const x of p.chainChanges||[]){const cells=(x.cells||[]).filter(ok);if(!cells.length)continue;const brk=x.kind==='break',col=brk?'#fb7185':pvChainColor(x),BC=x.type&&BOARD_CHAINS[x.type];
@@ -16334,7 +16847,9 @@ function drawPreviewFx(ts){
   pills.push([(a.x+b.x)/2,Math.min(a.y,b.y)-TILE/2-8*k,`${ic} ${x.text}`,brk?'#fecdd3':'#fff7ed',col]);}
  /* 4) 변신: 금색 이중 링 + 결과 그림 · 지연 = 보라 점선 링 */
  for(const [key,ms] of Object.entries(mc)){const i=+key,{x,y}=tileCenter(i),s=TILE,now=ms.filter(m=>!m.delayLaps),later=ms.filter(m=>m.delayLaps>0);
-  if(now.length){const to=now[now.length-1].to,im=tileArt(to);if(ART.ok(im)){ctx.globalAlpha=0.55;if(FLOOR_ART.has(to))drawFloorArt(im,x,y);else drawObjectArt(im,x,y,ART_FIT.tile);ctx.globalAlpha=1;}
+  if(now.length){const to=now[now.length-1].to,im=tileArt(to);
+   if(ART.ok(im)){ctx.globalAlpha=0.55;drawPlacementArt(im,to,x,y);ctx.globalAlpha=1;}
+   drawVariantMark(to,x-TILE/2+14,y+TILE/2-24);
    ctx.strokeStyle='#fbbf24';ctx.lineWidth=3;rr(ctx,x-s/2-5,y-s/2-5,s+10,s+10,14);ctx.stroke();ctx.lineWidth=1.5;rr(ctx,x-s/2-1,y-s/2-1,s+2,s+2,11);ctx.stroke();}
   if(later.length){ctx.setLineDash([5,4]);ctx.strokeStyle='#c4b5fd';ctx.lineWidth=2.5;rr(ctx,x-s/2-9,y-s/2-9,s+18,s+18,16);ctx.stroke();ctx.setLineDash([]);}
   let ly=y+s/2+10*k;const nm=m=>m.name||(CARDS[m.to]&&CARDS[m.to].name)||m.text||m.to;
@@ -16409,7 +16924,13 @@ const FIRST_TIPS={
 };
 const TIP_MS=12000;let tipNow=null;
 const selKey=()=>run&&selectedCard!==null&&run.hand[selectedCard]?selectedCard+'|'+run.hand[selectedCard]:null;
-function tipLive(){if(!tipNow||!run||run.ended)return null;if(performance.now()-tipNow.t0<TIP_MS||(tipNow.sel&&tipNow.sel===selKey()))return tipNow;tipNow=null;return null;}
+function tipLive(){
+ if(!tipNow||!run||run.ended)return null;
+ const selected=selKey();
+ if(tipNow.sel&&selected&&tipNow.sel!==selected){tipNow=null;return null;}
+ if(performance.now()-tipNow.t0<TIP_MS||(tipNow.sel&&tipNow.sel===selected))return tipNow;
+ tipNow=null;return null;
+}
 function tipTry(id,force){
  if(!run||run.ended||simMode||!FIRST_TIPS[id])return false;if(!meta.tips||typeof meta.tips!=='object')meta.tips={};if(meta.tips[id])return false;
  const cur=tipLive();if(cur&&!(force&&(!cur.sel||performance.now()-cur.t0>3000)))return false;
@@ -16451,6 +16972,17 @@ const TILE2_ART={ge_turnstile:'gtile_E_1',ge_rail:'gtile_E_2',ge_vending:'gtile_
 /* Cards without dedicated artwork reuse the closest existing tile illustration. */
 Object.assign(TILE_ART,{budget:'hq',rally:'outpost',flag:'beacon',heliport:'evac',spring:'vein',altar:'observatory',depot:'store',cache:'fieldcamp',lantern:'beacon',bf_turret:'siege',bf_barrier:'wall',bf_medical:'hospital',bf_radar:'observatory',bf_frost:'cave',bf_capacitor:'vein',bf_dispatch:'hq',bf_beacon:'beacon',fac_slime:'nest',fac_golem:'ruin',fac_hound:'lair',fac_wisp:'cave'});
 const CARD_ART={ctl_oblivion:'assets/ui/cards/card_oblivion.webp',ctl_seal:'assets/ui/cards/card_seal.webp'};
+/* 같은 계열 그림을 공유하는 새 타일은 글자 표식을 함께 사용한다. 승급 단계와는 별개다. */
+const TILE_VARIANTS={
+ rd_scrapyard:{art:'assets/env/tile_ruin.webp',mark:'회수',color:'#fbbf24',label:'골렘 · 장비 회수'},
+ rd_nursery:{art:'assets/env/tiles2/land_park.webp',mark:'변이',color:'#f0abfc',label:'거미 · 전투 후 회복'},
+ sd_archive:{art:'assets/env/tiles2/side_bookstore.webp',mark:'교체',color:'#93c5fd',label:'손패 교체 · 사용 후 변형'},
+ sd_forbidden:{art:'assets/env/tiles2/side_bookstore.webp',mark:'금서',color:'#d8b4fe',label:'변형 · 사념 출현'},
+ ld_training:{art:'assets/env/tile_hq.webp',mark:'훈련',color:'#86efac',label:'처치 경험치 · 2×2 배치',floor:true},
+ ld_campus:{art:'assets/env/tile_hq.webp',mark:'합동',color:'#fde68a',label:'2×2 변형 · 합동 훈련',floor:true},
+ ld_oasis:{art:'assets/env/tiles2/land_river_bend.webp',mark:'정화',color:'#67e8f9',label:'수로 변형 · 양측 감속'}
+};
+for(const [id,v] of Object.entries(TILE_VARIANTS))CARD_ART[id]=v.art;
 const cardArtSrc=id=>TILE2_ART[id]?`assets/env/tiles2/${TILE2_ART[id]}.webp`:CARD_ART[id]?CARD_ART[id]:TILE_ART[id]?`assets/env/tile_${TILE_ART[id]}.webp`:(CARDS[id]&&CARDS[id].tile&&CARDS[id].src&&CARDS[CARDS[id].src])?cardArtSrc(CARDS[id].src):null; /* v1.5 길가형(tent_side 등) = 원본 카드 그림 — 길가 표식은 drawCell(drawSideMark)이 붙인다 */
 const tileArt=id=>{const p=cardArtSrc(id);return p?ART.img(p):null;};
 const iconSrc=n=>`assets/ui/icons/${n}.webp`,iconImg=n=>ART.img(iconSrc(n));
@@ -16465,10 +16997,33 @@ for(const cb of COMBOS)if(!MORPH_STAGE[cb.to])MORPH_STAGE[cb.to]={label:'⚗',co
 const ART_FIT={roadH:CELL*1.7,roadBand:0.77,cornerW:CELL*1.7,cornerAx:0.70,cornerAy:0.78,tile:TILE*1.3,tileBottom:TILE/2+3,alpha:0.85};
 /* v1.4 R4 권고(Codex 축 2): 그리기 기준을 둘로 나눈다 — 지형 바닥 타일(land_*: 위에서 본 평면 사각)은 칸을 꽉 채우고,
  * 도로·게이트·길가 타일(아이소 건물·오브젝트, 투명 배경)은 하단 중앙 앵커 + 바닥 그림자로 칸 위에 세운다(전에는 둘 다 같은 정사각 상자·하단 앵커라 바닥이 칸 위로 떠 보였다) */
-const FLOOR_ART=new Set(['ld_hill','ld_trees','ld_park','ld_river','ld_dust','ld_flower','ld_peak']);
+const FLOOR_ART=new Set([
+ 'ld_hill','ld_trees','ld_park','ld_river','ld_dust','ld_flower','ld_peak','ld_oasis','rd_nursery'
+]);
 function drawFloorArt(im,x,y){const s=CELL-2;ctx.drawImage(im,x-s/2,y-s/2,s,s);}
 function drawObjectArt(im,x,y,size){const by=y+ART_FIT.tileBottom;ctx.save();ctx.fillStyle='rgba(0,0,0,.34)';ctx.beginPath();ctx.ellipse(x,by-4,size*0.36,size*0.09,0,0,Math.PI*2);ctx.fill();ctx.restore();ctx.drawImage(im,x-size/2,by-size,size,size);}
 /* 도로: 직선은 tile_road(가로 원본), 모서리는 tile_road_corner(서·북 연결 원본)를 이웃 방향에 맞춰 회전 */
+function drawVariantMark(id,x,y){
+ const v=TILE_VARIANTS[id];if(!v)return;
+ ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';
+ ctx.font='bold 9px "Noto Sans KR",sans-serif';const w=ctx.measureText(v.mark).width+9;
+ ctx.fillStyle='#101c30';rr(ctx,x-w/2,y-7,w,14,3);ctx.fill();
+ ctx.strokeStyle=v.color;ctx.lineWidth=1;ctx.stroke();ctx.fillStyle=v.color;ctx.fillText(v.mark,x,y);
+ ctx.restore();
+}
+function drawVariantFloor(im,id,x,y){
+ const v=TILE_VARIANTS[id];if(!v?.floor)return false;
+ const s=CELL-4;ctx.save();ctx.fillStyle='#203e43';ctx.fillRect(x-s/2,y-s/2,s,s);
+ ctx.strokeStyle=v.color;ctx.lineWidth=id==='ld_campus'?2:1;
+ ctx.strokeRect(x-s/2+2,y-s/2+2,s-4,s-4);ctx.setLineDash([3,4]);
+ ctx.beginPath();ctx.moveTo(x,y-s/2+5);ctx.lineTo(x,y+s/2-5);ctx.stroke();ctx.setLineDash([]);
+ const h=s*(id==='ld_campus'?.86:.64),w=h*im.naturalWidth/im.naturalHeight;
+ ctx.drawImage(im,x-w/2,y+s*.3-h,w,h);ctx.restore();return true;
+}
+function drawPlacementArt(im,id,x,y){
+ if(drawVariantFloor(im,id,x,y))return;
+ if(FLOOR_ART.has(id))drawFloorArt(im,x,y);else drawObjectArt(im,x,y,ART_FIT.tile);
+}
 function roadDirs(i){const path=mapOf(run).path,c=path[i],a=path[(i+N-1)%N],b=path[(i+1)%N];const d=p=>p[0]>c[0]?'E':p[0]<c[0]?'W':p[1]>c[1]?'S':'N';return [d(a),d(b)].sort().join('');}
 const CORNER_ROT={NW:0,EN:90,ES:180,SW:270};
 function drawRoad(i){
@@ -16492,7 +17047,10 @@ function drawTile(t,ts){
   ctx.fillStyle=fill;ctx.globalAlpha=0.28;rr(ctx,x-s/2,y-s/2,s,s,10);ctx.fill();ctx.globalAlpha=0.7;ctx.strokeStyle=bd;ctx.lineWidth=1.5;ctx.stroke();ctx.globalAlpha=1;}
  if(t.i===0){const a=ts/600;ctx.strokeStyle='rgba(124,196,255,.55)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,s/2+5,a,a+1.2);ctx.stroke();}
  if(selectedCard!==null&&canPlaceCard(run.hand[selectedCard],t)){const hv=hoverTile===t.i;ctx.strokeStyle=hv?'#ff6fae':(CLS_COLOR[cardClass(run.hand[selectedCard])]||CLS_COLOR.road);ctx.lineWidth=hv?4:2;ctx.setLineDash([5,4]);rr(ctx,x-s/2-3,y-s/2-3,s+6,s+6,12);ctx.stroke();ctx.setLineDash([]);}
- if(t.link){const lc=run.tiles[t.link.i].card;ctx.font='9px sans-serif';ctx.fillStyle='#93c5fd';ctx.textAlign='right';ctx.fillText(lc?CARDS[lc].icon:'⇄',x+s/2-3,y+s/2-4);ctx.textAlign='center';}
+ if(t.link){
+  const linked=spotAt(t.link.i)?.card;ctx.font='9px sans-serif';ctx.fillStyle='#93c5fd';ctx.textAlign='right';
+  ctx.fillText(CARDS[linked]?.icon||'⇄',x+s/2-3,y+s/2-4);ctx.textAlign='center';
+ }
  if(t.card&&CARDS[t.card].club){ctx.font='9px sans-serif';ctx.fillStyle=cardClubOn(t.card)?'#fbbf24':'#94a3b8';ctx.textAlign='right';ctx.fillText(CLUB_ICON[CARDS[t.card].club],x+s/2-3,y-s/2+9);ctx.textAlign='center';}
  if(t.card&&CARDS[t.card].tile){ctx.strokeStyle='rgba(240,171,252,.8)';ctx.lineWidth=2;ctx.setLineDash([2,3]);rr(ctx,x-s/2-1,y-s/2-1,s+2,s+2,11);ctx.stroke();ctx.setLineDash([]);}
  /* 라운드 3 규칙 ①: 결전 거점 표식 — 금색 테두리 + 🏰 (보스 조우 위치) */
@@ -16501,7 +17059,7 @@ function drawTile(t,ts){
  /* 8차 변신 연출: 0~0.3초 옛 그림 유지 + 테두리 펄스, 0.3초에 그림 교체 + 흰 플래시, 0.6초까지 펄스 */
  const mf=FX8.morphs.find(m=>m.i===t.i),mk=mf?(ts-mf.t0)/600:1;
  if(t.i===0||t.card){const artId=(mf&&mk<0.5&&mf.from)?mf.from:t.card,im=t.i===0?tileImg('camp'):tileArt(artId);
-  if(ART.ok(im))drawObjectArt(im,x,y,ART_FIT.tile); /* 도로·게이트 타일 = 아이소 오브젝트(하단 중앙 + 그림자) */
+  if(ART.ok(im))drawPlacementArt(im,artId,x,y); /* 변이 온실은 평면 정원, 나머지 도로는 건물 앵커. */
   else{ctx.font='20px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif';ctx.fillStyle='#fff';ctx.fillText(t.i===0?'🏫':CARDS[artId].icon,x,y-6);}
   if(mf){ctx.strokeStyle=`rgba(251,191,36,${0.5+0.5*Math.sin(ts/60)})`;ctx.lineWidth=3+2*Math.sin(ts/60);rr(ctx,x-s/2-3,y-s/2-3,s+6,s+6,12);ctx.stroke();
    if(mk>=0.5){ctx.globalAlpha=(1-mk)*1.4;ctx.fillStyle='#fff';rr(ctx,x-s/2,y-s/2,s,s,10);ctx.fill();ctx.globalAlpha=1;}}
@@ -16510,6 +17068,7 @@ function drawTile(t,ts){
    if(t.card&&(t.lv||1)>1){ctx.font='bold 8px "Rajdhani","Noto Sans KR",sans-serif';ctx.fillStyle='#fbbf24';rr(ctx,x-s/2+1,y-s/2+13,22,11,3);ctx.fill();ctx.fillStyle='#0b1220';ctx.textAlign='left';ctx.fillText('Lv'+t.lv,x-s/2+4,y-s/2+19);ctx.textAlign='center';}
    if(t.delay){const left=Math.max(0,t.delay.lap-run.lap),lb='⏳'+left;ctx.font='bold 9px "Rajdhani","Noto Sans KR",sans-serif';const tw=ctx.measureText(lb).width+6;ctx.fillStyle='#a78bfa';rr(ctx,x-tw/2,y-s/2-6,tw,12,4);ctx.fill();ctx.fillStyle='#0b1220';ctx.fillText(lb,x,y-s/2+0.5);} /* v1.2 지연 변신 타이머(남은 랩) */
    if(run.flags&&run.flags.forest&&t.card&&LAND_RULES.storeLike.includes(t.card)){ctx.font='11px sans-serif';ctx.fillText('🌳',x+s/2-9,y+s/2-20);}
+   drawVariantMark(t.card,x-s/2+14,y+s/2-24);
    const stg=t.card&&MORPH_STAGE[t.card];
   if(stg){ctx.font='bold 8px "Rajdhani","Noto Sans KR",sans-serif';const tw=ctx.measureText(stg.label).width+6,bx=x+s/2-15-tw;ctx.fillStyle=stg.color;rr(ctx,bx,y-s/2+1,tw,11,3);ctx.fill();ctx.fillStyle='#0b1220';ctx.textAlign='left';ctx.fillText(stg.label,bx+3,y-s/2+7);ctx.textAlign='center';}
   /* 타일 이름: 11px. 칸 폭을 넘으면 줄임표, 호버(또는 미리보기 대상)일 때만 전체 이름을 넓은 라벨로 */
@@ -16561,7 +17120,9 @@ const placeZoneAt=(id,t)=>{if(BAL.board15&&typeof resolvePlacement==='function')
 /* 비도로 칸 타일의 판 치수: 1칸 = 칸 하나 · v1.5 발자국(가로2·세로2) = 칸들을 감싼 판 하나 → {x,y(판 가운데), w, h, cells} */
 function cellGeom(cells){const s=TILE-6,b=cellBox(cells);return {x:b.cx,y:b.cy,w:b.x1-b.x0+s,h:b.y1-b.y0+s,cells};}
 /* 판 위 그림 하나: 바닥 그림은 칸 채움 · 오브젝트는 하단 앵커(1칸 = 기존 그대로). 발자국은 판 가운데에 한 번(1.2배) — 세로 2칸은 판 세로 가운데에 세운다 */
-function drawCellArt(im,id,g){if(FLOOR_ART.has(id)){drawFloorArt(im,g.x,g.y);return;}const multi=g.cells.length>1,sz=ART_FIT.tile*0.92*(multi?1.2:1);
+function drawCellArt(im,id,g){
+ if(drawVariantFloor(im,id,g.x,g.y))return;
+ if(FLOOR_ART.has(id)){drawFloorArt(im,g.x,g.y);return;}const multi=g.cells.length>1,sz=ART_FIT.tile*0.92*(multi?1.2:1);
  drawObjectArt(im,g.x,multi&&g.h>g.w?g.y-ART_FIT.tileBottom+sz/2:g.y,sz);}
 /* 길가 표식(카드 구역 표식과 같은 그림 — 위 바깥 칸 · 가운데 도로 옆 칸 · 아래 도로 줄 중 가운데 줄만 주황): v1.5 길가형 타일(원본 그림 재사용)을 도로형과 구분 */
 function drawSideMark(x,y){const k=1.05,q=(xx,yy,w,h,col)=>{ctx.fillStyle=col;rr(ctx,x+xx*k,y+yy*k,w*k,h*k,1);ctx.fill();};ctx.save();ctx.fillStyle='rgba(8,14,28,.9)';rr(ctx,x-1,y-1,18*k+2,18*k+2,4);ctx.fill();
@@ -16576,6 +17137,7 @@ function drawCell(c,ts){
  if(fp){ctx.strokeStyle='rgba(251,146,60,.6)';ctx.lineWidth=1.5;ctx.stroke();} /* 발자국 = 두 칸을 감싼 판 하나(테두리) */
  if(ART.ok(im))drawCellArt(im,c.card,g);else{ctx.font='22px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif';ctx.fillStyle='#fff';ctx.fillText(d.icon,X,Y-2);} /* v1.4 R4: 지형 바닥 = 칸 채움 · 길가·전초기지 = 오브젝트 */
  if(isFormCard(c.card))drawSideMark(l+2,tp+2); /* v1.5 길가형: 원본 그림 + 길가 표식 */
+ drawVariantMark(c.card,l+14,tp+g.h-23);
  if(c.card==='ld_outpost'||c.card==='ld_peak'){ctx.strokeStyle=`rgba(239,68,68,${0.5+0.3*Math.sin(ts/250)})`;ctx.lineWidth=2;rr(ctx,l,tp,g.w,g.h,10);ctx.stroke();}
  /* 효과 배율 배지(물길·시계탑·승급·특성 — 길가형은 증폭 없음 = cellMul 1). 발자국은 칸마다 배율이 다를 수 있다 — 같으면 판에 하나, 다르면 칸마다 */
  {const badge=(bx,by,m)=>{ctx.font='bold 8px "Rajdhani","Noto Sans KR",sans-serif';ctx.fillStyle='#38bdf8';rr(ctx,bx-20,by+1,19,11,3);ctx.fill();ctx.fillStyle='#0b1220';ctx.fillText('×'+(+m.toFixed(1)),bx-10.5,by+7);};
@@ -16739,7 +17301,6 @@ function drawEnemy(c,x,y,e,r){
  c.restore();
 }
 
-
 </script>
 <script>
 'use strict';
@@ -16897,6 +17458,7 @@ function cardChipsHtml(id){const c=CARDS[id],e=(run&&!run.ended?effOf(id):c)||c,
  * §25.3 위치 바리에이션(카드 zones:{road,side,land})이 생기면 그 키대로 여러 구역이 칠해지고 테두리 = 첫 구역, 부 구역 = .z2 띠 */
 const ZONE_NAME={road:'도로',side:'길가',land:'지형',control:'제어'};
 function cardZones(id){const c=CARDS[id],k=cardClass(id);if(!c)return null;const reg={road:null,side:null,out:null};
+ if(!cardOpen(id))return {reg,zs:[],main:k};
  if(c.zones){if(c.zones.road)reg.road='road';if(c.zones.land)reg.side=reg.out='land';if(c.zones.side)reg.side='side';}
  else if(k==='control'){reg.road='control';if(c.ctl!=='seal')reg.side=reg.out='control';}
  else if(c.field)reg.side=reg.out=k;
@@ -16920,12 +17482,66 @@ function zoneLine(id){const c=CARDS[id],z=cardZones(id);if(!z)return '';
  return z.main==='road'?'도로에 놓음 — 빈 도로 칸':z.main==='side'?'길가에 놓음 — 도로에 닿은 빈 칸':id==='ld_river'?'지형에 놓음 — 도로와 닿지 않는 빈 칸':'지형에 놓음 — 도로 밖 아무 빈 칸';}
 /* 분류 글자(소환/지원/길가/지형/전술) — 칩 색 = 유형, 설명은 툴팁 */
 const KIND_LABEL={spawn:['소환','소환 — 이형 무리와 계약 보상을 만든다(배치 시 브레이크)'],support:['지원',()=>`지원 — 옆에 소환 타일이 있어야 효과 ${Math.round(BAL.supAdj[1]*100)}%`],assoc:['지원','지원(협회 공용) — 도로에 놓는다'],side:['길가','길가 — 도로에 닿은 빈 칸에 놓고 인접 도로에 영향'],land:['지형','지형 — 도로 밖 빈 칸에 놓고 전원 능력치·모양 규칙'],control:['전술','전술(제어) — 지도의 칸에 사용 · 브레이크 없음']};
-function kindHtml(id){const c=CARDS[id],k=c&&KIND_LABEL[c.type];return k?`<span class="kd k-${c.type}" data-tip="${escTip(typeof k[1]==='function'?k[1]():k[1])}">${k[0]}</span>`:'';}
+function kindHtml(id){
+ const c=CARDS[id],k=c&&KIND_LABEL[c.type];if(!k)return '';
+ const zone=cardClass(id),moved=['support','assoc'].includes(c.type)&&zone!=='road';
+ const tip=moved?`지원 — ${zoneLine(id)}`:typeof k[1]==='function'?k[1]():k[1];
+ return `<span class="kd k-${c.type}" data-tip="${escTip(tip)}">${k[0]}</span>`;
+}
+function tileVariantBadgeHtml(id){
+ const v=TILE_VARIANTS[id];if(!v)return '';
+ return `<span class="tile-variant-badge" data-tile-variant="${id}" `+
+  `style="--variant-color:${v.color}" title="${escTip(v.label)}">${v.mark}</span>`;
+}
+function tileVariantDetailHtml(id){
+ const v=TILE_VARIANTS[id];if(!v)return '';
+ return `<span class="tile-variant-detail" style="--variant-color:${v.color}">${v.mark} · ${v.label}</span>`;
+}
+function offTileEffectsHtml(t){
+ const c=CARDS[t.card];if(!c||c.field)return '';
+ const lines=[],e=tileEff(t),roads=typeof tileSpaceRoads==='function'?tileSpaceRoads(t):[];
+ if(c.cls==='side'&&roads.length)lines.push(`연결된 도로 ${roads.length}칸`);
+ if(econOn()&&c.relocated&&econSigOf(t.card)){
+  lines.push(roads.length?'서명 교본: 인접 도로 첫 통과 시 지급(랩 1회)':'인접 도로 없음 — 서명 교본 미획득');
+ }
+ if(['support','assoc'].includes(c.type)){
+  if(e.sup)lines.push('현재 인접 전투 지원: '+supStr(e.sup));
+  if(e.enter)lines.push('이번 랩 인접 도로 첫 통과: '+enterStr(e.enter));
+  if(e.pas)lines.push('현재 전원 효과: '+pasStr(e.pas));
+  if(e.camp){
+   const day=cellMul(t,true);
+   lines.push(`캠프 기본 효과: ${campStr(effOf(t.card).camp)} · 랩 효과 ×${+day.toFixed(2)}`);
+  }
+ }
+ return lines.map(s=>`<span class="kbd">${escTip(s)}</span>`).join('');
+}
+function offTileMenuHtml(t){
+ const c=CARDS[t.card],cost=upgradable(t)?upgradeCost(t):null,m=cellMul(t,false);
+ const fp=t.fp?.cells?.length>1?t.fp:null;
+ const shape=fp?` · 발자국 ${BOARD_FP_NAME[fp.fp]}(승급·망각은 두 칸 함께)`:'';
+ const form=isFormCard(t.card),source=CARDS[t.src]?.name;
+ const range=form?` · ${source?source+'의 길가형 — ':''}Lv1 고정 · 증폭 없음`:
+  ` · 효과 ×${+m.toFixed(2)}${m>1?' (물길·승급·특성)':''}`;
+ return `<b>${c.icon} ${c.name}${upgradable(t)?' · Lv'+(t.lv||1):''}</b>`+
+  tileVariantDetailHtml(t.card)+`<span class="kbd">${TILE_CLASS[c.cls].name}${shape}${range}</span>`+
+  `<span class="kbd">${c.desc}</span>`+offTileEffectsHtml(t)+
+  (cost==null?'':`<button class="btn xs" id="btnTileUp" ${run.op<cost?'disabled':''}>`+
+   `⬆ 승급 · OP ${cost}</button><span class="kbd">Lv${(t.lv||1)+1}: 효과 ×${BAL.upgSup[t.lv||1]}</span>`);
+}
 /* 체인 가능 안내(도로 소환·지원 카드) — 카드의 체인 표시와 검사 패널이 같은 글을 쓴다 */
 const chainTipOf=id=>{const c=CARDS[id];return c&&cardClass(id)==='road'&&(c.type==='spawn'||c.type==='support')&&!c.tile?`체인 가능 — 도로 위에 ${c.type==='spawn'?'소환을 연달아 놓으면 전선(2)·격전지(3)':'지원을 연달아 놓으면 보급선(2)·주둔지(3)'} · 소환–지원–소환은 순환`:'';};
 /* 손패 카드의 대표 효과 한 줄(짧게) — 규칙 값(effOf: 동아리 강화 반영)·BAL 에서 만든다. 전체 설명·계약은 검사 패널 */
 const GIST_TXT={sd_cocoon:'인접 도로에 거미 무리',sd_manor:'인접 전투에 흡혈 사념',sd_field:'랩마다 보급 상자',sd_blood:'약해진 이형 즉사',sd_garage:'통과 시 장비 강화',sd_books:'통과 시 카드 +1',ctl_oblivion:'결계 1개 지우기',ctl_seal:'다음 랩 스폰 정지'};
 function cardGist(id){const c=CARDS[id];if(!c)return '';if(id==='sd_lamp')return `인접 무리 수 −${BAL.side.lampCap}`;if(GIST_TXT[id])return GIST_TXT[id];const e=(run&&!run.ended?effOf(id):c)||c,L=BAL.land,pc=v=>Math.round(v*100),first=s=>String(s||'').split('·')[0];
+ const variantGist={rd_scrapyard:'골렘 · 장비 계약',rd_nursery:'거미 · 소탕 후 회복',
+  sd_archive:`교환 ${c.archiveUses||3}회 → 금서`,sd_forbidden:'사념 · 카드 보상',
+  ld_training:'2×2 → XP 강화',ld_campus:'합동 훈련 · XP 강화',ld_oasis:'적·아군 공속 감소'};
+ if(variantGist[id])return variantGist[id];
+ if(id==='gs_antigrav')return `교전 적 공속 −${pc(e.sup.slow)}%`;
+ if(cardClass(id)==='side'&&!c.field){
+  if(e.sup)return first(supStr(e.sup)).replace(/^시작 /,'교전 ');
+  if(e.enter)return '첫 통과 '+first(enterStr(e.enter));
+ }
  if(id==='ld_hill')return `최대 HP +${pc(L.hillHp)}%`;if(id==='ld_trees')return `공격속도 +${pc(L.treeSpd)}%`;if(id==='ld_park')return `랩마다 HP ${pc(L.parkHeal)}%`;if(id==='ld_dust')return `이형 최대 HP −${pc(L.dustEnemy)}%`;
  if(id==='ld_river')return `인접 결계 효과 ×${L.riverMul}`;if(id==='sd_clock')return `인접 랩 효과 ×${L.clockMul}`;
  if(c.floor)return `계약 하한 ${pc(BAL.econ.floor.pct)}%`;
@@ -16950,7 +17566,8 @@ function cardDescHtml(id){const c=CARDS[id],e=effOf(id),on=e.enhanced;let m='';
  if(c.sig&&c.morph){const st=STUDENTS.find(s=>s.id===c.sig),has=run&&run.party.find(x=>x.stu.id===c.sig),ids=has?[has.star>=2?c.morph.star2:c.morph.tile]:[c.morph.tile,c.morph.star2];m=`<div class="cm">✨ ${st.name} 서명${has?' · 합류 중':' · 합류하면 변신'}${ids.map((to,i)=>`<div class="signature-result"><b>${CARDS[to].icon} ${CARDS[to].name}${!has?' · ★'+(i+1):''}</b><span>${cardDesc(to)}</span></div>`).join('')}</div>`;}
  else if(c.enh){m=`<div class="cm">${on?'★ 강화 중':'강화 조건'}: ${CLUBS[c.club]} 학생 합류 → ${enhStr(c.enh)}</div>`;}
  if(isTerrain(id)){const k=cardClass(id),tc=TILE_CLASS[k];m=`<div class="cm">${k==='control'?'🌫 제어 카드 — 지도의 칸에 사용(브레이크 없음)':`${tc.icon} ${tc.name} — ${tc.where}${cardCostNote(id)}`}</div>`;}
- return `<div class="cd">${c.desc}</div>${c.contract?`<div class="ct">📜 ${contractStr(e)}${on?' ★':''}</div>`:''}${m}`;}
+ return tileVariantDetailHtml(id)+`<div class="cd">${c.desc}</div>`+
+  `${c.contract?`<div class="ct">📜 ${contractStr(e)}${on?' ★':''}</div>`:''}${m}`;}
 /* 결계 카드 설명 줄의 비용: v1.5 발자국은 칸 수 비례(board.js boardCardCosts) · 그 밖은 placeCost */
 function cardCostNote(id){if(!run)return '';const cs=boardOn()&&typeof boardCardCosts==='function'?boardCardCosts(id):null;
  if(cs&&cs[0].n>1)return ` · 브레이크 T −${cs[0].t}(발자국 ${BOARD_FP_NAME[cs[0].fp]})`;const pc=placeCost(id);return pc>0?` · 브레이크 T −${pc}`:'';}
@@ -16969,12 +17586,18 @@ const CLUB_ART={council:1,shield:1,rescue:1,astro:1};
 function cardHtml(id,o){o=o||{};const c=CARDS[id],on=cardClubOn(id),art=cardArtSrc(id),z=cardZones(id);
  const attrs=(o.i!=null?` data-i="${o.i}"`:'')+(o.id!=null?` data-id="${o.id}"`:'')+(o.title?` title="${o.title}"`:'');
  return `<div class="card ${c.type==='side'?'tside':c.type} ${c.club||''}${z?' z-'+z.main+(z.zs.length>1?' z2 z2-'+z.zs[1]:''):''}${c.sig?' sig':''}${o.sel?' sel':''}${o.isNew?' new':''}${o.blocked?' blocked':''}${o.cls?' '+o.cls:''}"${attrs}>` /* v1.4 R4: 길가 카드의 타입 클래스 side 가 분대 패널 .side 규칙(grid-area·모바일 카드 탭 display:none)과 겹쳐 덱 풀에서 한 칸에 겹치고 모바일 손패에서 사라졌다 → tside · 카드 가독성 S: z-(주 구역) = 테두리 색, blocked = 지금 놓을 칸 없음(흐림) */
-  +`<div class="art">${art?`<img src="${artUrl(art)}" alt="">`:`<span class="ic">${c.icon}</span>`}<span class="marks">${cardMarksHtml(id)}</span></div>`
+  +`<div class="art">${art?`<img src="${artUrl(art)}" alt="">`:`<span class="ic">${c.icon}</span>`}`
+  +`<span class="marks">${cardMarksHtml(id)}</span>${tileVariantBadgeHtml(id)}</div>`
   +`<div class="cn">${c.name}</div><div class="club${on?' on':''}" data-tip="${CLUBS[c.club]||(c.gate?'게이트 전용':'협회')}${on?' 강화 중':''}${c.sig?' · 서명 카드(그 학생 합류 시 변신)':''}">${c.club&&CLUB_ART[c.club]?icoImg('icon_club_'+c.club,CLUBS[c.club]):(CLUB_ICON[c.club]||'◈')}${on?'★':''}${c.sig?'<i class="sg">✦</i>':''}</div>`
   +(o.gist?`<div class="gist">${escTip(cardGist(id))}</div>`:'')
   +`<div class="rcs">${cardChipsHtml(id)}</div>`
   +`<div class="body"><b class="tn">${c.icon} ${c.name}</b>${o.desc!=null?o.desc:cardDescHtml(id)}${o.note||''}</div>`
-  +(o.discard?(isTerrain(id)?`<button class="dc" data-d="${o.i}" data-tip="처분 — 협회 공용 결계는 OP 없음">🗑</button>`:`<button class="dc" data-d="${o.i}" data-tip="처분 → OP +${econOn()?BAL.econ.discard:1}">🗑<small>+${econOn()?BAL.econ.discard:1}</small></button>`):'')+(o.cnt!=null?`<span class="cnt">${o.cnt}</span>`:'')+(o.badge||'')+`</div>`;}
+  +(o.discard?cardDiscardHtml(id,o.i):'')
+  +(o.cnt!=null?`<span class="cnt">${o.cnt}</span>`:'')+(o.badge||'')+`</div>`;}
+function cardDiscardHtml(id,i){
+ const value=discardValue(id),tip=value?`처분 → OP +${value}`:'처분 — 지형 카드는 OP 없음';
+ return `<button class="dc" data-d="${i}" data-tip="${tip}">🗑${value?`<small>+${value}</small>`:''}</button>`;
+}
 /* 카드 가독성 S: 손패는 그림 · 이름 · 구역 표식 · 분류 글자 · 대표 효과 하나(gist). 숫자 칩·처분 버튼은 PC 에서 숨기고 검사 패널로(모바일은 카드 탭에 패널이 없어 처분 버튼 유지) · 놓을 칸이 없으면 흐리게(이유는 검사 패널·툴팁) */
 function handCardsHtml(shop){
  return run.hand.map((id,i)=>{const why=cardBlockReason(id);return cardHtml(id,{i,sel:selectedCard===i&&!shop,isNew:run.paused&&run.pendingCard===id&&i===run.hand.lastIndexOf(id),discard:!shop,gist:!shop,blocked:!!why,note:why?`<div class="cm">⛔ ${escTip(why)}</div>`:'',badge:shop||why?'':handOppBadge(id)});}).join('')||'<div class="kbd">손패 없음 — 무리를 전멸시키면 카드가 떨어집니다 (캠프 통과 +1)</div>'; /* 카드 가독성 L: 지금 완성할 수 있는 카드 = ◆ 배지(원정 손패) */
@@ -17043,14 +17666,17 @@ function renderInspector(force){const on=inspOpen(),key=on?selectedCard+'|'+run.
  $('#insp').classList.toggle('has-signature',!!c.sig);
  {const k=cardClass(id);if(k==='side')tipTry('side',true);else if(k==='land')tipTry('land',true);} /* 카드 가독성 L: 처음 고른 길가·지형 카드 — 한 줄 안내(한 번만) */
  $('#inspSynergy').innerHTML=synergyInfo(id);
- $('#inspHead').innerHTML=`<div class="iart z-${z?z.main:'road'}${c.type==='spawn'?' spawn':c.type==='support'||c.type==='assoc'?' support':''}">${art?`<img src="${artUrl(art)}" alt="">`:`<span class="ic">${c.icon}</span>`}</div>`
+ const artClass=c.type==='spawn'?' spawn':['support','assoc'].includes(c.type)?' support':'';
+ $('#inspHead').innerHTML=`<div class="iart z-${z?z.main:'road'}${artClass}">`
+  +`${art?`<img src="${artUrl(art)}" alt="">`:`<span class="ic">${c.icon}</span>`}`
+  +`${tileVariantBadgeHtml(id)}</div>`
   +`<div class="iinfo"><b class="inm">${c.name}</b><div class="izn">${z?zoneMarkHtml(z.reg,zoneLine(id)):''}${kindHtml(id)}<span>${escTip(zoneLine(id))}</span></div>`
   +`<div class="imeta"><span class="iclub${en?' on':''}">${c.club&&CLUB_ART[c.club]?icoImg('icon_club_'+c.club,CLUBS[c.club]):(CLUB_ICON[c.club]||'◈')} ${CLUBS[c.club]||(c.gate?'게이트 전용':'협회')}${en?' ★ 강화 중':''}</span><span id="inspCost">${escTip(inspCostText(id,null))}</span><span class="ihold">${userPaused?'⏸ 수동 정지':'▶ 진행 중 · Space 정지'}</span></div></div>`
   +`<button class="ix" id="btnInspClose" data-tip="선택 취소 (Esc · 지도 우클릭) — 카드 선택을 취소합니다">✕</button>`;
  {const zs=c.zones,fs=zs?['road','side','land'].filter(k=>zs[k]&&zs[k].form!==id).map(k=>zs[k]):[]; /* v1.5 위치 바리에이션: 다른 구역 형태의 효과도 나란히(가리킨 칸의 구역 효과는 미리보기) */
   $('#inspBase').innerHTML=`<h5>기본 효과</h5>${typeof metaUiFormHtml==='function'?metaUiFormHtml(id):''}${typeof metaUiClassifyHtml==='function'?metaUiClassifyHtml(id):''}${cardDescHtml(id)}${fs.map(f=>`<div class="cm">🔀 ${CARDS[id].field?'길가 형태 선택 시':'도로 옆 빈 칸 배치 시'} 「${escTip(CARDS[f.form].name)}」: ${escTip(CARDS[f.form].desc)}</div>`).join('')}${ct?`<div class="cc">🔗 ${ct}</div>`:''}`;}
  {const w=$('#inspWarn');w.innerHTML=why?`⛔ ${escTip(why)}`:'';w.hidden=!why;}
- $('#btnInspDiscard').textContent=isTerrain(id)?'🗑 처분 (결계 — OP 없음)':`🗑 처분 → OP +${econOn()?BAL.econ.discard:1}`;
+ $('#btnInspDiscard').textContent=discardValue(id)?`🗑 처분 → OP +${discardValue(id)}`:'🗑 처분 (지형 — OP 없음)';
  $('#squadMini').innerHTML=`<b>분대</b>${run.party.map(m=>`<span class="sqm${m.down?' down':''}" title="${m.stu.name} ${Math.round(m.hp)}/${m.maxHp}">${ptImg(m.stu,'face')}<i><b style="width:${Math.round(clamp(m.hp/m.maxHp,0,1)*100)}%"></b></i></span>`).join('')}<span class="kbd">Lv.${run.level}${run.state==='battle'?' · ⚔ 교전 중':''}</span><em>분대 ▸</em>`;
 }
 /* v1.5 검사 패널 머리의 비용: 가리킨 칸이 있으면 그 칸의 실제 비용(결과 계약 cost.t — 길가형 · 발자국 칸 수 · 격전지 · 요새선 형성 포함),
@@ -17137,7 +17763,16 @@ function settleFxTick(){
  if(dt>1200+1800){fx.done=true;el.hidden=true;}
 }
 function crateCardHtml(cr,id,i){
- if(cr.kind==='ward'){const c=CARDS[id],art=cardArtSrc(id),k=cardClass(id),z=cardZones(id);return `<button class="ccard tile${z?' z-'+z.main:''}" data-ci="${i}" style="--i:${i}" data-tip="${escTip(c.name)} — ${escTip(c.desc)}"><span class="cart">${art?`<img class="ca" src="${artUrl(art)}" alt="">`:`<span class="ci">${c.icon}</span>`}<span class="marks">${cardMarksHtml(id)}</span></span><b>${c.name}</b><span class="rcs">${cardChipsHtml(id)}</span><span class="cd">${c.desc}</span><span class="ck">${c.gate?'게이트 전용':k==='road'?'도로 결계':TILE_CLASS[k]?TILE_CLASS[k].name:''} · <kbd>${i+1}</kbd></span></button>`;}
+ if(cr.kind==='ward'){
+  const c=CARDS[id],art=cardArtSrc(id),k=cardClass(id),z=cardZones(id);
+  const category=c.gate?'게이트 전용':k==='road'?'도로 결계':TILE_CLASS[k]?.name||'';
+  return `<button class="ccard tile${z?' z-'+z.main:''}" data-ci="${i}" style="--i:${i}" `+
+   `data-tip="${escTip(c.name)} — ${escTip(c.desc)}"><span class="cart">`+
+   `${art?`<img class="ca" src="${artUrl(art)}" alt="">`:`<span class="ci">${c.icon}</span>`}`+
+   `<span class="marks">${cardMarksHtml(id)}</span>${tileVariantBadgeHtml(id)}</span>`+
+   `<b>${c.name}</b><span class="rcs">${cardChipsHtml(id)}</span><span class="cd">${c.desc}</span>`+
+   `<span class="ck">${category} · <kbd>${i+1}</kbd></span></button>`;
+ }
  if(cr.kind==='tactic'){const T=tacticOf(id);return `<button class="ccard z-control" data-ci="${i}" style="--i:${i}">${T.art?`<img class="ca" src="${artUrl(T.art)}" alt="">`:`<span class="ci">${T.icon}</span>`}<span class="zrow">${zoneMarkHtml(tacticReg(id),T.target==='none'?'전술 — 바로 사용(도로 스폰 정지)':'전술 — 지도의 결계 칸에 사용')}<span class="kd k-control">전술</span></span><b>${T.icon} ${T.name}</b><span class="ck">지도 전술 · 1회 · <kbd>${i+1}</kbd></span><span class="cd">${T.desc}</span></button>`;}
  if(cr.kind==='recruit'){
   const st=STUDENTS.find(x=>x.id===id),own=recruitedMember(id),ok=crateTakeOk(cr,id);
@@ -17771,12 +18406,14 @@ function metaUiTargetName(value){
 }
 function metaUiLeaderChoices(){
  const d=leaderRuleOf(run),s=run.metaRules;if(!d||!s)return '';
- const camp=metaUiCamp(),targets=META_RULES.targets(run);
+ const camp=metaUiCamp(),automatic=['harin','mina'].includes(d.id);
+ const targets=automatic?[]:META_RULES.targets(run);
  const unchosen=!targets.includes(s.choice.target);
  let html=targets.length?'<label class="meta-select">지정 거점<select data-meta-target '+(camp?'':'disabled')+'>'+
   (unchosen?'<option value="" disabled selected>지정할 거점을 선택하세요</option>':'')+
   targets.map((v,n)=>`<option value="${n}"${s.choice.target===v?' selected':''}>`+
-   metaUiEsc(metaUiTargetName(v))+'</option>').join('')+'</select></label>':'';
+  metaUiEsc(metaUiTargetName(v))+'</option>').join('')+'</select></label>':automatic?
+  '<p class="meta-note" data-meta-auto-connect>인접 시설 자동 연결 · 시설의 배치 범위에 따라 지령이 적용됩니다.</p>':'';
  if(targets.length&&unchosen)html='<p>캠프에서 지령을 적용할 거점을 지정하세요.</p>'+html;
  if(d.target==='budget')html+='<div class="meta-button-row">'+['supply','upgrade'].map(v=>
   `<button data-meta-budget="${v}" aria-pressed="${s.choice.budget===v}" ${camp?'':'disabled'}>`+
@@ -18057,7 +18694,8 @@ function renderRunDraft(host){
   const art=cardArtSrc(o.id),type=cardClass(o.id);
   return `<article class="collection-card draft-card${o.sold?' is-sold':''}">`+
    `<div class="draft-card-art">${art?`<img src="${artUrl(art)}" alt="" loading="lazy">`:
-    `<span class="draft-art-fallback">${CARDS[o.id].icon}</span>`}<span>${esc(o.role)}</span></div>`+
+    `<span class="draft-art-fallback">${CARDS[o.id].icon}</span>`}<span>${esc(o.role)}</span>`+
+   tileVariantBadgeHtml(o.id)+'</div>'+
    `<div class="draft-card-name"><b>${esc(CARDS[o.id].name)}</b>`+
    `<small>${type==='land'?'보드':type==='side'?'길가':'도로'}</small></div>`+
    `<p>${esc(cardDesc(o.id))}</p>${hand}<button class="supply-primary" data-draft-buy="${index}" `+
@@ -18299,8 +18937,7 @@ canvas.addEventListener('mousemove',e=>{mapHover=true;if(run)hoverTile=tileAt(e)
 canvas.addEventListener('mouseenter',()=>{mapHover=true;});
 canvas.addEventListener('mouseleave',()=>{mapHover=false;if(selectedCard===null)hoverTile=-1;}); /* 카드를 고른 동안은 마지막으로 가리킨 칸을 남긴다 — 검사 패널을 읽으러 지도 밖으로 나가도 미리보기 유지 */
 /* v1.1 타일 메뉴(최소): 카드를 고르지 않은 채 내 타일을 클릭하면 Lv·지원 배율·체인과 「승급」 버튼 — 보급 화면 밖에서도 남는 OP 를 쓸 수 있다 */
-function tileMenuHtml(t){if(t.off){const c=CARDS[t.card],cost=upgradable(t)?upgradeCost(t):null,m=cellMul(t,false),fp=t.fp&&t.fp.cells&&t.fp.cells.length>1?t.fp:null;
-  return `<b>${c.icon} ${c.name}${upgradable(t)?' · Lv'+(t.lv||1):''}</b><span class="kbd">${TILE_CLASS[c.cls].name}${fp?` · 발자국 ${BOARD_FP_NAME[fp.fp]}(타일 1개 — 승급·망각은 두 칸 함께)`:''}${isFormCard(t.card)?` · ${CARDS[t.src]?CARDS[t.src].name+'의 길가형 — ':''}Lv1 고정 · 증폭 없음`:` · 효과 ×${+m.toFixed(2)}${m>1?' (물길·승급·특성)':''}`}</span><span class="kbd">${c.desc}</span>${cost==null?'':`<button class="btn xs" id="btnTileUp" ${run.op<cost?'disabled':''}>⬆ 승급 · OP ${cost}</button><span class="kbd">Lv${(t.lv||1)+1}: 효과 ×${BAL.upgSup[t.lv||1]}</span>`}`;}
+function tileMenuHtml(t){if(t.off)return offTileMenuHtml(t);
  const c=CARDS[t.card],ch=(run.chains||[]).filter(x=>x.tiles.includes(t.i)),cost=upgradeCost(t),m=tileMul(t);
  /* §27.6 j: 계약 상태 한 줄 — 지급 횟수 · 다음 비율과 기대 OP · 남은 횟수(하한이면 「하한 50% — 공장 이름」, 만료면 그 문구) */
  const econLine=(()=>{
@@ -20571,5 +21208,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="232c11ddb0b17bcb";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="9a34ccc9b07bdfb9";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>

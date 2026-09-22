@@ -1,7 +1,7 @@
 {
   "channel": "character-b",
-  "version": "232c11ddb0b17bcb",
-  "builtAt": "2026-09-22T11:07:00.473Z",
+  "version": "9a34ccc9b07bdfb9",
+  "builtAt": "2026-09-22T13:22:24.502Z",
   "students": [
     "harin",
     "chaewon",
@@ -27,5 +27,6 @@
   "baseline_sha256": "57c4161501d735a7d5fde4bd74bfaeaa7b50f5afa7a2d06327e053f77ba0b970",
   "acquisitionVersion": 3,
   "packResearchVersion": 1,
-  "scoreRules": "challenge-v3.0"
+  "scoreRules": "challenge-v3.1-space",
+  "tileSpaceVersion": 4
 }
