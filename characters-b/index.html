@@ -2343,6 +2343,24 @@ button,a,input,select{touch-action:manipulation}
  .meta-region-guide{margin:9px 0;padding:7px 11px}.meta-leader-intro{padding:10px}
  .meta-form-choice button{min-height:44px}.meta-classify{font-size:11px}
 }
+.meta-score-burst{position:absolute;right:12px;bottom:16px;z-index:7;display:grid;gap:3px;
+ min-width:146px;padding:10px 14px;color:#fff4c5;background:#182334ed;border:1px solid #e8b861;
+ border-radius:12px;box-shadow:0 3px 20px #0007;text-align:right;cursor:pointer;pointer-events:auto}
+.meta-score-burst[hidden]{display:none}
+.meta-score-burst strong{font-size:26px;font-variant-numeric:tabular-nums;line-height:1.1}
+.meta-score-burst small,.meta-score-burst span{font-size:11px}
+.meta-score-burst[data-phase="3"] strong{color:#ffd36d}
+@media(max-width:600px){.meta-score-burst{right:7px;bottom:9px;min-width:118px;padding:8px 10px}
+ .meta-score-burst strong{font-size:23px}}
+.draft-controls{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;align-items:end}
+#collectionShop label{display:flex;flex-direction:column;gap:5px;font-size:12px;min-width:0}
+#collectionShop select,#crateRelicExchange select{max-width:100%;min-height:36px;padding:5px;
+ background:#1c2c44;color:#f2f6ff;border:1px solid #617796;border-radius:6px}
+#collectionShop details{margin:12px 0;border-top:1px solid #526786;padding-top:8px}
+#collectionShop summary{cursor:pointer;padding:6px 0;font-weight:bold}
+#collectionShop button{min-height:36px}
+#crateRelicExchange{padding:10px;color:#dbeafe;background:#152137;border-radius:8px;margin:8px 0}
+#crateRelicExchange label,#crateRelicExchange small{display:block;margin:4px 0}
 </style>
 <style>.progression-dialog{width:min(900px,94vw);max-height:88dvh;padding:20px;border:1px solid #bbd4ed;
  border-radius:18px;background:#f7fbff;color:#233b56;box-sizing:border-box;overflow:auto}
@@ -2367,6 +2385,10 @@ button,a,input,select{touch-action:manipulation}
 .progression-dialog select:focus-visible{outline:3px solid #3575bb;outline-offset:3px}
 .progression-score ol{padding-left:20px;margin:0;font-size:12px;line-height:1.65;color:#405c78}
 .progression-score li{margin:5px 0}.progression-score li b{white-space:nowrap}
+.pack-research-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+ margin:12px 0;padding:12px;border:1px solid #bcd1e5;border-radius:10px;background:#eef6ff;color:#294763}
+.pack-research-controls p{margin:0;font-size:13px}.pack-research-controls small{flex-basis:100%;font-size:12px}
+.pack-research-controls button{min-height:44px}.pack-research-controls button:disabled{opacity:.5}
 .challenge-deck p{font-size:14px;line-height:1.6}
 .challenge-deck h3{font-size:16px;margin:20px 0 10px}
 .challenge-fixed,.challenge-picks,.challenge-actions{display:flex;flex-wrap:wrap;gap:8px}
@@ -3497,13 +3519,20 @@ const BAL={
  party4Price:1.15,gateCardRate:0.3,chain:{front:{vetHp:1.25,vetAtk:1,reward:2,atk:1.1,item:0.75,xp:1.3,card:0.4},battle:{vetHp:1.6,vetAtk:1.2,reward:2.5,hp:1.2,atk:1.15,mana:2.5,brake:0.02,xp:1.5},supply:{mul:1.75},base:{mul:1.75,heal:0.2,op:2,spawnCap:1},cycle:{ex:30}},contractMul:0.7,rerollCosts:[2,3,5],upgOp:[4,7],upgReward:[1,1.25,1.5],upgDanger:[1,1.15,1.3],upgSup:[1,1.3,1.6],supMulMax:3,lapHpMul:1.1,supAdj:[0.5,1,1.5],healTile:1,healLap:4,estN:20,estFireRef:70,estSurvRef:45,missionMana:70,hpScale:0.36,atkScale:2.7,defScale:0.8,packOffset:-1,packMax:3,markMax:1,campHeal:0.25,dangerPer:0.12,dangerFree:4,shopInfl:[1,1.35,1.82,2.46],bossN:[0.9,0.4],enrageHounds:2,star:0.25,medic:0.20,storeHeal:0.10,houndBite:0.30,bossEvo:0.10,wavePeriod:3000,waveRatio:0.45,dropWild:0.15,dropPack:0.4,dropElite:1,campCards:1,codexMana:20,goalMana:30,placeBrake:0.03,serviceMax:2,demolishOp:3,convertOp:4,promoSlot:true};
 
 /* 안내 문구 생성(데이터와 일치): 드롭률·브레이크 — index.html 의 .v-drop/.v-brake 에 채운다 */
-const dropStr=()=>`떠돌이 ${Math.round(BAL.dropWild*100)}% · 소환 ${Math.round(BAL.dropPack*100)}% · 변이체 ${BAL.dropElite+1}장`;
+const dropStr=()=>{
+ if(typeof econOn==='function'&&econOn()&&typeof RUN_DRAFT!=='undefined'){
+  const c=RUN_DRAFT.config();return `공통 드롭 ${Math.round(c.commonDropChance*100)}% · `+
+   `${c.dryPacks}무리 연속 꽝 방지 · 매 루프 ${c.discoveryPacks}무리 후 새 타일 발견 · 위스프/계약 추가 공급`;
+ }
+ return `떠돌이 ${Math.round(BAL.dropWild*100)}% · 소환 ${Math.round(BAL.dropPack*100)}% · 변이체 ${BAL.dropElite+1}장`;
+};
 const brakeStr=()=>`소환 카드 배치는 브레이크 +${Math.round(BAL.placeBrake*100)}%p(시작 T의 ${Math.round(BAL.placeBrake*100)}%, E 기준 T −${Math.round(GATES[0].T*BAL.placeBrake)}) · 지원 카드는 무료 · 길가 결계 +${Math.round(BAL.brake.side*100)}%p · 지형 결계 +${Math.round(BAL.brake.land*100)}%p`;
 // 게이트 불안정: 소환 타일이 dangerFree개를 넘으면 개당 이형 HP·공격 +dangerPer (보스 제외)
 const dangerMult=()=>1+BAL.dangerPer*Math.max(0,spawnTiles(true).length-dangerFreeNow());
 window.BAL=BAL;
 const ENEMIES={
- slime:{name:'슬라임 코어',kind:'fluid',hp:34,atk:9,def:0,spd:1.0,color:'#22c55e',shape:'blob',mana:2,drop:0.22,xp:6,pat:'melee',pat2:'aoe'},
+ 
+slime:{name:'슬라임 코어',kind:'fluid',hp:34,atk:9,def:0,spd:1.0,color:'#22c55e',shape:'blob',mana:2,drop:0.22,xp:6,pat:'melee',pat2:'aoe'},
  golem:{name:'잔해 골렘',kind:'machine',hp:80,atk:12,def:5,spd:0.6,color:'#8b8b8b',shape:'rock',mana:3,drop:0.5,xp:12,pat:'melee',pat2:'charge'},
  hound:{name:'그림자 사냥개',kind:'beast',hp:42,atk:13,def:1,spd:1.4,color:'#2e2a6b',shape:'hound',mana:4,drop:0.28,xp:9,pat:'melee',pat2:'snipe'},
  wisp:{name:'마나 위스프',kind:'spirit',hp:26,atk:11,def:0,spd:1.1,color:'#38bdf8',shape:'wisp',mana:6,drop:0.2,xp:8,pat:'ranged',pat2:'aoe'},
@@ -3625,11 +3654,13 @@ const RELICS=[
   when:r=>(r.cells||[]).some(c=>c.card==='ld_hill'||c.card==='ld_peak'),mult:r=>Math.min(relicTune('survey').max,relicTune('survey').atk*(r.cells||[]).filter(c=>c.card==='ld_hill'||c.card==='ld_peak').length),now:r=>'지금 공격 +'+Math.min(relicTune('survey').max,relicTune('survey').atk*(r.cells||[]).filter(c=>c.card==='ld_hill'||c.card==='ld_peak').length)},
  {id:'compass',cond:true,name:'물길 나침반',icon:'🧭',rarity:1,target:'heal',desc:'물길에 인접한 서로 다른 결계 1개당 랩 회복 +1%(최대 +5%)',
   when:(r,c)=>!!(c&&c.riverAdj>0),mult:(r,c)=>Math.min(relicTune('compass').max,relicTune('compass').heal*((c&&c.riverAdj)||0)),now:(r,c)=>'지금 랩 회복 +'+Math.min(5,(c&&c.riverAdj)||0)+'%'},
- {id:'specimen',cond:true,name:'고치 표본',icon:'🕸',rarity:0,target:'drop',desc:'고치 무리 완료 시 덱 카드 +1 · 랩당 2회 · 소환물 제외',
+ {id:'specimen',cond:true,name:'고치 표본',icon:'🕸',rarity:0,target:'drop',
+  desc:'원래 배치된 적 3체 이상 무리 완료 시 덱 카드 +1 · 랩당 2회 · 소환물 제외',
   when:r=>(r.cells||[]).some(c=>c.card==='sd_cocoon'),mult:r=>Math.min(relicTune('specimen').max,relicTune('specimen').drop*(r.cells||[]).filter(c=>c.card==='sd_cocoon').length),now:r=>'지금 카드 드롭 +'+Math.round(100*Math.min(relicTune('specimen').max,relicTune('specimen').drop*(r.cells||[]).filter(c=>c.card==='sd_cocoon').length))+'%p'},
  {id:'scope',cond:true,name:'후열 조준경',icon:'🎯',rarity:1,target:'crit',desc:'후열에서 집중 표적 공격 시 치명 +12%p · 초과분 절반은 치명 피해(최대 +25%p)',
   when:r=>r.party.some(m=>!m.down&&m.row==='back'&&m.stu.reach==='ranged'),mult:r=>relicTune('scope').crit*r.party.filter(m=>!m.down&&m.row==='back'&&m.stu.reach==='ranged').length,now:r=>'지금 치명 +'+6*r.party.filter(m=>!m.down&&m.row==='back'&&m.stu.reach==='ranged').length+'%p'},
 ];
+
 const RELIC_DESCRIPTIONS={
  halo:()=>`재화 개편: 계약 OP +${tunePct(relicTune('halo').opPct)}% / 기존 재화: 계약 OP +${relicTune('halo').op}`,
  contract:()=>`마나석 획득 ×${relicTune('contract').mana} · 재화 개편 OFF 전용`,
@@ -3654,7 +3685,12 @@ const RELIC_DESCRIPTIONS={
  scope:()=>`살아 있는 후열 원거리 학생당 전원 치명 +${tunePct(relicTune('scope').crit)}%p`,
 };
 for(const r of RELICS){
- Object.defineProperty(r,'desc',{enumerable:true,get:RELIC_DESCRIPTIONS[r.id]});
+ Object.defineProperty(r,'desc',{enumerable:true,get:()=>{
+  const revised=['savings','plate','lucky','lens','stamp','ledger','neardeath','frontmap',
+   'survey','specimen','scope'];
+  const definition=globalThis.CHALLENGE_V2?.relicDefinition?.(r.id);
+  return definition&&revised.includes(r.id)?definition.desc:RELIC_DESCRIPTIONS[r.id]();
+ }});
  if(r.cond)r.now=(run,ctx)=>r.when(run,ctx)?`현재 효과: ${r.target==='score'||r.target==='xp'?'×':'+'}${['atkPct','heal','drop','crit'].includes(r.target)?tunePct(r.mult(run,ctx))+'%':+r.mult(run,ctx).toFixed(3)}`:'조건 미달 — '+r.desc;
 }
 const relicOf=id=>RELICS.find(r=>r.id===id);
@@ -6613,6 +6649,7 @@ Object.assign(window.GL=window.GL||{},{maps:{of:mapOf,forRegion:mapForRegion,ini
 'use strict';
 /* All regional advantages require a placed support. Empty loops never pay rewards. */
 const MAP_SITE_CACHE=new WeakMap();
+const mapServiceCost=()=>typeof econOn==='function'&&econOn()?ECON.scale(4):4;
 function mapSites(state) {
  const m=mapOf(state);if(MAP_SITE_CACHE.has(m))return MAP_SITE_CACHE.get(m);
  const inside=m.offCells.map((p,k)=>({i:m.path.length+k,p,roads:m.roadAdj[k]}));
@@ -6637,22 +6674,22 @@ function mapPlacementInfo(state,id,spot) {
  if(c?.type!=='control'&&mapBlocked(state,i)){
   return {ok:false,text:'침수 거점 — 캠프에서 복구하거나 무료 우회 거점을 이용하세요',cells:[i]};
  }
- const text={
+ const cost=mapServiceCost(),text={
   support:'지원 사이의 적을 공략하면 시작 보호막 +4. 복귀 구간에도 지원을 남기세요.',
   coverage:'시설이 양쪽 도로를 덮으면 시작 보호막 +6. 두 거점 분산과 한쪽 집중을 비교하세요.',
   crossfire:'지원 자리를 공유하는 적 구간: 지원이 닿으면 공격 피해 +2, 밀집한 적은 공격 +8%.',
-  flood:'무료 우회 거점 1곳. 침수 거점 2곳은 캠프에서 각각 4 OP로 복구하고 보호막 +8.',
-  signal:'송신 거점 2곳. 선택 거점 근처 지원은 공격 피해 +3; 캠프에서 4 OP로 재지정.',
+  flood:`무료 우회 거점 1곳. 침수 거점 2곳은 캠프에서 각각 ${cost} OP로 복구하고 보호막 +8.`,
+  signal:`송신 거점 2곳. 선택 거점 근처 지원은 공격 피해 +3; 캠프에서 ${cost} OP로 재지정.`,
   rift:'공개 저항에 대비해 대응 거점 1곳을 무료 안정화. 근처 지원 교전은 보호막 +10.'
  }[m.mechanic]||'';
  return {ok:true,text,cells:sites.sites,water:sites.water,free:sites.free};
 }
 function mapActions(state) {
- const m=mapOf(state),s=state?.mapState||{},sites=mapSites(state).sites;
+ const m=mapOf(state),s=state?.mapState||{},sites=mapSites(state).sites,cost=mapServiceCost();
  if(m.mechanic==='flood')return sites.slice(1).filter(i=>!(s.recovered||[]).includes(i))
-  .map(i=>({id:'recover',target:i,cost:4,label:'침수 거점 복구'}));
+  .map(i=>({id:'recover',target:i,cost,label:'침수 거점 복구'}));
  if(m.mechanic==='signal')return sites.slice(0,2).filter((i,n)=>n!==(s.signal||0))
-  .map(i=>({id:'signal',target:i,cost:4,label:'송신 거점 재지정'}));
+  .map(i=>({id:'signal',target:i,cost,label:'송신 거점 재지정'}));
  if(m.mechanic==='rift'&&s.stabilized==null)return sites
   .map(i=>({id:'stabilize',target:i,cost:0,label:'대응 거점 안정화'}));
  return [];
@@ -6906,7 +6943,7 @@ progression: {
     "neardeath": "protectedElite",
     "regular": "budget",
     "frontmap": "support3",
-    "specimen": "deferred"
+    "specimen": "streak3"
   }
 },
 economy: {
@@ -7041,6 +7078,385 @@ recipes: {
       "id": "crit",
       "slot": "weapon",
       "name": "조준 보정 설계도"
+    }
+  ]
+},
+acquisition: {
+  "version": 3,
+  "enabled": true,
+  "commonDropChance": 0.35,
+  "dryPacks": 3,
+  "bonusCardsPerLoop": 6,
+  "discoveryPacks": 3,
+  "discoveriesPerLoop": 1,
+  "offers": 3,
+  "replenishCost": 150,
+  "replenishPerCamp": 2,
+  "replaceCost": 350,
+  "replacePerCamp": 1,
+  "pivotReplaceCost": 150,
+  "upgradeCost": [
+    800,
+    1200
+  ],
+  "upgradePerCamp": 1,
+  "redrawCost": 200,
+  "redrawPerCamp": 1
+},
+packResearch: {
+  "version": 1,
+  "baseRerolls": 1,
+  "maxChoices": 7,
+  "rerollRate": [
+    0.35,
+    0.6,
+    0.9
+  ],
+  "minRerollOp": 50,
+  "priceRound": 10,
+  "challengeLevels": {
+    "reroll": 1,
+    "choices": 1
+  },
+  "tracks": {
+    "reroll": {
+      "name": "재탐색 연구",
+      "desc": "팩 하나에서 OP로 후보를 다시 뽑을 수 있는 횟수를 늘립니다.",
+      "steps": [
+        {
+          "region": "D",
+          "task": "return2",
+          "cost": {
+            "part": 4,
+            "rec": 2
+          }
+        },
+        {
+          "region": "B",
+          "task": "return2",
+          "cost": {
+            "part": 10,
+            "rec": 5
+          }
+        }
+      ]
+    },
+    "choices": {
+      "name": "확장 개봉 연구",
+      "desc": "팩에서 펼쳐 보는 후보를 늘립니다. 실제로 받는 보상은 한 장입니다.",
+      "steps": [
+        {
+          "region": "E",
+          "task": "return2",
+          "cost": {
+            "part": 3,
+            "rec": 2
+          }
+        },
+        {
+          "region": "C",
+          "task": "return2",
+          "cost": {
+            "part": 8,
+            "rec": 4
+          }
+        }
+      ]
+    }
+  }
+},
+relics: {
+  "version": 3,
+  "relics": [
+    {
+      "id": "halo",
+      "role": "support",
+      "pivotTags": [],
+      "name": "결계 조각",
+      "desc": "계약 보상마다 OP +1",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "contract",
+      "role": "legacy",
+      "pivotTags": [],
+      "name": "협회 계약서",
+      "desc": "마나석 획득 ×1.3",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": true
+    },
+    {
+      "id": "savings",
+      "role": "support",
+      "pivotTags": [],
+      "name": "LooP 적금 통장",
+      "desc": "유효 3무리 이상·2랩부터 잔여 OP 활용 · 무리/깊이로 상한 증가(최대 4)",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "medkit",
+      "role": "support",
+      "pivotTags": [],
+      "name": "구급 키트",
+      "desc": "랩 시작 시 전원 HP 12% 회복",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "plate",
+      "role": "pivot",
+      "pivotTags": [
+        "shield"
+      ],
+      "score": {
+        "kind": "chips",
+        "rate": 2,
+        "cap": 300,
+        "desc": "실제 적 공격을 보호막으로 막은 양 ×2를 칩으로 전환 · 교전당 최대 +300"
+      },
+      "name": "반응 장갑판",
+      "desc": "실제 보호막 흡수 35% + 방어 50% 반격 · 추가 EX 충전 없음",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "core",
+      "role": "amplify",
+      "pivotTags": [],
+      "name": "폭주 코어",
+      "desc": "전원 공격 +20%, 받는 피해 +15%",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "lucky",
+      "role": "support",
+      "pivotTags": [],
+      "name": "행운의 학생증",
+      "desc": "영입 팩에 희귀 이상 후보 최소 1명 보장 · 해당 영입 후보가 있을 때",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "battery",
+      "role": "amplify",
+      "pivotTags": [],
+      "name": "마나 배터리",
+      "desc": "EX 게이지 획득 +40%",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "lens",
+      "role": "amplify",
+      "pivotTags": [],
+      "name": "관측 렌즈",
+      "desc": "첫 공격/집중 표적 치명 +8%p · 확정치명 초과분은 치명 피해 전환",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "drone",
+      "role": "support",
+      "pivotTags": [],
+      "name": "보급 상자",
+      "desc": "캠프 통과 시 카드 +1",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "stamp",
+      "role": "pivot",
+      "pivotTags": [
+        "recruit"
+      ],
+      "name": "학생회 도장",
+      "desc": "선택한 시너지 한 종류 필요 인원 −1",
+      "conditional": false,
+      "target": "runtime",
+      "econExcluded": false
+    },
+    {
+      "id": "ledger",
+      "role": "score",
+      "pivotTags": [],
+      "score": {
+        "kind": "chips",
+        "credit": 200,
+        "cap": 800,
+        "desc": "구매 가능한 보급을 무구매 통과하면 칩 +200 비축 · 다음 강적/보스에 방출 · 최대 +800"
+      },
+      "name": "절약 장부",
+      "desc": "구매 가능한 보급 무구매 통과 → 다음 강적 무리 평가 +20(중첩 없음)",
+      "conditional": true,
+      "target": "score",
+      "econExcluded": false
+    },
+    {
+      "id": "neardeath",
+      "role": "pivot",
+      "pivotTags": [
+        "shield",
+        "heal"
+      ],
+      "score": {
+        "kind": "multiply",
+        "bp": 20000,
+        "desc": "실제 적 피해로 HP 50% 이하 위기를 겪고 기절 없이 교전을 마치면 ×2 · 교전당 1회"
+      },
+      "name": "빈사 계약",
+      "desc": "실제 적 피해를 견디고 전원 생존 + 캠프 회복 전 평균 HP 50% 이하일 때 ×1.15",
+      "conditional": true,
+      "target": "score",
+      "econExcluded": false
+    },
+    {
+      "id": "regular",
+      "role": "score",
+      "pivotTags": [],
+      "score": {
+        "kind": "replay",
+        "cap": 1,
+        "desc": "팩 유료 리롤·리롤 후 유료 구매 시 다음 강적/보스 점수를 1회 더 계산 · 중첩 1개 · 보급당 1회"
+      },
+      "name": "단골 카드",
+      "desc": "리롤한 뒤 유료 구매를 하면 그 랩 평가 +15(보급당 1회)",
+      "conditional": true,
+      "target": "scoreAdd",
+      "econExcluded": false
+    },
+    {
+      "id": "medal",
+      "role": "amplify",
+      "pivotTags": [
+        "chain"
+      ],
+      "score": {
+        "kind": "chips",
+        "base": 80,
+        "risk": 60,
+        "cap": 300,
+        "desc": "전선·격전지 무리 완료 시 위험도에 따라 칩 +140~260"
+      },
+      "name": "격전 훈장",
+      "desc": "격전지 무리를 전멸시킬 때마다 이번 런 공격 +1%(랩당 +2%, 런 최대 +10%)",
+      "conditional": true,
+      "target": "atkPct",
+      "econExcluded": false
+    },
+    {
+      "id": "frontmap",
+      "role": "pivot",
+      "pivotTags": [
+        "chain"
+      ],
+      "score": {
+        "kind": "multiply",
+        "stepBp": 7500,
+        "cap": 4,
+        "desc": "실제 공략한 서로 다른 전선·격전지 구간마다 ×배수 +0.75 · 최대 ×4"
+      },
+      "name": "전선 지도",
+      "desc": "실제로 공략한 서로 다른 전선 구간마다 평가 +5%(최대 3개)",
+      "conditional": true,
+      "target": "score",
+      "econExcluded": false
+    },
+    {
+      "id": "clubflag",
+      "role": "amplify",
+      "pivotTags": [
+        "recruit"
+      ],
+      "name": "동아리 깃발",
+      "desc": "같은 동아리 학생이 3명 이상이면 계약 XP ×1.25(OP·평가·상자 등급은 그대로)",
+      "conditional": true,
+      "target": "xp",
+      "econExcluded": false
+    },
+    {
+      "id": "survey",
+      "role": "pivot",
+      "pivotTags": [
+        "facility"
+      ],
+      "score": {
+        "kind": "addMult",
+        "stepBp": 5000,
+        "cap": 3,
+        "desc": "언덕과 연결된 시설이 실제 교전을 지원하면 시설당 +0.5 배수 · 교전당 최대 +1.5"
+      },
+      "name": "측량 드론",
+      "desc": "언덕당 공격 +1 · 지원 시설과 연결된 언덕 추가 +1(추가 최대 2, 총 최대 +8)",
+      "conditional": true,
+      "target": "atk",
+      "econExcluded": false
+    },
+    {
+      "id": "compass",
+      "role": "pivot",
+      "pivotTags": [
+        "heal"
+      ],
+      "score": {
+        "kind": "addMult",
+        "stepBp": 10000,
+        "healStep": 20,
+        "cap": 3,
+        "desc": "물길 인접 결계가 있는 보드에서 적 피해를 실제 회복한 양 20당 +1 배수 · 교전당 최대 +3"
+      },
+      "name": "물길 나침반",
+      "desc": "물길에 인접한 서로 다른 결계 1개당 랩 회복 +1%(최대 +5%)",
+      "conditional": true,
+      "target": "heal",
+      "econExcluded": false
+    },
+    {
+      "id": "specimen",
+      "role": "pivot",
+      "pivotTags": [
+        "swarm"
+      ],
+      "score": {
+        "kind": "addMult",
+        "stepBp": 5000,
+        "cap": 4,
+        "desc": "원래 배치된 적 3체 이상 무리 완료 시 2번째 적부터 +0.5 배수 · 최대 +2 · 소환물 제외"
+      },
+      "name": "고치 표본",
+      "desc": "원래 배치된 적 3체 이상 무리 완료 시 덱 카드 +1 · 랩당 2회 · 소환물 제외",
+      "conditional": true,
+      "target": "drop",
+      "econExcluded": false
+    },
+    {
+      "id": "scope",
+      "role": "pivot",
+      "pivotTags": [
+        "focus"
+      ],
+      "score": {
+        "kind": "multiply",
+        "bp": 25000,
+        "desc": "집중 표적을 직접 공격한 강적/보스 무리 완료 시 ×2.5"
+      },
+      "name": "후열 조준경",
+      "desc": "후열에서 집중 표적 공격 시 치명 +12%p · 초과분 절반은 치명 피해(최대 +25%p)",
+      "conditional": true,
+      "target": "crit",
+      "econExcluded": false
     }
   ]
 }
@@ -7348,12 +7764,20 @@ const CHALLENGE_V2=(()=>{
   'ld_hill','ld_trees','ld_park','ld_river','ld_dust'];
  const RELIC_IDS=['halo','savings','medkit','plate','core','lucky','battery','lens','drone','stamp',
   'ledger','neardeath','regular','medal','frontmap','clubflag','survey','compass','specimen','scope'];
- const RULES_VERSION='challenge-v2.3',POWER_VERSION='normalized-v2.1',POOL_VERSION='public-v2.1';
+ const RULES_VERSION='challenge-v3.0',POWER_VERSION='normalized-v2.1',POOL_VERSION='public-v2.1';
  const BALANCE_VERSION='meta-v2.1',MAX_SCORE=9000000000000;
  const number=v=>Number.isFinite(+v)?Math.max(0,+v):0;
  const integer=v=>Math.floor(number(v));
  const clone=v=>JSON.parse(JSON.stringify(v));
  const active=r=>!!(r&&r.mode==='challenge'&&r.challenge);
+ const relicDefinition=id=>(typeof META_V2_CONFIG!=='undefined'?META_V2_CONFIG.relics?.relics:[])
+  ?.find(relic=>relic.id===id)||null;
+ const relicScore=id=>relicDefinition(id)?.score||{};
+ function relicText(id){
+  const definition=relicDefinition(id);if(!definition)return '';
+  const roles={support:'보완',amplify:'빌드 강화',pivot:'빌드 전환',score:'기록 강화',legacy:'기존 재화 전용'};
+  return (roles[definition.role]||'')+(definition.score?' · 도전: '+definition.score.desc:'');
+ }
  function hash(value){
   const text=typeof value==='string'?value:JSON.stringify(value);let out=2166136261;
   for(let i=0;i<text.length;i++){out^=text.charCodeAt(i);out=Math.imul(out,16777619);}
@@ -7473,13 +7897,20 @@ const CHALLENGE_V2=(()=>{
    total:0,entries:[],fixedRemainder:0,settled:false,bossScored:false};
  }
  function calculate(row){
-  const base=integer(row.base),conversions=(row.conversions||[]).map(c=>({...c,value:integer(c.value)}));
+  const base=Math.min(MAX_SCORE,integer(row.base)),conversions=(row.conversions||[])
+   .map(c=>({...c,value:Math.min(MAX_SCORE,integer(c.value))}));
+  const additions=(row.additions||[]).map(c=>({...c,bp:Math.min(80000,integer(c.bp))}));
   const multipliers=(row.multipliers||[]).map(m=>({...m,bp:Math.min(80000,Math.max(10000,integer(m.bp)))}));
   const replay=Math.min(2,integer(row.replay));
-  let top=BigInt(base+conversions.reduce((sum,c)=>sum+c.value,0)),bottom=1n;
+  const chips=Math.min(MAX_SCORE,base+conversions.reduce((sum,c)=>sum+c.value,0));
+  const addBp=10000+additions.reduce((sum,c)=>sum+c.bp,0),stages=[{kind:'chips',value:chips}];
+  let top=BigInt(chips)*BigInt(addBp),bottom=10000n;
+  stages.push({kind:'addMult',bp:addBp,value:Math.min(MAX_SCORE,Number(top/bottom))});
   for(const m of multipliers){top*=BigInt(m.bp);bottom*=10000n;}
+  stages.push({kind:'multiply',value:Math.min(MAX_SCORE,Number(top/bottom))});
   top*=BigInt(1+replay);
-  return {base,conversions,multipliers,replay,total:Math.min(MAX_SCORE,Number(top/bottom))};
+  const total=Math.min(MAX_SCORE,Number(top/bottom));stages.push({kind:'replay',value:total});
+  return {base,conversions,additions,multipliers,replay,chips,addBp,stages,total};
  }
  function observe(m,r,e){
   if(!active(r)||!e||r.ended||r.challenge.settled)return null;
@@ -7487,16 +7918,17 @@ const CHALLENGE_V2=(()=>{
   if(!key||c.events[key]||e.origin==='scoreReplay'||e.origin==='visual')return null;
   c.events[key]=true;const type=e.type||e.kind,owns=id=>(r.relics||[]).includes(id);
   const camp=String(e.campId??r.lap);
-  if(type==='purchase'&&owns('regular')&&number(e.paid??e.amount)>0){
+  if(type==='purchase'&&owns('regular')&&number(e.paid??e.amount)>0&&!e.refund){
    if(number(e.rerollsHere??r.shop?.rerollsHere)>0&&!c.regularCamps[camp]){
-    c.regularCamps[camp]=true;c.regularTokens=1;
+    c.regularCamps[camp]=true;c.regularTokens=integer(relicScore('regular').cap)||1;
    }
    return null;
   }
   if((type==='shopLeave'||type==='shopClose'||type==='campPassed')&&owns('ledger')){
    if((e.canBuy===true||e.affordable===true)&&!e.purchased&&!number(e.buys)
     &&!number(e.paid)&&!c.ledgerCamps[camp]){
-    c.ledgerCamps[camp]=true;c.ledgerCredit=Math.min(800,c.ledgerCredit+200);
+    const config=relicScore('ledger');
+    c.ledgerCamps[camp]=true;c.ledgerCredit=Math.min(number(config.cap),c.ledgerCredit+number(config.credit));
    }
    return null;
   }
@@ -7511,38 +7943,59 @@ const CHALLENGE_V2=(()=>{
    ||number(c.lapCaps[lap])>=c.rule.packCapPerLap))return null;
   c.packs[pack]=true;c.sourceCaps[source]=number(c.sourceCaps[source])+1;
   c.lapCaps[lap]=number(c.lapCaps[lap])+1;
-  const battle=String(e.battleId??pack),firstPerformance=!c.performance[battle];c.performance[battle]=true;
+  const battle=String(e.battleId??pack);
+  const firstPerformance=e.performanceEligible!==false&&!c.performance[battle];
+  if(firstPerformance)c.performance[battle]=true;
   const section=String(e.sectionId??Math.floor(number(e.siteId??e.tileIndex)/7));
-  const chained=!!e.chain||!!e.chainKind;
+  const chained=['front','battle'].includes(e.chainKind||e.chain);
   if(chained)c.sections[section]=true;
-  const elite=!!e.elite||!!e.strong,conversions=[],multipliers=[];
+  const elite=!!e.elite||!!e.strong,conversions=[],additions=[],multipliers=[];
   const risk=Math.min(3,integer(e.riskLevel||(chained?1:0)));
   const base=boss?1500:100+(elite?200:0)+risk*40;
   if(owns('medal')&&chained){
-   conversions.push({source:'medal',label:'실제 위험 구간 정리',value:Math.min(300,80+risk*60)});
+   const config=relicScore('medal');
+   conversions.push({source:'medal',label:'실제 위험 구간 정리',
+    value:Math.min(number(config.cap),number(config.base)+risk*number(config.risk))});
   }
   if(owns('plate')&&firstPerformance){
-   const absorbed=number(e.shieldAbsorbed),blocked=number(e.blockedDamage||e.mitigatedDamage);
-   const bound=number(e.enemyAttackTotal)||absorbed+blocked;
-   const value=Math.min(300,Math.floor(Math.min(bound,absorbed+blocked)*2));
+   const config=relicScore('plate'),absorbed=number(e.shieldAbsorbed);
+   const bound=number(e.enemyAttackTotal);
+   const value=Math.min(number(config.cap),Math.floor(Math.min(bound,absorbed)*number(config.rate)));
    if(value)conversions.push({source:'plate',label:'실제 방어 성과',value});
   }
   if(owns('ledger')&&(elite||boss)&&c.ledgerCredit>0){
    conversions.push({source:'ledger',label:'구매 기회 통과 성과',value:c.ledgerCredit});c.ledgerCredit=0;
   }
   if(owns('scope')&&(elite||boss)&&e.focused){
-   multipliers.push({source:'scope',label:'집중 표적 격파',bp:25000});
+   multipliers.push({source:'scope',label:'집중 표적 격파',bp:number(relicScore('scope').bp)});
   }
   if(owns('frontmap')&&chained){
-   const count=Math.min(4,Object.keys(c.sections).length);
-   multipliers.push({source:'frontmap',label:'공략한 서로 다른 전선 '+count,bp:10000+count*7500});
+   const config=relicScore('frontmap'),count=Math.min(number(config.cap),Object.keys(c.sections).length);
+   multipliers.push({source:'frontmap',label:'공략한 서로 다른 전선 '+count,
+    bp:10000+count*number(config.stepBp)});
   }
   const crisis=!!(e.lowHp||e.lowHpCrisis)&&number(e.enemyDamage||e.damageTaken)>0;
-  if(owns('neardeath')&&firstPerformance&&crisis&&(e.allAlive||e.allSurvived||number(e.aliveCount)>0)){
-   multipliers.push({source:'neardeath',label:'적의 위협을 견디고 생존',bp:20000});
+  if(owns('neardeath')&&firstPerformance&&crisis&&e.allSurvived===true){
+   multipliers.push({source:'neardeath',label:'적의 위협을 기절 없이 견딤',bp:number(relicScore('neardeath').bp)});
   }
-  const replay=owns('regular')?Math.min(1,c.regularTokens):0;if(replay)c.regularTokens=0;
-  const score=calculate({base,conversions,multipliers,replay});
+  if(owns('survey')&&firstPerformance&&number(e.hillFacilityCount)>0){
+   const config=relicScore('survey');
+   additions.push({source:'survey',label:'언덕과 연결된 시설의 교전 지원',
+    bp:Math.min(number(config.cap),number(e.hillFacilityCount))*number(config.stepBp)});
+  }
+  if(owns('compass')&&firstPerformance&&number(e.riverLinks)>0){
+   const config=relicScore('compass'),healed=Math.min(number(e.healed),number(e.enemyDamage));
+   const units=Math.min(number(config.cap),Math.floor(healed/Math.max(1,number(config.healStep))));
+   if(units)additions.push({source:'compass',label:'적에게 잃은 HP의 실제 회복',bp:units*number(config.stepBp)});
+  }
+  if(owns('specimen')&&number(e.nativeKills)>=3){
+   const config=relicScore('specimen');
+   additions.push({source:'specimen',label:'원래 배치된 적 무리 정리',
+    bp:Math.min(number(config.cap),number(e.nativeKills)-1)*number(config.stepBp)});
+  }
+  const replay=owns('regular')&&(elite||boss)?Math.min(1,c.regularTokens):0;
+  if(replay)c.regularTokens=0;
+  const score=calculate({base,conversions,additions,multipliers,replay});
   const entry={...score,eventId:key,packId:pack,battleId:battle,lap,site,section,
    leaderId:r.leaderId,partyIds:e.partyIds||[],source:'native-pack',boss};
   c.total=Math.min(MAX_SCORE,c.total+entry.total);c.entries.push(entry);if(boss)c.bossScored=true;
@@ -7574,7 +8027,7 @@ const CHALLENGE_V2=(()=>{
   return count;
  }
  return {REGIONS,definition,normalize,available,preview,defaultDraft,validateDraft,prepare,recordKey,
-  createState,calculate,observe,finish,advance,active,hash,MAX_SCORE};
+  createState,calculate,observe,finish,advance,active,hash,relicDefinition,relicScore,relicText,MAX_SCORE};
 })();
 if(typeof window==='object')window.CHALLENGE_V2=CHALLENGE_V2;
 
@@ -7646,6 +8099,7 @@ function challengeFinishRun(reason){
  if(!CHALLENGE_V2.active(run))return false;
  const r=run,stat=r.battle?.ruleStat||r.lastBattleRule?.stat||{};
  if(reason==='boss')CHALLENGE_V2.observe(meta,r,{...stat,type:'bossComplete',
+  focused:stat.focusedStrong===true,
   eventId:r.challenge.attemptId+':boss',origin:'native',boss:true,lap:r.lap,
   battleId:r.battle?.battleId||r.lastBattleRule?.battleId||'boss',
   tileIndex:r.bossTile??r.pos,allAlive:r.party.every(m=>!m.down)});
@@ -8057,7 +8511,9 @@ const META_RULES = (() => {
     rs.medal++;rs.medalLap++;emit('recalculate',{},'relic');
    }
    if(has('ledger')&&rs.ledger&&event.strong){emit('score',{amount:20,reason:'ledger'},'relic');rs.ledger=0;}
-   if(has('specimen')&&event.cocoon&&rs.specimen<2){emit('draw',{count:1},'relic');rs.specimen++;}
+   if(has('specimen')&&number(event.nativeKills)>=3&&rs.specimen<2){
+    emit('draw',{count:1},'relic');rs.specimen++;
+   }
   }
   if(type==='shopLeave'&&has('ledger')&&event.canBuy&&!event.purchased)rs.ledger=1;
   if(type==='purchase'&&number(event.paid)>0&&!event.refund){
@@ -8170,7 +8626,12 @@ Object.assign(META_RULES,(() => {
   const e={...event},enemy=e.e,pk=e.pk;
   if(enemy){e.targetId=e.targetId||enemy.uid;e.enemyId=e.enemyId||enemy.uid;e.summoned=!!enemy.summoned;}
   if(pk){
+   // A real pack completion is a fact even when a relic delivered its final hit.
+   if(e.type==='packClear'&&pk.reward&&!pk.summoned&&['native','leader','relic'].includes(e.origin)){
+    e.damageOrigin=e.origin;e.origin='native';
+   }
    e.packId=e.packId||pk.uid;e.noReward=!pk.reward;e.summoned=!!pk.summoned;
+   e.nativeKills=Number(pk.nativeKills)||0;
    e.chain=e.chain||pk.chain;e.risk=e.risk==null?Number(pk.risk||pk.riskBonus||0):e.risk;
    if(!e.risk&&(pk.chain==='battle'||pk.elite))e.risk=1;
    e.strong=!!(pk.elite||pk.chain==='battle');e.cocoon=pk.cardId==='sd_cocoon';
@@ -8334,6 +8795,35 @@ Object.assign(META_RULES,(() => {
    group:Object.values(pk?.enemyTypes||{}).reduce((a,n)=>a+n,0)>=3};
  }
  function recruitRarity(r,rarity){return (r.relics||[]).includes('lucky')?Math.max(1,rarity):rarity;}
+ function scoreBoardContext(r,facilities=[]){
+  const map=typeof mapOf==='function'?mapOf(r):null;if(!map)return {hillFacilityCount:0,riverLinks:0};
+  const linked=new Set(),rivers=new Set();
+  for(const cell of r.cells||[]){
+   if(['ld_hill','ld_peak'].includes(cell.card)){
+    for(const facility of facilities){
+     if((map.offAdj[cell.k]||[]).includes(facility.k))linked.add(facility.card);
+    }
+   }
+   if(cell.card!=='ld_river')continue;
+   for(const k of map.offAdj[cell.k]||[]){
+    const other=r.cells[k];if(other?.card&&other.card!=='ld_river')rivers.add('off:'+k);
+   }
+   for(const i of map.roadAdj[cell.k]||[]){if(r.tiles?.[i]?.card)rivers.add('road:'+i);}
+  }
+  return {hillFacilityCount:linked.size,riverLinks:rivers.size};
+ }
+ function relicNow(r,id,ctx={}){
+  const s=r?.metaRules?.relic;if(!s)return '';
+  if(id==='ledger')return s.ledger?'다음 강적 무리 평가 +20 준비':'구매 가능한 보급을 무구매 통과하면 준비';
+  if(id==='frontmap')return '실제 공략 구간 '+Object.keys(s.fronts||{}).length+' · 평가 ×'+relicValue(r,id,1);
+  if(id==='medal')return '현재 공격 +'+Math.round(relicValue(r,id)*100)+'%';
+  if(id==='survey')return '현재 공격 +'+relicValue(r,id);
+  if(id==='specimen')return '이번 랩 추가 카드 '+(s.specimen||0)+'/2회 · 원래 배치된 적 3체 이상 무리';
+  if(id==='scope')return '후열에서 집중 표적 공격 시 치명 +12%p · 초과 치명은 피해 전환';
+  if(id==='neardeath')return relicValue(r,id,1)>1?'현재 전원 생존·적 피해 조건 충족 · 평가 ×1.15':
+   '적 피해를 견디고 전원 생존·평균 HP 50% 이하 필요';
+  return '';
+ }
  function relicValue(r,id,fallback=0,ctx={}){
   const s=r.metaRules;if(!(r.relics||[]).includes(id))return fallback;
   if(id==='medal')return (s?.relic.medal||0)*0.01;
@@ -8362,7 +8852,7 @@ Object.assign(META_RULES,(() => {
  }
  return {init,targets,autoChoice,context,normalize,apply,dispatch,restoreDeferred,rally,
   exchangeCard,adjustGear,resolveTerrain,deferTerrain,enemyRoles,enemyReward,rewardProof,
-  recruitRarity,relicValue,savings};
+  recruitRarity,relicValue,relicNow,scoreBoardContext,savings};
 })());
 
 </script>
@@ -8389,14 +8879,20 @@ function metaRuleEvent(kind, data) {
   META_V2.observe(meta,run,event);
   if(kind==='battleEnd'){
    const stat=raw.stat||{},allAlive=!!raw.win&&stat.allSurvived===true;
+   const eligible=(raw.completedPacks||[]).filter(pk=>pk?.reward&&!pk.summoned);
+   const value=pk=>(pk.elite||pk.strongKilled?10:0)+(['front','battle'].includes(pk.chain)?3:0);
+   const scoreOwner=stat.bossEncounter?null:eligible.slice().sort((a,b)=>value(b)-value(a))[0];
    for(const pk of raw.completedPacks||[]){
     if(!pk)continue;
-    const completed={...stat,type:'packComplete',origin,
+    const factualOrigin=['native','leader','relic'].includes(origin)?'native':origin;
+    const completed={...stat,type:'packComplete',origin:factualOrigin,damageOrigin:origin,
      eventId:run.runId+':complete:'+pk.uid,runId:run.runId,lap:run.lap,
      phase:'resolved',packId:pk.uid,battleId:raw.battleId,
      chain:pk.chain,chainKind:pk.chain,sectionId:Math.floor(pk.tile/7),riskLevel:pk.riskLevel||0,
      region:event.region,tileIndex:pk.tile,siteId:pk.tile,allAlive,
-     elite:!!pk.elite,rewardEligible:!!pk.reward,summoned:!!pk.summoned};
+     elite:!!pk.elite,strong:!!pk.strongKilled,focused:pk.ruleProof?.focus===true,
+     performanceEligible:scoreOwner?.uid===pk.uid,
+     nativeKills:pk.nativeKills||0,rewardEligible:!!pk.reward,summoned:!!pk.summoned};
     META_V2.observe(meta,run,completed);
     if(typeof CHALLENGE_V2!=='undefined')CHALLENGE_V2.observe(meta,run,completed);
    }
@@ -8415,6 +8911,7 @@ function metaInitRun(leader, region) {
  run.cells=newCells(run);
  if(region.id==='S')run.sResist=ensureResist();
  META_RULES.init(run);
+ if(typeof RUN_DRAFT!=='undefined')RUN_DRAFT.init();
 }
 
 // 이전 저장의 선택은 유지하고 새로 생긴 자유 슬롯만 추천 카드로 보충한다.
@@ -8451,6 +8948,393 @@ function metaChooseCounterSupply(id){
 </script>
 <script>
 'use strict';
+// 이번 원정의 공급·발견·덱 정비. 계정 덱과 영구 능력치는 바꾸지 않는다.
+const RUN_DRAFT=(()=>{
+ const config=()=>META_V2_CONFIG.acquisition;
+ const active=()=>typeof run!=='undefined'&&run&&!run.ended&&run.metaVersion===2&&econOn()
+  &&config()?.enabled!==false;
+ function init(){
+  if(!active())return null;
+  if(!run.acquisition)run.acquisition={version:3,startDeck:run.deckList.slice(),dry:0,packs:0,
+   seen:{},loops:{},found:[],history:[],pivot:null,pivotUsed:false,emergencyUsed:false};
+  return run.acquisition;
+ }
+ const camp=()=>!!(active()&&run.shop?.kind==='camp'&&!run.battle&&!run.crateOpen
+  &&!run.imminent&&!run.bossPending&&!run.bossSpawned);
+ function legal(id){
+  if(!CARDS[id]||!isPlayable(id)||!collectionShopAllowed(id))return false;
+  if(run.mode==='challenge')return !!run.challenge?.rule.allowed.cards.includes(id);
+  return true;
+ }
+ function pool(){return collectionPool().filter(legal);}
+ function tags(id){
+  const c=CARDS[id]||{},t=[];
+  if(c.spawn)t.push('chain');
+  if(['slime','spider','hound'].includes(c.spawn))t.push('swarm');
+  if(c.spawn==='phantom'||c.sup?.slow||c.enter?.ex||c.pas?.ex)t.push('focus');
+  if(c.sup?.shield||c.enter?.shield||c.pas?.def)t.push('shield');
+  if(c.sup?.heal||c.enter?.heal||c.camp?.heal||c.pas?.hp)t.push('heal');
+  if(c.field||c.cls==='side'||c.pas?.drone)t.push('facility');
+  if(c.camp?.op||c.pas?.contractOp||c.spawn==='golem')t.push('recruit');
+  if(c.enter?.ex||c.camp?.card||c.pas?.spd||c.spawn==='wisp')t.push('tempo');
+  return [...new Set(t)];
+ }
+ function note(kind,data){
+  const s=init();s.history.push({kind,lap:run.lap,...data});
+  if(s.history.length>100)s.history.shift();
+ }
+ function loop(){
+  const s=init();return s.loops[run.lap]||(s.loops[run.lap]={packs:0,bonus:0,finds:0});
+ }
+ function remember(id){
+  const s=init();if(!s.found.includes(id))s.found.push(id);
+  collectionDiscover(id,'expedition-discovery');
+ }
+ function nativePack(pk){
+  return active()&&pk&&pk.uid!=null&&pk.reward&&!pk.summoned&&run.packs[pk.uid]===pk&&pk.alive===0
+   &&(!run.ruleOrigin||['native','leader','relic'].includes(run.ruleOrigin))
+   &&(!pk.origin||pk.origin==='native');
+ }
+ function drop(pk,guaranteed){
+  if(!nativePack(pk))return 0;
+  const s=init(),l=loop(),key=String(pk.uid);if(s.seen[key])return 0;s.seen[key]=true;
+  s.packs++;l.packs++;
+  const rng=seedRng('acquisition:'+s.packs),old=Math.max(0,Math.floor(guaranteed||0));
+  let bonus=0;
+  if(old>0)s.dry=0;
+  else if(l.bonus<config().bonusCardsPerLoop){
+   s.dry++;if(pk.elite||s.dry>=config().dryPacks||rng()<config().commonDropChance){
+    bonus=1;s.dry=0;l.bonus++;
+   }
+  }
+  // 기존 위스프/계약 공급은 유지. 신규 공통 보상은 넘치면 OP로 바꾸지 않는다.
+  for(let i=0;i<old;i++)drawCard();
+  if(bonus){const id=drawFromDeck();if(run.hand.length<handMax())addToHand(id);}
+  const available=pool().filter(id=>!run.deckList.includes(id)&&!s.found.includes(id));
+  if(l.packs>=config().discoveryPacks&&l.finds<config().discoveriesPerLoop&&available.length){
+   const id=available[Math.floor(rng()*available.length)];l.finds++;remember(id);
+   if(run.hand.length<handMax())addToHand(id);
+   note('discovery',{id,source:'combat',pack:pk.uid});
+   log(`🃏 전투 발견: ${CARDS[id].name} · 캠프에서 이번 원정 덱에 교체 가능`,'good');
+  }
+  note('drop',{pack:pk.uid,old,bonus,dry:s.dry});
+  return old+bonus;
+ }
+ function relicFound(id){
+  if(!active())return;
+  const s=init(),r=META_V2_CONFIG.relics?.relics.find(d=>d.id===id);
+  if(r?.role==='pivot'&&r.pivotTags?.length){
+   s.pivot={id,tags:r.pivotTags.slice()};
+   if(s.shop&&s.shop.lap===run.lap)s.shop.pivotOffer=null;
+  }
+ }
+ function makeOffers(revision){
+  const s=init(),rng=seedRng('draft-shop:'+run.lap+':'+revision),all=pool(),out=[];
+  const current=new Set(run.deckList.flatMap(tags));
+  const pickFrom=(ids,role)=>{
+   const candidates=ids.filter(id=>!out.some(o=>o.id===id));
+   if(!candidates.length)return;
+   const id=candidates[Math.floor(rng()*candidates.length)];
+   out.push({id,role,price:collectionShopPrice(),sold:false});
+  };
+  const found=s.found.filter(id=>legal(id)&&!run.deckList.includes(id));
+  pickFrom(found.length?found:all.filter(id=>tags(id).some(t=>current.has(t))),'빌드 보강');
+  pickFrom(all.filter(id=>CARDS[id].gate===gate().id),'지역 대응');
+  while(out.length<config().offers&&out.length<all.length)pickFrom(all,'새 조합');
+  return out;
+ }
+ function shop(){
+  if(!active()||run.shop?.kind!=='camp')return null;
+  const s=init();
+  if(!s.shop||s.shop.lap!==run.lap)s.shop={lap:run.lap,revision:0,replenished:0,
+   replaced:0,upgraded:0,redrawn:0,pivotOffer:null,offers:makeOffers(0)};
+  const sh=s.shop;
+  if(s.pivot&&!s.pivotUsed&&!sh.pivotOffer){
+   const choices=pool().filter(id=>!run.deckList.includes(id)&&tags(id).some(t=>s.pivot.tags.includes(t)));
+   const rng=seedRng('pivot:'+s.pivot.id+':'+run.lap);
+   if(choices.length)sh.pivotOffer={id:choices[Math.floor(rng()*choices.length)],sold:false,
+    role:'유물 전환',price:config().pivotReplaceCost};
+  }
+  return sh;
+ }
+ function spend(cost,action,budget='supply'){
+  run.op-=cost;run.purchases=(run.purchases||0)+1;run.shop.buys=(run.shop.buys||0)+1;
+  run.shop.paidHere=(run.shop.paidHere||0)+cost;
+  if(cost===0)run.shop.freeHere=(run.shop.freeHere||0)+1;
+  regularCheck(cost);
+  dispatchRuleEvent('purchase',{paid:cost,amount:cost,budget,source:'draft-'+action,
+   campId:run.runId+':camp:'+run.camps,rerolled:false});
+  note(action,{cost});dirty=true;
+ }
+ function replaceBlock(id,index){
+  const sh=shop();
+  if(!camp()||!sh)return '캠프에서 정비할 수 있습니다';
+  if(sh.replaced>=config().replacePerCamp)return '이번 캠프 덱 교체 완료';
+  if(!Number.isInteger(index)||index<4||index>=run.deckList.length)return '교체할 자유 카드를 선택하세요';
+  if(!legal(id))return '현재 사용할 수 없는 카드';
+  if(id===run.deckList[index])return '같은 카드입니다';
+  if(run.deckList.filter(x=>x===id).length>=DECK_DUP_MAX)return '같은 카드는 최대 3장';
+  return '';
+ }
+ function replace(id,index,cost){
+  if(replaceBlock(id,index)||run.op<cost)return false;
+  const old=run.deckList[index],remaining=(run.deck||[]).indexOf(old);
+  run.deckList[index]=id;
+  if(remaining>=0)run.deck[remaining]=id;
+  else if(run.deck)run.deck.unshift(id);
+  shop().replaced++;remember(id);spend(cost,'replace');
+  note('deck-change',{from:old,to:id,index});
+  log(`🃏 원정 덱 교체: ${CARDS[old].name} → ${CARDS[id].name} · 이후 드랍에 반영`,'shop');
+  return true;
+ }
+ function buy(index,slot){
+  const sh=shop(),offer=index==='pivot'?sh?.pivotOffer:sh?.offers[index];
+  if(!camp()||!offer||offer.sold)return false;
+  if(Number.isInteger(slot)){
+   const cost=index==='pivot'?config().pivotReplaceCost:config().replaceCost;
+   if(!replace(offer.id,slot,cost))return false;
+  }else{
+   if(index==='pivot'||run.hand.length>=handMax()||!legal(offer.id)||run.op<offer.price)return false;
+   spend(offer.price,'hand');remember(offer.id);addToHand(offer.id,true);
+  }
+  offer.sold=true;if(index==='pivot')init().pivotUsed=true;return true;
+ }
+ function register(id,slot){
+  if(!init()?.found.includes(id))return false;
+  return replace(id,slot,config().replaceCost);
+ }
+ function replenishBlock(id,discard=-1){
+  const sh=shop();if(!camp()||!sh)return '캠프에서 보충할 수 있습니다';
+  if(sh.replenished>=config().replenishPerCamp)return '이번 캠프 보충 완료';
+  if(!run.deckList.includes(id))return '현재 원정 덱에서 선택하세요';
+  if(run.hand.length>=handMax()&&(!Number.isInteger(discard)||!run.hand[discard]))return '바꿀 손패를 선택하세요';
+  const cost=replenishPrice();if(run.op<cost)return 'OP 부족';return '';
+ }
+ function replenishPrice(){
+  const s=init();return !s.emergencyUsed&&s.packs>0&&!(run.discards>0)
+   &&run.hand.length===0&&run.op<config().replenishCost?0:
+   config().replenishCost;
+ }
+ function replenish(id,discard=-1){
+  if(replenishBlock(id,discard))return false;
+  const cost=replenishPrice();if(cost===0)init().emergencyUsed=true;
+  if(run.hand.length>=handMax())run.hand.splice(discard,1);
+  shop().replenished++;spend(cost,'replenish');addToHand(id,true);
+  log(`🃏 지정 보충: ${CARDS[id].name} · ${cost} OP (손패)`,'shop');return true;
+ }
+ function redraw(){
+  const sh=shop();
+  if(!camp()||sh.redrawn>=config().redrawPerCamp||run.op<config().redrawCost
+   ||sh.offers.some(o=>o.sold))return false;
+  spend(config().redrawCost,'redraw');sh.redrawn++;sh.revision++;
+  sh.offers=makeOffers(sh.revision);return true;
+ }
+ function upgradeQuote(index){
+  const sh=shop(),t=spotAt(index),cost=t&&config().upgradeCost[tileLv(t)-1];
+  if(!camp()||!sh||sh.upgraded>=config().upgradePerCamp||!upgradable(t)
+   ||!cost||t.enemies?.length||tileBusy(t))return null;
+  return {cost,description:upgradeStr(t)};
+ }
+ function upgrade(index){
+  const q=upgradeQuote(index);if(!q||run.op<q.cost)return false;
+  const t=spotAt(index);t.lv=tileLv(t)+1;shop().upgraded++;
+  run.upgrades=(run.upgrades||0)+1;spend(q.cost,'upgrade','upgrade');
+  recomputeChains();run.party.forEach(recalcMember);checkMission();
+  log(`⬆ 캠프 정비: ${CARDS[t.card].name} Lv${t.lv} · ${q.cost} OP`,'shop');return true;
+ }
+ function relocate(from,to){
+  if(!camp()||!init().pivotUsed||init().relocated)return false;
+  const targets=tacticTargets('relocate',from);
+  if(!targets.some(t=>t.i===to)||!tacticTargets('relocate').some(t=>t.i===from))return false;
+  const slot=run.tactics.length;run.tactics.push('relocate');
+  const ok=useTactic(slot,from,to);
+  if(!ok){run.tactics.splice(slot,1);return false;}
+  init().relocated=true;note('pivot-relocate',{from,to});return true;
+ }
+ return {config,active,init,camp,legal,pool,tags,drop,relicFound,shop,replaceBlock,buy,register,
+  replenish,replenishBlock,replenishPrice,redraw,upgradeQuote,upgrade,relocate};
+})();
+
+</script>
+<script>
+'use strict';
+// Permanent research widens choices; each purchased pack still grants exactly one reward.
+const PACK_RESEARCH=(()=>{
+ const config=()=>META_V2_CONFIG.packResearch;
+ const integer=v=>Number.isFinite(+v)?Math.max(0,Math.floor(+v)):0;
+ const object=v=>v&&typeof v==='object'&&!Array.isArray(v)?v:{};
+ const clone=v=>JSON.parse(JSON.stringify(v));
+ const active=r=>!!r&&!r.ended;
+ const enabled=()=>typeof econOn==='function'&&econOn();
+ const challenge=r=>!!r&&(r.mode==='challenge'||!!r.challenge);
+ const key=cr=>String(cr.sid)+'|'+String(cr.oid)+'|'+String(cr.kind);
+ const canOpen=cr=>!!cr&&!cr.sold&&!run?.packResearch?.packs?.[key(cr)]?.closed;
+ function normalize(m,raw=m){
+  const prev=object(raw?.packResearch),levels={};
+  for(const [id,track] of Object.entries(config().tracks)){
+   levels[id]=Math.min(track.steps.length,integer(prev.levels?.[id]));
+  }
+  m.packResearch={v:config().version,levels,ledger:Array.isArray(prev.ledger)?prev.ledger.slice():[]};
+  return m.packResearch;
+ }
+ const book=m=>m.packResearch?.v===config().version?m.packResearch:normalize(m);
+ function levels(m){
+  const saved=book(m).levels||{};
+  return Object.fromEntries(Object.entries(config().tracks).map(([id,track])=>
+   [id,Math.min(track.steps.length,integer(saved[id]))]));
+ }
+ function researchStatus(m,id){
+  const track=config().tracks[id];if(!track)return null;
+  const level=levels(m)[id],step=track.steps[level],max=!step;
+  const introduced=step&&META_V2.introduced(m,step.region);
+  const learned=step&&!!META_V2.state(m).tasks[step.task];
+  const cost=step?{...step.cost}:{};
+  const affordable=Object.entries(cost).every(([res,n])=>integer(m.res?.[res])>=n);
+  return {id,name:track.name,desc:track.desc,level,max,cost,region:step?.region,
+   available:!max&&introduced&&learned,affordable,
+   hint:max?'연구 완료':!introduced?step.region+' 지역 소개 후 연구 가능':
+    !learned?'유효 교전 2회 후 캠프 귀환으로 연구 소개':'부품·기록으로 영구 연구'};
+ }
+ function buyResearch(m,id){
+  if(!enabled()||(typeof run!=='undefined'&&active(run))||
+   (typeof CHALLENGE_V2!=='undefined'&&CHALLENGE_V2.sessionActive()))return false;
+  const status=researchStatus(m,id);if(!status?.available||!status.affordable)return false;
+  const saved=book(m),level=status.level+1;
+  for(const [res,n] of Object.entries(status.cost))m.res[res]-=n;
+  saved.levels[id]=level;
+  saved.ledger.push({id:'pack-research:'+id+':'+level,track:id,level,cost:{...status.cost},
+   source:'permanentResearch',region:status.region,run:integer(m.runs)});
+  if(typeof save==='function')save();
+  return true;
+ }
+ function runPlan(r=run,m=meta){
+  if(!r)return null;
+  const fixed=challenge(r),current=r.packResearch;
+  if(current&&current.v===config().version&&current.fixed===fixed)return current;
+  const selected=fixed?config().challengeLevels:levels(m);
+  r.packResearch={v:config().version,fixed,levels:{...selected},
+   rerollLimit:enabled()?config().baseRerolls+integer(selected.reroll):0,
+   choiceBonus:enabled()?integer(selected.choices):0,packs:{},log:[]};
+  return r.packResearch;
+ }
+ function viewCount(cr,base){
+  const bonus=cr.packResearch?.choiceBonus??runPlan()?.choiceBonus??0;
+  return Math.min(config().maxChoices,integer(base)+bonus);
+ }
+ function candidates(kind,sid,oid,round=0){
+  const seed='pack-research:'+config().version+'|'+sid+'|'+oid+'|'+kind+'|'+round;
+  const rng=seedRng(seed),previousRandom=Math.random,previousUid=_uid;
+  let list;
+  // genItem uses the classic random helpers. Isolate this synchronous call and restore all state.
+  try{Math.random=rng;list=crateCands(kind,rng);}finally{Math.random=previousRandom;_uid=previousUid;}
+  if(kind==='gear'){
+   const prefix=hashStr(String(run.seed)+'|'+sid+'|'+oid+'|'+kind+'|'+round);
+   return list.map((item,i)=>({...item,id:-(prefix*64+i+1),bought:true}));
+  }
+  return [...new Set(list)];
+ }
+ function legal(cr,id){
+  const approved=student=>!META_V2_CONFIG.progression.students.some(s=>
+   s.id===student&&s.productionApproved===false);
+  if(cr.kind==='recruit')return STUDENTS.some(s=>s.id===id&&studentUnlocked(s))&&
+   approved(id)&&
+   (typeof CHALLENGE_V2==='undefined'||CHALLENGE_V2.studentAllowed(id))&&
+   (!recruitedMember(id)||recruitedMember(id).star<3);
+  if(cr.kind==='ward')return !!CARDS[id]&&cardOpen(id)&&
+   (!CARDS[id].sig||approved(CARDS[id].sig))&&
+   (typeof CHALLENGE_V2==='undefined'||CHALLENGE_V2.cardAllowed(id));
+  if(cr.kind==='relic')return relicOk(id)&&
+   (typeof CHALLENGE_V2==='undefined'||CHALLENGE_V2.relicAllowed(id));
+  if(cr.kind==='tactic')return TACTICS.some(t=>t.id===id);
+  return cr.kind==='gear'&&!!id&&typeof id==='object';
+ }
+ function projected(cr,list){
+  return crateView({...cr,cands:list.filter(id=>legal(cr,id))});
+ }
+ function prepare(cr){
+  if(!active(run)||!cr)return false;
+  const plan=runPlan(),k=key(cr);
+  let state=plan.packs[k];
+  if(state?.closed)return false;
+  if(!state){
+   state={v:config().version,key:k,rerollLimit:plan.rerollLimit,choiceBonus:plan.choiceBonus,
+    rerolls:0,paid:0,closed:false,rounds:[clone(cr.cands)],history:[]};
+   // Store every paid round before revealing the first one. Rendering never consumes random numbers.
+   cr.packResearch=state;
+   for(let i=1;i<=state.rerollLimit;i++){
+    const previous=projected(cr,state.rounds[i-1]);let next=[];
+    for(let probe=0;probe<8;probe++){
+     next=candidates(cr.kind,cr.sid,cr.oid,i*16+probe);
+     if(fingerprint(projected(cr,next))!==fingerprint(previous))break;
+    }
+    state.rounds.push(next);
+   }
+   plan.packs[k]=state;
+  }
+  cr.packResearch=state;cr.cands=state.rounds[state.rerolls];
+  cr.view=projected(cr,cr.cands);
+  return true;
+ }
+ function fingerprint(list){
+  return JSON.stringify(list.map(id=>typeof id==='object'?{...id,id:0}:id)
+   .sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b))));
+ }
+ function rerollStatus(cr=run?.crateOpen){
+  const state=cr?.packResearch;
+  if(!active(run)||!enabled()||!cr||run.crateOpen!==cr||!state||state.closed){
+   return {ok:false,reason:'개봉 중인 팩에서만 다시 뽑을 수 있습니다',left:0,price:0};
+  }
+  const left=Math.max(0,state.rerollLimit-state.rerolls),rate=config().rerollRate[state.rerolls]||0;
+  const step=config().priceRound,discount=integer(FX().rerollDisc)*integer(BAL.econ.opMul||1);
+  const price=Math.max(config().minRerollOp,Math.ceil((integer(cr.paidOp)*rate-discount)/step)*step);
+  const next=left?projected(cr,state.rounds[state.rerolls+1]):[];
+  const changed=next.length>0&&fingerprint(next)!==fingerprint(cr.view||[]);
+  const reason=!left?'이 팩의 리롤을 모두 사용했습니다':!changed?'새로운 후보가 없습니다':
+   run.op<price?'OP가 부족합니다':'';
+  return {ok:!reason,reason,left,price,nextCount:next.length,used:state.rerolls,limit:state.rerollLimit};
+ }
+ function reroll(cr=run?.crateOpen){
+  const status=rerollStatus(cr);if(!status.ok)return false;
+  const state=cr.packResearch,before=clone(cr.view),paid=status.price;
+  run.op-=paid;state.rerolls++;state.paid+=paid;
+  cr.cands=state.rounds[state.rerolls];cr.view=projected(cr,cr.cands);
+  const row={source:'packReroll',packet:state.key,round:state.rerolls,lap:run.lap,
+   paid,before,view:clone(cr.view),opAfter:run.op};
+  state.history.push(row);runPlan().log.push(row);
+  run.purchases=(run.purchases||0)+1;
+  if(run.shop){
+   run.shop.buys=integer(run.shop.buys)+1;run.shop.paidHere=integer(run.shop.paidHere)+paid;
+   run.shop.rerollsHere=integer(run.shop.rerollsHere)+1;
+  }
+  for(const id of cr.view)if(cr.kind==='relic'){
+   const seen=run.relicSeen||(run.relicSeen={});seen[id]=integer(seen[id])+1;
+  }
+  if(typeof regularCheck==='function')regularCheck(paid);
+  dispatchRuleEvent('purchase',{source:'packReroll',budget:'supplyReroll',paid,amount:paid,
+   rerolled:true,rerollsHere:run.shop?.rerollsHere||state.rerolls,packet:state.key,
+   campId:run.runId+':camp:'+run.camps});
+  log('🎲 '+CRATES[cr.kind].name+' 후보 다시 뽑기 · OP −'+paid+' · 남은 '+(status.left-1)+'회','shop');
+  dirty=true;
+  if(!simMode&&typeof renderCrate==='function')renderCrate();
+  if(!simMode&&typeof SFX!=='undefined')SFX.reroll();
+  return true;
+ }
+ function record(cr,action){
+  const state=cr?.packResearch;if(!state||state.closed)return false;
+  state.closed=true;state.action=action;
+  const row={source:action==='pick'?'packChoice':'packSkip',packet:state.key,kind:cr.kind,
+   lap:run.lap,paid:integer(cr.paidOp),rerollPaid:state.paid,rerolls:state.rerolls,
+   view:clone(cr.view||[]),pick:cr.picked??null};
+  runPlan().log.push(row);
+  return true;
+ }
+ return {config,normalize,levels,researchStatus,buyResearch,runPlan,viewCount,candidates,legal,canOpen,
+  prepare,rerollStatus,reroll,record};
+})();
+
+</script>
+<script>
+'use strict';
 // ================= 메타(세이브) =================
 const META_KEY='gateloop_proto_v3';
 /* §27.6 g 세이브 계약: econ2(재화 개편)는 **새 키에서 새 계정으로** 시작한다 — 이관 없음. 옛 세이브는 지우지 않고 첫 실행 때 한 번 복사해 둔다.
@@ -8464,7 +9348,7 @@ const META_DEFAULT=()=>({challengeV2:null,deckVersion:2,runSequence:0,progressio
 /* econ2 기본 스키마: 마나석 칸이 없고 새 자원(res) · 종류별 소수 누적(resFrac) · SP 소수(spFrac) · 유료 성장 Lv(growthLv — 유효 동행 누적 growth 와 따로) ·
  * 해금 대기 원장(resPending) · 스킬 구매 당시 비용(skillPaid) · 새 최고 기록(best2)을 더한다 */
 const META_DEFAULT2=()=>{const d=META_DEFAULT();delete d.mana;
- return Object.assign(d,{econ:2,commandBalance:0,res:{},resFrac:{},spFrac:0,
+ return Object.assign(d,{econ:2,packResearch:null,commandBalance:0,res:{},resFrac:{},spFrac:0,
   growthLv:{},resPending:{},skillPaid:{},best2:{}});};
 const metaDef=()=>econOn()?META_DEFAULT2():META_DEFAULT();
 let meta=META_DEFAULT();
@@ -8496,6 +9380,7 @@ function fillMeta(o){
  metaMigrateDecks(m,o);
  if(typeof CHALLENGE_V2!=='undefined')CHALLENGE_V2.normalize(m,o);
  if(typeof META_V2!=='undefined')META_V2.migrateInvestments(m);
+ if(typeof PACK_RESEARCH!=='undefined')PACK_RESEARCH.normalize(m,o);
  return traumaNormalize(m);
 }
 /* ================= v1.4 §22.5 호감도 Lv 1~10 =================
@@ -9452,9 +10337,11 @@ function payPack(pk,killer){
  /* §17.3 D 처치 드롭: 떠돌이·표식 BAL.dropWild(15%) / 소환 무리 BAL.dropPack(40%) / 변이체 100%+1. 계약의 card(균열)는 추가. 안내 문구는 dropStr() 로 같은 값에서 생성 */
  let nCard=(r.card||0)+(identity.card||0);
  if(econOn()){
-  /* §27.6 E-2d: 전투로 오는 카드는 무리에 섞인 카드 위스프 수만큼. 무작위 드롭 · 게이트 전용 분기는 쓰지 않는다(덱에서 뽑는다) */
+  /* 위스프/계약 공급 + 모든 원본 무리의 공통 드랍. 신규 보너스 초과분은 OP로 환전하지 않는다. */
   nCard+=(pk.wisp||0);
-  if(nCard){run.cardsDropped+=nCard;run.wispCards=(run.wispCards||0)+(pk.wisp||0);for(let i=0;i<nCard;i++)drawCard();extra+=` +카드 ${nCard}`;}
+  if(typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active())nCard=RUN_DRAFT.drop(pk,nCard);
+  else for(let i=0;i<nCard;i++)drawCard();
+  if(nCard){run.cardsDropped+=nCard;run.wispCards=(run.wispCards||0)+(pk.wisp||0);extra+=` +카드 ${nCard}`;}
  }else{
   if(pk.elite)nCard+=BAL.dropElite+1;else if(pk.wild||c.small){if(Math.random()<BAL.dropWild)nCard++;}else if(Math.random()<BAL.dropPack+relicVal('specimen'))nCard++;
   if(bt&&nCard<1)nCard=1;
@@ -9551,7 +10438,7 @@ function packSizeOf(o){o=o||{};
  if(o.small)n=Math.min(n,BAL.markMax);
  if(o.elite)n=1;
  return n;}
-/* §27.6 E: 전투 드롭은 카드 위스프만 — 무리를 만들 때 이 무리에 섞일 카드 위스프 수를 정한다.
+/* §27.6 E: 기본 공급에 더할 카드 위스프 — 무리를 만들 때 이 무리에 섞일 카드 위스프 수를 정한다.
  * 그 칸이 위스프를 부르면 무리 전체가 위스프(한 마리당 카드 1장), 아니면 아래 표대로 몇 마리가 합류한다. */
 function wispJoin(t,cardId,o){
  if(!econOn())return 0;
@@ -10644,7 +11531,18 @@ const relicOk=id=>{const R=relicOf(id);if(!R||!run||run.relics.includes(id))retu
  if(!curriculumRelicOpen(id))return false;
  return !R.cond||unlocked('relic2');};
 const relicPool=()=>RELICS.filter(r=>relicOk(r.id));
-function grantRelic(id,src){if(!run||run.relics.length>=BAL.relicSlots||!relicOk(id))return false;run.relics.push(id);(run.relicLog||(run.relicLog=[])).push({id,src:src||'?',lap:run.lap});run.party.forEach(recalcMember);dirty=true;return true;}
+function grantRelic(id,src,replaceIndex){
+ if(!run||!relicOk(id))return false;
+ let removed=null;
+ if(run.relics.length>=BAL.relicSlots){
+  if(typeof RUN_DRAFT==='undefined'||!RUN_DRAFT.active()||!Number.isInteger(replaceIndex)
+   ||!run.relics[replaceIndex])return false;
+  removed=run.relics[replaceIndex];run.relics.splice(replaceIndex,1,id);
+ }else run.relics.push(id);
+ (run.relicLog||(run.relicLog=[])).push({id,src:src||'?',lap:run.lap,removed});
+ if(typeof RUN_DRAFT!=='undefined')RUN_DRAFT.relicFound(id);
+ run.party.forEach(recalcMember);dirty=true;return true;
+}
 function relicVal(id,ctx){
  const R=relicOf(id),neutral=R&&(R.target==='score'||R.target==='xp')?1:0;
  if(!run||!R||!run.relics.includes(id))return neutral;
@@ -10660,7 +11558,19 @@ function riverAdjCount(){
  }
  return s.size;
 }
-const relicNow=id=>{const R=relicOf(id);if(!R||!R.now)return '';try{return R.now(run,{riverAdj:riverAdjCount()});}catch(e){return '';}};
+const relicNow=id=>{
+ const R=relicOf(id);if(!R||!run)return '';
+ if(typeof CHALLENGE_V2!=='undefined'&&CHALLENGE_V2.active(run)){
+  const c=run.challenge;
+  if(id==='ledger')return '현재 비축 칩 +'+c.ledgerCredit+' · 다음 강적/보스에 방출';
+  if(id==='regular')return '강적/보스 점수 재평가 '+c.regularTokens+'/1회 준비';
+ }
+ const ctx={riverAdj:riverAdjCount()};
+ if(run.metaRules&&typeof META_RULES.relicNow==='function'){
+  const value=META_RULES.relicNow(run,id,ctx);if(value)return value;
+ }
+ try{return R.now?R.now(run,ctx):'';}catch(e){return '';}
+};
 function discardRelic(id){const i=run.relics.indexOf(id);if(i<0||run.battle)return false;run.relics.splice(i,1);run.party.forEach(recalcMember);log(`🏺 유물 「${relicOf(id).name}」을(를) 내려놓았습니다`,'shop');dirty=true;return true;}
 function makeOfferNoRelic(){const kind=weightedPick([{k:'student',w:60},{k:'supply',w:15}]).k,free=Math.random()<0.05;
  if(kind==='student'){const rar=rarityRoll(),stu=pickStudent(rar);return {uid:uid(),kind,stu,rarity:stu.rarity,cost:free?0:STUDENT_COST[stu.rarity],free};}
@@ -10735,23 +11645,27 @@ function crateCands(kind,rng){const n=BAL.crate.pool;
 function makeCrate(sid,oid,small,fixed){const rng=seedRng(sid+'|'+oid),W=BAL.crate.smallW,kinds=['ward','relic'].concat(unlocked('tactic')?['tactic']:[]);
  let r=rng()*kinds.reduce((a,k)=>a+W[k],0),kind=fixed||kinds[kinds.length-1];
  if(!fixed)for(const k of kinds){r-=W[k];if(r<=0){kind=k;break;}}
- return {sid,oid,kind,small:!!small,cands:crateCands(kind,rng),reserved:false,sold:false,grade:null,view:null};}
+ const cands=typeof PACK_RESEARCH!=='undefined'?PACK_RESEARCH.candidates(kind,sid,oid):crateCands(kind,rng);
+ return {sid,oid,kind,small:!!small,cands,reserved:false,sold:false,grade:null,view:null};}
 const cratePrice=(kind,large)=>{
  const price=econOn()?ECON.price(BAL.econ.price[kind],{lap:run?run.lap:1,disc:FX().shopDisc}):
   Math.max(1,Math.ceil(BAL.crate.price[kind]*(1-FX().shopDisc)*(large?shopInfl():1)));
  return price-(typeof META_RULES!=='undefined'?META_RULES.discount(run,price,'supply'):0);
 };
 /* 등급별 선택 폭: 같은 후보 열의 앞 3/4/5장(이미 가진 유물은 건너뛴다). 열기 전에는 지금 등급으로 미리 계산만(순수) */
-function crateView(cr){const n=BAL.crate.picks[GRADES[cr.grade||gradeNow()].n];
+function crateView(cr){const base=BAL.crate.picks[GRADES[cr.grade||gradeNow()].n];
+ const n=typeof PACK_RESEARCH!=='undefined'?PACK_RESEARCH.viewCount(cr,base):base;
  const ok=cr.kind==='relic'?cr.cands.filter(relicOk)
   :cr.kind==='ward'?cr.cands.filter(cardOpen)
   :cr.kind==='recruit'?cr.cands.filter(id=>{const m=recruitedMember(id);return !m||m.star<3;})
   :cr.cands;
- return ok.slice(0,n);} /* C-05: 결계 상자도 잠긴 결계는 펼치지 않는다 · C-06: 유물 상자는 relicOk(보유·미해금 제외) */
+ return (typeof PACK_RESEARCH!=='undefined'?ok.filter(id=>PACK_RESEARCH.legal(cr,id)):ok).slice(0,n);}
 function crateRoom(cr){
  if(cr.kind==='recruit')return crateView(cr).some(id=>crateTakeOk(cr,id));
  if(cr.kind==='gear')return true;
- return cr.kind==='ward'?run.hand.length<handMax():cr.kind==='tactic'?run.tactics.length<BAL.tacticSlots:(run.relics.length<BAL.relicSlots&&crateView(cr).length>0);}
+ return cr.kind==='ward'?run.hand.length<handMax():cr.kind==='tactic'?run.tactics.length<BAL.tacticSlots:
+  ((run.relics.length<BAL.relicSlots||(typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active()))
+   &&crateView(cr).length>0);}
 const crateBlock=cr=>cr.kind==='recruit'?'영입·승급 후보 없음':cr.kind==='gear'?'':
  cr.kind==='ward'?'손패 가득':cr.kind==='tactic'?'전술 슬롯 가득':'유물 슬롯 가득';
 function rollNextCrate(){if(!run||run.ended||!supplyOn()){if(run)run.nextCrate=null;return;}run.supplyN++;run.nextCrate=makeCrate('S'+run.supplyN,0,true);
@@ -10773,7 +11687,10 @@ function econCampSupply(){
  const rec={lap:run.lap-1,sid,kind:'camp',price:cratePrice(crates[0].kind,false),reserved:!run.autoPass,bought:false,merged:false,grade:gradeNow(),op:run.op,afford:can.length>0};
  run.supplyLog.push(rec);
  run.campCan=(run.campCan||0)+(can.length?1:0);
- const canTile=typeof collectionShopPrice==='function'&&run.hand.length<handMax()&&run.op>=collectionShopPrice();
+ const draft=typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active();
+ const canTile=draft?(run.op>=RUN_DRAFT.config().replenishCost||
+  (run.hand.length===0&&!(run.discards>0)&&!RUN_DRAFT.init().emergencyUsed&&RUN_DRAFT.init().packs>0)):
+  typeof collectionShopPrice==='function'&&run.hand.length<handMax()&&run.op>=collectionShopPrice();
  if(!can.length&&!canTile&&!run.pendingDrones){log(`📦 캠프 보급: 살 수 있는 팩 없음(OP ${run.op}/${cratePrice(crates[0].kind,false)})`);return;}
  if(run.autoPass){run.campPassed=(run.campPassed||0)+1;log(`📦 캠프 보급: 살 수 있는 팩 ${can.length} — 자동 통과 중`);return;}
  run.shop.crates=crates;run.campStops=(run.campStops||0)+1;
@@ -10801,6 +11718,7 @@ function largeCrates(){run.shop.regularUsed=false;run.shop.crates=[];if(!supplyO
  run.shop.crates=[makeCrate(sid,0,false),makeCrate(sid,1,false)];
  if(run.carryCrate){run.shop.crates.push(run.carryCrate);run.carryCrate=null;}}
 function buyCrate(k){const cr=run.shop&&run.shop.crates&&run.shop.crates[k];if(!cr||cr.sold||run.crateOpen||!run.shop.kind)return false;const price=cratePrice(cr.kind,!cr.small);
+ if(typeof PACK_RESEARCH!=='undefined'&&!PACK_RESEARCH.canOpen(cr))return false;
  if(run.op<price||!crateRoom(cr))return false;
  run.op-=price;run.purchases++;run.shop.buys=(run.shop.buys||0)+1;
  run.shop.paidHere=(run.shop.paidHere||0)+price;regularCheck(price);
@@ -10808,7 +11726,9 @@ function buyCrate(k){const cr=run.shop&&run.shop.crates&&run.shop.crates[k];if(!
   rerolled:(run.shop.rerollsHere||0)>0,campId:run.shop.sid||run.metaRules?.campId});
  openCrate(cr,price);return true;
 }
-function openCrate(cr,paidOp){cr.grade=gradeNow();cr.view=crateView(cr);cr.paidOp=paidOp;cr.sold=true;run.crateOpen=cr;
+function openCrate(cr,paidOp){cr.grade=gradeNow();cr.paidOp=paidOp;
+ if(typeof PACK_RESEARCH!=='undefined'&&!PACK_RESEARCH.prepare(cr))return false;
+ cr.view=crateView(cr);cr.sold=true;run.crateOpen=cr;
  for(const id of cr.view)if(cr.kind==='relic'){const o=run.relicSeen||(run.relicSeen={});o[id]=(o[id]||0)+1;}
  if(cr.kind==='recruit'){const rare=(cr.view||[]).some(id=>{const st=STUDENTS.find(x=>x.id===id);return st&&st.rarity>=1;});run.packDry=rare?0:(run.packDry||0)+1;}
  if(simMode){if(!takeCrate(window.__simCrate?window.__simCrate(cr):0))skipCrate();return;}
@@ -10817,7 +11737,10 @@ function openCrate(cr,paidOp){cr.grade=gradeNow();cr.view=crateView(cr);cr.paidO
 /* §27.6 D-3: 영입 팩은 고르지 않고 닫을 수 있다(환불 없음). 고를 수 있는 후보가 하나도 없을 때도 이 길로 빠져나온다 */
 function skipCrate(){
  const cr=run&&run.crateOpen;if(!cr)return false;
- cr.picked=null;run.crateLog.push({sid:cr.sid,kind:cr.kind,small:cr.small,grade:cr.grade,view:(cr.view||[]).slice(),pick:null,lap:run.lap,paid:cr.paidOp});
+ cr.picked=null;
+ if(typeof PACK_RESEARCH!=='undefined')PACK_RESEARCH.record(cr,'skip');
+ run.crateLog.push({sid:cr.sid,kind:cr.kind,small:cr.small,grade:cr.grade,
+  view:(cr.view||[]).slice(),pick:null,lap:run.lap,paid:cr.paidOp});
  run.crateOpen=null;log(`📦 ${CRATES[cr.kind].name}: 고르지 않음`,'shop');
  if(typeof MODAL!=='undefined')MODAL.pop('crate');
  if(!simMode&&run.shop.kind&&typeof renderShop==='function')renderShop();
@@ -10828,7 +11751,8 @@ function crateTakeOk(cr,id){
  if(cr.kind==='recruit'){
   const m=recruitedMember(id);return STUDENTS.some(s=>s.id===id&&studentUnlocked(s))&&(!m||m.star<3);
  }
- if(cr.kind==='relic')return relicOk(id);
+ if(cr.kind==='relic')return relicOk(id)&&(run.relics.length<BAL.relicSlots||
+  (Number.isInteger(cr.replaceIndex)&&!!run.relics[cr.replaceIndex]));
  if(cr.kind==='ward')return run.hand.length<handMax();
  if(cr.kind==='tactic')return run.tactics.length<BAL.tacticSlots;
  return true;}
@@ -10851,8 +11775,12 @@ function takeCrate(i){
   run.packDry=(stu.rarity>=1)?0:(run.packDry||0)+0; /* 희귀 천장 기록은 개봉 기준(아래 openCrate 에서) */
  }
  else if(cr.kind==='gear'){addItem(id);log(`🛡 장비 팩 → ${id&&id.name?id.name:'장비'}`,'shop');}
- else{if(!grantRelic(id,'crate'))return false;log(`🏺 유물 상자 → 「${relicOf(id).name}」 — ${relicOf(id).desc}`,'shop');} /* C-06: 공통 획득(슬롯·중복·미해금) */
- cr.picked=id;run.crateLog.push({sid:cr.sid,kind:cr.kind,small:cr.small,grade:cr.grade,view:cr.view.slice(),pick:id,lap:run.lap,paid:cr.paidOp});run.crateOpen=null;
+ else{if(!grantRelic(id,'crate',cr.replaceIndex))return false;
+  log(`🏺 유물 상자 → 「${relicOf(id).name}」 — ${relicOf(id).desc}`,'shop');}
+ cr.picked=id;
+ if(typeof PACK_RESEARCH!=='undefined')PACK_RESEARCH.record(cr,'pick');
+ run.crateLog.push({sid:cr.sid,kind:cr.kind,small:cr.small,grade:cr.grade,
+  view:cr.view.slice(),pick:id,lap:run.lap,paid:cr.paidOp});run.crateOpen=null;
  MODAL.pop('crate');if(!simMode&&run.shop.kind&&typeof renderShop==='function')renderShop();if(!simMode&&typeof SFX!=='undefined')SFX.buy();dirty=true;return true;}
 /* ----- 지도 전술 ----- */
 const tileBusy=t=>!!(run.battle&&run.battle.tile===t);
@@ -10928,6 +11856,7 @@ function rollAnomaly(){
  if(a.id==='calm')recoverT(8,'정적');
 }
 function onCamp(){
+ const dryHand=run.hand.length+(run.discardLap===run.lap?(run.discardN||0):0);
  riskCampReached();
  settleLap(false); /* v1.3 §21.10: 지난 랩 평가 확정(회복 전 상태 기준) → 랩 증가 → 회복·스폰 → 보급 후보 */
  /* v1.1 과제 「무기절 3랩」: 이번 랩에 전투불능이 없었으면 연속 +1 */
@@ -10954,7 +11883,10 @@ function onCamp(){
  if(econOn()&&run.dryLap!==run.lap){
   /* §27.6 E-2b 마름 방지: 캠프 도착 순간 「손패 + 이번 랩 처분 수」가 기준 이하이면 1장. 도착 직전 처분으로 조건을 만들 수 없다 */
   const dw=BAL.econ.dry||{};
-  if(run.hand.length+(run.discardLap===run.lap?(run.discardN||0):0)<=(dw.need==null?2:dw.need)){run.dryLap=run.lap;for(let k=0;k<(dw.give==null?1:dw.give);k++)drawCard();if((dw.give??1)>0)log(`🃏 보급 회선: 손패가 말라 카드 ${dw.give??1}장`);}
+  if(dryHand<=(dw.need==null?2:dw.need)){
+   run.dryLap=run.lap;for(let k=0;k<(dw.give==null?1:dw.give);k++)drawCard();
+   if((dw.give??1)>0)log(`🃏 보급 회선: 손패가 말라 카드 ${dw.give??1}장`);
+  }
  }
  const before=run.hand.length;
  /* §17.3 D: 랩당 드로우 폐지 → 캠프 통과 +1(BAL.campCards). 소환 타일 ≤1이고 손패에 소환 카드가 없으면 그 1장은 소환 카드 보장 */
@@ -11049,7 +11981,6 @@ function enterEffects(t){
  if(c.consume){t.card=null;t.link=null;t.base=null;t.combo=false;t.lv=1;log(`🎁 ${c.name} 소진 — 빈 도로로 돌아갑니다`);relinkAll();recomputeChains();run.party.forEach(recalcMember);dirty=true;}
 }
 
-
 </script>
 <script>
 'use strict';
@@ -11059,7 +11990,9 @@ function newBattleRuleStat(t){
  const facilities=typeof fieldSources==='function'?fieldSources(t):[];
  const traits=[...new Set(run.party.flatMap(m=>stats(m).traits.map(x=>x.id)))];
  const sup=battleSup(t)||{};
- return {damageTaken:0,enemyDamage:0,protected:0,shieldAbsorbed:0,rearDamage:0,healed:0,
+ const boardProof=typeof META_RULES!=='undefined'?META_RULES.scoreBoardContext(run,facilities):{};
+ return {damageTaken:0,enemyDamage:0,enemyAttackTotal:0,protected:0,shieldAbsorbed:0,rearDamage:0,healed:0,
+  ...boardProof,nativeKills:0,focusedStrong:false,exUses:0,bossEncounter:t.enemies.some(e=>e.boss),
   supportIds:support?.card?[support.i]:[],facilityIds:facilities.map(c=>c.i),controlCount:0,
   counterUsed:(run.counters||[]).some(id=>['slow','vest','drill','ap','burn','blast'].includes(id)),
   gearHits:0,traits,prepared:!!(support?.card||facilities.length),
@@ -11070,6 +12003,7 @@ function newBattleRuleStat(t){
 function recordBattleDamage(m,amount,absorbed){
  const s=run.battle?.ruleStat;if(!s)return;
  s.damageTaken+=amount;s.enemyDamage+=amount;s.shieldAbsorbed+=absorbed;s.protected+=absorbed;
+ s.enemyAttackTotal+=(Math.max(0,amount)||0)+(Math.max(0,absorbed)||0);
  if(rowOf(m)==='back')s.rearDamage+=amount;
  if(amount>0&&m.hp/m.maxHp<=0.5)s.lowHp=true;
 }
@@ -11187,7 +12121,9 @@ function hitEnemy(target,dmg,m,crit,bane,direct=false){
   const stat=run.battle?.ruleStat;
   if(stat){
    if(m&&stats(m).traits.length)stat.gearHits++;
-   if(run.focusUid===target.uid)stat.focused=true;
+   if(run.focusUid===target.uid){
+    stat.focused=true;if(target.boss||target.elite||target.vet)stat.focusedStrong=true;
+   }
   }
   dispatchRuleEvent('directHit',{e:target,m,amount:effective,direct:true});
   if(run.ended||!run.battle)return;
@@ -11327,6 +12263,10 @@ function onKill(e,killer){
  if(!t.enemies.includes(e))return;
  if(b.ruleStat)b.ruleStat.kills++;
  const pk0=run.packs[e.packId];
+ if(!e.summoned){
+  if(b.ruleStat)b.ruleStat.nativeKills++;
+  if(pk0){pk0.nativeKills=(pk0.nativeKills||0)+1;if(e.elite||e.vet)pk0.strongKilled=true;}
+ }
  if(pk0){pk0.enemyTypes=pk0.enemyTypes||{};pk0.enemyTypes[e.type]=(pk0.enemyTypes[e.type]||0)+1;}
  run.kills++;if(e.elite||e.vet)run.eliteKills=(run.eliteKills||0)+1;
  dispatchRuleEvent('kill',{e,pk:run.packs[e.packId]||null});
@@ -11391,6 +12331,7 @@ function heroExTune(m){
 function useEx(){
  if(!run||run.ended||run.ex<100||run.state!=='battle')return;
  const b=run.battle,al=alive();run.ex=0;run.shake=9;flash={color:'#ff6fae',t:0,dur:280};SFX.ex();
+ if(b.ruleStat)b.ruleStat.exUses++;
  {const p=hunterXY();burst(p.x,p.y-10,'#ff6fae',24,0.2);}
  banner('✨ EX 일제 발동!',al.map(m=>`${m.stu.name}「${m.stu.ex.name}」`).join(' · '),'#ff6fae',1800);log(`✨ EX 일제 발동: ${al.map(m=>m.stu.ex.name).join(', ')}`,'good');
  run.exUntil=run.time+BAL.exDuration;fxEvent('ex',{members:al});
@@ -11433,7 +12374,8 @@ function pickStudent(rar){
  return weightedPick(pool).s;
 }
 function makeOffer(){
- if(run.relics.length>=BAL.relicSlots)return makeOfferNoRelic();
+ if(run.relics.length>=BAL.relicSlots&&
+  !(typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active()))return makeOfferNoRelic();
  const kind=weightedPick([{k:'student',w:60},{k:'relic',w:25},{k:'supply',w:15}]).k,free=Math.random()<0.05;
  if(kind==='student'){const rar=rarityRoll(),stu=pickStudent(rar);return {uid:uid(),kind,stu,rarity:stu.rarity,cost:free?0:STUDENT_COST[stu.rarity],free};}
  if(kind==='relic'){const rar=rarityRoll(),shown=new Set((run.shop.offers||[]).filter(o=>o&&o.kind==='relic').map(o=>o.relic.id)),base=relicPool().filter(r=>!shown.has(r.id));let pool=base.filter(r=>r.rarity===rar);if(!pool.length)pool=base; /* C-06: 한 진열에 같은 유물 두 번 금지 */
@@ -11533,7 +12475,8 @@ function shopHasPurchaseOpportunity(op){
  const offer=(run.shop.offers||[]).some(o=>{
   if(!o||o.sold||priceOf(o)<=0||priceOf(o)>op)return false;
   if(o.kind==='student')return studentUnlocked(o.stu)&&(recruitedMember(o.stu.id)?.star||0)<3;
-  if(o.kind==='relic')return run.relics.length<BAL.relicSlots&&relicOk(o.relic.id);
+  if(o.kind==='relic')return relicOk(o.relic.id)&&(run.relics.length<BAL.relicSlots||
+   (typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active()));
   if(o.supply?.id==='train')return run.party.some(m=>m.star<3);
   return true;
  });
@@ -11552,7 +12495,8 @@ function reroll(){if(run.op<rerollCost()||run.t<=T_IMMINENT)return;run.op-=rerol
 function buy(ouid,replaceIdx){
  const o=run.shop.offers.find(x=>x.uid===ouid);if(!o||o.sold||run.op<priceOf(o))return;
  if(o.kind==='student'&&!studentUnlocked(o.stu))return;
- if(o.kind==='relic'&&(run.relics.length>=BAL.relicSlots||!relicOk(o.relic.id)))return; /* 유물 슬롯 5칸 · v1.4 R4 C-06: 보유 중(중복)·미해금 조건부는 살 수 없다 */
+ if(o.kind==='relic'&&(!relicOk(o.relic.id)||(run.relics.length>=BAL.relicSlots&&
+  (!Number.isInteger(replaceIdx)||!run.relics[replaceIdx]))))return;
  const cost=priceOf(o),budget=offerBudget(o);
  if(o.kind==='student'){
   const owned=recruitedMember(o.stu.id);
@@ -11562,7 +12506,8 @@ function buy(ouid,replaceIdx){
    if(Number.isInteger(replaceIdx))setPartySlot(replaceIdx,member.uid);
    SFX.buy();
   }
- }else if(o.kind==='relic'){if(!grantRelic(o.relic.id,'shop'))return;log(`🏺 유물 「${o.relic.name}」 획득 — ${o.relic.desc}`,'shop');SFX.buy();}
+ }else if(o.kind==='relic'){if(!grantRelic(o.relic.id,'shop',replaceIdx))return;
+  log(`🏺 유물 「${o.relic.name}」 획득 — ${o.relic.desc}`,'shop');SFX.buy();}
  else{const s=o.supply;SFX.buy();
   if(s.id==='drink')healAll(0.4,'에너지 드링크',true);
   if(s.id==='ammo'){run.atkBonus+=3;run.party.forEach(recalcMember);}
@@ -11712,7 +12657,9 @@ function offerState(o){
   return {txt:price,act:'합류',can:!poor,poor};}
  if(o.kind==='relic'){const r=o.relic;
   if(run.relics.includes(r.id))return {txt:'보유 중',why:'이미 가진 유물입니다 — 같은 유물은 두 번 가질 수 없습니다'};
-  if(run.relics.length>=BAL.relicSlots)return {txt:'슬롯 가득',why:'유물 수납함에서 하나를 내려놓으면 살 수 있습니다'};
+  if(run.relics.length>=BAL.relicSlots)return typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active()?
+   {txt:price,act:'교체 획득',relicReplace:true,can:!poor,poor}:
+   {txt:'슬롯 가득',why:'유물 수납함에서 하나를 내려놓으면 살 수 있습니다'};
   if(!relicOk(r.id))return {txt:'구매 불가',why:'아직 해금되지 않은 조건부 유물입니다'};
   return {txt:price,act:'획득',can:!poor,poor};}
  return {txt:price,act:'사용',can:!poor,poor};
@@ -11735,6 +12682,9 @@ function offerBuyHtml(o,s){
  if(s.done)return `<button class="btn" disabled>✔ 완료</button>`;
  if(!s.act)return `<button class="btn" disabled>${s.txt}${s.why?`<small>${s.why}</small>`:''}</button>`;
  const poor=s.poor?`<small>OP 부족 — 보유 ${run.op} / ${priceOf(o)}</small>`:'';
+ if(s.relicReplace)return '<p>교체할 유물을 선택하세요. 기존 유물은 이번 원정에서 사라집니다.</p>'+
+  '<div class="rep">'+run.relics.map((id,i)=>`<button data-buy="${o.uid}" data-rep="${i}" `+
+   `${s.can?'':'disabled'}>↔ ${relicOf(id).name} 대신 · ${priceOf(o)} OP</button>`).join('')+'</div>';
  if(s.replace){
   if(!o.replacing)return `<button class="btn ghost" data-buy="${o.uid}" ${s.can?'':'disabled'}>교체할 분대원 고르기 · ${s.txt}${poor||'<small>분대 정원이 찼습니다 — 한 명을 귀환시키고 그 자리에 합류합니다</small>'}</button>`;
   return `<div class="rep">${run.party.map((m,i)=>`<button data-buy="${o.uid}" data-rep="${i}" ${s.can?'':'disabled'}>↔ ${m.stu.name} 대신 <span class="kbd">+${memberReturnRefund(m)} OP 환급</span></button>`).join('')}</div>${s.poor?`<div class="kbd dbuywhy">OP 부족 — 보유 ${run.op} / ${priceOf(o)}</div>`:''}`;}
@@ -11761,6 +12711,7 @@ function offerDetailHtml(o){
  return `${close}<div class="odet k-item"><div class="dart"><span class="oi">${it.icon}</span></div><div class="dinfo" data-scroll-ok>
    <div class="dbadges"><span class="rar r${o.rarity}">${R?RARITY[R.rarity].name:'보급품'}</span>${flag}<span class="dflag">${R?`유물${R.cond?' · 조건부':''}`:'즉시 사용'}</span></div>
    <h4 class="dnm">${it.name}</h4><p class="ddesc">${it.desc}</p>
+   ${R&&typeof metaUiRelicText==='function'?`<p class="ddesc">${escTip(metaUiRelicText(R.id))}</p>`:''}
    ${R&&R.cond?`<p class="dnow">지금 값: <b>${relicNow(R.id)||'—'}</b></p>`:''}
    ${R?`<p class="kbd">유물 수납함 ${run.relics.length}/${BAL.relicSlots} — 조건부 유물은 지도·분대·보급 행동을 봅니다</p>`:'<p class="kbd">사는 즉시 효과가 적용됩니다</p>'}
   </div><div class="dbuy">${offerBuyHtml(o,s)}</div></div>`;
@@ -11784,7 +12735,14 @@ function renderShop(){
  renderHold();
  renderServices();
  $('#shTitle').textContent=run.shop.kind==='launch'?(econOn()?'출격 고용 — 초기 OP로 동료를 고용하세요':'출격 보급 — 첫 분대원을 뽑으세요'):run.shop.kind==='camp'?`캠프 보급 (랩 ${run.lap})${run.shop.delivery?' · 협회 드론 수령':''}`:`협회 보급 드론 도착 (T ${run.t})`;
- if(econOn()){const sub=`${supplyOn()?`${GRADES[gradeNow()].icon}${GRADES[gradeNow()].name} 보급 · `:''}${run.shop.kind==='launch'?`고용 ${BAL.econ.hire} OP · 특훈 ${BAL.econ.launchTrain} OP — 넷을 채우든, 아껴서 승급하든 선택`:run.shop.kind==='camp'?'캠프 보급 — 타일 4종·팩 구매 · 도착한 드론 물자는 학생 탭에서 확인':'드론 보급 — 팩과 진열 · 여기서 귀환하면 자원 · SP 50%'} · 같은 학생을 다시 사면 ★ 승급(이번 원정만) · 남은 OP는 귀환 때 사라집니다`;$('#shSub').textContent=sub;}
+ if(econOn()){
+  const where=run.shop.kind==='launch'?
+   `고용 ${BAL.econ.hire} OP · 특훈 ${BAL.econ.launchTrain} OP — 동료를 채우거나 승급 비용을 남겨 두세요`:
+   run.shop.kind==='camp'?'캠프 — 지정 보충·원정 덱 교체·타일 강화 · 팩 개봉 후 OP 리롤 가능':
+   '드론 — 팩과 진열 · 여기서 귀환하면 자원·SP 50%';
+  $('#shSub').textContent=(supplyOn()?`${GRADES[gradeNow()].icon}${GRADES[gradeNow()].name} 보급 · `:'')+
+   where+' · 같은 학생은 ★ 승급(이번 원정만) · 남은 OP는 귀환 때 사라집니다';
+ }
  else{const sub=`${supplyOn()?`${GRADES[gradeNow()].icon}${GRADES[gradeNow()].name} 보급 · `:''}보급은 출격 1회 + 드론 2회(T 66%·33%)뿐 · 가격 ×${shopInfl()}${run.party.length>=4&&BAL.party4Price>1?` · 4인 편성 +${Math.round((BAL.party4Price-1)*100)}%`:''} · 같은 학생을 다시 사면 ★ 승급(최대 ★3) · 리롤 = ${BAL.rerollCosts.join('→')} OP 누진 + T −${T_REROLL} · 남은 OP는 귀환 시 마나석으로`,el=$('#shSub');el.textContent=sub;if(el.setAttribute)el.setAttribute('title',sub);}
  $('#shOp').textContent=run.op;
  $('#shParty').innerHTML=run.party.map((m,i)=>`<div class="pm">${ptImg(m.stu,'face')}<div class="pmi"><b>${i===0?'🚩 ':''}${m.stu.name} ${traumaBadge(m.stu.id)} <i>${'★'.repeat(m.star)}</i></b><span class="pmc">${idChipsHtml(m.stu)}<span class="hpt" data-tip="HP ${m.hp}/${m.maxHp}${m.down?' (전투불능)':''}">${icoImg('icon_stat_hp','HP')}${m.down?'✖':Math.round(m.hp/m.maxHp*100)+'%'}</span></span></div><span class="pmb">${i>0?`<button data-front="${i}" title="선두로 — 적 공격의 60%를 선두가 받습니다">▲ 선두</button>`:''}${run.party.length>1?`<button class="x" data-sell="${i}" title="매각: OP +${memberReturnRefund(m)}">매각</button>`:''}</span></div>`).join('')
@@ -11808,9 +12766,10 @@ function renderShop(){
 }
 /* v1.3 상자 칸(보급 상자 탭): 리롤해도 그대로. 종류·가격만 보이고 내용은 열어야 안다 — 등급에 따라 펼쳐지는 장수만 예고 */
 const setCssVar=(el,k,v)=>{if(el&&el.style&&el.style.setProperty)el.style.setProperty(k,String(v));};
-function crateCellsHtml(){const crs=run.shop.crates||[],g=GRADES[gradeNow()],n=BAL.crate.picks[g.n];
+function crateCellsHtml(){const crs=run.shop.crates||[],g=GRADES[gradeNow()];
  if(!crs.length)return `<div class="crempty">${supplyOn()?'이번 보급에는 상자가 없습니다':'보급 상자는 E 게이트를 닫은 뒤 「보급과 평가」가 열리면 대형 보급(출격 1 + 드론 2)마다 2칸씩 붙습니다'}</div>`;
- return crs.map((cr,k)=>{const K=CRATES[cr.kind],p=cratePrice(cr.kind,!cr.small),room=crateRoom(cr),cant=run.op<p||!room;
+ return crs.map((cr,k)=>{const K=CRATES[cr.kind],p=cratePrice(cr.kind,!cr.small),room=crateRoom(cr);
+   const cant=run.op<p||!room,n=crateView(cr).length;
    return `<div class="crcard${cr.small?' small':''}${cr.sold?' sold':''}" style="--i:${k}"><span class="cb">${cr.small?'📦 소형 보급 (예약분 합류)':'📦 대형 보급 상자'}</span><span class="ci">${K.icon}</span><b class="cn">${K.name}</b><p class="cd">${K.desc}</p><p class="cg">${g.icon}${g.name} 보급 — 열면 ${n}장 중 1장을 고릅니다${cr.small?' · 인플레이션 없음':''}</p>${cr.sold?'<span class="kbd">완료</span>':`<button class="btn" data-crate="${k}" ${cant?'disabled':''} title="${room?'':crateBlock(cr)}">${room?`열기 · ${p} OP`:crateBlock(cr)}</button>${room&&run.op<p?`<span class="kbd dbuywhy">OP 부족 — ${run.op} / ${p}</span>`:''}`}</div>`;}).join('');
 }
 
@@ -12288,6 +13247,7 @@ function collectionShopAllowed(id){
 function collectionShopPool(){return collectionPool().filter(collectionShopAllowed);}
 function collectionEnsureShop(){
  if(!run||run.ended||!run.shop||run.shop.kind!=='camp')return null;
+ if(typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active())return RUN_DRAFT.shop();
  if(run.collectionShop&&run.collectionShop.lap===run.lap)return run.collectionShop;
  const rng=seedRng('collection-shop:'+run.lap),pool=collectionShopPool(),count=Math.max(3,Math.min(5,Math.round(+(BAL.collection||{}).slots||4)));
  for(let i=pool.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
@@ -12309,6 +13269,10 @@ function collectionShopBlock(index){
  if(!Number.isFinite(run.op)||run.op<o.price)return 'OP 부족';return '';
 }
 function collectionShopBuy(index){
+ if(typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active()){
+  const ok=RUN_DRAFT.buy(index);
+  if(ok&&!simMode)renderShop();return ok;
+ }
  if(!Number.isInteger(index)||collectionShopBlock(index))return false;
  const o=run.collectionShop.offers[index];
  // Check capacity first: generic addToHand converts overflow to OP, inappropriate for direct purchases.
@@ -12342,6 +13306,7 @@ function renderCollectionShop(){
  let host=document.getElementById('collectionShop');
  if(!host){host=document.createElement('section');host.id='collectionShop';host.className='collection-panel';anchor.parentNode.insertBefore(host,anchor);}
  const shop=collectionEnsureShop();host.hidden=!shop;if(!shop)return;collectionStyle();
+ if(typeof renderRunDraft==='function'&&RUN_DRAFT.active()){renderRunDraft(host);return;}
  host.innerHTML='<h4>🃏 캠프 타일</h4><p>원하는 타일을 골라 손패에 추가합니다. 처음 얻은 카드는 영구 수집되며, 진열은 다음 랩에 바뀝니다.</p><div class="collection-grid">'+shop.offers.map((o,i)=>{const block=collectionShopBlock(i);return collectionCardHtml(o.id,{sold:o.sold,button:`<button data-collection-buy="${i}" ${block?'disabled':''}>${collectionEsc(o.sold?'품절':block||`${o.price} OP · 구매`)}</button>`});}).join('')+'</div>';
  host.querySelectorAll('[data-collection-buy]').forEach(b=>b.onclick=()=>collectionShopBuy(+b.dataset.collectionBuy));
 }
@@ -15987,7 +16952,12 @@ function renderSupplyHud(){
  $('#relicCount').textContent=`${run.relics.length}/${BAL.relicSlots}`;
  if(relicSel&&!run.relics.includes(relicSel))relicSel=null;
  $('#relics').innerHTML=run.relics.map(id=>{const r=relicOf(id),now=r.cond?relicNow(id):'';return `<button class="r r${r.rarity}${r.cond?' cond':''}${relicSel===id?' sel':''}" data-relic="${id}" title="${r.name}: ${r.desc}${now?' — '+now:''}">${r.icon}</button>`;}).join('')||'<span class="kbd">보급·유물 상자에서 획득</span>';
- {const r=relicSel&&relicOf(relicSel),el=$('#relicInfo');el.innerHTML=r?`<b>${r.icon} ${r.name}</b> ${r.desc}${r.cond?` · <b>${relicNow(r.id)}</b>`:''}<button data-drop="${r.id}" title="슬롯을 비웁니다(환급 없음)">내려놓기</button>`:(run.relics.length?'유물을 누르면 지금 적용 중인 실제 값이 보입니다':'');}
+ {const r=relicSel&&relicOf(relicSel),el=$('#relicInfo');
+  el.innerHTML=r?`<b>${r.icon} ${r.name}</b> ${r.desc}`+
+   (r.cond?` · <b>${relicNow(r.id)}</b>`:'')+
+   `<p>${typeof metaUiRelicText==='function'?metaUiEsc(metaUiRelicText(r.id)):''}</p>`+
+   `<button data-drop="${r.id}" title="슬롯을 비웁니다(환급 없음)">내려놓기</button>`:
+   (run.relics.length?'유물을 누르면 지금 적용 중인 실제 값이 보입니다':'');}
 }
 function settleFxTick(){
  const fx=run.settleFx,el=$('#settleFx');if(!fx||fx.done||!supplyOn()){if(!el.hidden)el.hidden=true;return;}
@@ -16010,12 +16980,21 @@ function crateCardHtml(cr,id,i){
    <span class="cd">${act}${own?' · 이번 원정만':''}</span></button>`;}
  if(cr.kind==='gear'){ /* 장비 팩: 고른 장비를 바로 장착하거나 가방으로 */
   const it=id||{};
-  const stat=[it.atk?`공격 +${it.atk}`:'',it.def?`방어 +${it.def}`:'',it.hp?`HP +${it.hp}`:''].filter(Boolean).join(' · ');
-  return `<button class="ccard r${it.rarity||0}" data-ci="${i}" style="--i:${i}"><span class="ci">🛡</span><b>${it.name||'장비'}</b><span class="ck">${SLOT_NAME&&SLOT_NAME[it.slot]?SLOT_NAME[it.slot]:it.slot||''} · <kbd>${i+1}</kbd></span><span class="cd">${stat||'장비'}</span></button>`;}
+  const traits=(it.traits||[]).map(t=>`<span class="cd">✦ <b>${escTip(t.name)}</b> `+
+   `${escTip(t.desc)}</span>`).join('');
+  return `<button class="ccard r${it.rarity||0}" data-ci="${i}" style="--i:${i}">`+
+   `<span class="ci">${SLOT_ICON[it.slot]||'🛡'}</span><b>${escTip(it.name||'장비')}</b>`+
+   `<span class="ck">${SLOT_NAME[it.slot]||''} · <kbd>${i+1}</kbd></span>`+
+   `<span class="cd">${escTip(statStr(it)||'장비')}</span>${traits}</button>`;}
  const R=relicOf(id);if(!R)return '';
- return `<button class="ccard r${R.rarity}" data-ci="${i}" style="--i:${i}"><span class="ci">${R.icon}</span><b>${R.name}</b><span class="ck">${RARITY[R.rarity].name}${R.cond?' · 조건부':''} · <kbd>${i+1}</kbd></span><span class="cd">${R.desc}</span>${R.cond?`<span class="cnow">${relicNow(id)}</span>`:''}</button>`;
+ return `<button class="ccard r${R.rarity}" data-ci="${i}" style="--i:${i}">`+
+  `<span class="ci">${R.icon}</span><b>${R.name}</b><span class="ck">${RARITY[R.rarity].name}`+
+  `${R.cond?' · 조건부':''} · <kbd>${i+1}</kbd></span><span class="cd">${R.desc}</span>`+
+  `<span class="cd">${typeof metaUiRelicText==='function'?metaUiEsc(metaUiRelicText(id)):''}</span>`+
+  (R.cond?`<span class="cnow">${relicNow(id)}</span>`:'')+'</button>';
 }
 function renderCrate(){
+ if(typeof renderRelicExchange==='function')renderRelicExchange();
  const cr=run&&run.crateOpen;if(!cr)return;const K=CRATES[cr.kind],g=GRADES[cr.grade];
  $('#crTag').textContent=`SUPPLY CRATE · ${cr.small?'소형 보급':'대형 보급'}`;$('#crTitle').textContent=`${K.icon} ${K.name} — ${cr.view.length}장 중 1장`;
  $('#crSub').innerHTML=`${g.icon}${g.name} 보급 — 작전 평가가 높을수록 같은 열에서 더 많이 펼쳐집니다(3 · 4 · 5장) · <kbd>1</kbd>~<kbd>${cr.view.length}</kbd> 선택`;
@@ -16025,6 +17004,7 @@ function renderCrate(){
  {const none=!cr.view.length||!cr.view.some(id=>crateTakeOk(cr,id)),foot=$('#crFoot'),btn=$('#btnCrateSkip');
   if(foot){foot.hidden=!(cr.kind==='recruit'||none);
    if(btn){btn.textContent=none?'받을 수 있는 후보가 없습니다 — 닫기':'고르지 않음';btn.onclick=()=>{skipCrate();};}}}
+ if(typeof renderPackResearchControls==='function')renderPackResearchControls();
 }
 /* 전술 슬롯: 봉인은 즉시, 나머지는 지도에서 대상을 고른다(이설은 원본 → 옮길 칸 두 번) */
 function pickTactic(k){if(!run||run.ended||MODAL.blocking())return;const id=run.tactics[k],T=id&&tacticOf(id);if(!T)return;
@@ -16615,6 +17595,9 @@ function metaUiEnsure(){
  toolbar.innerHTML='<button data-meta-open aria-controls="metaV2Dialog">지휘·지도</button>'+
   '<span id="metaRunSummary"></span>';
  host.appendChild(toolbar);
+ const burst=document.createElement('button');burst.type='button';burst.id='metaScoreBurst';
+ burst.className='meta-score-burst';burst.hidden=true;burst.dataset.metaScoreSkip='true';
+ burst.setAttribute('aria-label','점수 계산 연출 건너뛰기');host.appendChild(burst);
  const dialog=document.createElement('div');dialog.id='metaV2Dialog';dialog.className='meta-modal';dialog.hidden=true;
  dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');
  dialog.setAttribute('aria-labelledby','metaV2Title');
@@ -16629,14 +17612,53 @@ function metaV2Render(){
  if(!run||run.ended||typeof mapOf!=='function')return;metaUiEnsure();
  const el=document.getElementById('metaRunSummary'),d=leaderRuleOf(run),m=mapOf(run);
  if(el)el.textContent=`${m.name} · ${d?.name||'기본 지령'}${metaUiCamp()?' · 캠프':''}`;
+ metaUiScoreTick();
  const panel=document.getElementById('metaV2Dialog');
  if(panel&&!panel.hidden)metaUiRenderDialog();
 }
+function metaUiScoreTick(){
+ const el=document.getElementById('metaScoreBurst');if(!el)return;
+ const active=typeof CHALLENGE_V2!=='undefined'&&CHALLENGE_V2.active(run);
+ const entry=active?run.challenge.entries.at(-1):null;
+ if(!entry){el.hidden=true;META_UI.scoreEvent=null;return;}
+ const key=run.runId+':'+run.challenge.attemptId+':'+entry.eventId;
+ if(META_UI.scoreEvent!==key){META_UI.scoreEvent=key;META_UI.scoreAt=performance.now();}
+ const age=performance.now()-META_UI.scoreAt;
+ if(age>2600||META_UI.scoreSkip===key){el.hidden=true;return;}
+ const reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const phase=reduced?3:Math.min(3,Math.floor(age/300)),step=entry.stages?.[phase];
+ const num=value=>Number(value||0).toLocaleString();
+ el.hidden=false;el.dataset.phase=phase;
+ el.innerHTML='<small>'+['칩','가산배수','곱배수','점수 재평가'][phase]+'</small>'+
+  '<strong>+'+num(step?.value??entry.total)+'</strong><span>도전 누적 '+num(run.challenge.total)+'</span>';
+}
 function metaUiRenderDialog(){
  const host=document.getElementById('metaV2Body');if(!host||!run)return;
- host.innerHTML=metaUiRuleHtml(run.metaRules?.leaderId||run.leaderId,run)+metaUiLeaderChoices()+
+ host.innerHTML=metaUiRuleHtml(run.metaRules?.leaderId||run.leaderId,run)+metaUiLeaderChoices()+metaUiRelicChoices()+
   '<hr>'+metaUiMapBrief(run)+metaUiRegionChoices()+metaUiCounterChoices()+
-  '<p class="meta-note">도로 인접은 대각선까지 8방향 · 시설은 카드에 적힌 범위로 지원합니다.</p>';
+  '<p class="meta-note">도로 인접은 대각선까지 8방향 · 시설은 카드에 적힌 범위로 지원합니다.</p>'+
+  metaUiScorePanel();
+}
+function metaUiRelicText(id){
+ return typeof CHALLENGE_V2!=='undefined'?CHALLENGE_V2.relicText(id):'';
+}
+function metaUiRelicChoices(){
+ if(!run?.relics.includes('stamp'))return '';
+ const options={...CLUBS,...ROLES},selected=run.metaRules?.choice.synergy;
+ return '<label class="meta-select">학생회 도장 · 필요 인원 −1을 적용할 시너지'+
+  `<select data-meta-synergy ${metaUiCamp()?'':'disabled'}>`+
+  Object.entries(options).map(([id,name])=>`<option value="${metaUiEsc(id)}"`+
+   (selected===id?' selected':'')+'>'+metaUiEsc(name)+'</option>').join('')+'</select></label>';
+}
+function metaUiScorePanel(){
+ if(typeof CHALLENGE_V2==='undefined'||!CHALLENGE_V2.active(run))return '';
+ const entry=run.challenge.entries.at(-1),num=value=>Number(value||0).toLocaleString();
+ return '<section class="meta-rule"><h4>도전 점수 '+num(run.challenge.total)+'</h4>'+
+  '<p>칩 × (1 + 가산배수 합) × 곱배수 × (1 + 추가 재평가). 점수는 영구 재화로 환전되지 않습니다.</p>'+
+  (entry?'<details open><summary>최근 무리 +'+num(entry.total)+'</summary>'+progressionScoreHtml(entry)+
+   '</details>':'<p>원래 배치된 적 무리를 격파하면 점수를 계산합니다.</p>')+
+  (run.relics||[]).map(id=>'<p><b>'+metaUiEsc(relicOf(id)?.name||id)+'</b> · '+
+   metaUiEsc(metaUiRelicText(id))+'</p>').join('')+'</section>';
 }
 function metaUiOpen(){
  if(!run||run.ended)return;metaUiEnsure();META_UI.returnFocus=document.activeElement;
@@ -16690,9 +17712,10 @@ function drawMetaMapSites(){
  ctx.restore();
 }
 document.addEventListener('click',event=>{
- const b=event.target.closest?.('[data-meta-open],[data-meta-close],[data-meta-map],'+
+ const b=event.target.closest?.('[data-meta-open],[data-meta-close],[data-meta-map],[data-meta-score-skip],'+
   '[data-meta-budget],[data-meta-terrain],[data-meta-form],[data-meta-counter]');if(!b||b.disabled)return;
  event.stopPropagation();
+ if(b.hasAttribute('data-meta-score-skip')){META_UI.scoreSkip=META_UI.scoreEvent;metaUiScoreTick();return;}
  if(b.hasAttribute('data-meta-open')){metaUiOpen();return;}
  if(b.hasAttribute('data-meta-close')){metaUiClose();return;}
  if(b.dataset.metaForm){
@@ -16710,6 +17733,11 @@ document.addEventListener('click',event=>{
   metaUiCommit(ok,ok?'유예한 지형을 처리했습니다.':'현재 지형 상태를 확인해 주세요.');}
 });
 document.addEventListener('change',event=>{
+ if(event.target.matches?.('[data-meta-synergy]')){
+  const synergies=[...new Set([...Object.keys(CLUBS),...Object.keys(ROLES)])];
+  const ok=META_RULES.choose(run,{synergy:event.target.value},{atCamp:metaUiCamp(),synergies});
+  metaUiCommit(ok,ok?'도장의 적용 시너지를 변경했습니다.':'캠프에서 변경할 수 있습니다.');return;
+ }
  if(!event.target.matches?.('[data-meta-target]'))return;
  const targets=META_RULES.targets(run),target=targets[Number(event.target.value)];
  const ok=META_RULES.choose(run,{target},{atCamp:metaUiCamp(),validTargets:targets});
@@ -16746,6 +17774,112 @@ renderShop=function(){
  box.innerHTML='<b>리더 지령 · 지역 거점</b><p>'+metaUiEsc(leaderRuleOf(run)?.name||'기본 지령')+
   (metaUiCamp()?' · 캠프에서 선택 변경':' · 현재 선택 확인')+'</p><button data-meta-open>지휘·지도 열기</button>';
 };
+
+</script>
+<script>
+'use strict';
+const RUN_DRAFT_UI={slot:4,replenish:null,discard:-1,found:null,upgrade:null,from:null};
+function renderRelicExchange(){
+ const cr=run?.crateOpen,anchor=document.getElementById('crCards');if(!anchor)return;
+ let host=document.getElementById('crateRelicExchange');
+ if(!host){host=document.createElement('div');host.id='crateRelicExchange';anchor.before(host);}
+ host.hidden=!(cr?.kind==='relic'&&run.relics.length>=BAL.relicSlots);
+ if(host.hidden)return;
+ host.innerHTML='<label>새 유물을 고르기 전에 교체할 유물을 선택하세요 '+
+  '<select aria-label="교체할 유물"><option value="-1">유물 선택</option>'+run.relics.map((id,i)=>
+   `<option value="${i}" ${i===cr.replaceIndex?'selected':''}>${collectionEsc(relicOf(id).name)}</option>`).
+   join('')+'</select></label><small>교체한 유물의 효과는 즉시 종료됩니다.</small>';
+ host.querySelector('select').onchange=event=>{
+  cr.replaceIndex=+event.target.value;renderCrate();
+ };
+}
+function renderRunDraft(host){
+ const api=RUN_DRAFT,s=api.init(),sh=api.shop(),cfg=api.config(),ui=RUN_DRAFT_UI,esc=collectionEsc;
+ const label=id=>CARDS[id].icon+' '+CARDS[id].name;
+ const options=(ids,value)=>ids.map(id=>`<option value="${id}" ${id===value?'selected':''}>`+
+  `${esc(label(id))}</option>`).join('');
+ const free=run.deckList.map((id,i)=>({id,i})).filter(x=>x.i>=4);
+ if(!free.some(x=>x.i===ui.slot))ui.slot=free[0]?.i;
+ const owned=[...new Set(run.deckList)];if(!owned.includes(ui.replenish))ui.replenish=owned[0];
+ const found=s.found.filter(id=>api.legal(id)&&!run.deckList.includes(id));
+ if(!found.includes(ui.found))ui.found=found[0];
+ const locked=api.replenishBlock(ui.replenish,ui.discard),cost=api.replenishPrice();
+ const card=(o,index)=>{
+  const price=index==='pivot'?cfg.pivotReplaceCost:cfg.replaceCost;
+  const block=api.replaceBlock(o.id,ui.slot);
+  const hand=index!=='pivot'?`<button data-draft-hand="${index}" `+
+   `${!api.camp()||o.sold||run.op<o.price||run.hand.length>=handMax()?'disabled':''}>`+
+   `손패 1장 · ${o.price} OP</button>`:'';
+  return `<article class="collection-card"><small>${esc(o.role)}</small><b>${esc(label(o.id))}</b>`+
+   `<p>${esc(cardDesc(o.id))}</p>${hand}<button data-draft-buy="${index}" `+
+   `${o.sold||block||run.op<price?'disabled':''}>${o.sold?'품절':`원정 덱 교체 · ${price} OP`}</button>`+
+   `<small>${esc(o.sold?'선택 완료':block||'선택한 자유 카드와 교체 · 이후 드랍에 반영')}</small></article>`;
+ };
+ const upgrades=[...run.tiles,...run.cells].filter(t=>api.upgradeQuote(t.i));
+ if(!upgrades.some(t=>t.i===ui.upgrade))ui.upgrade=upgrades[0]?.i;
+ const uq=api.upgradeQuote(ui.upgrade);
+ host.innerHTML='<h4>캠프 타일 · 보충과 덱 정비</h4>'+
+  '<p>손패 보충은 지금 쓸 카드, 덱 교체는 앞으로 나올 카드를 바꿉니다. 고정 4장은 유지됩니다.</p>'+
+  `<div class="draft-controls"><label>지정 보충 <select id="draftReplenish">`+
+  options(owned,ui.replenish)+'</select></label>'+
+  (run.hand.length>=handMax()?'<label>대신 뺄 손패 <select id="draftDiscard">'+
+   '<option value="-1">선택하세요</option>'+run.hand.map((id,i)=>
+    `<option value="${i}" ${i===ui.discard?'selected':''}>${i+1}. ${esc(label(id))}</option>`).join('')+
+    '</select></label>':'')+
+  `<button data-draft-action="replenish" ${locked?'disabled':''}>`+
+  `${esc(locked||`손패 보충 · ${cost} OP`)} (${sh.replenished}/${cfg.replenishPerCamp})</button></div>`+
+  '<details open><summary>이번 원정 덱 교체 · 캠프당 1회</summary><label>교체할 자유 카드 '+
+  '<select id="draftSlot">'+free.map(x=>`<option value="${x.i}" ${x.i===ui.slot?'selected':''}>`+
+   `${x.i-3}. ${esc(label(x.id))}</option>`).join('')+'</select></label>'+
+  (found.length?'<div class="draft-controls"><label>이번 원정에서 발견한 타일 <select id="draftFound">'+
+   options(found,ui.found)+`</select></label><button data-draft-action="register" `+
+   `${api.replaceBlock(ui.found,ui.slot)||run.op<cfg.replaceCost?'disabled':''}>`+
+   `발견 타일로 교체 · ${cfg.replaceCost} OP</button></div>`:'')+
+  '<div class="collection-grid">'+sh.offers.map(card).join('')+
+  (sh.pivotOffer?card(sh.pivotOffer,'pivot'):'')+'</div>'+
+  `<button data-draft-action="redraw" ${!api.camp()||run.op<cfg.redrawCost||sh.offers.some(o=>o.sold)||
+    sh.redrawn>=cfg.redrawPerCamp?'disabled':''}>진열 재추첨 · ${cfg.redrawCost} OP `+
+   `(${sh.redrawn}/${cfg.redrawPerCamp})</button></details>`+
+  '<details><summary>배치한 타일 강화 · 캠프당 1회</summary>'+
+  (uq?'<label>강화할 타일 <select id="draftUpgrade">'+upgrades.map(t=>
+   `<option value="${t.i}" ${t.i===ui.upgrade?'selected':''}>${t.i}번 ${esc(label(t.card))} Lv${tileLv(t)}`+
+    '</option>').join('')+`</select></label><p>${esc(uq.description)}</p>`+
+   `<button data-draft-action="upgrade" ${run.op<uq.cost?'disabled':''}>정비 강화 · ${uq.cost} OP</button>`:
+   '<p>적이 없는 도로·길가 타일을 강화할 수 있습니다. 지형은 배치 조합으로 강화합니다.</p>')+'</details>'+
+  runDraftRelocateHtml();
+ const bind=(id,key)=>{const el=host.querySelector('#'+id);if(el)el.onchange=()=>{
+  ui[key]=['slot','discard','upgrade','from'].includes(key)?+el.value:el.value;renderRunDraft(host);
+ };};
+ bind('draftSlot','slot');bind('draftReplenish','replenish');bind('draftDiscard','discard');
+ bind('draftFound','found');bind('draftUpgrade','upgrade');bind('draftMoveFrom','from');
+ host.querySelectorAll('[data-draft-hand]').forEach(b=>b.onclick=()=>{
+  if(api.buy(+b.dataset.draftHand))renderShop();
+ });
+ host.querySelectorAll('[data-draft-buy]').forEach(b=>b.onclick=()=>{
+  if(api.buy(b.dataset.draftBuy==='pivot'?'pivot':+b.dataset.draftBuy,ui.slot))renderShop();
+ });
+ host.querySelectorAll('[data-draft-action]').forEach(b=>b.onclick=()=>{
+  const action=b.dataset.draftAction;
+  const ok=action==='replenish'?api.replenish(ui.replenish,ui.discard):
+   action==='register'?api.register(ui.found,ui.slot):action==='redraw'?api.redraw():
+   action==='upgrade'?api.upgrade(ui.upgrade):
+   action==='relocate'?api.relocate(ui.from,+host.querySelector('#draftMoveTo').value):false;
+  if(ok)renderShop();
+ });
+}
+function runDraftRelocateHtml(){
+ const s=RUN_DRAFT.init();if(!s.pivotUsed||s.relocated)return '';
+ const ui=RUN_DRAFT_UI,from=tacticTargets('relocate'),esc=collectionEsc;
+ if(!from.some(t=>t.i===ui.from))ui.from=from[0]?.i;
+ const to=ui.from!=null?tacticTargets('relocate',ui.from):[];
+ return '<details><summary>유물 전환 정비 · 타일 1개 무료 이설</summary>'+
+  '<p>사용한 타일의 레벨을 유지합니다. 새 위치의 적은 다음 캠프부터 생성됩니다.</p>'+
+  '<label>옮길 타일 <select id="draftMoveFrom">'+from.map(t=>
+   `<option value="${t.i}" ${t.i===ui.from?'selected':''}>${t.i}번 ${esc(CARDS[t.card].name)}</option>`).
+    join('')+'</select></label><label>빈 자리 <select id="draftMoveTo">'+to.map(t=>
+   `<option value="${t.i}">${t.i}번</option>`).join('')+'</select></label>'+
+  `<button data-draft-action="relocate" ${to.length?'':'disabled'}>이설 · 원정당 1회</button></details>`;
+}
 
 </script>
 <script>
@@ -17373,7 +18507,9 @@ function progressionUiRender(){
   details('recruits','동료 영입 과제')+'<div class="progression-grid">'+recruits+'</div></details>'+
   details('recipes','장비 설계도 · '+META_V2_CONFIG.recipes.rows.length+'종')+
   '<p>예린 영입 후 기초 설계도 중 하나를 무료로 선택합니다. 제작품은 해당 원정에서 사용합니다.</p>'+
-  '<div class="progression-grid">'+recipes+'</div></details>'+progressionChallengeHtml(section==='challenges');
+  '<div class="progression-grid">'+recipes+'</div></details>'+
+  (typeof packResearchHtml==='function'?packResearchHtml(section==='packResearch'):'')+
+  progressionChallengeHtml(section==='challenges');
 }
 function progressionChallengeHtml(open=false){
  if(typeof CHALLENGE_V2==='undefined')return '';
@@ -17500,12 +18636,16 @@ function progressionScoreHtml(entry){
  const source=id=>RELICS.find(r=>r.id===id)?.name||id;
  const conversions=(entry.conversions||[]).map(c=>
   `<li>${esc(source(c.source))} · ${esc(c.label)} <b>+${num(c.value)}</b></li>`).join('');
+ const additions=(entry.additions||[]).map(c=>
+  `<li>${esc(source(c.source))} · ${esc(c.label)} <b>+${Number(c.bp)/10000} 배수</b></li>`).join('');
  const multipliers=(entry.multipliers||[]).map(c=>
   `<li>${esc(source(c.source))} · ${esc(c.label)} <b>×${Number(c.bp)/10000}</b></li>`).join('');
  const leader=STUDENTS.find(s=>s.id===entry.leaderId);
  return `<small>${leader?esc(leader.name)+' 지휘 · ':''}도로 ${esc(entry.site)}</small>`+
-  `<ol><li>기본 성과 <b>${num(entry.base)}</b></li>${conversions}${multipliers}`+
-  `<li>점수 재평가 <b>${num(entry.replay)}회</b></li></ol>`;
+  `<ol><li>기본 칩 <b>${num(entry.base)}</b></li>${conversions}${additions}${multipliers}`+
+  `<li>점수 재평가 <b>${num(entry.replay)}회</b></li></ol>`+
+  (entry.stages?'<p class="meta-note">'+entry.stages.map((step,i)=>
+   ['칩','가산배수 적용','곱배수 적용','재평가 합산'][i]+' '+num(step.value)).join(' → ')+'</p>':'');
 }
 function progressionUiOpen(){
  progressionUiEnsure();progressionUiRender();
@@ -17516,6 +18656,63 @@ function progressionUiOpen(){
 }
 const progressionOriginalLobby=showLobby;
 showLobby=function(){progressionOriginalLobby();progressionUiEnsure();};
+
+</script>
+<script>
+'use strict';
+function packResearchHtml(open=false){
+ if(typeof PACK_RESEARCH==='undefined'||!econOn())return '';
+ const esc=metaUiEsc,levels=PACK_RESEARCH.levels(meta),config=PACK_RESEARCH.config();
+ const cards=Object.keys(config.tracks).map(id=>{
+  const s=PACK_RESEARCH.researchStatus(meta,id),effect=id==='reroll'?
+   '팩마다 리롤 '+(config.baseRerolls+s.level)+'회':
+   '개봉 후보 +'+s.level+'장 · 등급별 '+[3,4,5].map(n=>n+s.level).join(' / ')+'장';
+  const next=id==='reroll'?'리롤 횟수 +1':'개봉 후보 +1장';
+  const cost=Object.entries(s.cost).map(([res,n])=>(res==='part'?'부품':'기록')+' '+n).join(' · ');
+  return '<article><b>'+esc(s.name)+' Lv'+s.level+'</b><p>'+esc(effect)+'</p>'+
+   '<small>'+esc(s.desc)+'</small><small>'+esc(s.hint)+'</small>'+
+   (s.max?'<span>최대 단계</span>':'<small>다음 연구: '+esc(next)+' · '+esc(cost)+'</small>'+
+    '<button data-pack-research="'+id+'" '+(s.available&&s.affordable?'':'disabled')+'>연구</button>')+
+   '</article>';
+ }).join('');
+ return '<details name="progressionSection" data-section="packResearch" '+(open?'open':'')+'>'+
+  '<summary>보급 팩 연구 · 리롤 '+(config.baseRerolls+levels.reroll)+'회 / 후보 +'+levels.choices+'장</summary>'+
+  '<p>귀환한 뒤 부품·기록으로 연구합니다. 이후 원정의 모든 보급 팩에 적용됩니다.</p>'+
+  '<p>보유 부품 '+Math.floor(meta.res?.part||0)+' · 기록 '+Math.floor(meta.res?.rec||0)+'</p>'+
+  '<p>OP 리롤은 현재 후보를 바꿉니다. 여러 장을 펼쳐도 실제 보상은 한 장만 받습니다.</p>'+
+  '<div class="progression-grid">'+cards+'</div>'+ 
+  '<p>지역 도전은 계정 연구와 관계없이 리롤 '+
+  (config.baseRerolls+config.challengeLevels.reroll)+'회 · 후보 +'+
+  config.challengeLevels.choices+'장으로 고정됩니다.</p></details>';
+}
+function renderPackResearchControls(){
+ const cr=run?.crateOpen;if(!cr||typeof PACK_RESEARCH==='undefined'||!econOn())return;
+ const root=document.getElementById('crate'),sub=document.getElementById('crSub');if(!root||!sub)return;
+ let panel=document.getElementById('packResearchControls');
+ if(!panel){
+  panel=document.createElement('div');panel.id='packResearchControls';panel.className='pack-research-controls';
+  panel.setAttribute('role','group');panel.setAttribute('aria-label','팩 후보 리롤');sub.after(panel);
+ }
+ const state=cr.packResearch,status=PACK_RESEARCH.rerollStatus(cr),esc=metaUiEsc;
+ const grade=GRADES[cr.grade],base=BAL.crate.picks[grade.n];
+ sub.textContent=grade.icon+grade.name+' 보급 · 기본 '+base+'장 + 연구 '+(state?.choiceBonus||0)+
+  '장 · 현재 '+cr.view.length+'장 중 1장 선택'+
+  (cr.view.length<base+(state?.choiceBonus||0)?' · 받을 수 있는 후보만 표시':'');
+ panel.innerHTML='<p>OP '+Math.floor(run.op).toLocaleString()+' · 리롤 '+status.left+'/'+
+  (state?.rerollLimit||0)+'회 남음'+(run.packResearch?.fixed?' · 도전 고정 규격':'')+'</p>'+
+  '<button id="btnPackReroll" class="btn" '+(status.ok?'':'disabled')+'>'+
+  (status.left?'후보 다시 뽑기 · '+status.price+' OP':'리롤 사용 완료')+'</button>'+
+  '<small role="status">'+esc(status.reason||'후보를 다시 뽑습니다. 이전 결과로 되돌릴 수 없습니다.')+
+  '</small>';
+ panel.querySelector('#btnPackReroll').onclick=()=>PACK_RESEARCH.reroll(cr);
+}
+document.addEventListener('click',event=>{
+ const button=event.target.closest?.('[data-pack-research]');if(!button)return;
+ const ok=PACK_RESEARCH.buyResearch(meta,button.dataset.packResearch);
+ progressionUiRender();
+ document.getElementById('progressionV2Status').textContent=ok?
+  '연구 완료 · 다음 원정부터 보급 팩에 적용됩니다.':'연구 조건과 보유 자원을 확인해 주세요.';
+});
 
 </script>
 <script>
@@ -19115,5 +20312,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="9d1aee9f39e5ff83";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="92dfd539260100a4";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>

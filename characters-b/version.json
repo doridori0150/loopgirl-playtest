@@ -1,7 +1,7 @@
 {
   "channel": "character-b",
-  "version": "9d1aee9f39e5ff83",
-  "builtAt": "2026-09-22T03:02:01.070Z",
+  "version": "92dfd539260100a4",
+  "builtAt": "2026-09-22T10:22:27.495Z",
   "students": [
     "harin",
     "chaewon",
@@ -24,5 +24,8 @@
   ],
   "gameplayProfile": "meta-v2",
   "gameplayValidation": "package-chrome-pc-mobile-and-migration-verified",
-  "baseline_sha256": "57c4161501d735a7d5fde4bd74bfaeaa7b50f5afa7a2d06327e053f77ba0b970"
+  "baseline_sha256": "57c4161501d735a7d5fde4bd74bfaeaa7b50f5afa7a2d06327e053f77ba0b970",
+  "acquisitionVersion": 3,
+  "packResearchVersion": 1,
+  "scoreRules": "challenge-v3.0"
 }
