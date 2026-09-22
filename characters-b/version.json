@@ -1,7 +1,7 @@
 {
   "channel": "character-b",
-  "version": "b428f991413856a9",
-  "builtAt": "2026-09-21T20:51:44.870Z",
+  "version": "9d1aee9f39e5ff83",
+  "builtAt": "2026-09-22T03:02:01.070Z",
   "students": [
     "harin",
     "chaewon",
@@ -22,6 +22,7 @@
     "bora",
     "yeseo"
   ],
-  "gameplayValidation": "deferred",
+  "gameplayProfile": "meta-v2",
+  "gameplayValidation": "package-chrome-pc-mobile-and-migration-verified",
   "baseline_sha256": "57c4161501d735a7d5fde4bd74bfaeaa7b50f5afa7a2d06327e053f77ba0b970"
 }
