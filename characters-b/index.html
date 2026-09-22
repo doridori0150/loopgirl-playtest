@@ -2272,6 +2272,46 @@ button,a,input,select{touch-action:manipulation}
  #mobileOfficePreview { padding:10px;bottom:calc(var(--hub-nav-height) + 10px); }
  #mobileTownPeople button { min-height:86px;padding:9px 12px; }
 }
+
+/* Command balances and purchase comparisons are shared by phone and desktop. */
+#commandWallet { flex:none;padding:14px;margin-bottom:12px;border:1px solid #c3d7e8;
+ border-radius:12px;background:#f3f8fc;color:#23445e; }
+.command-wallet-title { font-size:13px;font-weight:800;margin-bottom:8px; }
+.command-wallet-primary { display:grid;grid-template-columns:1fr 1fr;gap:8px; }
+.command-balance { display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0; }
+.command-balance span { font-size:12px;line-height:1.4; }
+.command-balance strong { font-size:17px;font-variant-numeric:tabular-nums; }
+.command-wallet-primary .command-balance { padding:10px;border-radius:8px;background:#fff; }
+.command-wallet-primary [data-balance="sp"] { background:#21639a;color:#fff; }
+.command-wallet-primary [data-balance="sp"] strong { font-size:26px; }
+.command-materials { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px; }
+.command-materials .command-balance { flex-direction:column;align-items:flex-start;gap:3px; }
+#commandWallet p { margin:10px 0 0;color:#50667b;font-size:12px;line-height:1.5; }
+#commandWallet summary { cursor:pointer;padding:12px 0 4px;font-size:12px;color:#215b89; }
+.command-extra { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px; }
+#s-academy #tree .branch.on { grid-template-columns:repeat(2,minmax(0,1fr));height:auto; }
+#s-academy #tree .node { opacity:1;cursor:default;padding:12px; }
+#s-academy #tree .node .st { position:static;margin-bottom:7px;font-size:12px;color:#476075; }
+#s-academy #tree .node .nn { margin-right:0;font-size:16px; }
+#s-academy #tree .node .nd { margin:7px 0 12px;font-size:13px;line-height:1.55; }
+#s-academy #tree .node.avail:hover { transform:none; }
+#s-academy #tree .node.poor .st { color:#ae391f; }
+.command-cost { padding:8px;border-radius:8px;background:#edf4fa;color:#2c465e; }
+.command-cost-head,.command-cost-row { display:grid;grid-template-columns:1fr .8fr .9fr 1.3fr;
+ align-items:center;gap:4px;text-align:right;font-size:12px;line-height:1.7;font-variant-numeric:tabular-nums; }
+.command-cost-head { color:#5a6e81;font-weight:500; }
+.command-cost-head>:first-child,.command-cost-row>:first-child { text-align:left; }
+.command-cost-row strong { color:#126650; }
+.command-cost-row.is-short strong { color:#b33222; }
+.command-actions { display:flex;gap:8px;margin-top:9px; }
+.command-actions .command-buy { flex:1;min-height:42px;font-size:14px; }
+#tree .command-actions .pinb { min-width:42px;margin:0;border-radius:8px; }
+#tree .command-buy:disabled { opacity:1;background:#e6edf3;color:#56677a;border-color:#c2ceda; }
+@media(max-width:600px) and (orientation:portrait) {
+ #commandWallet { padding:12px; }
+ #s-academy #tree .branch.on { display:block; }
+ .command-extra { grid-template-columns:1fr; }
+}
 </style>
 <style>/* Region and leader guidance share one compact surface across pointer and touch layouts. */
 .meta-run-toolbar{position:absolute;left:10px;top:8px;z-index:6;display:flex;gap:8px;align-items:center;
@@ -17382,15 +17422,71 @@ function resetSkill(id){
   }else{const [cs,cm]=skillCost(s);sp+=cs;mana+=Math.floor(cm*0.8);}}
  meta.skills=meta.skills.filter(sid=>keep.has(sid));meta.sp+=sp;if(!econOn())meta.mana+=mana;save();return {removed,sp,mana};
 }
+/* Show the same balances and prices that the purchase path actually uses. */
+function commandAmount(key){
+ return Math.floor(Number(key==='sp'?meta.sp:key==='mana'?meta.mana:(meta.res||{})[key])||0);
+}
+function commandResourceName(key){
+ return key==='sp'?'SP':key==='mana'?'마나석':(ECON.defOf(key)||{}).name||key;
+}
+function renderCommandWallet(){
+ const tabs=$('#treeTabs');if(!tabs||!tabs.parentNode)return;
+ let wallet=$('#commandWallet');
+ if(!wallet){
+  wallet=document.createElement('section');wallet.id='commandWallet';
+  wallet.setAttribute('aria-label','지휘실 보유 자원');tabs.parentNode.insertBefore(wallet,tabs);
+ }
+ const expanded=!!wallet.querySelector('details[open]');
+ const item=key=>`<div class="command-balance" data-balance="${key}">`+
+  `<span>${collectionEsc(commandResourceName(key))}</span>`+
+  `<strong>${commandAmount(key).toLocaleString('ko-KR')}</strong></div>`;
+ const main=econOn()?['stone','rec','part','mem']:[];
+ const extra=econOn()?Object.keys(meta.res||{}).filter(k=>!main.includes(k)&&commandAmount(k)>0):[];
+ wallet.innerHTML='<div class="command-wallet-title">보유 자원</div>'+
+  '<div class="command-wallet-primary">'+item('sp')+item('mana')+'</div>'+
+  (main.length?'<div class="command-materials">'+main.map(item).join('')+'</div>':'')+
+  (extra.length?`<details${expanded?' open':''}><summary>교본·코어 등 추가 소재 ${extra.length}종 보기</summary>`+
+   '<div class="command-extra">'+extra.map(item).join('')+'</div></details>':'')+
+  `<p>${econOn()?'지휘실 강화는 SP 사용 · 소재는 시설·동료 성장에 사용':'지휘실 강화는 SP와 마나석 사용'}</p>`;
+}
+function commandCostHtml(s){
+ const [sp,mana]=skillCost(s),cost=econOn()?skillCostRes(s):{sp,mana};
+ const rows=Object.entries(cost).filter(([,n])=>n>0).map(([key,need])=>{
+  const have=commandAmount(key),left=have-need;
+  return `<div class="command-cost-row${left<0?' is-short':''}" data-cost="${key}">`+
+   `<span>${collectionEsc(commandResourceName(key))}</span><b>${need.toLocaleString('ko-KR')}</b>`+
+   `<span>${have.toLocaleString('ko-KR')}</span><strong>${left<0?'부족 '+(-left):left.toLocaleString('ko-KR')}</strong></div>`;
+ }).join('');
+ return '<div class="command-cost" aria-label="강화 비용 비교">'+
+  '<div class="command-cost-head"><span>재화</span><span>필요</span><span>보유</span><span>강화 후</span></div>'+
+  rows+'</div>';
+}
+function commandNodeHtml(s){
+ const own=meta.skills.includes(s.id),av=canBuySkill(s),[sp,mana]=skillCost(s);
+ const poor=econOn()?!skillCostOk(s):meta.sp<sp||meta.mana<mana;
+ const alt=altOf(s.id),altTaken=alt&&meta.skills.includes(alt);
+ const status=own?'습득 완료':altTaken?'다른 쪽 선택됨':!av?'선행 강화 필요':poor?'재화 부족':'강화 가능';
+ const pin=meta.pin&&meta.pin.kind==='skill'&&meta.pin.id===s.id;
+ const reset=`<button class="btn xs ghost" data-reset="${s.id}" `+
+  'title="연결된 다음 강화도 해제되며 사용한 SP가 반환됩니다">'+
+  (econOn()?'재설정 · SP 반환':'재설정 · SP 전액 / 마나석 80% 반환')+'</button>';
+ const purchase=commandCostHtml(s)+'<div class="command-actions">'+
+  `<button class="btn command-buy" data-buy-skill="${s.id}" ${!av||poor?'disabled':''}>`+
+  `${!av?'선행 조건 필요':poor?'재화 부족':'강화하기'}</button>`+
+  `<button class="pinb${pin?' on':''}" data-pin="${s.id}" title="개발 목표로 핀" aria-label="개발 목표 설정">📌</button>`+
+  '</div>';
+ return `<div class="node${own?' owned':av?(poor?' poor':' avail'):''}${alt?' alt':''}" data-id="${s.id}">`+
+  `<div class="st">${status}</div><div class="nn">${s.icon} ${s.name}</div><div class="nd">${s.desc}</div>`+
+  `<div class="nc">${own?reset:purchase}</div></div>`;
+}
 function renderAcademy(){
  if(econOn()&&meta.commandBalance!==1){commandNormalize(meta);save();}
  $('#acSp').textContent=meta.sp;if($('#acMana'))$('#acMana').textContent=meta.mana||0;if(econOn()&&$('#academyResources'))$('#academyResources').innerHTML=walletHtml();
  {const th=$('#treeHint');if(th)th.textContent=econOn()?
   'SP로 강화 · 핵심은 같은 단계 기초 2개 필요 · 재설정 시 SP 전액 반환 · 다음 원정부터 적용':
   'SP + 마나석으로 영구 스킬 · 핵심 노드는 같은 단의 소노드 2개 필요';}
- const nodeHtml=s=>{const own=meta.skills.includes(s.id),av=canBuySkill(s),[cs,cm]=skillCost(s),poor=av&&(econOn()?!skillCostOk(s):(meta.sp<cs||meta.mana<cm));
-  const a=altOf(s.id),altTaken=a&&meta.skills.includes(a);
-  return `<div class="node${own?' owned':av?(poor?' poor':' avail'):''}${a?' alt':''}" data-id="${s.id}"><div class="st">${own?'✔ 습득':altTaken?'택1 · 다른 쪽 선택':av?(poor?'재화 부족':'선택 가능'):'잠김'}</div><div class="nn">${s.icon} ${s.name}</div><div class="nd">${s.desc}</div><div class="nc">${own?`<button class="btn xs ghost" data-reset="${s.id}" title="이 강화와 연결된 다음 강화를 해제">${econOn()?'재설정 · SP 반환':'재설정 (💎80%)'}</button>`:`${econOn()?skillCostStr(s):`SP ${cs} + 💎 ${cm}`}<button class="pinb${meta.pin&&meta.pin.kind==='skill'&&meta.pin.id===s.id?' on':''}" data-pin="${s.id}" title="개발 목표로 핀 — 타이틀·원정 HUD·정산에 진행도 표시">📌</button>`}</div></div>`;};
+ renderCommandWallet();
+ const nodeHtml=commandNodeHtml;
  /* 분기 3개 = 탭(#treeTabs). 한 번에 한 분기(12노드)만 — PC 4열(단)·3행(소노드 2 + 핵심) */
  if(!BRANCH[treeTab])treeTab=Object.keys(BRANCH)[0];
  $('#treeTabs').innerHTML=Object.entries(BRANCH).map(([br,b])=>`<button data-br="${br}" class="${treeTab===br?'on':''}" style="--acc:${b.color}">${b.name} <span class="kbd">${SKILLS.filter(s=>s.br===br&&meta.skills.includes(s.id)).length}/12</span></button>`).join('');
@@ -17399,7 +17495,8 @@ function renderAcademy(){
  $$('#tree [data-reset]').forEach(b=>b.onclick=e=>{e.stopPropagation();resetSkill(b.dataset.reset);SFX.click();renderAcademy();});
  if(typeof mobileCommandLayout==='function')mobileCommandLayout();
  $$('#tree [data-pin]').forEach(b=>b.onclick=e=>{e.stopPropagation();setPin('skill',b.dataset.pin);SFX.click();renderAcademy();});
- $$('#tree .node.avail').forEach(n=>n.onclick=()=>{const s=SKILLS.find(x=>x.id===n.dataset.id),[cs,cm]=skillCost(s);
+ $$('#tree [data-buy-skill]').forEach(n=>n.onclick=()=>{
+ const s=SKILLS.find(x=>x.id===n.dataset.buySkill),[cs,cm]=skillCost(s);
  if(!canBuySkill(s))return;
  if(econOn()){if(!paySkill(s))return;}
  else{if(meta.sp<cs||meta.mana<cm)return;meta.sp-=cs;meta.mana-=cm;}
@@ -17435,10 +17532,11 @@ function setAcTab(t,room){const next=AC_TITLE[t]?t:'skill',rm=(room&&roomOf(room
  if(typeof renderOfficeMap==='function')renderOfficeMap();
  if(GL.mobileHubSync)GL.mobileHubSync();
 }
-/* v1.4 §24 지휘실: 분기 12노드가 패널 높이를 넘으면 1·2단 / 3·4단 두 쪽으로 나눈다(모바일) */
-function fitTree(){const br=$('#tree .branch.on');if(!br||!br.querySelectorAll)return;const tiers=[...br.querySelectorAll('.tier')];if(!tiers.length)return;br.classList.remove('half','p2');const bar=$('#treePg');
- if(br.scrollHeight<=br.clientHeight+1){if(bar)bar.hidden=true;return;}
- br.classList.add('half');if(HUB.pages.tree)br.classList.add('p2');if(bar){bar.hidden=false;bar.innerHTML=`<button data-tp="0" ${HUB.pages.tree?'':'disabled'}>◀ 1·2단</button><span>${HUB.pages.tree?2:1} / 2</span><button data-tp="1" ${HUB.pages.tree?'disabled':''}>3·4단 ▶</button>`;$$('#treePg [data-tp]').forEach(b=>b.onclick=()=>{HUB.pages.tree=+b.dataset.tp;fitTree();});}}
+/* Desktop scrolls through tiers; phone uses the named tier tabs. */
+function fitTree(){
+ const br=$('#tree .branch.on');if(br)br.classList.remove('half','p2');
+ const bar=$('#treePg');if(bar)bar.hidden=true;
+}
 function renderCodex(){
  if(typeof renderCollectionCodex==='function')renderCollectionCodex($('#collectionCodex'));
  const sigs=[],combos=COMBOS.map(cb=>({id:cb.to,need:cb.need}));
@@ -20313,5 +20411,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="9df75318e4b940e8";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="1284dbce3099f867";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
