@@ -2712,34 +2712,42 @@ body.ui4 #s-run .run-body{background:transparent}
 
 /* ── 2. 버튼 판(9-slice) — 파랑(주) · 흰(보조 .ghost/.icobtn/.pink) · 금(구매·출격) · 빨강(위험 .warn) ── */
 body.ui4 :is(#s-run,#s-result,#riskCamp,#shop,#crate,#pick,#dossier,#duel,#duelReport,#counter,#perk,#tileSynergy,
-  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings) :is(.btn:not(.opt),.icobtn),
+  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings,
+  #rosterDialog) :is(.btn:not(.opt),.icobtn),
 body.ui4 #s-run .spd button{
   --kb:url(media/203e39a7255bb7d587f44b066832d39f4568f7f62a9dbb119221fb2b8a4a15c5.webp);
   border:0 solid transparent!important;border-radius:0!important;background:none!important;box-shadow:none!important;
   border-image:var(--kb) 0 66 fill / 0 calc(var(--bh,40px)*.55) / 0 stretch!important;
   color:#fff!important;text-shadow:0 1px 0 rgba(10,60,130,.45);font-weight:800}
 body.ui4 :is(#s-run,#s-result,#riskCamp,#shop,#crate,#pick,#dossier,#duel,#duelReport,#counter,#perk,#tileSynergy,
-  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings) :is(.btn.ghost,.btn.pink,.icobtn),
+  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings,
+  #rosterDialog) :is(.btn.ghost,.btn.pink,.icobtn),
 body.ui4 #s-run .spd button{--kb:url(media/e5934e8cd712ee72aeb442c156e707e70e896edf4566b2796e95392355186473.webp);color:var(--u4-ink)!important;text-shadow:none}
 body.ui4 :is(#s-run,#s-result,#riskCamp,#shop,#crate,#pick,#dossier,#duel,#duelReport,#counter,#perk,#tileSynergy,
-  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings) .btn.gold{
+  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings,
+  #rosterDialog) .btn.gold{
   --kb:url(media/813b2a89021103aa5d392446a5ebf3d3c30e72935a69e1be38c78c53f2543696.webp);color:#4A2A00!important;text-shadow:0 1px 0 rgba(255,245,210,.7)}
 body.ui4 :is(#s-run,#s-result,#riskCamp,#shop,#crate,#pick,#dossier,#duel,#duelReport,#counter,#perk,#tileSynergy,
-  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings) .btn.warn{
+  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings,
+  #rosterDialog) .btn.warn{
   --kb:url(media/81253536816bb17eab7375a489062621c25a33b9d6e2d2e9fd9417233c8299d0.webp);color:#fff!important;text-shadow:0 1px 0 rgba(90,0,20,.45)}
 body.ui4 :is(#s-run,#s-result,#riskCamp,#shop,#crate,#pick,#dossier,#duel,#duelReport,#counter,#perk,#tileSynergy,
-  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings) :is(.btn:not(.opt),.icobtn):disabled{
+  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings,
+  #rosterDialog) :is(.btn:not(.opt),.icobtn):disabled{
   filter:grayscale(.85) brightness(.98);opacity:.7}
 body.ui4 :is(#s-run,#s-result,#riskCamp,#shop,#crate,#pick,#dossier,#duel,#duelReport,#counter,#perk,#tileSynergy,
-  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings) :is(.btn:not(.opt),
+  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings,
+  #rosterDialog) :is(.btn:not(.opt),
   .icobtn):not(:disabled):hover{
   filter:brightness(1.05)}
 body.ui4 :is(#s-run,#s-result,#riskCamp,#shop,#crate,#pick,#dossier,#duel,#duelReport,#counter,#perk,#tileSynergy,
-  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings) :is(.btn:not(.opt),
+  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings,
+  #rosterDialog) :is(.btn:not(.opt),
   .icobtn):not(:disabled):active{
   transform:translateY(1px);filter:brightness(.95)}
 body.ui4 :is(#s-run,#s-result,#riskCamp,#shop,#crate,#pick,#dossier,#duel,#duelReport,#counter,#perk,#tileSynergy,
-  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings) :is(.btn:not(.opt),.icobtn):focus-visible{
+  #equipmentDialog,#s-lobby,#s-academy,#s-town,#schedule,#s-select,#settings,
+  #rosterDialog) :is(.btn:not(.opt),.icobtn):focus-visible{
   outline:3px solid var(--u4-cyan);outline-offset:3px}
 body.ui4 #s-run .btn{white-space:nowrap}
 /* 배속: 흰 판, 켜진 칸만 파랑 판 */
@@ -3334,6 +3342,257 @@ body.ui4 #characterProfile .profile-actions button{height:44px;border:0 solid tr
 body.ui4 #characterProfile .profile-actions button:first-child{color:#fff;text-shadow:0 1px 0 rgba(10,60,130,.45);
   border-image-source:url(media/203e39a7255bb7d587f44b066832d39f4568f7f62a9dbb119221fb2b8a4a15c5.webp)}
 body.ui4 #characterProfile .profile-actions button:disabled{filter:grayscale(.85);opacity:.7}
+
+/* ── 13. 캠프 상점 v4(발라트로식 한 화면) — src/ui/camp-v4.js 가 .camp4 를 붙인다 ──
+ * 위: 타일 진열(카드 → 행동 줄) · 보급 팩 / 가운데: 손패 · 원정 덱 트레이 / 아래: 영입 진열(드론 수령 시) / 오른쪽: 분대.
+ * 지정 보충 · 타일 강화 · 정비 탭 · 메뉴 탭은 숨긴다(폰 캠프는 기존 그대로). */
+body.ui4 #shop .shopbox.camp4{width:min(1320px,96vw);max-height:94dvh}
+body.ui4 #shop .shopbox.camp4>.mh{margin:8px 8px 0;padding:10px 22px;border-radius:14px 14px 0 0;
+  background:linear-gradient(180deg,#fff,#F1F7FD);box-shadow:inset 0 -1px 0 var(--u4-line)}
+body.ui4 #shop .shopbox.camp4>.mh h3{color:var(--u4-ink);font:400 24px var(--fd)}
+body.ui4 #shop .shopbox.camp4>.mh .msub{color:var(--u4-sub)}
+body.ui4 #shop .shopbox.camp4>.mh .tag{background:var(--u4-blue);color:#fff;border:0}
+body.ui4 #shop .shopbox.camp4>.mh .sp{color:var(--u4-ink)}
+body.ui4 #shop .shopbox.camp4>.mh #shOp{color:var(--u4-ink);font:700 30px var(--fn)}
+body.ui4 #shop .shopbox.camp4 #campStatus{background:var(--u4-bg2);color:var(--u4-ink);padding-block:6px}
+body.ui4 #shop .shopbox.camp4 :is(#mobileCampNav,#shTabs,#collectionShop,#campTools){display:none!important}
+body.ui4 #shop .shopbox.camp4 #shBody{display:grid!important;align-content:start;
+  grid-template-columns:minmax(0,1.5fr) minmax(210px,1fr) 250px;
+  grid-template-areas:"tiles packs party" "tray tray party" "recruit recruit party";
+  grid-template-rows:auto auto auto;
+  align-items:start;gap:10px 12px;padding:10px 14px;overflow:auto}
+body.ui4 #shop .shopbox.camp4 #camp4Shop{display:contents}
+body.ui4 #shop .shopbox.camp4 #camp4Shop[hidden]{display:none}
+body.ui4 #shop .shopbox.camp4 #shBody>#shParty{grid-area:party!important;align-self:stretch;display:flex;
+  flex-direction:column;
+  gap:8px;padding:12px;border-radius:16px;background:var(--u4-bg2);box-shadow:inset 0 0 0 1px var(--u4-line)}
+body.ui4 #shop .shopbox.camp4 #shBody>#shParty::before{content:'분대';margin-bottom:2px;font:400 20px var(--fd);
+  color:var(--u4-ink)}
+body.ui4 #shop .shopbox.camp4 #shBody>.shpane[data-pane=crates]{grid-area:packs!important;display:block!important;
+  align-self:stretch;
+  padding:12px 14px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px var(--u4-line),var(--u4-shadow)}
+body.ui4 #shop .shopbox.camp4 #shBody>.shpane[data-pane=crates]::before{content:'보급 팩';display:block;margin:0 0 8px;
+  font:400 20px var(--fd);color:var(--u4-ink)}
+body.ui4 #shop .shopbox.camp4 #shCrates{display:flex;flex-wrap:wrap;gap:10px}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard{width:auto;flex:1 1 150px;max-width:190px;padding:10px 12px 12px}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard .pk4{height:84px}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard :is(.cd,.cg){font-size:13px;line-height:1.35}
+body.ui4 #shop .shopbox.camp4 #shBody>.shpane[data-pane=offers]{display:none!important}
+body.ui4 #shop .shopbox.camp4.c4recruit #shBody>.shpane[data-pane=offers]{grid-area:recruit!important;
+  display:grid!important;
+  padding:12px 14px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px var(--u4-line),var(--u4-shadow)}
+body.ui4 #shop .shopbox.camp4 #shBody>.shpane:is([data-pane=hand]){display:none!important}
+/* 타일 진열 */
+body.ui4 #camp4Shop .c4tiles{grid-area:tiles;padding:12px 14px 14px;border-radius:16px;background:#fff;
+  box-shadow:inset 0 0 0 1px var(--u4-line),var(--u4-shadow)}
+body.ui4 #camp4Shop .c4tiles>header{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+body.ui4 #camp4Shop h4{margin:0;font:400 20px var(--fd);color:var(--u4-ink)}
+body.ui4 #camp4Shop .c4sub{font-size:13px;font-weight:700;color:var(--u4-sub)}
+body.ui4 #camp4Shop .c4redraw{margin-left:auto;height:38px;padding:0 18px 3px;font-size:14px}
+body.ui4 #camp4Shop .c4p{display:inline-flex;align-items:center;gap:3px;font:700 16px var(--fn);color:inherit}
+body.ui4 #camp4Shop .c4p img{width:18px;height:18px}
+body.ui4 #camp4Shop .c4shelf{display:flex;gap:12px;overflow-x:auto;padding:12px 4px 8px;margin-top:-6px}
+body.ui4 #camp4Shop .c4card{--c1:var(--u4-support1);--c2:var(--u4-support2);position:relative;flex:none;width:156px;
+  display:flex;flex-direction:column;padding:0 0 10px;border:0;border-radius:14px;background:#fff;cursor:pointer;
+  text-align:left;color:var(--u4-ink);box-shadow:inset 0 0 0 2px var(--u4-line),0 8px 16px -10px rgba(40,90,150,.5);
+  transition:transform .12s,box-shadow .12s}
+body.ui4 #camp4Shop .c4card.u4t-spawn{--c1:var(--u4-summon1);--c2:var(--u4-summon2)}
+body.ui4 #camp4Shop .c4card.u4t-land{--c1:var(--u4-land1);--c2:var(--u4-land2)}
+body.ui4 #camp4Shop .c4card.u4t-field{--c1:var(--u4-field1);--c2:var(--u4-field2)}
+body.ui4 #camp4Shop .c4card.u4t-tside{--c1:var(--u4-side1);--c2:var(--u4-side2)}
+body.ui4 #camp4Shop .c4card:is(.u4t-sig,.u4t-control){--c1:var(--u4-sig1);--c2:var(--u4-sig2)}
+body.ui4 #camp4Shop .c4card:hover{transform:translateY(-3px)}
+body.ui4 #camp4Shop .c4card.on{transform:translateY(-8px);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--u4-cyan),
+  0 14px 22px -10px rgba(40,90,150,.6)}
+body.ui4 #camp4Shop .c4card.sold{opacity:.55;filter:grayscale(.6);cursor:default;transform:none}
+body.ui4 #camp4Shop .c4card .c4tag{position:absolute;left:8px;top:8px;z-index:1;height:22px;padding:0 9px;
+  border-radius:11px;background:rgba(255,255,255,.92);color:var(--u4-ink);font-size:13px;font-weight:800;
+  line-height:22px}
+body.ui4 #camp4Shop .c4card .c4art{height:76px;border-radius:14px 14px 0 0;display:grid;place-items:center;
+  background:linear-gradient(165deg,var(--c1),var(--c2))}
+body.ui4 #camp4Shop .c4card .c4art img{max-height:68px;max-width:90%;object-fit:contain;
+  filter:drop-shadow(0 6px 6px rgba(0,0,0,.25))}
+body.ui4 #camp4Shop .c4card .c4art i{font-size:44px;font-style:normal}
+body.ui4 #camp4Shop .c4card .c4nm{display:flex;align-items:center;gap:6px;padding:8px 10px 2px}
+body.ui4 #camp4Shop .c4card .c4nm b{font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+body.ui4 #camp4Shop .c4card .c4nm small{flex:none;height:20px;padding:0 7px;border-radius:10px;background:var(--u4-sky);
+  color:var(--u4-blue2);font-size:13px;font-weight:700;line-height:20px}
+body.ui4 #camp4Shop .c4card .c4ds{padding:2px 10px;font-size:13px;line-height:1.4;color:var(--u4-sub);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
+body.ui4 #camp4Shop .c4card .c4pr{margin:6px auto 0;display:inline-flex;align-items:center;height:28px;padding:0 14px;
+  border-radius:14px;background:linear-gradient(180deg,#FFE766,#FFC21A);color:#4A2A00;font-size:14px;font-weight:800;
+  box-shadow:0 2px 0 rgba(150,90,0,.35)}
+body.ui4 #camp4Shop .c4card.sold .c4pr{background:#E6ECF3;color:var(--u4-sub);box-shadow:none}
+/* 행동 줄 */
+body.ui4 #camp4Shop .c4action{display:flex;align-items:center;gap:4px 12px;flex-wrap:wrap;min-height:58px;
+  margin-top:4px;padding:8px 14px;border-radius:14px;background:var(--u4-bg2);box-shadow:inset 0 0 0 1px var(--u4-line)}
+body.ui4 #camp4Shop .c4hint{margin:0;font-size:14px;color:var(--u4-sub)}
+body.ui4 #camp4Shop .c4sel b{display:block;font:400 20px var(--fd);color:var(--u4-ink)}
+body.ui4 #camp4Shop .c4sel span{font-size:13px;color:var(--u4-sub)}
+body.ui4 #camp4Shop .c4btns{display:flex;gap:8px;margin-left:auto}
+body.ui4 #camp4Shop .c4buy{height:42px;padding:0 18px 4px;font-size:15px;gap:6px}
+body.ui4 #camp4Shop .c4why{flex-basis:100%;font-size:13px;color:var(--u4-sub)}
+body.ui4 #camp4Shop .c4extra{margin-top:8px;font-size:13px}
+/* 트레이: 손패 · 원정 덱 */
+body.ui4 #camp4Shop .c4tray{grid-area:tray;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;
+  padding:10px 14px 10px;border-radius:16px;background:#fff;
+  box-shadow:inset 0 0 0 1px var(--u4-line),var(--u4-shadow)}
+body.ui4 #camp4Shop .c4tabs{display:inline-flex;gap:4px;padding:4px;border-radius:20px;background:var(--u4-bg2);
+  box-shadow:inset 0 0 0 1px var(--u4-line)}
+body.ui4 #camp4Shop .c4tabs button{height:32px;padding:0 16px;border:0;border-radius:16px;background:none;
+  color:var(--u4-sub);font-size:15px;font-weight:800;cursor:pointer}
+body.ui4 #camp4Shop .c4tabs button[aria-pressed=true]{background:linear-gradient(180deg,#4DB6FF,#1C8CFF);color:#fff}
+body.ui4 #camp4Shop .c4tabs em{font:700 14px var(--fn);font-style:normal;opacity:.85}
+body.ui4 #camp4Shop .c4prompt{flex:1;min-width:0;display:flex;align-items:center;gap:12px;margin:0;
+  padding:4px 6px 4px 12px;
+  border-radius:12px;background:#FFF6D6;box-shadow:inset 0 0 0 1px #FFD66B}
+body.ui4 #camp4Shop .c4prompt b{font-size:15px;color:#6A4500}
+body.ui4 #camp4Shop .c4prompt span{font-size:13px;color:#8A6A20}
+body.ui4 #camp4Shop .c4prompt .btn{margin-left:auto;height:36px;padding:0 18px 3px;font-size:14px}
+body.ui4 #camp4Shop .c4row{flex-basis:100%;display:flex;gap:8px;margin:0;padding:6px 2px 4px;overflow-x:auto}
+body.ui4 #camp4Shop .c4mini{--c1:var(--u4-support1);--c2:var(--u4-support2);position:relative;flex:none;width:88px;
+  height:98px;display:flex;flex-direction:column;align-items:center;padding:4px 4px 6px;border:0;border-radius:12px;
+  background:linear-gradient(165deg,var(--c1),var(--c2));color:#fff;cursor:default;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.35),0 4px 10px -6px rgba(40,90,150,.6)}
+body.ui4 #camp4Shop .c4mini.u4t-spawn{--c1:var(--u4-summon1);--c2:var(--u4-summon2)}
+body.ui4 #camp4Shop .c4mini.u4t-land{--c1:var(--u4-land1);--c2:var(--u4-land2)}
+body.ui4 #camp4Shop .c4mini.u4t-field{--c1:var(--u4-field1);--c2:var(--u4-field2)}
+body.ui4 #camp4Shop .c4mini.u4t-tside{--c1:var(--u4-side1);--c2:var(--u4-side2)}
+body.ui4 #camp4Shop .c4mini:is(.u4t-sig,.u4t-control){--c1:var(--u4-sig1);--c2:var(--u4-sig2)}
+body.ui4 #camp4Shop .c4mini .c4art{flex:1;display:grid;place-items:center;width:100%;min-height:0}
+body.ui4 #camp4Shop .c4mini .c4art img{max-height:56px;max-width:84px;object-fit:contain}
+body.ui4 #camp4Shop .c4mini .c4art i{font-size:30px;font-style:normal}
+body.ui4 #camp4Shop .c4mini b{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:100%;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+body.ui4 #camp4Shop .c4mini.empty{background:var(--u4-bg2);box-shadow:inset 0 0 0 2px dashed var(--u4-line);
+  border:2px dashed #C9DBF0}
+body.ui4 #camp4Shop .c4mini.fixed{opacity:.7}
+body.ui4 #camp4Shop .c4mini.fixed::after{content:'고정';position:absolute;right:4px;top:4px;height:18px;padding:0 6px;
+  border-radius:9px;background:rgba(0,0,0,.45);font-size:13px;line-height:18px}
+body.ui4 #camp4Shop .c4mini.pick{cursor:pointer;animation:c4pick 1.2s ease-in-out infinite}
+body.ui4 #camp4Shop .c4mini.pick:hover{transform:translateY(-4px);box-shadow:0 0 0 3px #fff,0 0 0 6px #F0435F}
+body.ui4 #camp4Shop .c4mini.no{opacity:.4}
+@keyframes c4pick{50%{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--u4-cyan)}}
+@media (prefers-reduced-motion:reduce){body.ui4 #camp4Shop .c4mini.pick{animation:none;
+  box-shadow:0 0 0 3px #fff,0 0 0 5px var(--u4-cyan)}}
+/* 아래 줄: 팀 편성 · 장비는 왼쪽, 한 바퀴 더(노랑) · 귀환(흰) 오른쪽 */
+body.ui4 #shop .shopbox.camp4>.mfoot{margin:0 10px 10px;background:transparent;border-top:1px solid var(--u4-line);
+  gap:10px;justify-content:flex-start}
+body.ui4 #shop .shopbox.camp4 #campEquipment{margin-right:auto}
+body.ui4 #shop .shopbox.camp4 #btnDepart{--kb:url(media/813b2a89021103aa5d392446a5ebf3d3c30e72935a69e1be38c78c53f2543696.webp);color:#4A2A00!important;
+  text-shadow:0 1px 0 rgba(255,245,210,.7);height:54px;padding:0 30px 4px;font-size:18px}
+body.ui4 #shop .shopbox.camp4 #btnCampReturn{color:var(--u4-red)!important;height:54px}
+
+/* 귀환 확인 창(camp-v4.js) */
+body.ui4 #camp4Return{z-index:80;background:rgba(58,86,122,.45)}
+body.ui4 #camp4Return .c4ret{width:min(520px,92vw);background:none;border:0 solid transparent;border-radius:0;
+  border-image:url(media/4919c110dbc08999842b30dc003d7f13d78f243f9f9ec638b0fb16201e7a693a.webp) 61 fill / 26px / 0 stretch;
+  box-shadow:0 24px 50px -16px rgba(40,90,150,.55)}
+body.ui4 #camp4Return .mh{padding:16px 22px 6px}
+body.ui4 #camp4Return .tag{display:inline-block;padding:2px 10px;border-radius:10px;background:var(--u4-red);color:#fff;
+  font:700 13px var(--fn);letter-spacing:.08em}
+body.ui4 #camp4Return h3{margin:6px 0 0;font:400 26px var(--fd);color:var(--u4-ink)}
+body.ui4 #camp4Return .mbody{padding:6px 22px 8px;color:var(--u4-ink)}
+body.ui4 #camp4Return .c4keep{margin:4px 0 10px;font-size:15px}
+body.ui4 #camp4Return .c4keep b{color:var(--u4-blue);font:700 20px var(--fn)}
+body.ui4 #camp4Return .c4get{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+body.ui4 #camp4Return .c4get li{display:flex;align-items:center;gap:8px;height:48px;padding:0 12px;border-radius:12px;
+  background:var(--u4-bg2);box-shadow:inset 0 0 0 1px var(--u4-line)}
+body.ui4 #camp4Return .c4get img{width:32px;height:32px}
+body.ui4 #camp4Return .c4get .c4dot{width:14px;height:14px;border-radius:50%;background:var(--u4-cyan)}
+body.ui4 #camp4Return .c4get span{flex:1;font-size:15px;font-weight:700}
+body.ui4 #camp4Return .c4get b{font:700 20px var(--fn);color:var(--u4-blue2)}
+body.ui4 #camp4Return .c4get small{font-size:13px;color:var(--u4-sub)}
+body.ui4 #camp4Return .c4warn{margin:12px 0 0;padding:10px 12px;border-radius:12px;background:#FFECEF;color:#A0243C;
+  font-size:14px;line-height:1.5}
+body.ui4 #camp4Return .c4warn b{display:block;font-size:15px}
+body.ui4 #camp4Return .c4none{margin:0;color:var(--u4-sub)}
+body.ui4 #camp4Return .c4fine{display:block;margin-top:10px;font-size:13px;color:var(--u4-sub)}
+body.ui4 #camp4Return .mfoot{display:flex;justify-content:flex-end;gap:10px;padding:10px 22px 18px;
+  background:transparent;border-top:0}
+body.ui4 #camp4Return .c4ret{display:flex;flex-direction:column;height:auto;max-height:90dvh;overflow:visible}
+body.ui4 #camp4Return .c4ret>.mbody{overflow:auto}
+body.ui4 #camp4Return .mfoot .btn{height:50px;padding:0 24px 4px;font-size:16px}
+
+/* 팀 편성 · 장비 창을 캠프와 같은 틀로: 흰 패널 판 · 밝은 머리 줄 · 얼굴 카드 · 키트 버튼 */
+body.ui4 :is(#rosterDialog,#equipmentDialog).modal{background:rgba(58,86,122,.42)}
+body.ui4 :is(#rosterDialog .roster-box,#equipmentDialog .modal-box){width:min(980px,94vw);max-height:90dvh;
+  background:none!important;border:0 solid transparent;border-radius:0;color:var(--u4-ink);
+  border-image:url(media/4919c110dbc08999842b30dc003d7f13d78f243f9f9ec638b0fb16201e7a693a.webp) 61 fill / 26px / 0 stretch;
+  box-shadow:0 24px 50px -16px rgba(40,90,150,.55)}
+body.ui4 :is(#rosterDialog,#equipmentDialog) .mh{display:flex;align-items:center;gap:12px;margin:8px 8px 0;
+  padding:14px 18px;border-radius:14px 14px 0 0;background:linear-gradient(180deg,#fff,#F1F7FD);
+  box-shadow:inset 0 -1px 0 var(--u4-line)}
+body.ui4 :is(#rosterDialog,#equipmentDialog) .mh h3{margin:0;font:400 24px var(--fd);color:var(--u4-ink)}
+body.ui4 :is(#rosterDialog,#equipmentDialog) .mh h3::before{content:'SQUAD';display:inline-block;margin-right:10px;
+  padding:2px 10px;border-radius:10px;background:var(--u4-blue);color:#fff;font:700 13px var(--fn);letter-spacing:.08em;
+  vertical-align:4px}
+body.ui4 :is(#rosterDialog,#equipmentDialog) .mh>.btn,body.ui4 #rosterDialog .mh>button{margin-left:auto}
+body.ui4 #equipmentDialog .equipment-note,body.ui4 #rosterNote{margin:4px 0 0;font-size:14px;color:var(--u4-sub)}
+body.ui4 #rosterNote{padding:10px 22px 0}
+body.ui4 :is(#rosterSlots,#equipmentParty){display:flex;gap:10px;padding:12px 18px}
+body.ui4 :is(#rosterSlots,#equipmentParty)>button{flex:1 1 0;max-width:220px;display:flex;flex-direction:column;
+  align-items:center;
+  gap:4px;padding:10px 8px;border:0;border-radius:14px;background:var(--u4-bg2);color:var(--u4-ink);cursor:pointer;
+  box-shadow:inset 0 0 0 1px var(--u4-line);font-size:15px}
+body.ui4 :is(#rosterSlots,#equipmentParty)>button.on{background:#E3F2FF;box-shadow:inset 0 0 0 2px var(--u4-blue)}
+body.ui4 :is(#rosterSlots,#equipmentParty)>button img{width:64px;height:64px;border-radius:50%;object-fit:cover;
+  box-shadow:0 0 0 2px #fff,0 2px 6px rgba(40,90,150,.35)}
+body.ui4 :is(#rosterSlots,#equipmentParty)>button small{font:700 13px var(--fn);color:var(--u4-sub)}
+body.ui4 #rosterMembers{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;
+  padding:0 18px 18px;overflow:auto}
+body.ui4 #rosterMembers>button{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0;border-radius:14px;
+  background:#fff;color:var(--u4-ink);text-align:left;cursor:pointer;
+  box-shadow:inset 0 0 0 1px var(--u4-line),var(--u4-shadow)}
+body.ui4 #rosterMembers>button:disabled{opacity:.6;cursor:default}
+body.ui4 #rosterMembers>button img{width:52px;height:52px;border-radius:12px;object-fit:cover}
+body.ui4 #rosterMembers>button small{display:block;font-size:13px;color:var(--u4-sub)}
+body.ui4 #rosterMembers>button em{display:inline-block;margin-top:4px;padding:1px 10px;border-radius:10px;
+  background:var(--u4-blue);color:#fff;font-size:13px;font-style:normal;font-weight:800}
+body.ui4 #equipmentDialog .mbody{padding:0 0 12px}
+body.ui4 #equipmentSlots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 18px}
+body.ui4 #equipmentSlots .equipment-slot{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:0;
+  border-radius:14px;background:#fff;color:var(--u4-ink);text-align:left;cursor:pointer;
+  box-shadow:inset 0 0 0 1px var(--u4-line),var(--u4-shadow)}
+body.ui4 #equipmentSlots .equipment-slot.on{box-shadow:inset 0 0 0 2px var(--u4-blue),var(--u4-shadow)}
+body.ui4 #equipmentSlots .equipment-slot small{font-size:13px;color:var(--u4-sub)}
+body.ui4 #equipmentCount{margin:12px 18px 6px;font:400 20px var(--fd);color:var(--u4-ink)}
+body.ui4 #equipmentBag{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;padding:0 18px}
+body.ui4 #equipmentBag .equipment-item{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border-radius:14px;
+  background:var(--u4-bg2);box-shadow:inset 0 0 0 1px var(--u4-line)}
+body.ui4 #equipmentBag .equipment-empty{grid-column:1/-1;margin:0;padding:24px;border:2px dashed #C9DBF0;
+  border-radius:14px;
+  text-align:center;color:var(--u4-sub)}
+/* 보급 팩: 캠프 상점에서는 가로형 작은 카드(그림 왼쪽 · 이름 · 설명 · 구매 버튼) */
+body.ui4 #shop .shopbox.camp4 #shCrates{flex-direction:column;flex-wrap:nowrap;gap:8px}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard{display:grid;grid-template-columns:64px minmax(0,1fr);
+  grid-template-rows:auto auto auto;column-gap:10px;row-gap:2px;align-items:center;width:auto;max-width:none;
+  padding:8px 10px;text-align:left}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard .pk4{grid-row:1/4;grid-column:1;height:64px;max-width:64px;margin:0}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard :is(.cb,.cg,.ci){display:none}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard .cn{grid-column:2;margin:0;font-size:16px;text-align:left}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard .cd{grid-column:2;margin:0;font-size:13px;text-align:left}
+body.ui4 #shop .shopbox.camp4 #shCrates .crcard :is(.btn,.kbd){grid-column:2;justify-self:start;width:auto;
+  min-width:0;height:36px;
+  padding:0 16px 3px;font-size:14px}
+/* 낮은 화면(720 안팎): 머리 줄 · 상태 줄을 줄이고 카드 설명을 한 줄로 */
+@media (max-height:780px){
+  body.ui4 #shop .shopbox.camp4>.mh{padding:6px 18px}
+  body.ui4 #shop .shopbox.camp4>.mh .msub{display:none}
+  body.ui4 #shop .shopbox.camp4 #campStatus{display:none}
+  body.ui4 #camp4Shop .c4card .c4ds{-webkit-line-clamp:1;min-height:18px}
+  body.ui4 #camp4Shop .c4card .c4art{height:64px}
+  body.ui4 #camp4Shop .c4card .c4art img{max-height:56px}
+  body.ui4 #camp4Shop .c4action{min-height:0;padding:6px 12px}
+  body.ui4 #camp4Shop .c4sel span{display:none}
+  body.ui4 #camp4Shop .c4mini{height:84px;width:80px}
+  body.ui4 #camp4Shop .c4mini .c4art img{max-height:46px}
+  body.ui4 #shop .shopbox.camp4>.mfoot .btn{height:48px}
+  body.ui4 #camp4Shop .c4prompt span{display:none}
+}
+body.ui4 #camp4Shop .c4prompt .btn{flex:none;white-space:nowrap}
+body.ui4 #camp4Shop .c4prompt b{line-height:1.3}
 </style>
 </head>
 <body>
@@ -10355,14 +10614,19 @@ const RUN_DRAFT=(()=>{
   log(`🃏 원정 덱 교체: ${CARDS[old].name} → ${CARDS[id].name} · 이후 드랍에 반영`,'shop');
   return true;
  }
- function buy(index,slot){
+ /* discard: 손패가 가득 찼을 때 대신 뺄 손패 칸(캠프 상점에서 고른다 — 지정 보충과 같은 방식). 없으면 가득 찬 손패엔 못 산다 */
+ function buy(index,slot,discard=-1){
   const sh=shop(),offer=index==='pivot'?sh?.pivotOffer:sh?.offers[index];
   if(!camp()||!offer||offer.sold)return false;
   if(Number.isInteger(slot)){
    const cost=index==='pivot'?config().pivotReplaceCost:config().replaceCost;
    if(!replace(offer.id,slot,cost))return false;
   }else{
-   if(index==='pivot'||run.hand.length>=handMax()||!legal(offer.id)||run.op<offer.price)return false;
+   if(index==='pivot'||!legal(offer.id)||run.op<offer.price)return false;
+   if(run.hand.length>=handMax()){
+    if(!Number.isInteger(discard)||!run.hand[discard])return false;
+    run.hand.splice(discard,1);
+   }
    spend(offer.price,'hand');remember(offer.id);addToHand(offer.id,true);
   }
   offer.sold=true;if(index==='pivot')init().pivotUsed=true;return true;
@@ -20518,6 +20782,228 @@ if(typeof window==='object'&&typeof document==='object'&&document.addEventListen
 </script>
 <script>
 'use strict';
+/* ===== 캠프 상점 v4 — PC 가로(body.ui4) 캠프 보급을 한 화면으로(발라트로 상점처럼) =====
+ * - 한 화면: 타일 진열(구매 · 원정 덱 교체) · 보급 팩 · (드론 수령 시) 영입 진열 · 분대 · 아래 손패/원정 덱 트레이.
+ * - 카드를 고르면 행동 줄: 「손패로 구매」 · 「원정 덱에 넣기」. 손패가 가득 찼거나 덱 교체면 트레이에서 뺄 카드를 누른다
+ *   (드롭다운 없음). 규칙은 RUN_DRAFT(src/game/acquisition.js) 그대로 — 여기는 화면만.
+ * - 지정 보충 · 타일 강화 · 정비 탭은 PC 캠프에서 뺐다(사용자 결정 2026-09-23). 폰 화면은 기존 그대로.
+ * - 「여기서 귀환」은 확인 창(지금 돌아가면 받는 자원)을 거친다.
+ * 체계: docs/design/ui-system/README.md §7-1 */
+const CAMP4={sel:null,mode:null,tray:'hand',bypass:false};
+const CAMP4_ESC={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+const camp4Esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>CAMP4_ESC[c]);
+function camp4On(){
+ return !!(document.body&&document.body.classList.contains('ui4')&&typeof run!=='undefined'&&run&&!run.ended&&
+  run.shop&&run.shop.kind==='camp'&&typeof RUN_DRAFT==='object'&&RUN_DRAFT.active()&&RUN_DRAFT.shop());
+}
+const camp4Art=id=>{const a=typeof cardArtSrc==='function'?cardArtSrc(id):null;
+ return a?(typeof artUrl==='function'?artUrl(a):a):'';};
+function camp4Type(id){const c=CARDS[id]||{};return c.sig?'sig':c.type==='side'?'tside':c.type||'support';}
+function camp4Zone(id){const k=typeof cardClass==='function'?cardClass(id):'road';
+ return k==='land'?'보드':k==='side'?'길가':k==='control'?'조작':'도로';}
+function camp4Price(n){return `<span class="c4p"><img src="${camp4Img('icon_res_op')}" alt="">${n}</span>`;}
+const camp4Img=n=>typeof artUrl==='function'?artUrl('assets/ui/icons/'+n+'.webp'):'assets/ui/icons/'+n+'.webp';
+/* 진열: 오늘 제안 3장 + 유물 전환 1장 + 이번 원정에서 발견한 타일(덱 교체 전용) */
+function camp4Items(){
+ const api=RUN_DRAFT,s=api.init(),sh=api.shop(),cfg=api.config(),out=[];
+ sh.offers.forEach((o,i)=>out.push({key:'o'+i,index:i,id:o.id,role:o.role,sold:o.sold,hand:o.price,
+  deck:cfg.replaceCost}));
+ if(sh.pivotOffer)out.push({key:'pivot',index:'pivot',id:sh.pivotOffer.id,role:'유물 전환',
+  sold:sh.pivotOffer.sold,hand:null,deck:cfg.pivotReplaceCost});
+ const shown=new Set(out.map(x=>x.id));
+ s.found.filter(id=>api.legal(id)&&!run.deckList.includes(id)&&!shown.has(id)).forEach(id=>
+  out.push({key:'f:'+id,found:true,id,role:'발견',sold:false,hand:null,deck:cfg.replaceCost}));
+ return out;
+}
+function camp4CardHtml(it,on){
+ const c=CARDS[it.id]||{},art=camp4Art(it.id),price=it.hand!=null?it.hand:it.deck;
+ return `<button type="button" class="c4card u4t-${camp4Type(it.id)}${on?' on':''}${it.sold?' sold':''}" `+
+  `data-c4="${camp4Esc(it.key)}" aria-pressed="${!!on}" ${it.sold?'disabled':''}>`+
+  `<span class="c4tag">${camp4Esc(it.role)}</span>`+
+  `<span class="c4art">${art?`<img src="${art}" alt="" loading="lazy">`:`<i>${c.icon||'?'}</i>`}</span>`+
+  `<span class="c4nm"><b>${camp4Esc(c.name)}</b><small>${camp4Zone(it.id)}</small></span>`+
+  `<span class="c4ds">${camp4Esc(typeof cardDesc==='function'?cardDesc(it.id):'')}</span>`+
+  `<span class="c4pr">${it.sold?'구매 완료':camp4Price(price)}</span></button>`;
+}
+function camp4MiniHtml(id,attrs,cls){
+ const c=CARDS[id]||{},art=camp4Art(id);
+ return `<button type="button" class="c4mini u4t-${camp4Type(id)}${cls?' '+cls:''}" ${attrs||''}>`+
+  `<span class="c4art">${art?`<img src="${art}" alt="" loading="lazy">`:`<i>${c.icon||'?'}</i>`}</span>`+
+  `<b>${camp4Esc(c.name)}</b></button>`;
+}
+/* 고른 카드의 행동 줄 */
+function camp4ActionHtml(it){
+ if(!it)return '<p class="c4hint">진열된 카드를 누르면 구매 방법이 나옵니다. 손패는 지금 쓸 카드, 원정 덱은 앞으로 나올 카드입니다.</p>';
+ const api=RUN_DRAFT,sh=api.shop(),cfg=api.config(),c=CARDS[it.id]||{},full=run.hand.length>=handMax();
+ const deckLeft=cfg.replacePerCamp-sh.replaced,btn=[];
+ if(it.hand!=null){
+  const no=it.sold||run.op<it.hand;
+  btn.push(`<button type="button" class="btn c4buy" data-c4act="hand" ${no?'disabled':''}>손패로 구매 `+
+   `${camp4Price(it.hand)}</button>`);
+ }
+ const deckNo=it.sold||deckLeft<=0||run.op<it.deck;
+ btn.push(`<button type="button" class="btn gold c4buy" data-c4act="deck" ${deckNo?'disabled':''}>원정 덱에 넣기 `+
+  `${camp4Price(it.deck)}</button>`);
+ const why=it.sold?'이미 샀습니다':deckLeft<=0?'원정 덱 교체는 캠프당 '+cfg.replacePerCamp+'회 — 이번 캠프는 사용했습니다':
+  run.op<Math.min(it.hand??Infinity,it.deck)?`OP 부족 · 보유 ${run.op}`:
+  (it.hand!=null&&full?'손패가 가득 찼습니다 — 구매하면 뺄 카드를 고릅니다 · ':'')+
+  `원정 덱 교체 ${sh.replaced}/${cfg.replacePerCamp}회`;
+ return `<div class="c4sel"><b>${camp4Esc(c.name)}</b><span>${camp4Esc(camp4Zone(it.id))} · `+
+  `${camp4Esc(it.found?'이번 원정에서 발견 — 원정 덱에만 넣을 수 있습니다':it.role)}</span></div>`+
+  `<div class="c4btns">${btn.join('')}</div><small class="c4why">${camp4Esc(why)}</small>`;
+}
+/* 아래 트레이: 손패(기본) · 원정 덱. 고르는 중이면 안내와 취소 */
+function camp4TrayHtml(){
+ const mode=CAMP4.mode,tray=mode==='deck'?'deck':mode==='hand'?'hand':CAMP4.tray,it=camp4Pick();
+ const tabs=`<nav class="c4tabs"><button type="button" data-c4tray="hand" aria-pressed="${tray==='hand'}">손패 `+
+  `<em>${run.hand.length}/${handMax()}</em></button><button type="button" data-c4tray="deck" `+
+  `aria-pressed="${tray==='deck'}">원정 덱 <em>${run.deckList.length}</em></button></nav>`;
+ let prompt='',cards='';
+ if(mode==='hand')prompt=`<b>손패가 가득 찼습니다 — 「${camp4Esc(CARDS[it.id].name)}」 대신 뺄 카드를 누르세요</b>`;
+ if(mode==='deck')prompt=`<b>원정 덱에서 「${camp4Esc(CARDS[it.id].name)}」와 바꿀 카드를 누르세요</b>`+
+  '<span>고정 4장(리더)은 바꿀 수 없습니다 · 교체는 이후 드랍에 반영</span>';
+ if(tray==='hand'){
+  cards=run.hand.map((id,i)=>camp4MiniHtml(id,mode==='hand'?`data-c4hand="${i}"`:'disabled',
+   mode==='hand'?'pick':'')).join('')+
+   Array.from({length:Math.max(0,handMax()-run.hand.length)},()=>'<span class="c4mini empty"></span>').join('');
+ }else{
+  cards=run.deckList.map((id,i)=>{
+   if(i<4)return camp4MiniHtml(id,'disabled title="고정 카드(리더)"','fixed');
+   const why=mode==='deck'?RUN_DRAFT.replaceBlock(it.id,i):'';
+   return camp4MiniHtml(id,mode==='deck'&&!why?`data-c4deck="${i}"`:`disabled${why?` title="${camp4Esc(why)}"`:''}`,
+    mode==='deck'?(why?'no':'pick'):'');
+  }).join('');
+ }
+ return tabs+(prompt?`<div class="c4prompt">${prompt}<button type="button" class="btn ghost" data-c4act="cancel">취소`+
+  '</button></div>':'')+`<div class="c4row${tray==='deck'?' deck':''}">${cards}</div>`;
+}
+function camp4Pick(){return camp4Items().find(x=>x.key===CAMP4.sel)||null;}
+function camp4Shell(body){
+ let host=document.getElementById('camp4Shop');
+ if(!host){
+  host=document.createElement('div');host.id='camp4Shop';
+  host.innerHTML='<section class="c4tiles" aria-label="타일 진열"><header><h4>타일 진열</h4>'+
+   '<span class="c4sub"></span><button type="button" class="btn ghost c4redraw" data-c4act="redraw"></button></header>'+
+   '<div class="c4shelf"></div><div class="c4action"></div><div class="c4extra"></div></section>'+
+   '<section class="c4tray" aria-label="손패와 원정 덱"></section>';
+  host.addEventListener('click',camp4Click);
+ }
+ if(host.parentElement!==body)body.appendChild(host);
+ return host;
+}
+function camp4Render(){
+ const box=document.querySelector('#shop .shopbox'),body=document.getElementById('shBody');if(!box||!body)return;
+ const on=camp4On();box.classList.toggle('camp4',on);
+ box.classList.toggle('c4recruit',on&&!!(run.shop.offers&&run.shop.offers.length));
+ const host=document.getElementById('camp4Shop');if(host)host.hidden=!on;
+ if(!on){CAMP4.sel=null;CAMP4.mode=null;return;}
+ const h=camp4Shell(body),api=RUN_DRAFT,sh=api.shop(),cfg=api.config(),items=camp4Items();
+ if(!items.some(x=>x.key===CAMP4.sel)||camp4Pick()?.sold){CAMP4.sel=null;CAMP4.mode=null;}
+ h.querySelector('.c4sub').textContent=`덱 교체 ${sh.replaced}/${cfg.replacePerCamp} · 재추첨 `+
+  `${sh.redrawn}/${cfg.redrawPerCamp}`;
+ const rd=h.querySelector('.c4redraw');
+ rd.innerHTML='진열 재추첨 '+camp4Price(cfg.redrawCost);
+ rd.disabled=!api.camp()||run.op<cfg.redrawCost||sh.offers.some(o=>o.sold)||sh.redrawn>=cfg.redrawPerCamp;
+ rd.title=sh.offers.some(o=>o.sold)?'이번 진열에서 산 카드가 있으면 재추첨할 수 없습니다':'';
+ h.querySelector('.c4shelf').innerHTML=items.map(it=>camp4CardHtml(it,it.key===CAMP4.sel)).join('');
+ h.querySelector('.c4action').innerHTML=camp4ActionHtml(camp4Pick());
+ const extra=h.querySelector('.c4extra'),rel=typeof runDraftRelocateHtml==='function'?runDraftRelocateHtml():'';
+ extra.innerHTML=rel;extra.hidden=!rel;
+ h.querySelector('.c4tray').innerHTML=camp4TrayHtml();
+}
+function camp4Done(ok){
+ if(!ok)return;CAMP4.sel=null;CAMP4.mode=null;CAMP4.tray='hand';
+ if(typeof SFX==='object'&&SFX.click)SFX.click();if(typeof renderShop==='function')renderShop();
+}
+function camp4Click(e){
+ const t=e.target.closest('[data-c4],[data-c4act],[data-c4tray],[data-c4hand],[data-c4deck]');if(!t||t.disabled)return;
+ const it=camp4Pick(),api=RUN_DRAFT;
+ if(t.dataset.c4!=null){CAMP4.sel=CAMP4.sel===t.dataset.c4?null:t.dataset.c4;CAMP4.mode=null;camp4Render();return;}
+ if(t.dataset.c4tray){CAMP4.tray=t.dataset.c4tray;if(!CAMP4.mode)camp4Render();return;}
+ if(t.dataset.c4hand!=null&&it&&CAMP4.mode==='hand'){camp4Done(api.buy(it.index,undefined,+t.dataset.c4hand));return;}
+ if(t.dataset.c4deck!=null&&it&&CAMP4.mode==='deck'){
+  const slot=+t.dataset.c4deck;camp4Done(it.found?api.register(it.id,slot):api.buy(it.index,slot));return;
+ }
+ const act=t.dataset.c4act;
+ if(act==='cancel'){CAMP4.mode=null;camp4Render();return;}
+ if(act==='redraw'){camp4Done(api.redraw());return;}
+ if(act==='hand'&&it){
+  if(run.hand.length>=handMax()){CAMP4.mode='hand';camp4Render();return;}
+  camp4Done(api.buy(it.index));return;
+ }
+ if(act==='deck'&&it){CAMP4.mode='deck';camp4Render();return;}
+ if(act==='relocate'){
+  const h=document.getElementById('camp4Shop');
+  const from=h.querySelector('#draftMoveFrom'),to=h.querySelector('#draftMoveTo');
+  if(from&&to)camp4Done(api.relocate(+from.value,+to.value));
+ }
+}
+/* ===== 귀환 확인: 지금 돌아가면 받는 자원(순수 계산 · 정산 값은 바꾸지 않는다) ===== */
+function camp4ReturnReason(){return econOn()&&run.shop&&run.shop.kind==='drone'?'drone':'camp';}
+function camp4ReturnPreview(){
+ const reason=camp4ReturnReason(),valid=typeof validSortie==='function'?validSortie(run):true;
+ const out={reason,valid,items:[]};
+ if(!valid)return out;
+ if(econOn()&&typeof ECON==='object'){
+  const eb=typeof evalBonus==='function'?evalBonus():{rate:0},g=typeof gate==='function'?gate():{id:'E'};
+  const st=ECON.settle({res:run.res||{},lootMul:typeof campaignLootMul==='function'?campaignLootMul(run):1,reason,
+   gate:g.id,evalBonus:typeof supplyOn==='function'&&supplyOn()?eb.rate:0,frac:Object.assign({},meta.resFrac||{}),
+   firstClear:false});
+  out.keep=st.keep;
+  for(const [k,n] of Object.entries(st.grant))if(n>0)out.items.push({k,n,name:ECON.defOf(k)?.name||k});
+  let sp=0;
+  try{if(typeof META_V2==='object'&&META_V2.spPlan){const p=META_V2.spPlan(meta,run,reason);sp=p.sp+p.first;}}
+  catch(e){sp=0;}
+  if(sp>0)out.items.unshift({k:'sp',n:sp,name:'SP',max:true});
+  out.opLost=run.op;
+ }else{
+  const mul=typeof MULT==='object'?MULT[reason]||1:1;out.keep=mul;
+  out.items.push({k:'mana',n:Math.round((run.mana+run.op)*mul),name:'마나석'});
+ }
+ return out;
+}
+function camp4ReturnOpen(){
+ let el=document.getElementById('camp4Return');
+ if(!el){
+  el=document.createElement('div');el.id='camp4Return';el.className='modal';el.hidden=true;
+  el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');
+  el.setAttribute('aria-labelledby','camp4RetTitle');
+  el.innerHTML='<div class="modal-box c4ret"><div class="mh"><div class="mt"><div class="tag">RETURN · 귀환 확인</div>'+
+   '<h3 id="camp4RetTitle">여기서 귀환할까요?</h3></div></div><div class="mbody"></div><div class="mfoot">'+
+   '<button type="button" class="btn ghost" data-c4ret="no">계속 보급 받기</button>'+
+   '<button type="button" class="btn warn" data-c4ret="yes">귀환 확정</button></div></div>';
+  document.body.appendChild(el);
+  el.addEventListener('click',e=>{
+   const b=e.target.closest('[data-c4ret]');if(e.target===el||b&&b.dataset.c4ret==='no'){el.hidden=true;return;}
+   if(b&&b.dataset.c4ret==='yes'){el.hidden=true;CAMP4.bypass=true;
+    try{document.getElementById('btnCampReturn').click();}finally{CAMP4.bypass=false;}}
+  });
+  el.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();el.hidden=true;}});
+ }
+ const p=camp4ReturnPreview(),img=k=>['part','stone','rec','mem','sp','mana'].includes(k)?
+  `<img src="${camp4Img('icon_res_'+k)}" alt="">`:'<i class="c4dot"></i>';
+ const list=p.items.length?'<ul class="c4get">'+p.items.map(x=>`<li>${img(x.k)}<span>${camp4Esc(x.name)}</span>`+
+  `<b>+${x.n}</b>${x.max?'<small>최대</small>':''}</li>`).join('')+'</ul>':'<p class="c4none">가져갈 자원이 아직 없습니다.</p>';
+ el.querySelector('.mbody').innerHTML=!p.valid?
+  '<p class="c4warn"><b>무효 출격 — 보상 없음</b>전투에서 1번 이상 이기거나 캠프를 한 번 지나야 귀환 보상이 생깁니다.</p>':
+  `<p class="c4keep">지금 귀환하면 모은 자원의 <b>${Math.round((p.keep||0)*100)}%</b>를 가져갑니다.</p>${list}`+
+  (p.opLost>0?`<p class="c4warn"><b>남은 OP ${p.opLost}는 사라집니다</b>보급에서 먼저 쓰고 귀환하세요.</p>`:'')+
+  '<small class="c4fine">평가 보너스 포함 예상치 · 도감·과제 보상은 정산 화면에서 따로 받습니다.</small>';
+ el.hidden=false;const stay=el.querySelector('[data-c4ret="no"]');if(stay)stay.focus();
+}
+if(typeof document==='object'&&document.addEventListener){
+ document.addEventListener('click',e=>{
+  const b=e.target&&e.target.closest&&e.target.closest('#btnCampReturn');
+  if(!b||b.disabled||CAMP4.bypass||!document.body.classList.contains('ui4'))return;
+  if(typeof run==='undefined'||!run||run.ended)return;
+  e.stopPropagation();e.preventDefault();camp4ReturnOpen();
+ },true);
+}
+Object.assign(window.GL=window.GL||{},{camp4Render,camp4ReturnPreview});
+
+</script>
+<script>
+'use strict';
 // ================= 초기화 =================
 load();
 canvas=$('#map');const dpr=window.devicePixelRatio||1;canvas.width=W*dpr;canvas.height=H*dpr;ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -22605,6 +23091,7 @@ function systemCampLayout(){
  team.innerHTML=supplyIcon('team')+`<span>팀 편성 · 대기 ${(run.reserve||[]).length}</span>`;
  if(typeof mobileCampLayout==='function')mobileCampLayout();
  systemCampConsole();
+ if(typeof camp4Render==='function')camp4Render(); /* PC 가로 캠프 상점(src/ui/camp-v4.js) */
 }
 function systemCampConsole(){
  const box=$('#shop .shopbox'),body=$('#shBody'),camp=run.shop.kind==='camp';
@@ -23008,5 +23495,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="60798dc4976712d7";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="012443e0a2698bf3";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
