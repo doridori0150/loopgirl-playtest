@@ -3334,7 +3334,7 @@ const PERKS=[
  {id:'bane',icon:'🎯',name:'약점 연구',desc:()=>`특효 피해 +${Math.round(BAL.perk.bane*100)}%p`},
  {id:'vanguard',icon:'🛡',name:'전열 강화',desc:()=>`전열이 받는 피해 −${Math.round(BAL.perk.vanguard*100)}%`},
  {id:'rear',icon:'🏹',name:'후열 화력',desc:()=>`후열 공격 +${Math.round(BAL.perk.rear*100)}%`},
- {id:'loot',icon:'💰',name:'전리품 감정',desc:()=>`계약 XP·마나석 +${Math.round(BAL.perk.loot*100)}%`},
+ {id:'loot',icon:'💰',name:'전리품 감정',desc:()=>`계약 XP${!!BAL.econ2?'':'·마나석'} +${Math.round(BAL.perk.loot*100)}%`},
 ];/* Individual encounters replace the rejected highest-clear batch unlocks. */
 const BUILD_CURRICULUM=[
  {id:'start',name:'기본 분대',students:['harin','chaewon','seoyul'],
@@ -4068,10 +4068,10 @@ const RELICS=[
 ];
 
 const RELIC_DESCRIPTIONS={
- halo:()=>`재화 개편: 계약 OP +${tunePct(relicTune('halo').opPct)}% / 기존 재화: 계약 OP +${relicTune('halo').op}`,
- contract:()=>`마나석 획득 ×${relicTune('contract').mana} · 재화 개편 OFF 전용`,
+ halo:()=>!!BAL.econ2?`계약 OP +${tunePct(relicTune('halo').opPct)}%`:`계약 OP +${relicTune('halo').op}`,
+ contract:()=>!!BAL.econ2?'지금 재화 체계에서는 나오지 않는 유물':`마나석 획득 ×${relicTune('contract').mana}`,
  savings:()=>`유효 귀환 시 남은 OP ${BAL.econ.savings.per}당 부족한 길드 자재 +1 (최대 ${BAL.econ.savings.max})`,
- medkit:()=>`랩 시작 전원 HP 회복 · 재화 개편 ${tunePct(BAL.econ.heal.medkit)}% / 기존 ${tunePct(BAL.relicHeal.medkit)}%`,
+ medkit:()=>`랩 시작 전원 HP ${tunePct(!!BAL.econ2?BAL.econ.heal.medkit:BAL.relicHeal.medkit)}% 회복`,
  plate:()=>`전원 피격 시 공격자에게 ${relicTune('plate').reflect} 반사 피해`,
  core:()=>`전원 공격 ×${relicTune('core').atk}, 받는 피해 ×${relicTune('core').taken}`,
  lucky:()=>`보급 희귀도 ${relicTune('lucky').tier}단계 상향 (표의 최종 단계 상한)`,
@@ -4087,7 +4087,7 @@ const RELIC_DESCRIPTIONS={
  clubflag:()=>`같은 동아리 ${relicTune('clubflag').need}명 이상이면 계약 XP ×${relicTune('clubflag').xp}`,
  survey:()=>`언덕·봉우리당 공격 +${relicTune('survey').atk} (최대 +${relicTune('survey').max})`,
  compass:()=>`물길 인접 결계당 랩 회복 +${tunePct(relicTune('compass').heal)}% (최대 +${tunePct(relicTune('compass').max)}%)`,
- specimen:()=>`고치당 카드 드롭 +${tunePct(relicTune('specimen').drop)}%p (최대 ${tunePct(relicTune('specimen').max)}%p) · 재화 개편 OFF 전용`,
+ specimen:()=>!!BAL.econ2?'고치 카드 드롭 가산 — 지금 재화 체계의 확정 보급에는 적용되지 않음':`고치당 카드 드롭 +${tunePct(relicTune('specimen').drop)}%p (최대 ${tunePct(relicTune('specimen').max)}%p)`,
  scope:()=>`살아 있는 후열 원거리 학생당 전원 치명 +${tunePct(relicTune('scope').crit)}%p`,
 };
 for(const r of RELICS){
@@ -4250,7 +4250,7 @@ const COUNTERS={
  blast:{name:'폭발탄',icon:'💥',desc:'처치 시 같은 타일 이형 전체에 최대 HP 25% 피해'},
  drill:{name:'강화 훈련',icon:'📈',desc:'전원 공격 +4'},
  vest:{name:'방탄 조끼',icon:'🦺',desc:'전원 방어 +3, 최대 HP +20'},
- fund:{name:'협회 지원금',icon:'💰',desc:'OP +6, 카드 +2'},
+ fund:{name:'협회 지원금',icon:'💰',get desc(){return `OP +${!!BAL.econ2?6*Math.max(1,Number.isFinite(+BAL.econ.opMul)?+BAL.econ.opMul:100):6}, 카드 +2`;}},
  heal:{name:'긴급 정비',icon:'💊',desc:'전원 HP 40% 즉시 회복, 캠프 회복 +5%p'},
 };
 const EVO_LAPS=[3,5,7];
@@ -17858,7 +17858,7 @@ function hud(){
  const rb=$('#btnRetreat'),blocked=run.imminent||run.bossPending||run.bossSpawned;rb.disabled=blocked;rb.textContent=blocked?'⛔ 귀환 봉쇄':validSortie(run)?`🚨 긴급 탈출 (${Math.round((econOn()?ECON.keepPct('emergency'):MULT.emergency)*100)}%)`:'🚨 긴급 탈출 (무효 — 보상 없음)'; /* v1.4 R4 C-04 */
  const bp=$('#battlePanel');
  if(run.state==='battle'){bp.hidden=false;if(frameNo%6===0){const b=run.battle;const sh=Object.values(b.shield).reduce((a,c)=>a+c,0);$('#bpShield').textContent=sh>0?`🛡 보호막 ${sh}`:'';
-  $('#bpList').innerHTML=b.tile.enemies.map(e=>`<div class="en${run.focusUid===e.uid?' focus':''}" data-uid="${e.uid}" data-tip="${escTip(e.name)} — 클릭: 집중 대상"><img class="th" src="${artUrl(e.boss?`assets/enemies/boss_${gate().id}${e.twin==='L'?'_left':e.twin==='R'?'_right':''}.webp`:`assets/enemies/${e.type}.webp`)}" alt=""><span>${run.focusUid===e.uid?'🎯 ':''}${e.boss?icoImg('icon_boss','보스'):e.elite?icoImg('enemy_elite_mark','엘리트'):(ENEMIES[e.type]&&ENEMIES[e.type].kind?icoImg('type_'+ENEMIES[e.type].kind):'')} ${e.name}${isArmored(e)?' 🛡️':isBroken(e)?' 💥':''}</span><div class="bar"><i style="width:${Math.max(0,e.hp/e.maxHp*100)}%"></i></div><span>${Math.max(0,e.hp)}/${e.maxHp}</span></div>`).join('');}}
+  $('#bpList').innerHTML=b.tile.enemies.map(e=>`<div class="en${run.focusUid===e.uid?' focus':''}" data-uid="${e.uid}" data-tip="${escTip(e.name)} — 클릭: 집중 대상"><img class="th" src="${artUrl(e.boss?`assets/enemies/boss_${gate().id}${e.twin==='L'?'_left':e.twin==='R'?'_right':''}.webp`:`assets/enemies/${e.type}.webp`)}" alt=""><span>${run.focusUid===e.uid?'🎯 ':''}${e.boss?icoImg('icon_boss','보스'):e.elite?icoImg('enemy_elite_mark','엘리트'):(ENEMIES[e.type]&&ENEMIES[e.type].kind?icoImg('type_'+ENEMIES[e.type].kind):'')} ${e.name}${isArmored(e)?' 🛡️':isBroken(e)?' 💥':''}</span><div class="bar"><i style="width:${Math.max(0,e.hp/e.maxHp*100)}%"></i></div><span>${Math.ceil(Math.max(0,e.hp))}/${Math.round(e.maxHp)}</span></div>`).join('');}}
  else bp.hidden=true;
  if(frameNo%30===0){fitSide();fitHand();}
  if(!mapHover&&!isCoarse&&selectedCard===null&&hoverTile>=0)hoverTile=-1; /* 검사 패널을 읽으려고 지도 밖으로 나가도 가리킨 칸 미리보기를 남긴다(선택 중) — 선택이 풀리면 정리 */
@@ -18649,8 +18649,8 @@ function showResult(reason,gained,spG){
   if(run.valid)$('#rGoal3').innerHTML+=curriculumResultHtml();
   if(run.result&&run.result.invalid)$('#rGoal3').innerHTML=`<div class="void"><b>⛔ 무효 출격 — 보상 없음</b><span>전투 1회 승리 또는 캠프 1회 통과 전에 귀환 — 마나석·SP·호감·학원가 주기·해금이 오르지 않습니다</span></div>`+$('#rGoal3').innerHTML;}
  const rank=run.result.rank,rk=[rank,{S:'#ff6fae',A:'#a855f7',B:'#128cff',C:'#6f7d9c'}[rank]],g=gate();
- $('#rRank').textContent=rk[0];$('#rRank').style.color=rk[1];
- $('#rTable').innerHTML=[['게이트',`${g.rank}랭크 「${g.name}」${meta.best[g.id]&&meta.best[g.id].score===run.result.score?' · <span style="color:#ff6fae">신기록!</span>':''}${reason==='boss'&&campaignIsMain(run)&&GATES.findIndex(x=>x.id===g.id)<GATES.length-1?` · 다음 지역 ${GATES[GATES.findIndex(x=>x.id===g.id)+1].rank} 공략 준비`:''}`],['도달 랩',run.lap],...(riskOn()?[['트라우마 코드',`+${run.traumaCodeGain||0} · 보유 ${meta.traumaCodes||0}개`],['트라우마 발생',Object.keys(run.traumaFallen||{}).map(id=>STUDENTS.find(s=>s.id===id)?.name||id).join(' · ')||'없음']]:[]),['최종 분대',run.party.map(m=>`${m.stu.name}${'★'.repeat(m.star)}`).join(' · ')],['활성 시너지',synergies().filter(s=>s.on).map(s=>s.name).join(', ')||'없음'],['유물',run.relics.map(id=>RELICS.find(r=>r.id===id).icon).join(' ')||'없음'],
+ const failRank=reason==='death';$('#rRank').textContent=failRank?'—':rk[0];$('#rRank').style.color=failRank?'#6f7d9c':rk[1];
+ $('#rTable').innerHTML=[['게이트',`${g.rank}랭크 「${g.name}」${((econOn()?meta.best2:meta.best)||{})[g.id]&&((econOn()?meta.best2:meta.best)||{})[g.id].score===run.result.score?' · <span style="color:#ff6fae">신기록!</span>':''}${reason==='boss'&&campaignIsMain(run)&&GATES.findIndex(x=>x.id===g.id)<GATES.length-1?` · 다음 지역 ${GATES[GATES.findIndex(x=>x.id===g.id)+1].rank} 공략 준비`:''}`],['도달 랩',run.lap],...(riskOn()?[['트라우마 코드',`+${run.traumaCodeGain||0} · 보유 ${meta.traumaCodes||0}개`],['트라우마 발생',Object.keys(run.traumaFallen||{}).map(id=>STUDENTS.find(s=>s.id===id)?.name||id).join(' · ')||'없음']]:[]),['최종 분대',run.party.map(m=>`${m.stu.name}${'★'.repeat(m.star)}`).join(' · ')],['활성 시너지',synergies().filter(s=>s.on).map(s=>s.name).join(', ')||'없음'],['유물',run.relics.map(id=>RELICS.find(r=>r.id===id).icon).join(' ')||'없음'],
   ...(run.affectionMaterials?[['선물 재료',`+${run.affectionMaterials} · 프로필에서 기념품 제작`]]:[]),
   ['분대 레벨 · 구매 · 리롤',`Lv.${run.level} · ${run.purchases}회 · ${run.shop.rerolls}회`],['배치 카드 · 계약 이행',`${run.cardsPlaced}장 · ${run.paid}건`],['길가·지형 결계 · 부작용 · 특성',`${run.terrainPlaced||0}장 · ${Object.keys(run.sideFx||{}).map(k=>({outpost:'전초기지',forest:'숲속 매점',echo:'잔류 사념',ransack:'약탈',peak:'봉우리'})[k]||k).join('·')||'없음'} · ${Object.entries(run.perks||{}).map(([id,n])=>perkOf(id).icon+perkOf(id).name+(n>1?' Lv'+n:'')).join(' ')||'없음'}`],['처치한 이형',run.kills],['획득 장비',run.items],['조우한 이변',run.anomalies],['남은 T · 소모 (이동/배치/리롤)',`${run.t} · ${run.tSpent.move}/${run.tSpent.place}/${run.tSpent.reroll}`],
   ['협회 의뢰',run.questsDone.length?run.questsDone.join(' · '):'완료 없음'],...(econOn()&&Object.keys(run.codexRes||{}).length?[['도감 발견 보상',progressionRewardText({res:run.codexRes})]]:[]),...(econOn()&&Object.keys(run.resReleased||{}).length?[['이번에 열린 재료 지급',progressionRewardText({res:run.resReleased})]]:[]),...(econOn()&&Object.keys(meta.resPending||{}).length?[['해금 대기 재료',progressionRewardText({res:meta.resPending})+' · 해당 체계가 열리면 지급']]:[]),['유효 동행 (성장)',run.grown.length?run.grown.map(id=>{const st=STUDENTS.find(x=>x.id===id);return `${st.name} Lv.${growthLvMeta(id)}`;}).join(' · '):'없음 (합류 후 3랩 생존 + 보스 조우)'],
@@ -21133,7 +21133,7 @@ function stageLockNote(i){const m=run&&run.party[i],a=m&&STAGE.actors.get('m'+m.
 function stageTipText(a){
  if(a.kind==='m'&&a.m){const m=a.m,b=run.state==='battle'&&run.battle,sh=b&&b.shield?(b.shield[m.uid]||0):0,bk=m.row==='back';
   return `${m.stu.name}${'★'.repeat(m.star||1)} · ${bk?'후열':'전열'} · HP ${Math.round(Math.max(0,m.hp))}/${m.maxHp}${sh>0?` · 🛡${sh}`:''}${m.down?' · 전투불능':''} — ${b?'교전 중에는 대열 고정':`눌러서 ${bk?'전열':'후열'}로`}`;}
- if(a.kind==='e'&&a.e){const e=a.e,k=e.kind&&ENEMY_KINDS[e.kind];return `${e.name} · HP ${Math.round(Math.max(0,e.hp))}/${e.maxHp}${k?` · ${k.name}`:''} — ${run.focusUid===e.uid?'집중 대상(누르면 해제)':'누르면 집중 대상'}`;}
+ if(a.kind==='e'&&a.e){const e=a.e,k=e.kind&&ENEMY_KINDS[e.kind];return `${e.name} · HP ${Math.round(Math.max(0,e.hp))}/${Math.round(e.maxHp)}${k?` · ${k.name}`:''} — ${run.focusUid===e.uid?'집중 대상(누르면 해제)':'누르면 집중 대상'}`;}
  return '';}
 function stageHoverAt(x,y){const a=x<0?null:stageActorAt(x,y),key=a?a.key:null,cv=STAGE.cv;
  if(cv&&cv.style)cv.style.cursor=a&&((a.kind==='m'&&run.state!=='battle')||(a.kind==='e'&&run.state==='battle'))?'pointer':'default';
@@ -22013,5 +22013,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="c29912ea710efc58";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="e8d2724264698311";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
