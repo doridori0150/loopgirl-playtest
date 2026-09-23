@@ -3689,6 +3689,241 @@ body.ui4 #equipmentBag .g4act{top:auto;bottom:8px}
 body.ui4 #camp4Shop .c4shelf .c4card{width:140px}
 body.ui4 #camp4Shop .c4shelf{gap:10px}
 @media (max-height:780px){body.ui4 #camp4Shop .c4shelf .c4card{width:128px}}
+
+/* ── 17. 출격 고용 · 협회 드론 v4 — src/ui/camp-v4.js 가 .l4 를 붙인다 ──
+ * 창 틀(panel_white) 안쪽 선 안에 머리 · 본문 · 버튼 줄을 모두 넣는다(머리 띠가 틀 밖으로 나가지 않게).
+ * 본문 격자: 왼쪽 = 분대 · 진열 · 보급 팩 / 오른쪽 = 고른 진열 상세 · 작전 목표. 틀마다 흰 판 + 제목 한 줄.
+ * 카드는 크기를 고정하고, 가격 · 행동(진열) · 버튼(팩)은 카드 맨 아래 같은 줄에 둔다. 손패 칸은 없다.
+ * 목표 조합 고르기 · 추가 정비는 오른쪽 밀어내기 창(#l4Side) — 체계: docs/design/ui-system/README.md §6 */
+body.ui4 #shop .shopbox.l4{--ow:144px;--oa:150px;width:min(1320px,96vw);height:min(94dvh,900px);max-height:none;
+  padding:12px 14px 10px}
+body.ui4 #shop .shopbox.l4 [hidden]{display:none!important}
+body.ui4 #shop .shopbox.l4>.mh{margin:0;padding:4px 10px 10px;border:0;border-radius:0;background:none;
+  box-shadow:inset 0 -2px 0 var(--u4-line);align-items:center}
+body.ui4 #shop .shopbox.l4>.mh h3{color:var(--u4-ink);font:400 24px var(--fd)}
+body.ui4 #shop .shopbox.l4>.mh .msub{color:var(--u4-sub);font-size:13px;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+body.ui4 #shop .shopbox.l4>.mh .tag{background:var(--u4-blue);color:#fff;border:0}
+body.ui4 #shop .shopbox.l4>.mh .sp{color:var(--u4-sub);align-self:center}
+body.ui4 #shop .shopbox.l4>.mh #shOp{color:var(--u4-ink);font:700 30px var(--fn)}
+body.ui4 #shop .shopbox.l4 :is(#shTabs,#mobileCampNav,#campTools,#collectionShop,#campStatus,.dclose){
+  display:none!important}
+body.ui4 #shop .shopbox.l4 #shBody{flex:1 1 auto;min-height:0;display:grid!important;overflow:hidden;
+  padding:12px 2px;gap:12px;background:none;
+  grid-template-columns:minmax(0,1fr) clamp(440px,38%,540px);grid-template-rows:auto minmax(0,1fr) auto;
+  grid-template-areas:"team detail" "offers detail" "offers goal"}
+body.ui4 #shop .shopbox.l4.l4pack #shBody{grid-template-areas:"team detail" "offers detail" "packs goal"}
+body.ui4 #shop .shopbox.l4 #shBody>.shstu,body.ui4 #shop .shopbox.l4 #shBody .shlist{display:contents!important}
+body.ui4 #shop .shopbox.l4:not(.l4pack) #shBody>.shcr{display:none!important}
+/* 틀 공통: 흰 판 · 안쪽 선 · 제목(data-l4t) */
+body.ui4 #shop .shopbox.l4 :is(#shParty,#offers,#shBody>.shcr,#shDetail,#l4Goal){box-sizing:border-box;margin:0;
+  min-width:0;min-height:0;padding:12px 14px;border:0;border-radius:16px;background:#fff;
+  box-shadow:inset 0 0 0 1px var(--u4-line),0 8px 18px -12px rgba(40,90,150,.45)}
+body.ui4 #shop .shopbox.l4 :is(#shParty,#offers,#shBody>.shcr)::before{content:attr(data-l4t);display:block;
+  font:400 18px/22px var(--fd);color:var(--u4-ink);white-space:nowrap}
+/* 분대: 같은 크기 칸 */
+body.ui4 #shop .shopbox.l4 #shParty{grid-area:team;display:grid;align-content:start;
+  grid-template-columns:repeat(var(--l4n,4),minmax(0,1fr));gap:8px 10px;flex-wrap:nowrap}
+body.ui4 #shop .shopbox.l4 #shParty::before{grid-column:1/-1}
+body.ui4 #shop .shopbox.l4 #shParty>:is(.pm,.empty){box-sizing:border-box;height:72px;min-width:0;margin:0;
+  border-radius:12px;flex:none}
+body.ui4 #shop .shopbox.l4 #shParty>.pm{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);
+  grid-template-rows:repeat(3,auto);align-content:center;column-gap:8px;row-gap:2px;padding:4px 8px;
+  background:linear-gradient(180deg,#fff,#F3F8FD);border:0;box-shadow:inset 0 0 0 1px var(--u4-line)}
+body.ui4 #shop .shopbox.l4 #shParty>.pm img.pt{grid-row:1/4;grid-column:1;align-self:center;width:48px;height:48px;
+  border-radius:10px}
+body.ui4 #shop .shopbox.l4 #shParty>.pm :is(.pmi,.pmc){display:contents}
+body.ui4 #shop .shopbox.l4 #shParty>.pm b{grid-row:1;grid-column:2;min-width:0;font-size:16px;line-height:20px;
+  color:var(--u4-ink)}
+/* HP 는 얼굴 그림 아래 배지(이름 줄을 넓게) */
+body.ui4 #shop .shopbox.l4 #shParty>.pm .hpt{position:absolute;left:8px;top:50%;width:48px;margin-top:10px;
+  justify-content:center;font-size:13px;line-height:16px;border-radius:0 0 10px 10px;
+  background:rgba(255,255,255,.9);color:var(--u4-ink)}
+body.ui4 #shop .shopbox.l4 #shParty>.pm .hpt img{display:none}
+body.ui4 #shop .shopbox.l4 #shParty>.pm .idc{grid-row:2;grid-column:2;display:flex;gap:3px;overflow:hidden}
+body.ui4 #shop .shopbox.l4 #shParty>.pm .idc .chip{height:20px}
+body.ui4 #shop .shopbox.l4 #shParty>.pm .idc .chip img{width:16px;height:16px}
+body.ui4 #shop .shopbox.l4 #shParty>.pm .pmb{grid-row:3;grid-column:2;flex-direction:row;gap:4px}
+body.ui4 #shop .shopbox.l4 #shParty>.pm .pmb:empty{display:none}
+body.ui4 #shop .shopbox.l4 #shParty>.pm .pmb button{font-size:13px;padding:0 8px;line-height:20px}
+body.ui4 #shop .shopbox.l4 #shParty>.empty{display:flex;align-items:center;justify-content:center;padding:0;
+  border:1.5px dashed #BCD3EA;background:#F6FAFE;color:var(--u4-sub);font-size:14px}
+/* 진열: 고정 크기 카드 · 아래 줄 = 가격(왼쪽) · 행동(오른쪽) */
+body.ui4 #shop .shopbox.l4 #offers{grid-area:offers;display:grid!important;align-content:start;
+  grid-template-columns:repeat(auto-fill,var(--ow));gap:10px;overflow-y:auto;overflow-x:hidden}
+body.ui4 #shop .shopbox.l4 #offers::before{grid-column:1/-1}
+body.ui4 #shop .shopbox.l4 #btnReroll{grid-area:offers;align-self:start;justify-self:end;z-index:1;margin:6px 12px 0 0;
+  height:36px;padding:0 16px 3px;font-size:14px}
+body.ui4 #shop .shopbox.l4 #offers .offer{box-sizing:border-box;width:var(--ow);height:calc(var(--oa) + 98px);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:var(--oa) 30px 26px minmax(0,1fr);
+  grid-template-areas:"art art" "nm nm" "id id" "pr act";border-width:2px;border-radius:14px;background:#fff}
+body.ui4 #shop .shopbox.l4 #offers .offer::after{content:'';grid-row:4;grid-column:1/-1;
+  background:linear-gradient(180deg,#F3F8FD,#E8F1FB);box-shadow:inset 0 1px 0 var(--u4-line)}
+body.ui4 #shop .shopbox.l4 #offers .offer :is(.ometa,.orow){display:contents}
+body.ui4 #shop .shopbox.l4 #offers .offer .oart{grid-area:art;height:auto;min-height:0}
+body.ui4 #shop .shopbox.l4 #offers .offer .onm{grid-area:nm;align-self:end;padding:0 10px;font-size:17px;
+  color:var(--u4-ink)}
+body.ui4 #shop .shopbox.l4 #offers .offer .oid{grid-area:id;min-height:0;padding:0 10px;flex-wrap:nowrap;
+  overflow:hidden;font-size:13px}
+body.ui4 #shop .shopbox.l4 #offers .offer .oid .chip{height:20px}
+body.ui4 #shop .shopbox.l4 #offers .offer .oid .chip img{width:16px;height:16px}
+body.ui4 #shop .shopbox.l4 #offers .offer :is(.opr,.oact){z-index:1;align-self:center}
+body.ui4 #shop .shopbox.l4 #offers .offer .opr{grid-area:pr;padding:0 0 0 10px;font-size:16px;color:var(--u4-blue2)}
+body.ui4 #shop .shopbox.l4 #offers .offer.cant .opr{color:var(--u4-red)}
+body.ui4 #shop .shopbox.l4 #offers .offer .oact{grid-area:act;margin-right:8px;padding:2px 8px;border-radius:99px;
+  background:var(--u4-blue);color:#fff;font-size:13px}
+body.ui4 #shop .shopbox.l4 #offers .offer.cant .oact{background:#C9D6E4}
+body.ui4 #shop .shopbox.l4 #offers .offer.sel{border-color:var(--u4-blue);
+  box-shadow:0 0 0 3px #fff,0 0 0 5px var(--u4-cyan)}
+/* 상세: 왼쪽 그림 · 오른쪽 정보(스크롤) · 아래 구매 버튼 고정 */
+body.ui4 #shop .shopbox.l4 #shDetail{grid-area:detail;display:flex;flex-direction:column;overflow:hidden;
+  position:static;transform:none;visibility:visible;height:auto}
+body.ui4 #shop .shopbox.l4 #shDetail .odet{flex:1 1 auto;min-height:0;grid-template-columns:40% minmax(0,1fr);
+  grid-template-rows:minmax(0,1fr) auto;gap:10px 14px}
+body.ui4 #shop .shopbox.l4 #shDetail .odet.k-item{grid-template-columns:130px minmax(0,1fr)}
+body.ui4 #shop .shopbox.l4 #shDetail .odet .dart{min-height:0;height:auto;padding:8px 4px 0;border:0;
+  border-radius:12px;background:linear-gradient(170deg,#E4F2FD,#F7FBFF 60%,#DCEBF8)}
+body.ui4 #shop .shopbox.l4 #shDetail .odet.k-item .dart{height:130px;align-self:start;padding:0}
+body.ui4 #shop .shopbox.l4 #shDetail .odet .dart .recruit-figure{height:100%}
+body.ui4 #shop .shopbox.l4 #shDetail .odet .dinfo{overflow-y:auto;overflow-x:hidden;gap:8px}
+body.ui4 #shop .shopbox.l4 #shDetail .odet .dinfo .sbars{grid-template-columns:minmax(0,1fr)}
+body.ui4 #shop .shopbox.l4 #shDetail .odet .dnm{font-size:24px}
+body.ui4 #shop .shopbox.l4 #shDetail .dbuy{padding-top:10px;box-shadow:inset 0 1px 0 var(--u4-line)}
+body.ui4 #shop .shopbox.l4 #shDetail .dbuy .btn{height:52px;padding-block:0 4px}
+/* 보급 팩: 같은 크기 칸 · 위 = 그림 + 이름/설명, 아래 = 버튼 · 부족 사유 한 줄(자리는 늘 비워 둔다) */
+body.ui4 #shop .shopbox.l4 #shBody>.shcr{grid-area:packs;display:flex!important;flex-direction:column;gap:8px;
+  overflow:hidden}
+body.ui4 #shop .shopbox.l4 #shCrates{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
+  overflow:visible;max-height:none}
+body.ui4 #shop .shopbox.l4 #shCrates .crcard{box-sizing:border-box;height:136px;margin:0;padding:10px 10px 6px;
+  display:grid;grid-template-columns:52px minmax(0,1fr);grid-template-rows:26px 26px 38px 16px;gap:0 10px;
+  align-items:center;text-align:left}
+body.ui4 #shop .shopbox.l4 #shCrates .crcard :is(.cb,.ci,.cg){display:none}
+body.ui4 #shop .shopbox.l4 #shCrates .crcard .pk4{grid-column:1;grid-row:1/3;width:52px;height:52px;
+  max-width:none;margin:0}
+body.ui4 #shop .shopbox.l4 #shCrates .crcard .cn{grid-column:2;grid-row:1;align-self:end;margin:0;font-size:17px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.ui4 #shop .shopbox.l4 #shCrates .crcard .cd{grid-column:2;grid-row:2;align-self:start;margin:0;font-size:13px;
+  line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.ui4 #shop .shopbox.l4 #shCrates .crcard>:is(.btn,.kbd:not(.dbuywhy)){grid-column:1/-1;grid-row:3;width:100%;
+  height:38px;margin:4px 0 0;padding:0 8px 3px;font-size:14px;align-self:end;text-align:center}
+body.ui4 #shop .shopbox.l4 #shCrates .crcard>.kbd:not(.dbuywhy){display:flex;align-items:center;
+  justify-content:center;border-radius:10px;background:#EEF4FB}
+body.ui4 #shop .shopbox.l4 #shCrates .crcard .dbuywhy{grid-column:1/-1;grid-row:4;font-size:13px;line-height:16px;
+  text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--u4-red)}
+/* 작전 목표 칸 */
+body.ui4 #shop .shopbox.l4 #l4Goal{grid-area:goal;display:grid;grid-template-columns:56px minmax(0,1fr) auto;
+  align-items:center;gap:6px 12px}
+body.ui4 #l4Goal .l4gi{width:56px;height:56px;border-radius:12px;overflow:hidden;display:flex;align-items:center;
+  justify-content:center;background:linear-gradient(160deg,#E4F2FD,#CFE4F7);font-size:28px}
+body.ui4 #l4Goal .l4gi img{width:100%;height:100%;object-fit:cover}
+body.ui4 #l4Goal .l4gi i{font-style:normal}
+body.ui4 #l4Goal .l4gt{min-width:0;display:flex;flex-direction:column;gap:3px}
+body.ui4 #l4Goal .l4gt small{font-size:13px;color:var(--u4-sub);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+body.ui4 #l4Goal .l4gt b{font:400 20px/1.2 var(--fd);color:var(--u4-ink)}
+body.ui4 #l4Goal .l4gt em{font-style:normal;font-size:13px;color:var(--u4-sub)}
+body.ui4 :is(#l4Goal,#l4Side) .l4mats{display:flex;flex-wrap:wrap;gap:4px}
+body.ui4 :is(#l4Goal,#l4Side) .l4mat{font-size:13px;padding:1px 8px;border-radius:99px;background:#FFF1F4;
+  color:var(--u4-ink);box-shadow:inset 0 0 0 1px #FFC9D6}
+body.ui4 :is(#l4Goal,#l4Side) .l4mat b{color:var(--u4-red)}
+body.ui4 :is(#l4Goal,#l4Side) .l4mat.ok{background:#E6F7FF;box-shadow:inset 0 0 0 1px #A6DCFF}
+body.ui4 :is(#l4Goal,#l4Side) .l4mat.ok b{color:var(--u4-blue2)}
+body.ui4 #l4Goal>.btn{white-space:nowrap}
+body.ui4 #shop .shopbox.l4.l4pack #l4Goal{grid-template-columns:56px minmax(0,1fr);grid-template-rows:1fr auto}
+body.ui4 #shop .shopbox.l4.l4pack #l4Goal>.btn{grid-column:1/-1;justify-self:end}
+/* 밀어내기 창: 창 오른쪽에서 겹쳐 나온다 · 뒤는 흐리게(누르면 닫힘) */
+body.ui4 #l4Scrim{position:absolute;inset:0;z-index:20;background:rgba(43,63,92,.28)}
+body.ui4 #l4Side{position:absolute;top:12px;right:14px;bottom:10px;z-index:21;width:min(470px,44%);
+  display:flex;flex-direction:column;border-radius:18px;background:#fff;
+  box-shadow:0 0 0 1px var(--u4-line),-18px 0 40px -12px rgba(30,70,120,.45);animation:l4in .22s ease-out}
+@keyframes l4in{from{transform:translateX(40px);opacity:0}}
+@media (prefers-reduced-motion:reduce){body.ui4 #l4Side{animation:none}}
+body.ui4 #l4Side>header{flex:none;display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;
+  box-shadow:inset 0 -1px 0 var(--u4-line)}
+body.ui4 #l4Side>header h4{margin:0;font:400 22px var(--fd);color:var(--u4-ink)}
+body.ui4 #l4Side .l4sb{flex:1 1 auto;min-height:0;overflow-y:auto;padding:12px 16px 16px;display:flex;
+  flex-direction:column;gap:16px}
+body.ui4 #l4Side .l4sec h5{margin:0 0 8px;font:400 18px var(--fd);color:var(--u4-ink)}
+body.ui4 #l4Side .l4sec h5 small{display:block;margin-top:2px;
+  font:400 13px/1.4 'Noto Sans KR','Malgun Gothic',sans-serif;color:var(--u4-sub)}
+body.ui4 #l4Side .l4now{margin:0 0 10px;padding:8px 10px;border-radius:10px;background:#F3F8FD;font-size:13px;
+  line-height:1.5;color:var(--u4-sub)}
+body.ui4 #l4Side .l4now b{color:var(--u4-ink)}
+body.ui4 #l4Side .l4none{margin:0;font-size:14px;line-height:1.6;color:var(--u4-sub)}
+body.ui4 #l4Side .l4combos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+body.ui4 #l4Side .l4combo{position:relative;box-sizing:border-box;height:74px;display:grid;
+  grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-content:center;
+  padding:8px 10px;border:0;border-radius:12px;background:linear-gradient(180deg,#fff,#F3F8FD);text-align:left;
+  cursor:pointer;font:inherit;color:var(--u4-ink);box-shadow:inset 0 0 0 1px var(--u4-line)}
+body.ui4 #l4Side .l4combo:hover{box-shadow:inset 0 0 0 2px var(--u4-cyan)}
+body.ui4 #l4Side .l4combo.on{background:linear-gradient(180deg,#EAF6FF,#D6ECFF);
+  box-shadow:inset 0 0 0 2px var(--u4-blue)}
+body.ui4 #l4Side .l4combo .l4ci{grid-row:1/3;width:48px;height:48px;border-radius:10px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;background:#E4F0FB;font-size:24px}
+body.ui4 #l4Side .l4combo .l4ci img{width:100%;height:100%;object-fit:cover}
+body.ui4 #l4Side .l4combo .l4ci i{font-style:normal}
+body.ui4 #l4Side .l4combo b{align-self:end;font:400 16px/1.2 var(--fd);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+body.ui4 #l4Side .l4combo small{align-self:start;font-size:13px;line-height:1.3;color:var(--u4-sub);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+body.ui4 #l4Side .l4combo em{position:absolute;top:6px;right:8px;font-style:normal;font-size:13px;padding:0 6px;
+  border-radius:99px;background:var(--u4-blue);color:#fff}
+body.ui4 #l4Side .l4svc :is(h4,.shgoal h4){margin:0 0 6px;font-weight:700;font-size:15px;color:var(--u4-ink)}
+body.ui4 #l4Side .l4svc :is(.kbd,span.kbd){font-size:13px;color:var(--u4-sub)}
+body.ui4 #l4Side .l4svc .shgoal{margin-bottom:12px}
+body.ui4 #l4Side .l4svc .sel{width:100%;min-height:40px;font-size:14px}
+body.ui4 #l4Side .l4svc .btn.xs{font-size:13px}
+body.ui4 #l4Side .l4svc .svl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:6px}
+/* 아래 버튼 줄: 캠프 상점과 같게 — 리롤 · 팀 편성 · 장비 왼쪽, 출격(노랑) · 귀환 오른쪽 */
+body.ui4 #shop .shopbox.l4>.mfoot{margin:0;padding:10px 4px 2px;background:transparent;border-top:0;
+  box-shadow:inset 0 2px 0 var(--u4-line);gap:10px;justify-content:flex-start}
+body.ui4 #shop .shopbox.l4 #campEquipment{margin-right:auto}
+body.ui4 #shop .shopbox.l4 #btnDepart{--kb:url(media/813b2a89021103aa5d392446a5ebf3d3c30e72935a69e1be38c78c53f2543696.webp);color:#4A2A00!important;
+  text-shadow:0 1px 0 rgba(255,245,210,.7);height:54px;padding:0 34px 4px;font-size:18px}
+body.ui4 #shop .shopbox.l4 #btnCampReturn{color:var(--u4-red)!important;height:54px}
+/* 캠프 상점(.camp4)도 같은 틀: 머리 · 상태 줄 · 버튼 줄을 틀 안쪽 선 안에, 타일 카드 설명 칸 높이 고정 · 가격은 맨 아래 */
+body.ui4 #shop .shopbox.camp4{padding:12px 14px 10px}
+body.ui4 #shop .shopbox.camp4>.mh{margin:0;padding:4px 10px 10px;border:0;border-radius:0;background:none;
+  box-shadow:inset 0 -2px 0 var(--u4-line)}
+body.ui4 #shop .shopbox.camp4 #campStatus{margin:8px 2px 0;border-radius:10px}
+body.ui4 #shop .shopbox.camp4>.mfoot{margin:0;padding:10px 4px 2px;border-top:0;box-shadow:inset 0 2px 0 var(--u4-line)}
+body.ui4 #camp4Shop .c4card .c4ds{line-height:18px;height:36px;min-height:0}
+body.ui4 #camp4Shop .c4card .c4pr{margin-top:auto}
+@media (max-height:780px){
+  body.ui4 #shop .shopbox.camp4{padding:10px 12px 8px}
+  body.ui4 #shop .shopbox.camp4>.mh{padding:2px 10px 8px}
+  body.ui4 #camp4Shop .c4card .c4ds{height:18px}
+}
+/* 작은 창(1360 이하 폭 · 800 이하 높이): 카드 폭 · 그림 높이 · 제목 줄을 줄인다 */
+@media (max-width:1360px){body.ui4 #shop .shopbox.l4{--ow:132px}}
+@media (max-height:800px){
+  body.ui4 #shop .shopbox.l4{--oa:100px;padding:10px 12px 8px}
+  body.ui4 #shop .shopbox.l4>.mh{padding:2px 10px 8px}
+  body.ui4 #shop .shopbox.l4>.mh .msub{display:none}
+  body.ui4 #shop .shopbox.l4>.mh #shOp{font-size:26px}
+  body.ui4 #shop .shopbox.l4 #shBody{padding:10px 2px;gap:10px}
+  body.ui4 #shop .shopbox.l4 :is(#shParty,#offers,#shBody>.shcr,#shDetail,#l4Goal){padding:8px 12px}
+  body.ui4 #shop .shopbox.l4 :is(#shParty,#offers,#shBody>.shcr)::before{font-size:16px;line-height:20px}
+  body.ui4 #shop .shopbox.l4 :is(#shParty,#offers){row-gap:6px}
+  body.ui4 #shop .shopbox.l4 #shBody>.shcr{gap:6px}
+  body.ui4 #shop .shopbox.l4 #btnReroll{height:32px;margin-top:3px}
+  body.ui4 #shop .shopbox.l4 #shParty>:is(.pm,.empty){height:56px}
+  body.ui4 #shop .shopbox.l4 #shParty>.pm img.pt{width:42px;height:42px}
+  body.ui4 #shop .shopbox.l4 #shParty>.pm{grid-template-columns:42px minmax(0,1fr)}
+  body.ui4 #shop .shopbox.l4 #shParty>.pm .hpt{width:42px;margin-top:5px}
+  body.ui4 #shop .shopbox.l4 #shParty>.pm .idc{display:none}
+  body.ui4 #shop .shopbox.l4 #shCrates .crcard{height:96px;grid-template-columns:36px minmax(0,1fr);
+    grid-template-rows:36px 34px 14px;row-gap:2px;padding:6px 10px 4px}
+  body.ui4 #shop .shopbox.l4 #shCrates .crcard .pk4{grid-row:1;width:36px;height:36px}
+  body.ui4 #shop .shopbox.l4 #shCrates .crcard .cn{grid-row:1;align-self:center}
+  body.ui4 #shop .shopbox.l4 #shCrates .crcard .cd{display:none}
+  body.ui4 #shop .shopbox.l4 #shCrates .crcard>:is(.btn,.kbd:not(.dbuywhy)){grid-row:2;height:34px;margin:0}
+  body.ui4 #shop .shopbox.l4 #shCrates .crcard .dbuywhy{grid-row:3;line-height:14px}
+  body.ui4 #shop .shopbox.l4>.mfoot .btn{height:48px}
+  body.ui4 #shop .shopbox.l4 #shDetail .dbuy .btn{height:46px}
+}
+@media (min-height:1000px){body.ui4 #shop .shopbox.l4{--oa:180px}}
 </style>
 </head>
 <body>
@@ -20595,7 +20830,9 @@ function ui4Wanted(){
 function ui4Sync(){
  const on=ui4Wanted();
  if(on!==UI4.on){UI4.on=on;document.body.classList.toggle('ui4',on);if(!on){ui4BattleOff();ui4HubOff();}
-  window.UI4_CARD_HOLD=on;if(typeof dirty!=='undefined')dirty=true;} /* 카드 선택 중 정지 · 드롭은 손패에만(hud.js cardHold) */
+  window.UI4_CARD_HOLD=on;if(typeof dirty!=='undefined')dirty=true; /* 카드 선택 중 정지 · 드롭은 손패에만(hud.js cardHold) */
+  const shop=document.getElementById('shop'); /* 열린 상점은 PC ↔ 좁은 화면 배치를 다시 고른다(camp-v4.js) */
+  if(shop&&!shop.hidden&&typeof run!=='undefined'&&run&&!run.ended&&typeof renderShop==='function')renderShop();}
 }
 /* 버튼 판: 보이는 버튼만 재서 --bh 를 맞춘다 */
 function ui4Measure(){
@@ -21020,6 +21257,7 @@ function camp4Shell(body){
 }
 function camp4Render(){
  const box=document.querySelector('#shop .shopbox'),body=document.getElementById('shBody');if(!box||!body)return;
+ l4Render(); /* 출격 고용 · 협회 드론(PC) */
  const on=camp4On();box.classList.toggle('camp4',on);
  box.classList.toggle('c4recruit',on&&!!(run.shop.offers&&run.shop.offers.length));
  const host=document.getElementById('camp4Shop');if(host)host.hidden=!on;
@@ -21064,6 +21302,132 @@ function camp4Click(e){
   const from=h.querySelector('#draftMoveFrom'),to=h.querySelector('#draftMoveTo');
   if(from&&to)camp4Done(api.relocate(+from.value,+to.value));
  }
+}
+/* ===== 출격 고용 · 협회 드론 v4 — PC 가로(body.ui4) 캠프 밖 상점을 틀로 나눈다 =====
+ * 왼쪽: 분대(같은 크기 칸) · 영입 진열(고정 크기 카드) · 보급 팩(고정 크기 카드) / 오른쪽: 고른 진열 상세 · 작전 목표.
+ * 손패 칸은 뺐다(원정 화면 손패와 같다 — 사용자 결정 2026-09-24). 목표 조합 고르기와 추가 정비(결전 거점 · OP 재설계)는
+ * 오른쪽에서 밀려 나오는 창(#l4Side). 규칙 · 구매는 shop.js 그대로 — 여기는 배치와 목표 고르기만. 체계: README §6 */
+const L4={side:false,key:''};
+function l4On(){
+ return !!(document.body&&document.body.classList.contains('ui4')&&typeof run!=='undefined'&&run&&!run.ended&&
+  run.shop&&run.shop.kind&&run.shop.kind!=='camp');
+}
+function l4Combos(){return typeof COMBOS==='object'?COMBOS.filter(cb=>meta.codex&&meta.codex[cb.to]):[];}
+function l4Icon(id){const c=CARDS[id]||{},art=camp4Art(id);
+ return art?`<img src="${art}" alt="" loading="lazy">`:`<i>${c.icon||'?'}</i>`;}
+function l4MatsHtml(g){
+ return g.mats.map(m=>{const name=m.wild?CLUBS[m.wild]+' 카드':CARDS[m.id].name,have=m.map+m.hand;
+  return `<span class="l4mat${have>=m.n?' ok':''}" title="지도 ${m.map} · 손패 ${m.hand} · 덱 ${m.deck}">`+
+   `${camp4Esc(name)} <b>${Math.min(have,m.n)}/${m.n}</b></span>`;}).join('');
+}
+/* 오른쪽 아래 작전 목표 칸: 지금 목표 · 재료(지도+손패 / 필요) · 「목표 변경」 */
+function l4GoalHtml(){
+ const g=typeof goalStatus==='function'?goalStatus():null,n=l4Combos().length;
+ if(!g)return '<span class="l4gi"><i>🎯</i></span><span class="l4gt"><small>작전 목표</small><b>목표 조합 없음</b>'+
+  `<em>${n?`발견한 조합 ${n}개 — 고르면 달성 때 💎${BAL.goalMana}`:'조합을 발견하면 목표로 고를 수 있습니다'}</em></span>`+
+  `<button type="button" class="btn ghost" data-l4side>${n?'목표 고르기':'정비 열기'}</button>`;
+ const c=CARDS[g.cb.to];
+ return `<span class="l4gi">${l4Icon(g.cb.to)}</span><span class="l4gt"><small>작전 목표 · ${camp4Esc(g.cb.need)}</small>`+
+  `<b>${camp4Esc(c.name)}</b><span class="l4mats">`+
+  `${g.paid?`<span class="l4mat ok">✔ 달성 💎${BAL.goalMana}</span>`:l4MatsHtml(g)}</span></span>`+
+  '<button type="button" class="btn ghost" data-l4side>목표 변경</button>';
+}
+/* 밀어내기 창의 목표 조합: 같은 크기 카드 목록 + 지금 목표의 부족 재료 한 줄 */
+function l4SideHtml(){
+ const list=l4Combos(),cur=meta.goal,paid=run.goalPaid||{};
+ const none=`<button type="button" class="l4combo off${cur?'':' on'}" data-l4goal="" aria-pressed="${!cur}">`+
+  '<span class="l4ci"><i>—</i></span><b>목표 없음</b><small>재료 안내를 끕니다</small></button>';
+ const cards=list.map(cb=>{const on=cur===cb.to;
+  return `<button type="button" class="l4combo${on?' on':''}" data-l4goal="${cb.to}" aria-pressed="${on}">`+
+   `<span class="l4ci">${l4Icon(cb.to)}</span><b>${camp4Esc(CARDS[cb.to].name)}</b>`+
+   `<small>${camp4Esc(cb.need)}</small>${paid[cb.to]?'<em>달성</em>':''}</button>`;}).join('');
+ const g=typeof goalStatus==='function'?goalStatus():null;
+ const now=g?`<p class="l4now"><b>${camp4Esc(CARDS[g.cb.to].name)}</b> ${camp4Esc(goalStateStr(g))}</p>`:'';
+ return now+(list.length?`<div class="l4combos">${none}${cards}</div>`:
+  '<p class="l4none">아직 발견한 조합이 없습니다. 지도에서 조합 타일을 만들면 도감에 올라 여기서 목표로 고릅니다.</p>');
+}
+/* 틀: #l4Goal(본문 격자 칸) · #l4Side + #l4Scrim(상점 창 안 겹침). 결전 거점 · 정비 칸은 밀어내기 창으로 옮긴다 */
+function l4Shell(box,body){
+ let goal=document.getElementById('l4Goal');
+ if(!goal){goal=document.createElement('section');goal.id='l4Goal';goal.setAttribute('aria-label','작전 목표');
+  goal.addEventListener('click',l4Click);}
+ if(goal.parentElement!==body)body.appendChild(goal);
+ let side=document.getElementById('l4Side');
+ if(!side){
+  side=document.createElement('aside');side.id='l4Side';side.hidden=true;side.setAttribute('role','dialog');
+  side.setAttribute('aria-label','작전 목표와 추가 정비');
+  side.innerHTML='<header><h4>작전 목표</h4><button type="button" class="icobtn" data-l4close title="닫기">✕</button>'+
+   '</header><div class="l4sb" data-scroll-ok><section class="l4sec"><h5>목표 조합 <small></small></h5>'+
+   '<div class="l4goals"></div></section><section class="l4sec l4svc"><h5>추가 정비</h5></section></div>';
+  side.addEventListener('click',l4Click);
+  const scrim=document.createElement('div');scrim.id='l4Scrim';scrim.hidden=true;scrim.dataset.l4close='';
+  scrim.addEventListener('click',l4Click);box.appendChild(scrim);
+ }
+ if(side.parentElement!==box){box.appendChild(document.getElementById('l4Scrim'));box.appendChild(side);}
+ const svc=side.querySelector('.l4svc');
+ for(const id of ['shHold','shServices']){
+  const el=document.getElementById(id);if(el&&el.parentElement!==svc)svc.appendChild(el);
+ }
+ /* 리롤은 진열 틀 제목 줄 오른쪽(캠프 상점의 「진열 재추첨」과 같은 자리) */
+ const rr=document.getElementById('btnReroll'),list=body.querySelector('.shlist');
+ if(rr&&list&&rr.parentElement!==list)list.appendChild(rr);
+ return {goal,side};
+}
+/* 끌 때: 옮긴 결전 거점 · 정비 칸을 원래 자리(손패 · 목표 칸 오른쪽)로 돌린다 — 폰 · 좁은 창은 기존 화면 그대로 */
+function l4Off(){
+ L4.side=false;
+ const home=document.querySelector('#shop .shside');
+ if(home)for(const id of ['shHold','shServices']){
+  const el=document.getElementById(id);if(el&&el.parentElement!==home)home.appendChild(el);
+ }
+ for(const id of ['l4Goal','l4Side','l4Scrim']){const el=document.getElementById(id);if(el)el.hidden=true;}
+ const rr=document.getElementById('btnReroll'),foot=document.querySelector('#shop .shbtns');
+ if(rr&&foot&&rr.parentElement!==foot)foot.prepend(rr);
+}
+function l4Render(){
+ const box=document.querySelector('#shop .shopbox'),body=document.getElementById('shBody');if(!box||!body)return;
+ const on=l4On();box.classList.toggle('l4',on);
+ if(!on){if(document.getElementById('l4Goal'))l4Off();return;}
+ const key=[run.runId,run.camps,run.shop.kind,run.shop.tOpen].join(':');
+ if(key!==L4.key){L4.key=key;L4.side=false;}
+ const {goal,side}=l4Shell(box,body),crates=run.shop.crates||[];
+ box.classList.toggle('l4pack',crates.length>0);
+ const party=document.getElementById('shParty'),reserve=(run.reserve||[]).length;
+ party.style.setProperty('--l4n',String(Math.max(run.party.length,partyMax())));
+ party.dataset.l4t=`분대 ${run.party.length}/${partyMax()}`+(reserve?` · 대기 ${reserve}`:'');
+ const offers=document.getElementById('offers'),left=run.shop.offers.filter(o=>!o.sold).length;
+ offers.dataset.l4t=`${run.shop.kind==='launch'?'영입 진열':'협회 진열'} ${left}/${run.shop.offers.length}`;
+ const cr=body.querySelector('.shpane[data-pane=crates]');
+ if(cr)cr.dataset.l4t=`보급 팩 ${crates.filter(c=>!c.sold).length}/${crates.length}`;
+ for(const card of body.querySelectorAll('#shCrates .crcard')){
+  card.title=['.cd','.cg'].map(s=>card.querySelector(s)).filter(Boolean).map(e=>e.textContent).join(' · ');
+ }
+ goal.hidden=false;goal.innerHTML=l4GoalHtml();
+ side.querySelector('.l4sec h5 small').textContent=
+  `달성 시 💎${BAL.goalMana} · 조합마다 원정당 1회 · 캠프마다 바꿀 수 있습니다`;
+ side.querySelector('.l4goals').innerHTML=l4SideHtml();
+ const hold=document.getElementById('shHold'),svc=document.getElementById('shServices');
+ side.querySelector('.l4svc').hidden=!(hold&&!hold.hidden)&&!(svc&&svc.innerHTML.trim());
+ side.hidden=!L4.side;document.getElementById('l4Scrim').hidden=!L4.side;box.classList.toggle('l4open',L4.side);
+}
+function l4Click(e){
+ const t=e.target.closest('[data-l4side],[data-l4close],[data-l4goal]');if(!t||t.disabled)return;
+ if(t.dataset.l4side!=null){
+  L4.side=true;l4Render();const x=document.querySelector('#l4Side [data-l4close]');if(x)x.focus();return;
+ }
+ if(t.dataset.l4close!=null){
+  L4.side=false;l4Render();const b=document.querySelector('#l4Goal [data-l4side]');if(b)b.focus();return;
+ }
+ if(t.dataset.l4goal!=null){
+  setGoal(t.dataset.l4goal||null);if(typeof SFX==='object'&&SFX.click)SFX.click();renderShop();
+ }
+}
+if(typeof document==='object'&&document.addEventListener){
+ document.addEventListener('keydown',e=>{
+  const shop=document.getElementById('shop');
+  if(e.key!=='Escape'||!L4.side||!shop||shop.hidden)return;
+  e.stopPropagation();e.preventDefault();L4.side=false;l4Render();
+ },true);
 }
 /* ===== 귀환 확인: 지금 돌아가면 받는 자원(순수 계산 · 정산 값은 바꾸지 않는다) ===== */
 function camp4ReturnReason(){return econOn()&&run.shop&&run.shop.kind==='drone'?'drone':'camp';}
@@ -21149,7 +21513,7 @@ function gear4Tile(it,opts){
   `<span class="g4sts">${gear4Stats(it)}</span>`+
   `${gear4Traits(it)}</span>`;
 }
-Object.assign(window.GL=window.GL||{},{camp4Render,camp4ReturnPreview,gear4Tile});
+Object.assign(window.GL=window.GL||{},{camp4Render,camp4ReturnPreview,gear4Tile,l4Render});
 
 </script>
 <script>
@@ -23652,5 +24016,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="1d5ffcb293d502ce";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="0a3864e4c918e3d5";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
