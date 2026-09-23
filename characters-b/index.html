@@ -11898,17 +11898,22 @@ function recipeIngredient(c,id){
  return c?.card===id||(id==='ld_park'&&c?.card==='ld_flower');
 }
 function recipeMatches(row,c,state=run){
+ // 싼 조건(재료 카드·해금)을 먼저 본다. 주변 칸 계산은 재료가 맞는 칸에서만(배치 렉 원인)
+ if(c.card!==row.from||!recipeOpen(row.id,state))return false;
  const materials=new Set(tileSpaceAdjacent(c,state).filter(o=>recipeIngredient(o,row.adj))
   .map(o=>o.fp?'fp:'+o.fp.a:'cell:'+o.i));
- return c.card===row.from&&recipeOpen(row.id,state)&&materials.size>=row.need;
+ return materials.size>=row.need;
 }
-function recipeCandidate(c,state=run){
- return recipeRows().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id))
-  .find(row=>recipeMatches(row,c,state));
+function recipeSorted(){
+ return recipeRows().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
+}
+function recipeCandidate(c,state=run,rows=recipeSorted()){
+ return rows.find(row=>row.from===c.card&&recipeMatches(row,c,state));
 }
 function recipeMorphs(state,onChange){
  // Snapshot all candidates first. Newly created ingredients cannot chain in this transaction.
- const changes=(state.cells||[]).map(c=>({c,row:recipeCandidate(c,state)})).filter(x=>x.row);
+ const rows=recipeSorted();
+ const changes=(state.cells||[]).map(c=>({c,row:recipeCandidate(c,state,rows)})).filter(x=>x.row);
  for(const {c,row} of changes){
   if(mapDeferMorph(state,'off:'+c.k,c.card,row.id))continue;
   const from=c.card;c.base=from;c.card=row.id;
@@ -22013,5 +22018,5 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="e8d2724264698311";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="125b3414e1f193d7";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
 </html>
