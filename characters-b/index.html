@@ -15172,6 +15172,7 @@ function memberAttack(m,s){
  const tf=tileFx(t);if(first&&tf.first)mult*=1+tf.first; /* v1.0 돌격 교두보 등: 이 타일 첫 공격 배율 */
  if(exActive()&&m.stu.id==='harin')mult*=heroExTune(m).damage;
  const primary=(run.focusUid&&en.find(e=>e.uid===run.focusUid))||en[0];
+ fxEvent('attack',{m,e:primary}); /* 일반 공격 원화 타격 프레임. 피해·전투 난수와 무관. */
  const guaranteed=first&&m.stu.id==='eunha';
  const critical=typeof META_RULES!=='undefined'&&metaCombatOn()?
   META_RULES.critBonus(run,m,{first,focused:run.focusUid===primary.uid,guaranteed,crit:s.crit}):
@@ -24393,6 +24394,7 @@ const bossImg=e=>ART.img(`assets/enemies/boss_${gate().id}${e.twin==='L'?'_left'
 const evoImg=id=>ART.img(`assets/ui/evo_${id}.webp`);
 const FX8={ghosts:[],morphs:[],cards:[],hoverUid:null};
 function onFxEvent(kind,d){
+ if(typeof attackMotionEvent==='function')attackMotionEvent(kind,d);
  if(typeof stageFx==='function')try{stageFx(kind,d);}catch(e){/* 무대 연출 실패가 결전 팝업·잔상 연출을 막지 않게 */} /* 진형 무대(stage.js — 뒤에 로드): 모든 표시 이벤트를 먼저 받는다. 모르는 kind·빠진 필드는 무대가 조용히 넘긴다 */
  if(!d||typeof d!=='object')return; /* 아래 연출은 모두 객체 자료를 쓴다(진형 v2 새 이벤트·빠진 자료는 여기서 끝) */
  if(typeof duelFx==='function'&&(kind==='bossStart'||kind==='hit'||kind==='hurt'||kind==='ex'||kind==='banner'))duelFx(kind,d); /* v1.4 B 결전 팝업 연출 */
@@ -27595,8 +27597,10 @@ function duelBuild(){
 function duelTick(){
  if(!DUEL.open||!run||run.ended||!run.battle||MODAL.top()!=='duel')return;
  if(duelSig()!==DUEL.sig)duelBuild();
+ if(typeof attackDuelBuild==='function')attackDuelBuild();
  const b=run.battle;
  for(const m of run.party){const el=document.querySelector(`#duelSquad [data-uid="${m.uid}"]`);if(!el)continue;
+  if(typeof attackDuelTick==='function')attackDuelTick(el,m);
   el.classList.toggle('down',!!m.down);el.classList.toggle('low',!m.down&&m.hp<m.maxHp*0.35);el.classList.toggle('hurt',m.hurt>0);el.classList.toggle('atk',m.recoil>0);
   const i=el.querySelector('.hpb i'),u=el.querySelector('.hpb u');if(i)i.style.width=Math.max(0,m.hp/m.maxHp*100)+'%';if(u)u.style.width=Math.min(100,(b.shield[m.uid]||0)/m.maxHp*100)+'%';}
  for(const e of b.tile.enemies){const pc=Math.max(0,e.hp/e.maxHp*100);
@@ -28695,7 +28699,7 @@ const STAGE={on:null,cv:null,ctx:null,wrap:null,w:0,h:0,dpr:1,hSet:0,sizeN:-1,n:
  actors:new Map(),born:new Map(),q:[],fx:[],pops:[],band:null,flash:null,bg:null,bgKey:'',drawSig:'',staticN:0,bpSig:'',fitN:null,inB:false,lastT:0,hover:null,label:'',
  stat:{pushed:0,merged:0,dropped:0,applied:0,frames:0,draws:0},frame:null,clock:null};
 /* 무대 시계: 보통은 performance.now — 장면 캡처(tools/shot-scenes.js)가 STAGE.clock 으로 시각을 고정해 동작 한가운데를 찍는다 */
-const stageNow=()=>STAGE.clock?STAGE.clock():performance.now();
+const stageNow=()=>STAGE.clock?STAGE.clock():run&&!run.ended?1000000+run.time:performance.now();
 const stageFont=(px,w)=>`${w||700} ${px}px "Noto Sans KR","Malgun Gothic",sans-serif`;
 const stageEase=u=>1-Math.pow(1-clamp(u,0,1),3);
 
@@ -28854,6 +28858,8 @@ function stageApply(ev,now){
 const stageHX=a=>a.hx!=null?a.hx:a.x,stageHF=a=>a.hf!=null?a.hf:a.foot; /* 동작 기준 = 제자리(걸어 들어오는 중이어도) */
 function stageMuzzle(a){return {x:stageHX(a)+(a.w||30)*0.42,y:stageHF(a)-(a.h||60)*0.52};}
 function stageAttack(a,tg,now){const m=a.m;if(!m||m.down)return;
+ if(typeof attackMotionEntry==='function'&&attackMotionEntry(m)
+  &&ATTACK_PLAY.hits.get(m.uid)?.time===run.time)return;
  const reach=(m.stu&&m.stu.reach)||'mid',gap=now-(a.atkT||-1e9);a.atkT=now;
  const dur=clamp(gap*0.85,180,reach==='melee'?320:220),ty=tg?stageHF(tg)-(tg.h||40)*0.5:stageHF(a)-40,tx=tg?stageHX(tg):stageHX(a)+80;
  stageMotionFx(reach==='melee'?'slash':reach==='support'?'cast':'shot',reach==='support'?stageHX(a):tx,ty,now,reach==='melee'?60:48);
@@ -28977,6 +28983,7 @@ function stagePose(a,now,anim){
  else if(m&&anim&&a.upT){const u=(now-a.upT)/320;if(u<1)p.rot=-1.45*(1-stageEase(u));else a.upT=0;}
  return p;}
 function stageSprite(c,a,p){
+ if(typeof attackStageSprite==='function'&&attackStageSprite(c,a,p))return;
  const isM=a.kind==='m',im=isM?(a.m?charImg(a.m.stu.id,'sd'):null):(a.e?spriteOf(a.e):null),ok=ART.ok(im);
  let h=(a.hBase||60)*p.s,w=h*0.55;
  const crop=ok&&isM?sdBounds(im):null;
@@ -29797,5 +29804,399 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="36fe7ec341a4ca31";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script></body>
+<script>(()=>{const version="9732bd0900a96630";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
+.du-m canvas.attack-sd {
+ height:clamp(48px,19dvh,150px); width:auto; max-height:100%; min-height:0;
+ transform:none; display:block; pointer-events:none;
+}
+.du-m canvas.attack-sd[hidden], .du-m img.sd[hidden] { display:none; }
+.du-m.down canvas.attack-sd { transform:rotate(-80deg) translateY(20%); }
+@media(max-width:700px) { .du-m canvas.attack-sd { height:clamp(44px,12dvh,110px); } }
+</style><script>
+Object.assign(window.ASSET_DATA,{"assets/characters/attacks/ara.webp":"media/e621d6478d8d475a86bdf09e89f598b50f7e02b1a737ab00191b75a3b79cf650.webp","assets/characters/attacks/yerin.webp":"media/d84b73e8d4d4d4b939c1ecd9bfb567bc838bbaad280afdf85d4a0aa385948b08.webp","assets/characters/attacks/jiu.webp":"media/20c64b61813aa9b0b2e0a216c28f8a955986b40657c241d9191521d17c1ae39f.webp","assets/characters/attacks/bora.webp":"media/2e0e13ebced8d7e44b2ac5911f290769b1c24d1723dadb46fe0d856c4c8dd7ff.webp","assets/characters/attacks/chaewon.webp":"media/57b835e2324f63be69c3cb26e9940a710b8d2d7e808f12160d01f36c53d9ee49.webp","assets/characters/attacks/seoyul.webp":"media/a0a04e0cade283ab9ca490d16fa4c49c748b7bc7106bc4ce085e51636113fc02.webp","assets/characters/attacks/somi.webp":"media/60e3d7ca67fe8fbdf6dbd640ab54de3d5eb242eeae1b6398e96d0d1928c0986c.webp","assets/characters/attacks/yuna.webp":"media/39c816f76fbb3c227c36585ebbc897d02091e645c326b0d85dacf7d3902a86e6.webp","assets/characters/attacks/seoyoon.webp":"media/5d29b16ed3438184011cdde35d417ff9cf428daa1b2d7b601a2e5331d08fb8d2.webp","assets/characters/attacks/eunha.webp":"media/8f9e688771ac3891bd6fdc0ab26f1c0eb0d10f88659bc0a22130d8d3b6d03432.webp","assets/characters/attacks/rin.webp":"media/210bfd6f77e24983aa8811166b87eebe3c45bf44cc4bb313c49eaba7b720fe9b.webp","assets/characters/attacks/dahye.webp":"media/35bb5e4f165d9c4bb440aaf97c2ef5e75e4e945507e1325647ac152eb577a714.webp","assets/characters/attacks/mina.webp":"media/50988ac7337057efa7f3a105d291e46e29111dacf5f338037cf4785906fc533b.webp","assets/characters/attacks/gaeul.webp":"media/ab351f8896215f0e037e55f190e80a8d5a05d2afb35e7a60c1e676ea3b6203a9.webp","assets/characters/attacks/yeseo.webp":"media/5ac4eca857d903ece3090e584fefa5b48c51a697c93dab92050d1588b72adac5.webp","assets/characters/attacks/ririka.webp":"media/b4bdcfb30590b4c5815c1dadf7600f6073a397b1115a0a744a327a87a9c53a0b.webp","assets/characters/attacks/doeun.webp":"media/51277d0884beb9abde68ffecc67bd4b1f9221163859bea3cb5cb6cc272255d43.webp","assets/characters/attacks/narae.webp":"media/a227f1e6cd363a335aeef1600d444df8e73e19855fe6d572bd5cc52d3aba0808.webp","assets/characters/attacks/harin.webp":"media/db5b2f1f37d4e1afc6d128146f758daebb7b86ff0989af9ecb8ccba61f618c45.webp","assets/characters/attacks/yuri.webp":"media/47eab9ba0321067d461609b517713901be8de4cd8a2537ace2d5f782c006b50f.webp"});
+'use strict';
+// 생성물: tools/build-attack-assets.py. 프레임 원본/검수 좌표는 제작 폴더에 보관.
+const ATTACK_ATLAS = {
+  "ara": {
+    path: "assets/characters/attacks/ara.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 542,
+    frames: [
+      {"rect":[125,64,499,550],"pivot":[268.0,546]},
+      {"rect":[734,156,458,452],"pivot":[214.0,448]},
+      {"rect":[34,691,684,519],"pivot":[606.5,515]},
+      {"rect":[750,679,497,540],"pivot":[270.0,536]},
+    ],
+    sha256: "e621d6478d8d475a86bdf09e89f598b50f7e02b1a737ab00191b75a3b79cf650",
+  },
+  "yerin": {
+    path: "assets/characters/attacks/yerin.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 473,
+    frames: [
+      {"rect":[160,31,546,481],"pivot":[327.0,477]},
+      {"rect":[919,4,428,511],"pivot":[181.0,507]},
+      {"rect":[118,539,625,451],"pivot":[388.0,447]},
+      {"rect":[863,526,534,475],"pivot":[312.5,471]},
+    ],
+    sha256: "d84b73e8d4d4d4b939c1ecd9bfb567bc838bbaad280afdf85d4a0aa385948b08",
+  },
+  "jiu": {
+    path: "assets/characters/attacks/jiu.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 507,
+    frames: [
+      {"rect":[120,27,548,515],"pivot":[383.0,511]},
+      {"rect":[911,65,464,477],"pivot":[206.5,473]},
+      {"rect":[36,600,677,453],"pivot":[393.0,449]},
+      {"rect":[845,558,511,503],"pivot":[351.5,499]},
+    ],
+    sha256: "20c64b61813aa9b0b2e0a216c28f8a955986b40657c241d9191521d17c1ae39f",
+  },
+  "bora": {
+    path: "assets/characters/attacks/bora.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 455,
+    frames: [
+      {"rect":[208,17,551,503],"pivot":[321.5,500]},
+      {"rect":[813,69,664,451],"pivot":[363.0,448]},
+      {"rect":[23,577,906,427],"pivot":[663.0,423]},
+      {"rect":[942,520,525,488],"pivot":[290.0,484]},
+    ],
+    sha256: "2e0e13ebced8d7e44b2ac5911f290769b1c24d1723dadb46fe0d856c4c8dd7ff",
+  },
+  "chaewon": {
+    path: "assets/characters/attacks/chaewon.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 579,
+    frames: [
+      {"rect":[145,32,418,587],"pivot":[232.0,583]},
+      {"rect":[754,52,428,571],"pivot":[257.0,567]},
+      {"rect":[12,672,599,551],"pivot":[442.0,547]},
+      {"rect":[750,656,438,573],"pivot":[265.5,569]},
+    ],
+    sha256: "57b835e2324f63be69c3cb26e9940a710b8d2d7e808f12160d01f36c53d9ee49",
+  },
+  "seoyul": {
+    path: "assets/characters/attacks/seoyul.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 578,
+    frames: [
+      {"rect":[196,51,330,586],"pivot":[166.5,582]},
+      {"rect":[781,65,408,569],"pivot":[213.0,565]},
+      {"rect":[17,670,682,568],"pivot":[370.0,564]},
+      {"rect":[807,677,340,562],"pivot":[127.0,558]},
+    ],
+    sha256: "a0a04e0cade283ab9ca490d16fa4c49c748b7bc7106bc4ce085e51636113fc02",
+  },
+  "somi": {
+    path: "assets/characters/attacks/somi.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 607,
+    frames: [
+      {"rect":[126,8,466,615],"pivot":[218.5,611]},
+      {"rect":[697,11,506,612],"pivot":[256.5,608]},
+      {"rect":[14,635,659,606],"pivot":[395.0,602]},
+      {"rect":[738,629,500,613],"pivot":[221.0,609]},
+    ],
+    sha256: "60e3d7ca67fe8fbdf6dbd640ab54de3d5eb242eeae1b6398e96d0d1928c0986c",
+  },
+  "yuna": {
+    path: "assets/characters/attacks/yuna.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 582,
+    frames: [
+      {"rect":[98,28,497,590],"pivot":[248.5,586]},
+      {"rect":[703,29,521,590],"pivot":[279.0,586]},
+      {"rect":[0,662,650,573],"pivot":[405.5,569]},
+      {"rect":[725,652,495,589],"pivot":[244.0,585]},
+    ],
+    sha256: "39c816f76fbb3c227c36585ebbc897d02091e645c326b0d85dacf7d3902a86e6",
+  },
+  "seoyoon": {
+    path: "assets/characters/attacks/seoyoon.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 621,
+    frames: [
+      {"rect":[203,8,385,629],"pivot":[140.0,625]},
+      {"rect":[785,53,424,583],"pivot":[196.5,579]},
+      {"rect":[21,686,690,553],"pivot":[449.0,549]},
+      {"rect":[782,668,455,572],"pivot":[223.5,568]},
+    ],
+    sha256: "5d29b16ed3438184011cdde35d417ff9cf428daa1b2d7b601a2e5331d08fb8d2",
+  },
+  "eunha": {
+    path: "assets/characters/attacks/eunha.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 538,
+    frames: [
+      {"rect":[60,70,542,546],"pivot":[299.0,542]},
+      {"rect":[650,92,580,524],"pivot":[329.5,520]},
+      {"rect":[2,700,660,522],"pivot":[398.5,518]},
+      {"rect":[672,693,569,529],"pivot":[324.0,525]},
+    ],
+    sha256: "8f9e688771ac3891bd6fdc0ab26f1c0eb0d10f88659bc0a22130d8d3b6d03432",
+  },
+  "rin": {
+    path: "assets/characters/attacks/rin.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 572,
+    frames: [
+      {"rect":[110,45,486,580],"pivot":[256.5,576]},
+      {"rect":[776,50,469,575],"pivot":[228.0,571]},
+      {"rect":[0,673,747,558],"pivot":[310.5,554]},
+      {"rect":[762,661,462,570],"pivot":[237.5,566]},
+    ],
+    sha256: "210bfd6f77e24983aa8811166b87eebe3c45bf44cc4bb313c49eaba7b720fe9b",
+  },
+  "dahye": {
+    path: "assets/characters/attacks/dahye.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 614,
+    frames: [
+      {"rect":[208,5,440,622],"pivot":[246.0,618]},
+      {"rect":[699,9,554,618],"pivot":[357.5,614]},
+      {"rect":[5,634,707,592],"pivot":[467.5,588]},
+      {"rect":[750,636,502,591],"pivot":[308.0,587]},
+    ],
+    sha256: "35bb5e4f165d9c4bb440aaf97c2ef5e75e4e945507e1325647ac152eb577a714",
+  },
+  "mina": {
+    path: "assets/characters/attacks/mina.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 567,
+    frames: [
+      {"rect":[81,58,472,575],"pivot":[298.5,571]},
+      {"rect":[651,59,507,581],"pivot":[320.0,577]},
+      {"rect":[21,668,640,555],"pivot":[418.5,551]},
+      {"rect":[684,667,462,559],"pivot":[293.0,555]},
+    ],
+    sha256: "50988ac7337057efa7f3a105d291e46e29111dacf5f338037cf4785906fc533b",
+  },
+  "gaeul": {
+    path: "assets/characters/attacks/gaeul.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 611,
+    frames: [
+      {"rect":[168,14,370,619],"pivot":[181.5,615]},
+      {"rect":[751,102,415,531],"pivot":[215.5,527]},
+      {"rect":[26,653,623,564],"pivot":[416.5,560]},
+      {"rect":[778,646,400,591],"pivot":[195.5,587]},
+    ],
+    sha256: "ab351f8896215f0e037e55f190e80a8d5a05d2afb35e7a60c1e676ea3b6203a9",
+  },
+  "yeseo": {
+    path: "assets/characters/attacks/yeseo.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 600,
+    frames: [
+      {"rect":[60,23,551,608],"pivot":[408.0,604]},
+      {"rect":[648,54,596,577],"pivot":[358.0,573]},
+      {"rect":[23,664,626,566],"pivot":[509.0,562]},
+      {"rect":[686,639,547,598],"pivot":[399.5,594]},
+    ],
+    sha256: "5ac4eca857d903ece3090e584fefa5b48c51a697c93dab92050d1588b72adac5",
+  },
+  "ririka": {
+    path: "assets/characters/attacks/ririka.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 599,
+    frames: [
+      {"rect":[66,21,530,607],"pivot":[334.0,603]},
+      {"rect":[679,27,511,599],"pivot":[321.0,595]},
+      {"rect":[31,662,608,571],"pivot":[417.5,567]},
+      {"rect":[710,644,513,588],"pivot":[321.5,584]},
+    ],
+    sha256: "b4bdcfb30590b4c5815c1dadf7600f6073a397b1115a0a744a327a87a9c53a0b",
+  },
+  "doeun": {
+    path: "assets/characters/attacks/doeun.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 615,
+    frames: [
+      {"rect":[167,12,394,623],"pivot":[202.0,619]},
+      {"rect":[701,60,436,576],"pivot":[279.5,572]},
+      {"rect":[8,672,691,546],"pivot":[230.5,542]},
+      {"rect":[763,636,396,606],"pivot":[202.5,602]},
+    ],
+    sha256: "51277d0884beb9abde68ffecc67bd4b1f9221163859bea3cb5cb6cc272255d43",
+  },
+  "narae": {
+    path: "assets/characters/attacks/narae.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 626,
+    frames: [
+      {"rect":[174,9,350,634],"pivot":[173.0,630]},
+      {"rect":[763,48,394,596],"pivot":[197.0,592]},
+      {"rect":[14,666,640,569],"pivot":[417.0,565]},
+      {"rect":[803,648,379,592],"pivot":[189.0,588]},
+    ],
+    sha256: "a227f1e6cd363a335aeef1600d444df8e73e19855fe6d572bd5cc52d3aba0808",
+  },
+  "harin": {
+    path: "assets/characters/attacks/harin.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 557,
+    frames: [
+      {"rect":[74,53,437,565],"pivot":[286.5,561]},
+      {"rect":[701,60,451,558],"pivot":[281.0,554]},
+      {"rect":[70,674,456,556],"pivot":[289.5,552]},
+      {"rect":[694,669,439,561],"pivot":[290.0,557]},
+    ],
+    sha256: "db5b2f1f37d4e1afc6d128146f758daebb7b86ff0989af9ecb8ccba61f618c45",
+  },
+  "yuri": {
+    path: "assets/characters/attacks/yuri.webp",
+    sourceFacing: "left",
+    costume: "A",
+    impactFrame: 2,
+    bodyHeight: 608,
+    frames: [
+      {"rect":[150,18,430,616],"pivot":[232.0,612]},
+      {"rect":[720,33,430,601],"pivot":[223.0,597]},
+      {"rect":[65,650,553,590],"pivot":[341.0,586]},
+      {"rect":[725,639,446,606],"pivot":[243.5,602]},
+    ],
+    sha256: "47eab9ba0321067d461609b517713901be8de4cd8a2537ace2d5f782c006b50f",
+  },
+};
+
+'use strict';
+// 일반 공격 표현 전용. 피해/쿨다운을 바꾸지 않고 게임 시계와 발동 이벤트를 읽는다.
+const ATTACK_PLAY = {run: null, hits: new Map(), suppressed: new Map()};
+function attackMotionReset() {
+ if (ATTACK_PLAY.run === run) return;
+ ATTACK_PLAY.run = run;
+ ATTACK_PLAY.hits.clear();
+ ATTACK_PLAY.suppressed.clear();
+}
+function attackMotionEntry(m) {
+ if (!m || !m.stu || typeof ATTACK_ATLAS === 'undefined') return null;
+ // 선택한 코스튬에 A 공격복을 덮어씌우지 않는다.
+ if (typeof meta !== 'undefined' && meta?.affection?.costumes?.[m.stu.id] === 'costume') return null;
+ return ATTACK_ATLAS[m.stu.id] || null;
+}
+function attackMotionEvent(kind, d) {
+ if (!run || simMode) return;
+ attackMotionReset();
+ if (kind === 'attack' && d?.m && !d.m.down) {
+  ATTACK_PLAY.hits.set(d.m.uid, {time: run.time, target: d.e?.uid});
+ } else if (kind === 'ex') {
+  for (const m of d?.members || []) {
+   ATTACK_PLAY.hits.delete(m.uid);
+   ATTACK_PLAY.suppressed.set(m.uid, run.time + 420);
+  }
+ }
+}
+function attackMotionFrame(m, now) {
+ attackMotionReset();
+ if (!m || m.down || !run || run.ended || run.state !== 'battle') return 0;
+ if ((ATTACK_PLAY.suppressed.get(m.uid) || -1) > now) return 0;
+ const hit = ATTACK_PLAY.hits.get(m.uid), age = hit ? now - hit.time : Infinity;
+ // 실제 발동 시점에 바로 타격(2) → 회수(3). 준비(1)는 다음 공격 쿨다운에서 읽는다.
+ if (age >= 0 && age < 90) return 2;
+ if (age >= 90 && age < 220) return 3;
+ return m.cd > 0 && m.cd <= 180 ? 1 : 0;
+}
+function attackFacingScale(sourceFacing, desiredFacing) {
+ return sourceFacing === desiredFacing ? 1 : -1;
+}
+function attackMotionDraw(c, entry, frame, x, foot, height, facing) {
+ const im = ART.img(entry.path);
+ if (!ART.ok(im)) return false;
+ const f = entry.frames[frame], s = height / entry.bodyHeight;
+ c.save();
+ c.translate(x, foot);
+ c.scale(attackFacingScale(entry.sourceFacing, facing), 1);
+ c.drawImage(im, ...f.rect, -f.pivot[0]*s, -f.pivot[1]*s, f.rect[2]*s, f.rect[3]*s);
+ c.restore();
+ return true;
+}
+function attackStageSprite(c, a, p) {
+ if (a.kind !== 'm') return false;
+ const entry = attackMotionEntry(a.m);
+ if (!entry || !ART.ok(ART.img(entry.path))) return false;
+ const enabled = stageFxOn(), frame = enabled ? attackMotionFrame(a.m, run.time) : 0;
+ const target = ATTACK_PLAY.hits.get(a.m.uid)?.target;
+ const enemy = target != null ? STAGE.actors.get('e'+target) : null;
+ const facing = enemy && stageHX(enemy) < stageHX(a) ? 'left' : 'right';
+ const h = (a.hBase || 60)*p.s;
+ a.w = h*.65; a.h = h;
+ c.save(); c.globalAlpha = p.alpha;
+ c.fillStyle = 'rgba(0,0,0,.38)';
+ c.beginPath(); c.ellipse(a.x, a.foot+1, h*.2, Math.max(2.5,h*.045),0,0,Math.PI*2); c.fill();
+ // 공격 프레임 자체에 팔다리 동작이 있으므로 기존 몸통 돌진/늘이기를 중복하지 않는다.
+ const active = frame > 0 && !a.m.down;
+ c.translate(active ? a.x : p.x, active ? a.foot : p.foot);
+ if (!active) { c.rotate(p.rot); c.scale(p.sx,p.sy); }
+ if (p.filter && 'filter' in c) c.filter = p.filter === 'down' ? 'grayscale(1)' : 'brightness(1.2)';
+ attackMotionDraw(c,entry,frame,0,0,h,facing);
+ c.restore();
+ a.attackFrame = frame; a.attackFacing = facing;
+ return true;
+}
+function attackDuelTick(el, m) {
+ const cv = el.querySelector('canvas.attack-sd'), entry = attackMotionEntry(m);
+ if (!cv || !entry) return;
+ const c = cv.getContext('2d'); if (!c) return;
+ c.clearRect(0,0,cv.width,cv.height);
+ const frame = stageFxOn() ? attackMotionFrame(m,run.time) : 0;
+ const drawn = attackMotionDraw(c,entry,frame,270,280,220,'right');
+ cv.hidden = !drawn;
+ const fallback = el.querySelector('img.sd'); if (fallback) fallback.hidden = drawn;
+ cv.dataset.frame = String(frame); cv.dataset.facing = 'right';
+}
+function attackDuelBuild() {
+ for (const m of run.party) {
+  if (!attackMotionEntry(m)) continue;
+  const el = document.querySelector(`#duelSquad [data-uid="${m.uid}"]`);
+  if (el?.querySelector('canvas.attack-sd')) continue;
+  const im = el?.querySelector('img.sd');
+  if (!im || typeof el.insertBefore !== 'function') continue;
+  const cv = document.createElement('canvas');
+  cv.className = 'sd attack-sd'; cv.width = 600; cv.height = 300; cv.hidden = true;
+  cv.setAttribute('aria-label',m.stu.name+' 일반 공격');
+  el.insertBefore(cv,im);
+ }
+}
+
+</script></body>
 </html>
