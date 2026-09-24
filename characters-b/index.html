@@ -29804,7 +29804,7 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="9732bd0900a96630";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
+<script>(()=>{const version="f66f3a2f8dc7f222";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
 .du-m canvas.attack-sd {
  height:clamp(48px,19dvh,150px); width:auto; max-height:100%; min-height:0;
  transform:none; display:block; pointer-events:none;
@@ -30163,6 +30163,13 @@ function attackStageSprite(c, a, p) {
  c.save(); c.globalAlpha = p.alpha;
  c.fillStyle = 'rgba(0,0,0,.38)';
  c.beginPath(); c.ellipse(a.x, a.foot+1, h*.2, Math.max(2.5,h*.045),0,0,Math.PI*2); c.fill();
+ if (a.rowFlash) {
+  const u=(stageNow()-a.rowFlash.t0)/360;
+  if (u<1) {
+   c.globalAlpha=p.alpha*.5*(1-u);c.fillStyle=a.rowFlash.color;c.beginPath();
+   c.ellipse(a.x,a.foot-h*.45,h*.35,h*.55,0,0,Math.PI*2);c.fill();c.globalAlpha=p.alpha;
+  } else a.rowFlash=null;
+ }
  // 공격 프레임 자체에 팔다리 동작이 있으므로 기존 몸통 돌진/늘이기를 중복하지 않는다.
  const active = frame > 0 && !a.m.down;
  c.translate(active ? a.x : p.x, active ? a.foot : p.foot);
