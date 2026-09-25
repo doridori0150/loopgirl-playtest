@@ -1,7 +1,7 @@
 {
   "channel": "character-b",
-  "version": "c175c4a4b98b30cc",
-  "builtAt": "2026-09-25T13:12:56.508Z",
+  "version": "3b7446f52ece774f",
+  "builtAt": "2026-09-25T13:43:01.928Z",
   "students": [
     "harin",
     "chaewon",
@@ -36,5 +36,6 @@
   "uiVersion": 4,
   "storyRelease": "2026-09-22 개정 + 2026-09-24 대사 재집필",
   "attackMotionVersion": 1,
-  "mainArtVersion": 1
+  "mainArtVersion": 1,
+  "characterAssetSync": 1
 }
