@@ -1,7 +1,7 @@
 {
   "channel": "character-b",
-  "version": "882c296eafb6c0ad",
-  "builtAt": "2026-09-25T15:54:47.997Z",
+  "version": "5daa685c51f99069",
+  "builtAt": "2026-09-25T18:08:56.267Z",
   "students": [
     "harin",
     "chaewon",
@@ -39,7 +39,21 @@
   "mainArtVersion": 1,
   "characterAssetSync": 1,
   "reviewedArt": {
-    "character": "gaeul",
-    "count": 23
+    "character": "cast",
+    "characters": [
+      "chaewon",
+      "jiu",
+      "eunha",
+      "seoyul",
+      "somi",
+      "seoyoon",
+      "mina",
+      "yuna",
+      "ara",
+      "yerin",
+      "harin"
+    ],
+    "count": 97,
+    "runtimeCheck": "docs/art/cast-continuity-20260926/runtime-check.json"
   }
 }
