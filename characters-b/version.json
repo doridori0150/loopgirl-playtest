@@ -1,7 +1,7 @@
 {
   "channel": "character-b",
-  "version": "3b7446f52ece774f",
-  "builtAt": "2026-09-25T13:43:01.928Z",
+  "version": "882c296eafb6c0ad",
+  "builtAt": "2026-09-25T15:54:47.997Z",
   "students": [
     "harin",
     "chaewon",
@@ -37,5 +37,9 @@
   "storyRelease": "2026-09-22 개정 + 2026-09-24 대사 재집필",
   "attackMotionVersion": 1,
   "mainArtVersion": 1,
-  "characterAssetSync": 1
+  "characterAssetSync": 1,
+  "reviewedArt": {
+    "character": "gaeul",
+    "count": 23
+  }
 }
