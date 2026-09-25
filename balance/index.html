@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<script>window.LG_BALANCE_PUBLIC=true;</script>
+<script>window.LG_BALANCE_PUBLIC=true;window.LG_BALANCE_GAME_VERSION="d0dbff0ccd943388";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>외부 밸런스 편집기 — LoopGirl</title>
@@ -204,7 +204,7 @@ h1.ttl{margin:0;font-family:var(--fd);font-weight:400;font-size:28px;line-height
 <body>
 <div class="app">
   <header class="hd">
-    <div class="brand"><div class="t">밸런스 편집기</div><div class="s">외부 편집판 · 게임 기준 c29912ea710efc58</div></div>
+    <div class="brand"><div class="t">밸런스 편집기</div><div class="s">외부 편집판 · 게임 기준 d0dbff0ccd943388</div></div>
     <nav class="tabs" aria-label="보기 전환">
       <button type="button" data-tab="overview" aria-pressed="true">전체 보기</button>
       <button type="button" data-tab="tile" aria-pressed="false">타일 수치</button>
@@ -217,7 +217,7 @@ h1.ttl{margin:0;font-family:var(--fd);font-weight:400;font-size:28px;line-height
     <button type="button" class="hbtn" id="bReset" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>기본값으로</button>
     <button type="button" class="savebtn" id="bSave" aria-label="저장" aria-describedby="saveWhy" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"></path></svg>저장</button><span class="sr" id="saveWhy"></span>
   </header>
-<div id="publicFiles" aria-label="외부 편집 파일"><button type="button" data-public-action="export">JSON 저장</button><button type="button" data-public-action="import">JSON 불러오기</button><button type="button" data-public-action="all">전체 수치 저장</button><span id="publicFileStatus" role="status">수정본을 파일로 보관하세요.</span></div>
+<div id="publicFiles" aria-label="외부 편집 파일"><button type="button" data-public-action="test">현재 수치로 테스트</button><button type="button" data-public-action="export">JSON 저장</button><button type="button" data-public-action="import">JSON 불러오기</button><button type="button" data-public-action="all">전체 수치 저장</button><a href="test.html" target="_blank" rel="noopener">JSON으로 테스트 열기</a><span id="publicFileStatus" role="status">수정본을 파일로 보관하세요.</span></div>
   <div class="narrow" role="note">창을 1280px 이상으로 넓혀 주세요 — 지금 폭에서는 화면 일부가 잘립니다.</div>
   <div class="notice" id="notice" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 21h20L12 3z"></path><path d="M12 10v5"></path><path d="M12 18h.01"></path></svg><span id="noticeText"></span></div>
   <section id="balanceOverview" aria-label="전체 밸런스 목록"></section>
@@ -327,7 +327,8 @@ const SYNERGY=[
  {id:'sup',name:'서포터',need:2,desc:'EX 게이지 획득 +50%'},
 ];
 const STUDENTS=[
- {id:'harin',name:'유하린',club:'council',role:'dps',rarity:0,weapon:'돌격소총',color:'#128cff',hair:'#243b6b',halo:'#7cc4ff',eye:'#1d4ed8',hairLen:9,hp:120,atk:14,def:4,spd:1.0,crit:0.10,
+ 
+{id:'harin',name:'유하린',club:'council',role:'dps',rarity:0,weapon:'돌격소총',color:'#128cff',hair:'#243b6b',halo:'#7cc4ff',eye:'#1d4ed8',hairLen:9,hp:120,atk:14,def:4,spd:1.0,crit:0.10,
   trait:{name:'돌격 교범',desc:'전투 첫 공격 피해 +50%'},ex:{name:'풀 버스트',icon:'🔫',desc:'4초간 자신 공격속도 +100%, 피해 +30%'},
   quotes:['{name} 님, 오늘 훈련도 잘 부탁드립니다! …게이트요? 그, 그것도 훈련이죠!','이 정도 게이트는 거뜬해요. …아, 아니, 방심은 안 해요.','{name} 님이 작전실에 계시면 이상하게 힘이 나요. 왜일까요…'],crisis:'아직… 아직 물러설 수 없어요! {name} 님, 지시를!'},
  {id:'chaewon',name:'강채원',club:'shield',role:'tank',rarity:0,weapon:'산탄총',color:'#f59e0b',hair:'#6b2f12',halo:'#fbbf24',eye:'#7c2d12',hairLen:3,hp:170,atk:11,def:8,spd:0.8,crit:0.05,
@@ -406,7 +407,7 @@ const PERKS=[
  {id:'bane',icon:'🎯',name:'약점 연구',desc:()=>`특효 피해 +${Math.round(BAL.perk.bane*100)}%p`},
  {id:'vanguard',icon:'🛡',name:'전열 강화',desc:()=>`전열이 받는 피해 −${Math.round(BAL.perk.vanguard*100)}%`},
  {id:'rear',icon:'🏹',name:'후열 화력',desc:()=>`후열 공격 +${Math.round(BAL.perk.rear*100)}%`},
- {id:'loot',icon:'💰',name:'전리품 감정',desc:()=>`계약 XP·마나석 +${Math.round(BAL.perk.loot*100)}%`},
+ {id:'loot',icon:'💰',name:'전리품 감정',desc:()=>`계약 XP${!!BAL.econ2?'':'·마나석'} +${Math.round(BAL.perk.loot*100)}%`},
 ];/* Individual encounters replace the rejected highest-clear batch unlocks. */
 const BUILD_CURRICULUM=[
  {id:'start',name:'기본 분대',students:['harin','chaewon','seoyul'],
@@ -1140,10 +1141,10 @@ const RELICS=[
 ];
 
 const RELIC_DESCRIPTIONS={
- halo:()=>`재화 개편: 계약 OP +${tunePct(relicTune('halo').opPct)}% / 기존 재화: 계약 OP +${relicTune('halo').op}`,
- contract:()=>`마나석 획득 ×${relicTune('contract').mana} · 재화 개편 OFF 전용`,
- savings:()=>`유효 귀환 시 남은 OP ${BAL.econ.savings.per}당 부족한 길드 자재 +1 (최대 ${BAL.econ.savings.max})`,
- medkit:()=>`랩 시작 전원 HP 회복 · 재화 개편 ${tunePct(BAL.econ.heal.medkit)}% / 기존 ${tunePct(BAL.relicHeal.medkit)}%`,
+ halo:()=>!!BAL.econ2?`계약 OP +${tunePct(relicTune('halo').opPct)}%`:`계약 OP +${relicTune('halo').op}`,
+ contract:()=>!!BAL.econ2?'지금 재화 체계에서는 나오지 않는 유물':`마나석 획득 ×${relicTune('contract').mana}`,
+ savings:()=>`유효 귀환 시 남은 OP ${BAL.econ.savings.per}당 부족한 사무소 자재 +1 (최대 ${BAL.econ.savings.max})`,
+ medkit:()=>`랩 시작 전원 HP ${tunePct(!!BAL.econ2?BAL.econ.heal.medkit:BAL.relicHeal.medkit)}% 회복`,
  plate:()=>`전원 피격 시 공격자에게 ${relicTune('plate').reflect} 반사 피해`,
  core:()=>`전원 공격 ×${relicTune('core').atk}, 받는 피해 ×${relicTune('core').taken}`,
  lucky:()=>`보급 희귀도 ${relicTune('lucky').tier}단계 상향 (표의 최종 단계 상한)`,
@@ -1159,7 +1160,7 @@ const RELIC_DESCRIPTIONS={
  clubflag:()=>`같은 동아리 ${relicTune('clubflag').need}명 이상이면 계약 XP ×${relicTune('clubflag').xp}`,
  survey:()=>`언덕·봉우리당 공격 +${relicTune('survey').atk} (최대 +${relicTune('survey').max})`,
  compass:()=>`물길 인접 결계당 랩 회복 +${tunePct(relicTune('compass').heal)}% (최대 +${tunePct(relicTune('compass').max)}%)`,
- specimen:()=>`고치당 카드 드롭 +${tunePct(relicTune('specimen').drop)}%p (최대 ${tunePct(relicTune('specimen').max)}%p) · 재화 개편 OFF 전용`,
+ specimen:()=>!!BAL.econ2?'고치 카드 드롭 가산 — 지금 재화 체계의 확정 보급에는 적용되지 않음':`고치당 카드 드롭 +${tunePct(relicTune('specimen').drop)}%p (최대 ${tunePct(relicTune('specimen').max)}%p)`,
  scope:()=>`살아 있는 후열 원거리 학생당 전원 치명 +${tunePct(relicTune('scope').crit)}%p`,
 };
 for(const r of RELICS){
@@ -1322,7 +1323,7 @@ const COUNTERS={
  blast:{name:'폭발탄',icon:'💥',desc:'처치 시 같은 타일 이형 전체에 최대 HP 25% 피해'},
  drill:{name:'강화 훈련',icon:'📈',desc:'전원 공격 +4'},
  vest:{name:'방탄 조끼',icon:'🦺',desc:'전원 방어 +3, 최대 HP +20'},
- fund:{name:'협회 지원금',icon:'💰',desc:'OP +6, 카드 +2'},
+ fund:{name:'협회 지원금',icon:'💰',get desc(){return `OP +${!!BAL.econ2?6*Math.max(1,Number.isFinite(+BAL.econ.opMul)?+BAL.econ.opMul:100):6}, 카드 +2`;}},
  heal:{name:'긴급 정비',icon:'💊',desc:'전원 HP 40% 즉시 회복, 캠프 회복 +5%p'},
 };
 const EVO_LAPS=[3,5,7];
@@ -1491,6 +1492,67 @@ BAL.campaign={surveyCards:4,surveyCamps:1,salvageResources:6,salvageCamps:1,hunt
 BAL.relationshipTrials={dangerRuns:2,dangerWins:1,survivalParty:3,synergyWins:5,synergyChains:2};
 BAL.exChargeRate=1/3;
 BAL.droneNetwork={step:2,maxStep:3};
+
+</script>
+<script>
+'use strict';
+/* Facilities open gradually; already-open and purchased facilities never close. */
+BAL.office=Object.assign({store:1,med:2,range:3,ops:4,lab:5},BAL.office||{});
+const OFFICE_FACILITY_ORDER=['store','med','range','ops','lab'];
+function officeCount(value){return Number.isFinite(+value)?Math.max(0,Math.floor(+value)):0;}
+function officeThreshold(id){
+ const i=OFFICE_FACILITY_ORDER.indexOf(id);if(i<0)return null;
+ // Keep the promised order even when individual thresholds are tuned.
+ return Math.max(...OFFICE_FACILITY_ORDER.slice(0,i+1).map(k=>officeCount(BAL.office[k])));
+}
+function officeNormalize(m){
+ if(!m)return null;
+ if(!m.office||typeof m.office!=='object'||Array.isArray(m.office))m.office={};
+ if(!m.office.opened||typeof m.office.opened!=='object'||Array.isArray(m.office.opened))m.office.opened={};
+ const o=m.office.opened,returns=officeCount(m.runs),upg=m.upg||{};
+ for(const f of FACILITIES){
+  if(officeCount(upg[f.id])>0)o[f.id]=true;
+  const threshold=officeThreshold(f.id);if(threshold!==null&&returns>=threshold)o[f.id]=true;
+ }
+ const injured=Object.values(m.trauma||{}).some(Boolean);
+ const treated=m.traumaCenter&&officeCount(m.traumaCenter.used)>0;
+ if(o.med||injured||treated)o.trauma=true;
+ m.office.v=1;return m.office;
+}
+function officeFacilityOpen(id){
+ if(!FACILITIES.some(f=>f.id===id))return false;
+ return !!officeNormalize(meta).opened[id];
+}
+function officeFacilityName(id){
+ const room=typeof ROOMS!=='undefined'&&ROOMS.find(r=>r.f===id),facility=FACILITIES.find(f=>f.id===id);
+ return room?room.name:facility?facility.name:id;
+}
+function officeFacilityHint(id){
+ if(!FACILITIES.some(f=>f.id===id))return '알 수 없는 시설';
+ if(officeFacilityOpen(id))return '이용 가능';
+ if(id==='trauma')return '첫 트라우마 발생 또는 의무실 개방 시 이용 가능';
+ const needed=officeThreshold(id),remaining=Math.max(0,needed-officeCount(meta.runs));
+ return `유효 출격 ${needed}회 종료 후 개방 · 앞으로 ${remaining}회`;
+}
+function officeRoomOpen(room){
+ const r=typeof room==='string'?(typeof ROOMS!=='undefined'&&ROOMS.find(x=>x.id===room)):room;
+ if(!r)return false;
+ // Story archives, companions, quests and the skill tree remain accessible.
+ return r.t==='fac'?officeFacilityOpen(r.f):true;
+}
+function officeNextUnlock(){
+ const id=OFFICE_FACILITY_ORDER.find(k=>!officeFacilityOpen(k));if(!id)return null;
+ const runs=officeThreshold(id);
+ return {id,name:officeFacilityName(id),runs,remaining:Math.max(0,runs-officeCount(meta.runs)),hint:officeFacilityHint(id)};
+}
+Object.assign(window.GL=window.GL||{},{OFFICE_FACILITY_ORDER,officeNormalize,officeFacilityOpen,officeFacilityHint,officeRoomOpen,officeNextUnlock,officeThreshold});
+
+function renderOfficeNavigation(){
+ const host=document.getElementById('officeNav');if(!host)return;
+ const rooms=ROOMS.filter(officeRoomOpen),next=officeNextUnlock();
+ host.innerHTML='<div class="office-heading"><b>LooP 사무소</b><span>원정을 마치며 공간을 하나씩 확장합니다.</span></div>'+rooms.map(r=>`<button class="office-room${HUB.acRoom===r.id?' on':''}" data-office-room="${r.id}"><b>${r.icon} ${r.name}</b><span>${r.desc}${r.f?' · Lv'+(meta.upg[r.f]||0):''}</span></button>`).join('')+(next?`<div class="office-next"><b>다음 확장 · ${next.name}</b><span>${next.hint}</span></div>`:'');
+ host.querySelectorAll('[data-office-room]').forEach(b=>b.onclick=()=>{const r=roomOf(b.dataset.officeRoom);setAcTab(r.t,r.id);renderOfficeNavigation();});
+}
 
 </script>
 <script>
@@ -2397,7 +2459,7 @@ const ECON = (() => {
   const CLASSES = [
     { id: 'char', name: '캐릭터 소재', hud: '캐릭터' },
     { id: 'mem', name: '기억', hud: '기억' },
-    { id: 'guild', name: '길드 자재', hud: '길드' },
+    { id: 'guild', name: '사무소 자재', hud: '사무소' },
   ];
   const SCHOOL_IDS = ['hansung', 'dorim', 'eunha'];
   const ROLE_IDS = ['dps', 'tank', 'sup'];
@@ -3016,6 +3078,268 @@ function econMetaReward(tag,ctx={}){
  return paid;
 }
 Object.assign(window.GL=window.GL||{},{econMetaReward,missionReward,missionRewardText,questReward,questRewardText,progressionRewardText,missionResourceTarget,missionResourceTotal});
+
+</script>
+<script>
+/* Independent relationship progression. No dialogue text, combat rewards or exclusive romance. */
+(function(g){
+ 'use strict';
+ const own=(o,k)=>Object.prototype.hasOwnProperty.call(o||{},k);
+ const obj=v=>v&&typeof v==='object'&&!Array.isArray(v)?v:{};
+ const num=v=>Number.isFinite(+v)?Math.max(0,+v):0;
+ const DEFINITIONS={
+"harin":{"route":{"romanceFlags":["relationship_harin_accepted"],"deferredFlags":["relationship_harin_deferred"],"personalStoryEvents":["bond_harin_2","bond_harin_4","bond_harin_6","bond_harin_8","bond_harin_10"],"personalConditions":["mission.harin.field","mission.harin.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.harin.danger","trial.harin.survival","trial.harin.synergy"],"interactionId":null},"missions":[{"id":"harin.field","student":"harin","type":"field","label":"소환 타일 3장 배치하고 적 8기 처치","min":{"spawn":3,"kills":8}},{"id":"harin.build","student":"harin","type":"sub","label":"작전실 Lv1 · 첫 인연 열람","conditions":["facility.ops.1","event.bond_harin_2"]}]},
+"chaewon":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_chaewon_2","bond_chaewon_4","bond_chaewon_6","bond_chaewon_8","bond_chaewon_10"],"personalConditions":["mission.chaewon.field","mission.chaewon.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.chaewon.danger","trial.chaewon.survival","trial.chaewon.synergy"],"interactionId":null},"missions":[{"id":"chaewon.field","student":"chaewon","type":"field","label":"지원 효과 3회 발동하고 캠프 귀환","min":{"support":3,"camps":1},"returnAlive":true},{"id":"chaewon.build","student":"chaewon","type":"sub","label":"의무실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.med.1","event.bond_chaewon_4"]}]},
+"seoyul":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_seoyul_2","bond_seoyul_4","bond_seoyul_6","bond_seoyul_8","bond_seoyul_10"],"personalConditions":["mission.seoyul.field","mission.seoyul.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.seoyul.danger","trial.seoyul.survival","trial.seoyul.synergy"],"interactionId":null},"missions":[{"id":"seoyul.field","student":"seoyul","type":"field","label":"캠프 1회 통과 후 전원 생존 귀환","min":{"camps":1},"allAlive":true,"returnAlive":true},{"id":"seoyul.build","student":"seoyul","type":"sub","label":"의무실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.med.1","event.bond_seoyul_4"]}]},
+"somi":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_somi_2","bond_somi_4","bond_somi_6","bond_somi_8","bond_somi_10"],"personalConditions":["mission.somi.field","mission.somi.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.somi.danger","trial.somi.survival","trial.somi.synergy"],"interactionId":null},"missions":[{"id":"somi.field","student":"somi","type":"field","label":"3명 분대로 지원 효과 4회 발동","min":{"party":3,"support":4}},{"id":"somi.build","student":"somi","type":"sub","label":"작전실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.ops.1","event.bond_somi_4"]}]},
+"yuna":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_yuna_2","bond_yuna_4","bond_yuna_6","bond_yuna_8","bond_yuna_10"],"personalConditions":["mission.yuna.field","mission.yuna.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.yuna.danger","trial.yuna.survival","trial.yuna.synergy"],"interactionId":null},"missions":[{"id":"yuna.field","student":"yuna","type":"field","label":"보드 타일 3장 배치하고 지원 효과 3회 발동","min":{"terrain":3,"support":3}},{"id":"yuna.build","student":"yuna","type":"sub","label":"연구실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.lab.1","event.bond_yuna_4"]}]},
+"seoyoon":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_seoyoon_2","bond_seoyoon_4","bond_seoyoon_6","bond_seoyoon_8","bond_seoyoon_10"],"personalConditions":["mission.seoyoon.field","mission.seoyoon.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.seoyoon.danger","trial.seoyoon.survival","trial.seoyoon.synergy"],"interactionId":null},"missions":[{"id":"seoyoon.field","student":"seoyoon","type":"field","label":"소환 타일 4장 배치하고 적 12기 처치","min":{"spawn":4,"kills":12}},{"id":"seoyoon.build","student":"seoyoon","type":"sub","label":"훈련장 Lv1 개방 및 앞선 인연 열람","conditions":["facility.range.1","event.bond_seoyoon_4"]}]},
+"eunha":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_eunha_2","bond_eunha_4","bond_eunha_6","bond_eunha_8","bond_eunha_10"],"personalConditions":["mission.eunha.field","mission.eunha.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.eunha.danger","trial.eunha.survival","trial.eunha.synergy"],"interactionId":null},"missions":[{"id":"eunha.field","student":"eunha","type":"field","label":"적 진화 대응책 1개 확보하고 적 10기 처치","min":{"counters":1,"kills":10}},{"id":"eunha.build","student":"eunha","type":"sub","label":"연구실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.lab.1","event.bond_eunha_4"]}]},
+"rin":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_rin_2","bond_rin_4","bond_rin_6","bond_rin_8","bond_rin_10"],"personalConditions":["mission.rin.field","mission.rin.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.rin.danger","trial.rin.survival","trial.rin.synergy"],"interactionId":null},"missions":[{"id":"rin.field","student":"rin","type":"field","label":"보드 타일 4장 배치하고 지원 효과 5회 발동","min":{"terrain":4,"support":5}},{"id":"rin.build","student":"rin","type":"sub","label":"연구실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.lab.1","event.bond_rin_4"]}]},
+"dahye":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_dahye_2","bond_dahye_4","bond_dahye_6","bond_dahye_8","bond_dahye_10"],"personalConditions":["mission.dahye.field","mission.dahye.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.dahye.danger","trial.dahye.survival","trial.dahye.synergy"],"interactionId":null},"missions":[{"id":"dahye.field","student":"dahye","type":"field","label":"보급 2회 구매하고 적 15기 처치","min":{"purchases":2,"kills":15}},{"id":"dahye.build","student":"dahye","type":"sub","label":"창고 Lv1 개방 및 앞선 인연 열람","conditions":["facility.store.1","event.bond_dahye_4"]}]},
+"mina":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_mina_2","bond_mina_4","bond_mina_6","bond_mina_8","bond_mina_10"],"personalConditions":["mission.mina.field","mission.mina.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.mina.danger","trial.mina.survival","trial.mina.synergy"],"interactionId":null},"missions":[{"id":"mina.field","student":"mina","type":"field","label":"3명 이상 전원 생존으로 캠프 2회 통과 후 귀환","min":{"party":3,"camps":2},"allAlive":true,"returnAlive":true},{"id":"mina.build","student":"mina","type":"sub","label":"의무실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.med.1","event.bond_mina_4"]}]},
+"jiu":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_jiu_2","bond_jiu_4","bond_jiu_6","bond_jiu_8","bond_jiu_10"],"personalConditions":["mission.jiu.field","mission.jiu.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.jiu.danger","trial.jiu.survival","trial.jiu.synergy"],"interactionId":null},"missions":[{"id":"jiu.field","student":"jiu","type":"field","label":"진화 대응책 1개 확보하고 소환 타일 3장 배치","min":{"counters":1,"spawn":3}},{"id":"jiu.build","student":"jiu","type":"sub","label":"훈련장 Lv1 개방 및 앞선 인연 열람","conditions":["facility.range.1","event.bond_jiu_4"]}]},
+"ara":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_ara_2","bond_ara_4","bond_ara_6","bond_ara_8","bond_ara_10"],"personalConditions":["mission.ara.field","mission.ara.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.ara.danger","trial.ara.survival","trial.ara.synergy"],"interactionId":null},"missions":[{"id":"ara.field","student":"ara","type":"field","label":"지원 효과 5회 발동 후 전원 생존 귀환","min":{"support":5},"allAlive":true,"returnAlive":true},{"id":"ara.build","student":"ara","type":"sub","label":"작전실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.ops.1","event.bond_ara_4"]}]},
+"bora":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_bora_2","bond_bora_4","bond_bora_6","bond_bora_8","bond_bora_10"],"personalConditions":["mission.bora.field","mission.bora.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.bora.danger","trial.bora.survival","trial.bora.synergy"],"interactionId":null},"missions":[{"id":"bora.field","student":"bora","type":"field","label":"3명 분대로 적 10기 처치 후 전원 생존 귀환","min":{"party":3,"kills":10},"allAlive":true,"returnAlive":true},{"id":"bora.build","student":"bora","type":"sub","label":"작전실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.ops.1","event.bond_bora_4"]}]},
+"yerin":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_yerin_2","bond_yerin_4","bond_yerin_6","bond_yerin_8","bond_yerin_10"],"personalConditions":["mission.yerin.field","mission.yerin.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.yerin.danger","trial.yerin.survival","trial.yerin.synergy"],"interactionId":null},"missions":[{"id":"yerin.field","student":"yerin","type":"field","label":"보드 타일 2장 배치하고 보급 2회 구매","min":{"terrain":2,"purchases":2}},{"id":"yerin.build","student":"yerin","type":"sub","label":"창고 Lv1 개방 및 앞선 인연 열람","conditions":["facility.store.1","event.bond_yerin_4"]}]},
+"gaeul":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_gaeul_2","bond_gaeul_4","bond_gaeul_6","bond_gaeul_8","bond_gaeul_10"],"personalConditions":["mission.gaeul.field","mission.gaeul.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.gaeul.danger","trial.gaeul.survival","trial.gaeul.synergy"],"interactionId":null},"missions":[{"id":"gaeul.field","student":"gaeul","type":"field","label":"지원 효과 3회 발동하고 전원 생존으로 캠프 귀환","min":{"support":3,"camps":1},"allAlive":true,"returnAlive":true},{"id":"gaeul.build","student":"gaeul","type":"sub","label":"의무실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.med.1","event.bond_gaeul_4"]}]},
+"yeseo":{"route":{"romanceFlags":[],"deferredFlags":[],"personalStoryEvents":["bond_yeseo_2","bond_yeseo_4","bond_yeseo_6","bond_yeseo_8","bond_yeseo_10"],"personalConditions":["mission.yeseo.field","mission.yeseo.build"],"endingEventId":null,"endingEntryEventId":null,"endingCompleteEventId":null,"hiddenEndingEventId":null,"hiddenEndingEntryEventId":null,"hiddenEndingCompleteEventId":null,"hiddenConditions":["trial.yeseo.danger","trial.yeseo.survival","trial.yeseo.synergy"],"interactionId":null},"missions":[{"id":"yeseo.field","student":"yeseo","type":"field","label":"보드 타일 3장 배치하고 적 15기 처치","min":{"terrain":3,"kills":15}},{"id":"yeseo.build","student":"yeseo","type":"sub","label":"연구실 Lv1 개방 및 앞선 인연 열람","conditions":["facility.lab.1","event.bond_yeseo_4"]}]}
+};
+ const IDS=Object.keys(DEFINITIONS);
+ const BOND_LEVELS=[2,4,6,8,10];
+ const TRIAL_DEFAULTS={dangerRuns:2,dangerWins:1,survivalParty:3,synergyWins:5,synergyChains:2};
+ const TRIAL_IDS=['danger','survival','synergy'];
+ function trialRules(){const source=typeof BAL!=='undefined'?BAL.relationshipTrials:g.BAL?.relationshipTrials;return Object.fromEntries(Object.entries(TRIAL_DEFAULTS).map(([k,v])=>[k,Math.max(1,Math.min(k==='survivalParty'?6:100,Math.round(Number.isFinite(+source?.[k])?+source[k]:v)))]));}
+ const characterConditions=keys=>{if(keys.some(k=>typeof k!=='string'))throw Error('Invalid character condition');return keys.filter(k=>!k.startsWith('main.clear.'));};
+ const FAC_NAMES={range:'훈련장',med:'의무실',store:'창고',lab:'연구실',ops:'작전실',trauma:'트라우마 센터'};
+ const eventRules=Object.create(null);
+ const routes=Object.create(null),missions=Object.create(null);
+ for(const id of IDS){
+  const definition=DEFINITIONS[id];
+  routes[id]=definition.route;
+  for(const mission of definition.missions) missions[mission.id]=mission;
+ }
+ function normalize(meta){
+  const r=meta.relationships=obj(meta.relationships);r.version=1;r.characters=obj(r.characters);
+  r.processedRuns=Array.isArray(r.processedRuns)?r.processedRuns.filter(x=>typeof x==='string').slice(-256):[];
+  for(const id of IDS){const c=r.characters[id]=obj(r.characters[id]);c.missions=obj(c.missions);c.metrics=obj(c.metrics);c.trials=obj(c.trials);c.dangerAttempts=Array.isArray(c.dangerAttempts)?c.dangerAttempts.filter(p=>p?.v===1&&typeof p.run==='string').slice(-100):[];c.romance=c.romance===true;c.endingSeen=c.endingSeen===true;c.hiddenEndingSeen=c.hiddenEndingSeen===true;c.interactionUnlocked=c.interactionUnlocked===true;}
+  return meta;
+ }
+ function character(meta,id){normalize(meta);return own(meta.relationships.characters,id)?meta.relationships.characters[id]:null;}
+ function seen(meta,id){return num(obj(obj(meta.story).seen)[id])>0;}
+ function flag(meta,id){return !!obj(obj(meta.story).flags)[id];}
+ function catalogEvents(ctx){
+  if(ctx&&Array.isArray(ctx.events))return ctx.events;
+  if(ctx&&ctx.eventCatalog)return Object.values(ctx.eventCatalog);
+  return g.GL&&g.GL.story&&Array.isArray(g.GL.story.events)?g.GL.story.events:[];
+ }
+ const contentEnabled=event=>!!event&&!event.disabled&&event.contentReady!==false;
+ function contentEvent(id,ctx){
+  if(!id)return null;
+  if(ctx&&typeof ctx.getEvent==='function')return ctx.getEvent(id);
+  if(ctx&&Array.isArray(ctx.events))return ctx.events.find(e=>e&&e.id===id);
+  if(ctx&&ctx.eventCatalog)return ctx.eventCatalog[id];
+  if(ctx&&typeof ctx.hasEvent==='function')return null;
+  return g.GL?.story?.get?.(id);
+ }
+ function availableContent(id,ctx){
+  if(!id)return false;
+  const event=contentEvent(id,ctx);
+  if(ctx&&typeof ctx.hasEvent==='function'&&typeof ctx.getEvent!=='function'&&!Array.isArray(ctx.events)&&!ctx.eventCatalog)return ctx.hasEvent(id)===true;
+  return event?.id===id&&contentEnabled(event);
+ }
+ // Preserve historical progress when a catalog is absent; explicit unfinished content is never playable.
+ function blockedContent(id,ctx){const event=contentEvent(id,ctx);return !!event&&!contentEnabled(event);}
+ function blockedEnding(route,hidden,ctx){
+  const prefix=hidden?'hiddenEnding':'ending';
+  return [route[prefix+'EntryEventId']||route[prefix+'EventId'],route[prefix+'CompleteEventId']||route[prefix+'EventId']].some(id=>blockedContent(id,ctx));
+ }
+ function writesFlag(value,flags){
+  if(!value||typeof value!=='object')return false;
+  if(Array.isArray(value))return value.some(v=>writesFlag(v,flags));
+  if(Array.isArray(value.effects)&&value.effects.some(e=>e&&e.type==='flag'&&flags.includes(e.flag)))return true;
+  return Object.entries(value).some(([key,v])=>key!=='effects'&&writesFlag(v,flags));
+ }
+ function romanceStatus(meta,id,ctx){
+  const route=routes[id],c=character(meta,id);if(!route||!c)return {implemented:false,active:false};
+  const candidates=catalogEvents(ctx).filter(e=>contentEnabled(e)&&writesFlag(e,route.romanceFlags));
+  const available=candidates.some(e=>evaluateEvent(meta,e,ctx).available);
+  return {implemented:candidates.length>0,active:c.romance,available,eventIds:candidates.map(e=>e.id)};
+ }
+ function missionContent(meta,key,ctx,stack){
+  stack=stack||[];if(stack.includes(key))return {implemented:false,missingContent:[]};
+  const m=missions[key];if(!m)return {implemented:false,missingContent:[]};
+  const missing=[];
+  for(const condition of m.conditions||[]){
+   if(condition.startsWith('event.')){const eventId=condition.slice(6);if(blockedContent(eventId,ctx)||!seen(meta,eventId)&&!availableContent(eventId,ctx))missing.push(eventId);}
+   else if(condition.startsWith('mission.'))missing.push(...missionContent(meta,condition.slice(8),ctx,stack.concat(key)).missingContent);
+  }
+  return {implemented:missing.length===0,missingContent:[...new Set(missing)]};
+ }
+ function registerEventRules(map){for(const [id,rule] of Object.entries(map||{})){if(!id||!rule||!Array.isArray(rule.conditions))throw Error('Event rule requires conditions: '+id);eventRules[id]={...rule,conditions:characterConditions(rule.conditions)};}}
+ function registerRoute(id,route){if(!IDS.includes(id))throw Error('Unknown companion: '+id);const next={...routes[id],...route};for(const k of ['romanceFlags','deferredFlags','personalStoryEvents','personalConditions'])if(!Array.isArray(next[k])||next[k].some(x=>typeof x!=='string'))throw Error('Invalid route '+k);if(next.hiddenConditions!==null&&(!Array.isArray(next.hiddenConditions)||next.hiddenConditions.some(x=>typeof x!=='string')))throw Error('Invalid hidden conditions');
+  for(const k of ['endingEventId','endingEntryEventId','endingCompleteEventId','hiddenEndingEventId','hiddenEndingEntryEventId','hiddenEndingCompleteEventId','interactionId'])if(next[k]!==null&&(typeof next[k]!=='string'||!next[k].trim()))throw Error('Invalid route '+k);
+  if(next.hiddenEndingEventId&&next.hiddenEndingEventId===next.endingEventId)throw Error('Basic and hidden endings require different events');
+  next.personalConditions=characterConditions(next.personalConditions);
+  if(next.hiddenConditions)next.hiddenConditions=characterConditions(next.hiddenConditions);
+  routes[id]=next;}
+ function registerMissions(list){for(const m of list||[]){if(!m||!IDS.includes(m.student)||!m.id||!m.id.startsWith(m.student+'.')||!['field','sub'].includes(m.type))throw Error('Invalid personal mission');if(m.type==='sub'&&!Array.isArray(m.conditions))throw Error('Sub mission requires explicit conditions');if(m.type==='field'&&(!m.min||!Object.keys(m.min).length))throw Error('Field mission requires metrics');missions[m.id]={...m,...(m.type==='sub'?{conditions:characterConditions(m.conditions)}:{})};}}
+ function bondLevel(meta,id,ctx){if(ctx&&typeof ctx.bondLevel==='function')return num(ctx.bondLevel(id));if(ctx&&ctx.bondLevel!=null)return num(ctx.bondLevel);return 0;}
+ function check(meta,key,ctx,stack){
+  ctx=ctx||{};stack=stack||[];const k=String(key),parts=k.split('.');let done=false,label=k;
+  if(stack.includes(k))return {key:k,done:false,label:'조건 연결 오류'};
+  if(k.startsWith('main.clear.')){const gate=k.slice(11);done=['E','D','C','B','A','S'].includes(gate)&&!!obj(meta.cleared)[gate];label=gate+' 메인 공략 완료';}
+  else if(k.startsWith('bond.level.')){const raw=k.slice(11),lv=Number(raw);done=/^[1-9]\d*$/.test(raw)&&bondLevel(meta,ctx.student,ctx)>=lv;label='호감도 Lv'+raw;}
+  else if(k.startsWith('event.')){const id=k.slice(6),match=/^bond_[a-z]+_(\d+)$/.exec(id);done=seen(meta,id)&&!blockedContent(id,ctx);label=ctx.eventName?'선행 이야기 열람: '+ctx.eventName(id):match?'앞선 인연 Lv'+match[1]+' 열람':'선행 이야기 열람: '+id;}
+  else if(k.startsWith('flag.')){done=flag(meta,k.slice(5));label='이벤트 조건: '+k.slice(5);}
+  else if(parts[0]==='facility'&&parts.length===3){done=/^[1-9]\d*$/.test(parts[2])&&own(meta.upg,parts[1])&&num(obj(meta.upg)[parts[1]])>=Number(parts[2]);label=(FAC_NAMES[parts[1]]||parts[1])+' Lv'+parts[2];}
+  else if(parts[0]==='mission'){
+   const id=k.slice(8),m=missions[id];label=m?m.label:'미등록 의뢰: '+id;
+   if(m){const c=character(meta,m.student);done=!!c.missions[id];if(!done&&m.type==='sub')done=m.conditions.length>0&&m.conditions.every(q=>check(meta,q,{...ctx,student:m.student},stack.concat(k)).done);}
+  }
+  else if(parts[0]==='romance'){const id=k.slice(8);done=!!(character(meta,id)||{}).romance;label='연애 성립';}
+  else if(parts[0]==='trial'&&parts.length===3){const trial=trialStatus(meta,parts[1]).find(t=>t.id===parts[2]);if(trial){done=trial.done;label=trial.label;}}
+  else if(k.startsWith('ending.ready.')){done=endingStatus(meta,k.slice(13),ctx,stack.concat(k)).ready;label='연애 · 개인 이야기와 의뢰 완료';}
+  else if(k.startsWith('ending.seen.')){done=!!character(meta,k.slice(12))?.endingSeen;label='캐릭터 기본 엔딩 감상 완료';}
+  else if(k.startsWith('hidden.ready.')){done=hiddenEndingStatus(meta,k.slice(13),ctx,stack.concat(k)).ready;label='기본 엔딩 · 추가 업적 완료';}
+  else if(k.startsWith('hidden.seen.')){done=!!character(meta,k.slice(12))?.hiddenEndingSeen;label='캐릭터 히든 엔딩 감상 완료';}
+  return {key:k,done,label};
+ }
+ function ruleFor(event){
+  const canonical=event.routeCanonicalId||event.id;
+  if(own(eventRules,canonical))return eventRules[canonical];if(own(eventRules,event.id))return eventRules[event.id];const t=event.trigger||{};
+  if(t.type!=='bondLevel'||!IDS.includes(t.student))return {conditions:[]};
+  const lv=Number(t.level),index=BOND_LEVELS.indexOf(lv);if(index<0)return {conditions:['unregistered.stage']};
+  const conditions=['bond.level.'+lv];
+  if(index>0)conditions.push('event.bond_'+t.student+'_'+BOND_LEVELS[index-1]);
+  if(lv>=4)conditions.push('mission.'+t.student+'.field');
+  if(lv>=8)conditions.push('mission.'+t.student+'.build');
+  return {student:t.student,conditions};
+ }
+ function evaluateEvent(meta,event,ctx){
+  if(!event)return {available:false,seen:false,conditions:[],missing:[]};
+  const rule=ruleFor(event),student=rule.student||(event.trigger||{}).student;
+  const canonical=event.routeCanonicalId||event.id;
+  const keys=rule.conditions.slice();
+  let contentAvailable=contentEnabled(event)&&![event.id,event.routeCanonicalId,event.routeEntryId].some(id=>blockedContent(id,ctx));
+  for(const [id,route] of Object.entries(routes))if(route.endingEventId===canonical||route.endingEntryEventId===event.id){keys.push('ending.ready.'+id);contentAvailable=contentAvailable&&endingStatus(meta,id,ctx).implemented;}
+  for(const [id,route] of Object.entries(routes))if(route.hiddenEndingEventId===canonical||route.hiddenEndingEntryEventId===event.id){keys.push('hidden.ready.'+id);contentAvailable=contentAvailable&&hiddenEndingStatus(meta,id,ctx).implemented;}
+  const conditions=[...new Set(keys)].map(k=>check(meta,k,{...ctx,student})),wasSeen=seen(meta,canonical);
+  return {available:contentAvailable&&(wasSeen||conditions.every(x=>x.done)),seen:wasSeen,conditions,missing:wasSeen?[]:conditions.filter(x=>!x.done)};
+ }
+ function snapshot(run,opts){
+  const party=Array.isArray(run.party)?run.party:[];
+  return {kills:num(run.kills),spawn:num(run.spawnPlaced),support:num(run.adjEvents),terrain:num(run.terrainPlaced),camps:num(run.camps),party:party.length,counters:Array.isArray(run.counters)?run.counters.length:0,purchases:num(run.purchases),combos:num(run.combos),chains:num(run.chainsMade),allAlive:party.length>0&&party.every(m=>!m.down&&!(m.hp!=null&&num(m.hp)<=0)),returnAlive:['boss','camp','emergency','drone'].includes(opts.reason)};
+ }
+ const ACCUMULATED_METRICS=['kills','spawn','support','terrain','camps','counters','purchases','combos','chains'];
+ function beginRun(meta,run){
+  if(!run)return;syncStory(meta);
+  run.relationshipTrial={v:1,eligible:IDS.filter(id=>character(meta,id).endingSeen),rules:trialRules(),lastVictory:0};
+ }
+ function memberId(m){return m.stu?.id||m.id;}
+ function isAlive(m){return !m.down&&Number.isFinite(+m.hp)&&+m.hp>0;}
+ function joinSnapshot(run,id){
+  run=run||{};const start=snapshot(run,{}),attempt=run.relationshipTrial;
+  if(attempt?.v===1&&attempt.eligible.includes(id))start.trial={v:1,id,wins:0,bossWon:false,bossParty:0,chainPeak:0};
+  return start;
+ }
+ // A victory samples active tile chains, never historical placement/maximum counters.
+ function observeVictory(run,options){
+  const attempt=run?.relationshipTrial,boss=options?.boss===true;if(attempt?.v!==1)return;
+  if(boss){if(attempt.bossVictory)return;attempt.bossVictory=true;}
+  else{if(num(run.wins)<=attempt.lastVictory)return;attempt.lastVictory=num(run.wins);}
+  const party=run.party||[],chains=(run.chains||[]).filter(c=>!c.void).length+(run.bchains||[]).filter(c=>c.active===true).length;
+  const whole=party.length>=attempt.rules.survivalParty&&party.every(isAlive)&&run.downs===0;
+  for(const m of party){const t=m.relationshipStart?.trial;if(!t||t.id!==memberId(m)||!attempt.eligible.includes(t.id)||!isAlive(m))continue;
+   t.wins++;if(boss&&whole){t.bossWon=true;t.bossParty=party.length;}t.chainPeak=Math.max(t.chainPeak,chains);
+  }
+ }
+ function trialStatus(meta,id){
+  const c=character(meta,id);if(!c)return [];const rules=trialRules();
+  const count=new Set(c.dangerAttempts.map(p=>p.run)).size;
+  const labels={danger:`위험 의뢰 ${Math.min(count,rules.dangerRuns)}/${rules.dangerRuns}회 성공 · 회당 동행 교전 ${rules.dangerWins}승 후 생환`,survival:`${rules.survivalParty}인 이상 · 전투불능 없이 위험 보스 격파`,synergy:`활성 타일 체인 ${rules.synergyChains}개를 유지한 교전 승리 · 동행 교전 ${rules.synergyWins}승 후 생환`};
+  return TRIAL_IDS.map(key=>({id:key,key:'trial.'+id+'.'+key,label:labels[key],done:c.trials[key]?.v===1,evidence:c.trials[key]?.v===1?c.trials[key]:null,...(key==='danger'?{count,need:rules.dangerRuns}:{})}));
+ }
+ function recordTrials(meta,run,member,opts,token){
+  const id=memberId(member),c=character(meta,id),attempt=run.relationshipTrial,t=member.relationshipStart?.trial;
+  if(!token||!c?.endingSeen||attempt?.v!==1||!attempt.eligible.includes(id)||t?.v!==1||t.id!==id||!isAlive(member)||!['boss','camp','emergency','drone'].includes(opts.reason))return [];
+  const rules=attempt.rules,party=run.party||[],pay=run.campaignPay||{},risk=pay.risk||run.campaign?.risk;
+  const proof={v:1,run:token,gate:opts.gate||null,reason:opts.reason,wins:t.wins,bossWon:t.bossWon,bossParty:t.bossParty,party:party.length,downs:num(run.downs),chainPeak:t.chainPeak,risk:risk||null,mission:pay.mission||null,campaignDone:pay.done===true,rules:{...rules}};
+  if(c.trials.danger?.v!==1&&t.wins>=rules.dangerWins&&['boss','camp'].includes(opts.reason)&&pay.done===true&&pay.risk==='danger'&&!c.dangerAttempts.some(p=>p.run===token))c.dangerAttempts.push(proof);
+  const met={danger:c.dangerAttempts.length>=rules.dangerRuns,survival:t.bossWon&&t.bossParty>=rules.survivalParty&&risk==='danger'&&opts.reason==='boss'&&party.every(isAlive)&&run.downs===0,synergy:t.wins>=rules.synergyWins&&t.chainPeak>=rules.synergyChains};
+  const completed=[];
+  for(const key of TRIAL_IDS)if(met[key]&&c.trials[key]?.v!==1){
+   c.trials[key]={...proof,...(key==='danger'?{attempts:c.dangerAttempts.slice()}:{} )};
+   completed.push('trial.'+id+'.'+key);
+  }
+  return completed;
+ }
+ function recordRun(meta,run,opts){
+  normalize(meta);opts=opts||{};if(!run||run.valid!==true)return [];
+  const token=opts.runId!=null?String(opts.runId):null;
+  if(run.relationshipsRecorded||(token&&meta.relationships.processedRuns.includes(token)))return [];
+  const total=snapshot(run,opts),completed=[];
+  for(const member of run.party||[]){const id=member.stu&&member.stu.id||member.id,c=character(meta,id);if(!c)continue;
+   const stats={...total},baseline=member.relationshipStart;
+   if(baseline&&typeof baseline==='object'&&!Array.isArray(baseline))for(const k of ACCUMULATED_METRICS)stats[k]=Math.max(0,stats[k]-num(baseline[k]));
+   for(const [k,v] of Object.entries(stats))if(typeof v==='number')c.metrics[k]=Math.max(num(c.metrics[k]),v);
+   for(const m of Object.values(missions)){if(m.student!==id||m.type!=='field'||c.missions[m.id])continue;
+    if(Object.entries(m.min).every(([k,n])=>typeof stats[k]==='number'&&stats[k]>=n)&&(!m.allAlive||stats.allAlive)&&(!m.returnAlive||stats.returnAlive)){c.missions[m.id]={run:token||num(meta.runs),gate:opts.gate||null};completed.push(m.id);}
+   }
+   completed.push(...recordTrials(meta,run,member,opts,token));
+  }
+  run.relationshipsRecorded=true;if(token){meta.relationships.processedRuns.push(token);meta.relationships.processedRuns=meta.relationships.processedRuns.slice(-256);}
+  syncStory(meta);return completed;
+ }
+ function syncStory(meta,ctx){
+  normalize(meta);
+  for(const id of IDS){const c=character(meta,id),r=routes[id];
+   // Only explicitly registered script flags establish romance. Reading Lv10 is never a confession.
+   if(r.romanceFlags.some(k=>flag(meta,k)))c.romance=true;
+   else if(r.deferredFlags.some(k=>flag(meta,k)))c.romance=false;
+   for(const m of Object.values(missions))if(m.student===id&&m.type==='sub'&&check(meta,'mission.'+m.id,{...ctx,student:id}).done)c.missions[m.id]=c.missions[m.id]||true;
+   if(r.endingEventId&&seen(meta,r.endingEventId)&&seen(meta,r.endingCompleteEventId||r.endingEventId)&&endingStatus(meta,id,ctx).available)c.endingSeen=true;
+   if(r.hiddenEndingEventId&&seen(meta,r.hiddenEndingEventId)&&seen(meta,r.hiddenEndingCompleteEventId||r.hiddenEndingEventId)&&hiddenEndingStatus(meta,id,ctx).available)c.hiddenEndingSeen=true;
+   if(interactionStatus(meta,id,ctx).available)c.interactionUnlocked=true;
+  }
+  return meta.relationships;
+ }
+ function endingStatus(meta,id,ctx,stack){
+  const c=character(meta,id),r=routes[id];if(!c||!r)return {ready:false,available:false,seen:false,implemented:false,missing:[]};
+  stack=stack||['ending.ready.'+id];
+  const conditions=[{key:'romance.'+id,done:c.romance,label:'연애 성립'},{key:'personal.'+id,done:r.personalStoryEvents.length>0&&r.personalStoryEvents.every(e=>seen(meta,e)&&!blockedContent(e,ctx))&&r.personalConditions.every(k=>check(meta,k,{...ctx,student:id},stack).done),label:'개인 이야기와 의뢰 완료'}];
+  const ready=conditions.every(x=>x.done),eventId=r.endingEntryEventId||r.endingEventId,completeEventId=r.endingCompleteEventId||r.endingEventId;
+  const implemented=availableContent(eventId,ctx)&&availableContent(completeEventId,ctx);
+  return {ready,available:ready&&implemented,seen:c.endingSeen,implemented,eventId,completeEventId,conditions,missing:conditions.filter(x=>!x.done)};
+ }
+ // Trials are configurable; unregistered story/interaction content remains locked.
+ function hiddenEndingStatus(meta,id,ctx,stack){
+  const c=character(meta,id),r=routes[id];if(!c||!r)return {ready:false,available:false,seen:false,implemented:false,configured:false,conditions:[],missing:[]};
+  stack=stack||['hidden.ready.'+id];
+  const configured=Array.isArray(r.hiddenConditions)&&r.hiddenConditions.length>0;
+  const conditions=[{key:'ending.seen.'+id,done:c.endingSeen&&!blockedEnding(r,false,ctx),label:'캐릭터 기본 엔딩 감상 완료'},...(configured?r.hiddenConditions.map(k=>check(meta,k,{...ctx,student:id},stack)):[{key:'hidden.conditions.pending',done:false,label:'추가 업적 조건 준비 중'}])];
+  const ready=configured&&conditions.every(x=>x.done),eventId=r.hiddenEndingEntryEventId||r.hiddenEndingEventId,completeEventId=r.hiddenEndingCompleteEventId||r.hiddenEndingEventId;
+  const implemented=availableContent(eventId,ctx)&&availableContent(completeEventId,ctx);
+  return {ready,available:ready&&implemented,seen:c.hiddenEndingSeen,implemented,configured,eventId,completeEventId,conditions,missing:conditions.filter(x=>!x.done)};
+ }
+ function interactionStatus(meta,id,ctx){
+  const c=character(meta,id),r=routes[id];if(!c||!r)return {ready:false,available:false,unlocked:false,implemented:false};
+  // The actual interaction module must positively identify its registered content.
+  const provider=typeof ctx?.hasInteraction==='function'?ctx.hasInteraction:typeof g.GL?.interactions?.has==='function'?key=>g.GL.interactions.has(key):null;
+  const implemented=!!r.interactionId&&!!provider&&provider(r.interactionId)===true;
+  const ready=c.hiddenEndingSeen&&!blockedEnding(r,false,ctx)&&!blockedEnding(r,true,ctx);
+  return {ready,available:ready&&implemented,unlocked:c.interactionUnlocked,implemented,contentId:r.interactionId};
+ }
+ function progress(meta,id,ctx){
+  ctx=ctx||{};syncStory(meta,ctx);const c=character(meta,id);if(!c)return null;
+  const events=catalogEvents(ctx).filter(e=>contentEnabled(e)&&!e.completionOnly&&(!e.routeEntryId||e.routeEntryId===e.id)&&((e.trigger||{}).student===id&&(e.trigger||{}).type==='bondLevel'||own(eventRules,e.routeCanonicalId||e.id)&&eventRules[e.routeCanonicalId||e.id].student===id));
+  const next=events.find(e=>!seen(meta,e.routeCanonicalId||e.id)),state=next?evaluateEvent(meta,next,ctx):null;
+  const missingStories=routes[id].personalStoryEvents.filter(e=>!availableContent(e,ctx));
+  return {id,romance:c.romance,romanceContent:romanceStatus(meta,id,ctx),missingStories,missions:Object.values(missions).filter(m=>m.student===id).map(m=>({...check(meta,'mission.'+m.id,{...ctx,student:id}),...missionContent(meta,m.id,ctx),id:m.id,type:m.type})),next:next?{id:next.id,name:next.name,...state}:null,ending:endingStatus(meta,id,ctx),trials:trialStatus(meta,id),hiddenEnding:hiddenEndingStatus(meta,id,ctx),interaction:interactionStatus(meta,id,ctx)};
+ }
+ const api={IDS,BOND_LEVELS,TRIAL_IDS,TRIAL_DEFAULTS,missions,routes,normalize,registerEventRules,registerRoute,registerMissions,check,ruleFor,evaluateEvent,beginRun,joinSnapshot,observeVictory,trialRules,trialStatus,recordRun,syncStory,endingStatus,hiddenEndingStatus,interactionStatus,progress};
+ (g.GL=g.GL||{}).relationships=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+})(typeof window!=='undefined'?window:globalThis);
 
 </script>
 <script>
@@ -5135,7 +5459,7 @@ const CHALLENGE_V2=(()=>{
   });
   return {...def,allowed,key:recordKey(def),available:available(m,region),
    label:`성장 Lv${def.growthLevel} · 사격장/의무실 Lv${def.facilityLevel} · 지휘실 ${def.commandTier}단계`,
-   next:'6번째 루프에 보스 진입 · 최대 6루프 · 영구 재화 보상 없음'};
+   next:'6번째 랩에 보스 진입 · 최대 6랩 · 영구 재화 보상 없음'};
  }
  function cardRules(){
   if(typeof CARDS==='undefined')return {};
@@ -6453,14 +6777,19 @@ const RUN_DRAFT=(()=>{
   log(`🃏 원정 덱 교체: ${CARDS[old].name} → ${CARDS[id].name} · 이후 드랍에 반영`,'shop');
   return true;
  }
- function buy(index,slot){
+ /* discard: 손패가 가득 찼을 때 대신 뺄 손패 칸(캠프 상점에서 고른다 — 지정 보충과 같은 방식). 없으면 가득 찬 손패엔 못 산다 */
+ function buy(index,slot,discard=-1){
   const sh=shop(),offer=index==='pivot'?sh?.pivotOffer:sh?.offers[index];
   if(!camp()||!offer||offer.sold)return false;
   if(Number.isInteger(slot)){
    const cost=index==='pivot'?config().pivotReplaceCost:config().replaceCost;
    if(!replace(offer.id,slot,cost))return false;
   }else{
-   if(index==='pivot'||run.hand.length>=handMax()||!legal(offer.id)||run.op<offer.price)return false;
+   if(index==='pivot'||!legal(offer.id)||run.op<offer.price)return false;
+   if(run.hand.length>=handMax()){
+    if(!Number.isInteger(discard)||!run.hand[discard])return false;
+    run.hand.splice(discard,1);
+   }
    spend(offer.price,'hand');remember(offer.id);addToHand(offer.id,true);
   }
   offer.sold=true;if(index==='pivot')init().pivotUsed=true;return true;
@@ -7916,6 +8245,9 @@ function addToHand(id,silent){
  if(simMode){if(window.__simDrop&&!run._placing){run._placing=true;try{window.__simDrop();}finally{run._placing=false;}}return;}
  /* v1.3: 추가 드롭인 길가·지형 결계는 손패에 자동 수납하고 멈추지 않는다(런당 +10회 정지 해소). 도로 카드의 획득 시 정지 설정은 그대로 */
  if(CARDS[id]&&CARDS[id].cls){if(!run.ended){const p=tileCenter(run.battle?run.battle.tile.i:run.pos);floater(p.x,p.y-54,`${CARDS[id].icon} 결계 수납`,'#a78bfa');run.wardNote={id,t:run.time};}return;}
+ /* PC 가로(UI v4): 처치 드롭은 손패에 넣기만 한다 — 멈추거나 카드를 대신 고르지 않는다(놓는 건 플레이어가 고를 때) */
+ if(window.UI4_CARD_HOLD){if(!run.ended){const p=tileCenter(run.battle?run.battle.tile.i:run.pos);
+  floater(p.x,p.y-54,`${CARDS[id].icon} 손패 +1`,'#7dd3fc');}return;}
  if(meta.pauseOnDraw!==false&&!run.ended)pauseForCard(id,run.hand.length-1);
 }
 /* 드로우 일시정지 = 모달 스택의 'draw' 항목. 보급 화면에서 손패를 골라 지도로 나갈 때도 같은 경로(shop 위에 draw) */
@@ -8647,17 +8979,22 @@ function recipeIngredient(c,id){
  return c?.card===id||(id==='ld_park'&&c?.card==='ld_flower');
 }
 function recipeMatches(row,c,state=run){
+ // 싼 조건(재료 카드·해금)을 먼저 본다. 주변 칸 계산은 재료가 맞는 칸에서만(배치 렉 원인)
+ if(c.card!==row.from||!recipeOpen(row.id,state))return false;
  const materials=new Set(tileSpaceAdjacent(c,state).filter(o=>recipeIngredient(o,row.adj))
   .map(o=>o.fp?'fp:'+o.fp.a:'cell:'+o.i));
- return c.card===row.from&&recipeOpen(row.id,state)&&materials.size>=row.need;
+ return materials.size>=row.need;
 }
-function recipeCandidate(c,state=run){
- return recipeRows().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id))
-  .find(row=>recipeMatches(row,c,state));
+function recipeSorted(){
+ return recipeRows().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
+}
+function recipeCandidate(c,state=run,rows=recipeSorted()){
+ return rows.find(row=>row.from===c.card&&recipeMatches(row,c,state));
 }
 function recipeMorphs(state,onChange){
  // Snapshot all candidates first. Newly created ingredients cannot chain in this transaction.
- const changes=(state.cells||[]).map(c=>({c,row:recipeCandidate(c,state)})).filter(x=>x.row);
+ const rows=recipeSorted();
+ const changes=(state.cells||[]).map(c=>({c,row:recipeCandidate(c,state,rows)})).filter(x=>x.row);
  for(const {c,row} of changes){
   if(mapDeferMorph(state,'off:'+c.k,c.card,row.id))continue;
   const from=c.card;c.base=from;c.card=row.id;
@@ -10017,6 +10354,7 @@ function memberAttack(m,s){
  const tf=tileFx(t);if(first&&tf.first)mult*=1+tf.first; /* v1.0 돌격 교두보 등: 이 타일 첫 공격 배율 */
  if(exActive()&&m.stu.id==='harin')mult*=heroExTune(m).damage;
  const primary=(run.focusUid&&en.find(e=>e.uid===run.focusUid))||en[0];
+ fxEvent('attack',{m,e:primary}); /* 일반 공격 원화 타격 프레임. 피해·전투 난수와 무관. */
  const guaranteed=first&&m.stu.id==='eunha';
  const critical=typeof META_RULES!=='undefined'&&metaCombatOn()?
   META_RULES.critBonus(run,m,{first,focused:run.focusUid===primary.uid,guaranteed,crit:s.crit}):
@@ -11055,6 +11393,44 @@ function runSimUI(){
 function retreat(){if(!run||run.ended||run.imminent||run.bossPending||run.bossSpawned)return;endRun('emergency');}
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 /* 밸런스 덮어쓰기 파일 형식(balance/overrides.json) — 읽기 · 쓰기 · 형식 검사.
  * 브라우저(도구 화면: 가져오기·내보내기)와 node(서버 저장 · 하네스 · 빌드 · 회귀)가 같은 코드를 쓴다(UMD).
@@ -11942,7 +12318,7 @@ function retreat(){if(!run||run.ended||run.imminent||run.bossPending||run.bossSp
     const host=document.querySelector('#balanceOverview'),scroll=host.scrollTop,focus=document.activeElement?.dataset.p;
     for(const d of host.querySelectorAll('details[data-detail]')){if(d.open)state.open.add(d.dataset.detail);else state.open.delete(d.dataset.detail);}
     const all=records(),rows=all.filter(r=>r.tab===state.tab),cats=[...new Set(rows.map(r=>r.category))];
-    host.innerHTML=`<div class="ov-intro"><div><h1>게임 밸런스 전체 보기</h1><p>비교 → 숫자 수정 → <b>JSON 저장</b> → 파일 전달 → 검증·배포 후 게임 반영. 모든 편집은 같은 저장 파일과 되돌리기를 사용합니다.</p></div><button type="button" id="bExportAll">전체 수치 내려받기</button></div><div class="ov-stats"><span>카드 <b>${Object.keys(CARDS).length}</b> 정의 / 획득·배치 <b>${Object.keys(CARDS).filter(isPlayable).length}</b></span><span>영웅 <b>${STUDENTS.length}</b>명</span><span>유물 <b>${RELICS.length}</b>종</span><span>편집 가능 <b>${B.REG.length}</b>수치</span></div><nav class="ov-tabs" aria-label="밸런스 대상">${tabs.map(([id,label])=>`<button type="button" data-ov-tab="${id}" aria-pressed="${id===state.tab}">${label} <span>${all.filter(r=>r.tab===id).length}</span></button>`).join('')}</nav><div class="ov-toolbar"><input id="ovSearch" type="search" aria-label="전체 목록 검색" placeholder="이름 · 효과 · 조정 항목 검색" value="${esc(state.q)}"><select id="ovFilter" aria-label="세부 분류"><option value="">모든 분류</option>${cats.map(c=>`<option${state.filter===c?' selected':''}>${esc(c)}</option>`).join('')}</select><label><input id="ovChanged" type="checkbox"${state.changed?' checked':''}> 기본값과 다른 항목만</label><span id="ovCount" role="status"></span></div><p class="ov-guide">${state.tab==='cards'?'도로 소환 / 도로 지원 / 길가 / 보드 지형을 구분합니다. 변신·시스템 정의도 포함하며, 등장 가중치는 확률이 아닌 상대 비중입니다.':state.tab==='heroes'?'HP·공격·방어·공격속도·치명타를 먼저 비교하고, 펼치면 특성과 EX 계수를 수정할 수 있습니다.':state.tab==='relics'?'희귀도와 효과를 바로 수정합니다. 조건부 점수 유물은 점수 · 전투의 전체 배율 상한과 함께 조정하세요.':'가격·보상·제한·배율의 적용 조건을 확인하고 조정하세요. 기존 재화와 재화 개편 수치는 각각의 규칙에만 적용됩니다.'}</p><div id="ovGrid" class="ov-grid"></div>${state.tab==='cards'?`<details class="ov-tactics"><summary>별도 전술 ${TACTICS.length}종 · 고정 효과 보기</summary>${TACTICS.map(t=>`<p><b>${esc(t.icon)} ${esc(t.name)}</b> — ${esc(t.desc)}</p>`).join('')}<p>전술 슬롯·상자 가격은 경제 · 성장에서 편집합니다.</p></details>`:''}`;
+    host.innerHTML=`<div class="ov-intro"><div><h1>게임 밸런스 전체 보기</h1><p>비교 → 숫자 수정 → <b>현재 수치로 테스트</b> → 재수정 → JSON 전달. 모든 편집은 같은 저장 파일과 되돌리기를 사용합니다.</p></div><button type="button" id="bExportAll">전체 수치 내려받기</button></div><div class="ov-stats"><span>카드 <b>${Object.keys(CARDS).length}</b> 정의 / 획득·배치 <b>${Object.keys(CARDS).filter(isPlayable).length}</b></span><span>영웅 <b>${STUDENTS.length}</b>명</span><span>유물 <b>${RELICS.length}</b>종</span><span>편집 가능 <b>${B.REG.length}</b>수치</span></div><nav class="ov-tabs" aria-label="밸런스 대상">${tabs.map(([id,label])=>`<button type="button" data-ov-tab="${id}" aria-pressed="${id===state.tab}">${label} <span>${all.filter(r=>r.tab===id).length}</span></button>`).join('')}</nav><div class="ov-toolbar"><input id="ovSearch" type="search" aria-label="전체 목록 검색" placeholder="이름 · 효과 · 조정 항목 검색" value="${esc(state.q)}"><select id="ovFilter" aria-label="세부 분류"><option value="">모든 분류</option>${cats.map(c=>`<option${state.filter===c?' selected':''}>${esc(c)}</option>`).join('')}</select><label><input id="ovChanged" type="checkbox"${state.changed?' checked':''}> 기본값과 다른 항목만</label><span id="ovCount" role="status"></span></div><p class="ov-guide">${state.tab==='cards'?'도로 소환 / 도로 지원 / 길가 / 보드 지형을 구분합니다. 변신·시스템 정의도 포함하며, 등장 가중치는 확률이 아닌 상대 비중입니다.':state.tab==='heroes'?'HP·공격·방어·공격속도·치명타를 먼저 비교하고, 펼치면 특성과 EX 계수를 수정할 수 있습니다.':state.tab==='relics'?'희귀도와 효과를 바로 수정합니다. 조건부 점수 유물은 점수 · 전투의 전체 배율 상한과 함께 조정하세요.':'가격·보상·제한·배율의 적용 조건을 확인하고 조정하세요. 기존 재화와 재화 개편 수치는 각각의 규칙에만 적용됩니다.'}</p><div id="ovGrid" class="ov-grid"></div>${state.tab==='cards'?`<details class="ov-tactics"><summary>별도 전술 ${TACTICS.length}종 · 고정 효과 보기</summary>${TACTICS.map(t=>`<p><b>${esc(t.icon)} ${esc(t.name)}</b> — ${esc(t.desc)}</p>`).join('')}<p>전술 슬롯·상자 가격은 경제 · 성장에서 편집합니다.</p></details>`:''}`;
     if(state.tab==='heroes')host.querySelector('.ov-guide').insertAdjacentHTML('beforeend',` <button type="button" class="ov-view-toggle" data-ov-view="toggle">${state.heroTable?'카드 보기':'능력치 비교 표'}</button>`);
     if(state.tab==='enemies'&&window.BalanceEnemyGrowth)
       host.querySelector('.ov-guide').insertAdjacentHTML('afterend',window.BalanceEnemyGrowth.html());
@@ -12121,7 +12497,7 @@ function retreat(){if(!run||run.ended||run.imminent||run.bossPending||run.bossSp
     if (S.tab === 'history') {
       const li = S.lastImport, bk = C.backupInfo(), off = C.summary().changed === 0;
       r.innerHTML = '<div class="files"><h2 style="margin:0;font-size:14px;font-weight:700;color:#0d6fd0">파일</h2>'
-        + '<p style="font-size:14px;color:#33405c">수정본을 JSON으로 내려받아 보관하거나 전달하세요. 가져오기로 계속 편집할 수 있습니다. 공개 게임에는 별도 배포 후 적용됩니다. 이 화면의 편집은 게임 저장 데이터에 영향을 주지 않습니다.</p>'
+        + '<p style="font-size:14px;color:#33405c">수정본을 JSON으로 내려받아 보관하거나 전달하세요. 가져오기로 계속 편집할 수 있습니다. 현재 수치로 테스트에서 즉시 플레이할 수 있습니다. 공개 게임에는 별도 배포 후 적용됩니다.</p>'
         + '<button type="button" class="bbtn" id="bExport">내보내기 (파일로 저장)</button><button type="button" class="bbtn" id="bExportAll">전체 수치 JSON</button><button type="button" class="bbtn" id="bImport">가져오기 (파일 열기)</button><a class="bbtn" href="../characters-b/" target="_blank" rel="noopener">공개 게임 열기 (배포 수치)</a>'
         + `<button type="button" class="bbtn danger" id="bResetAll2"${off ? ' disabled' : ''}>모두 기본값으로</button>`
         + '<p class="hint13">가져오기 전에 지금 값을 자동으로 백업합니다. 가져온 파일에 모르는 항목이나 범위를 벗어난 값이 있으면 그 줄만 건너뛰고 알려 줍니다.</p>'
@@ -12245,7 +12621,7 @@ function retreat(){if(!run||run.ended||run.imminent||run.bossPending||run.bossSp
   });
 })();
 </script>
-<script>/* Static public editor: file handoff only, never writes to the public game or its save. */
+<script>/* Static editor: isolated playable sessions and JSON handoff; live game saves are never changed. */
 (function(){
  'use strict';
  const C=window.BalanceCore;
@@ -12255,6 +12631,22 @@ function retreat(){if(!run||run.ended||run.imminent||run.bossPending||run.bossSp
   if(action==='import'){document.querySelector('#fImport').click();return;}
   if(!C.canSave().ok){
    document.querySelector('#publicFileStatus').textContent='빨간 오류 항목을 수정한 뒤 저장하세요.';return;
+  }
+  if(action==='test'){
+   try{
+    const id=crypto.randomUUID();
+    const data=JSON.parse(C.exportText({all:true}));
+    const envelope={gameVersion:window.LG_BALANCE_GAME_VERSION,label:'편집 중인 수치',data};
+    localStorage.setItem('lg.balance.handoff:'+id,JSON.stringify(envelope));
+    const opened=window.open('test.html#'+id,'_blank');
+    if(opened)opened.opener=null;
+    else{
+     localStorage.removeItem('lg.balance.handoff:'+id);
+     throw Error('팝업을 허용한 뒤 다시 누르세요. JSON 저장 후 테스트 페이지에서 불러올 수도 있습니다.');
+    }
+    document.querySelector('#publicFileStatus').textContent='별도 테스트 탭을 열었습니다.';
+   }catch(error){document.querySelector('#publicFileStatus').textContent=error.message;}
+   return;
   }
   C.exportFile(action==='all'?{all:true,name:'balance-full.json'}:{record:true});
   document.querySelector('#publicFileStatus').textContent=

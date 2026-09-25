@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LoopGirl · 개인 밸런스 테스트</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font:14px system-ui,sans-serif;background:#142035;color:#eff6ff}
+body{height:100dvh;display:flex;flex-direction:column;overflow:hidden}button,input,select{font:inherit}
+button,a{cursor:pointer}button{border:1px solid #8ca7c2;border-radius:7px;padding:8px 12px;background:#edf5ff;color:#18334d}
+button:disabled{opacity:.45;cursor:default}header{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:8px 12px}
+header b{color:#ffda7e}header span{flex:1;font-size:12px}header a{color:#cce8ff;font-size:12px}
+iframe{flex:1;width:100%;min-height:0;border:0;background:#fff}[hidden]{display:none!important}
+.veil{position:fixed;inset:0;background:#06101dcc;display:grid;place-items:center;padding:14px;z-index:2}
+.panel{width:min(760px,100%);max-height:95dvh;overflow:auto;background:#f4f8fc;color:#18334d;padding:22px;border-radius:14px}
+h1{font-size:22px;margin:0 0 8px}p{line-height:1.6}.muted{font-size:12px;color:#516981}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+label{display:flex;flex-direction:column;gap:6px;font-weight:600}select,input{padding:10px;width:100%;border-radius:6px}
+.buttons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.primary{background:#1764b0;color:#fff;border-color:#1764b0}
+#labMessage{white-space:pre-wrap;color:#9c3a18}details{margin:12px 0}ul{padding-left:22px}
+#labChanges{font-size:12px;max-height:180px;overflow:auto;overflow-wrap:anywhere}
+@media(max-width:500px){.fields{grid-template-columns:1fr}.panel{padding:16px}header{padding:6px 8px}}
+</style>
+<header><b>개인 테스트</b><span id="labStatus">불러오는 중…</span>
+ <button id="labOpen" disabled>테스트 설정</button><a href="./" target="_blank" rel="noopener">밸런스 툴</a></header>
+<iframe id="testGame" title="격리된 밸런스 테스트 게임" allow="autoplay"></iframe>
+<section id="labPanel" class="veil" role="dialog" aria-modal="true" aria-labelledby="labTitle">
+ <div class="panel"><h1 id="labTitle">내 수치로 플레이 테스트</h1>
+ <p>이 탭의 테스트 수치와 저장은 공개 게임·다른 테스트 탭과 분리됩니다.
+ 새 테스트는 아래 조건의 새 계정으로 시작합니다.</p>
+ <p id="labVersion" class="muted"></p><p id="labMessage" role="status">게임을 준비하고 있습니다.</p>
+ <div class="buttons"><button id="labImport" disabled>밸런스 JSON 불러오기</button>
+  <button id="labReset" disabled>공개 기본값으로 복귀</button>
+  <button id="labExport" disabled>적용 수치 JSON 저장</button></div>
+ <input id="labFile" type="file" accept=".json,application/json" hidden>
+ <details><summary id="labChangesTitle">적용 수치</summary><ul id="labChanges"></ul></details>
+ <div class="fields">
+  <label>지역<select id="labRegion"></select></label><label>리더<select id="labLeader"></select></label>
+  <label>전원 영구 성장 Lv<input id="labGrowth" type="number" min="0" value="0" step="1"></label>
+  <label>계정 해금 조건<select id="labProgress"><option value="region">선택 지역 진입 수준</option>
+   <option value="all">모든 지역 클리어·동료 영입</option></select></label>
+ </div>
+ <p class="muted">지역 진입 수준: 이전 지역 클리어 + 선택 리더 영입. 장비·시설·스킬은 기본 상태,
+ 일반 난도로 출발합니다. 튜토리얼·이야기는 생략합니다. 계정 전체 성장의 대표값은 아닙니다.</p>
+ <p class="muted">JSON 불러오기와 기본값 복귀는 진행 중 테스트를 종료합니다.
+ 현재 수치는 이 탭에서 새로고침해도 유지되지만, 다른 기기로 옮길 때는 JSON을 저장하세요.</p>
+ <div class="buttons"><button id="labStart" class="primary" disabled>새 테스트 시작</button>
+  <button id="labContinue" hidden>현재 테스트로 돌아가기</button>
+  <button id="labResult" disabled>현재 결과 JSON 저장</button></div>
+ </div>
+</section>
+<script>(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id),frame=$('testGame');
+ let api=null,hasRun=false;
+ const id=/^[a-f0-9-]{36}$/.test(location.hash.slice(1))?location.hash.slice(1):crypto.randomUUID();
+ history.replaceState(null,'','#'+id);
+ const preferenceKey='lg.balance.preferences:'+id;
+ const message=text=>{$('labMessage').textContent=text;};
+ const choices=(el,items)=>{el.replaceChildren(...items.map(item=>{
+  const option=document.createElement('option');option.value=item.id;
+  option.textContent=item.id+' · '+item.name;return option;
+ }));};
+ function download(text,name){
+  const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:'application/json'}));
+  a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ }
+ function ready(){
+  api=frame.contentWindow.BalanceTest;
+  if(!api){message('테스트 게임을 불러오지 못했습니다. 다시 접속하세요.');return;}
+  const info=api.info();hasRun=false;
+  $('labVersion').textContent='게임 기준 '+info.gameVersion+' · '+info.label;
+  $('labStatus').textContent=info.label+' · 변경 '+info.changed.length+'개';
+  choices($('labRegion'),info.regions);choices($('labLeader'),info.leaders);
+  $('labGrowth').max=String(info.growthMax);
+  try{
+   const p=JSON.parse(sessionStorage.getItem(preferenceKey)||'null');
+   if(p){$('labRegion').value=p.region;$('labLeader').value=p.leader;
+    $('labGrowth').value=p.growth;$('labProgress').value=p.progress;}
+  }catch(_e){/* An invalid form preference never affects the game. */}
+  $('labChangesTitle').textContent='공개 수치 대비 변경 '+info.changed.length+'개';
+  $('labChanges').replaceChildren(...info.changed.map(c=>{
+   const li=document.createElement('li');li.textContent=c.path+': '+c.from+' → '+c.to;return li;
+  }));
+  for(const id of ['labOpen','labImport','labReset','labExport','labResult'])$(id).disabled=false;
+  $('labStart').disabled=!!info.error;
+  $('labContinue').hidden=true;$('labPanel').hidden=false;
+  document.querySelector('.panel').scrollTop=0;
+  message(info.error||(!info.persistent?'이 브라우저는 세션 저장이 차단되어 있습니다.':'수치를 확인하고 테스트를 시작하세요.'));
+  api.pause();
+ }
+ frame.addEventListener('load',ready);
+ frame.src='session.html#'+id;
+ $('labOpen').onclick=()=>{
+  api.pause();$('labPanel').hidden=false;$('labContinue').hidden=!hasRun;
+  document.querySelector('.panel').scrollTop=0;
+ };
+ $('labContinue').onclick=()=>{api.resume();$('labPanel').hidden=true;};
+ $('labStart').onclick=()=>{
+  const settings={region:$('labRegion').value,leader:$('labLeader').value,
+   growth:Number($('labGrowth').value),progress:$('labProgress').value};
+  try{
+   api.start(settings);hasRun=true;$('labPanel').hidden=true;
+   $('labStatus').textContent=api.info().label+' · '+settings.region+' / '+settings.leader+' / 성장 '+settings.growth;
+   try{sessionStorage.setItem(preferenceKey,JSON.stringify(settings));}catch(_e){/* Game still playable. */}
+  }catch(error){message(error.message);}
+ };
+ $('labImport').onclick=()=>$('labFile').click();
+ $('labFile').onchange=async()=>{
+  const file=$('labFile').files[0];if(!file)return;
+  try{
+   if(file.size>262144)throw Error('256KB 이하의 밸런스 JSON을 선택하세요.');
+   const result=api.importText(await file.text(),file.name);if(!result.ok)message(result.error);
+  }catch(error){message(error.message);}
+  $('labFile').value='';
+ };
+ $('labReset').onclick=()=>{const r=api.reset();if(!r.ok)message(r.error);};
+ $('labExport').onclick=()=>download(api.exportText(),'balance-test.json');
+ $('labResult').onclick=()=>download(JSON.stringify(api.result(),null,2),'balance-test-result.json');
+})();
+</script>
+</html>
