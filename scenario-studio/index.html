@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <title>LoopGirl · 시나리오 작업실</title><link rel="stylesheet" href="studio.css">
+</head>
+<body>
+ <header class="topbar">
+  <div class="brand"><b>LOOPGIRL</b><span>시나리오 작업실</span></div>
+  <label class="author">작업자 <input id="author" maxlength="100" placeholder="이름을 입력하세요"></label>
+  <button id="gamePreviewBtn" class="primary">게임 화면으로 확인</button>
+  <span id="saveState" role="status">불러오는 중</span>
+  <button id="importBtn">수정본 열기</button><button id="exportBtn" class="primary">수정본 보내기 <b id="dirtyCount">0</b></button>
+  <button id="helpBtn" aria-label="사용 안내">도움말</button>
+ </header>
+ <p id="publicVersion" style="margin:0;padding:8px 20px;font-size:13px"></p>
+ <div id="notice" role="status" hidden></div>
+ <div class="workspace">
+  <aside class="library">
+   <h1>이벤트</h1><label for="search">제목·인물·대사 찾기</label>
+   <input id="search" type="search" placeholder="하린, S 귀환, 카드…">
+   <div class="filters"><select id="layer" aria-label="이벤트 종류"><option value="">모든 이야기</option></select>
+    <select id="character" aria-label="캐릭터"><option value="">모든 인물</option></select></div>
+   <label class="check"><input type="checkbox" id="changedOnly"> 수정한 이벤트만</label>
+   <p id="resultCount"></p><nav id="eventList" aria-label="이벤트 목록"></nav>
+  </aside>
+  <main>
+   <div class="eventHeading"><div><small id="eventKey"></small><h2 id="eventTitle">이벤트를 선택하세요</h2></div>
+    <button id="resetBtn">이 이벤트 수정 취소</button></div>
+   <p id="eventSummary"></p>
+   <div class="tabs" role="tablist" aria-label="편집 영역">
+    <button role="tab" aria-selected="true" data-tab="dialogue">대사·선택지</button>
+    <button role="tab" aria-selected="false" data-tab="cuts">컷신·연출</button>
+    <button role="tab" aria-selected="false" data-tab="changes">변경 전후</button>
+   </div>
+   <div class="editorGrid"><nav id="sectionList" aria-label="장면 목록"></nav>
+    <section id="editor" aria-label="장면 편집"></section></div>
+  </main>
+  <aside class="review">
+   <div class="reviewTitle"><h2>장면 미리보기</h2><span>편집 확인용</span></div>
+   <div id="preview" class="preview"><img id="previewBg" alt="장면 배경" hidden>
+    <img id="previewPortrait" alt="캐릭터 초상" hidden><video id="previewVideo" controls hidden></video>
+    <div class="dialogueBox"><b id="previewSpeaker"></b><p id="previewText"></p></div></div>
+   <div class="previewActions"><button id="prevBtn">이전 장면</button><button id="nextBtn">다음 장면</button></div>
+   <p class="muted">게임의 배경·컷신 유지값을 참고한 미리보기입니다. 실제 화면의 크롭·분기 재생은 게임에서 확인합니다.</p>
+   <details id="voiceGuide" open><summary>캐릭터 말투·컨셉</summary><div id="voiceContent"></div></details>
+   <details><summary>분기·조건·원본 위치</summary><div id="sourceInfo"></div></details>
+  </aside>
+ </div>
+ <input type="file" id="importFile" accept=".json,application/json" hidden>
+ <input type="file" id="assetFile" accept="image/png,image/jpeg,image/webp,video/mp4" hidden>
+ <dialog id="assetDialog"><div class="dialogHead"><h2>장면 이미지 선택</h2><button data-close>닫기</button></div>
+  <p>기존 자료를 선택하거나 새 후보를 첨부합니다. 첨부는 제작 승인이나 게임 등록을 의미하지 않습니다.</p>
+  <div class="assetTools"><input id="assetSearch" type="search" placeholder="파일 이름으로 검색" aria-label="이미지 검색">
+   <button id="uploadBtn">새 이미지·영상 첨부</button></div><div id="assetList"></div>
+ </dialog>
+ <dialog id="helpDialog"><div class="dialogHead"><h2>작업과 전달</h2><button data-close>닫기</button></div>
+  <p>공개 작업실입니다. 수정 후 게임 화면으로 확인하고 수정본 파일을 전달하세요. 브라우저 보관·파일 저장이 공개 게임의 대사나 플레이 저장을 바꾸지는 않습니다.</p><ol><li>왼쪽에서 이벤트를 찾고 장면을 선택합니다.</li><li>대사·선택지 또는 컷신·연출을 편집합니다.</li>
+   <li>변경 전후를 확인하고 <b>수정본 보내기</b>를 눌러 파일을 전달합니다.</li></ol>
+  <p>작업 내용은 이 브라우저에 자동 보관됩니다. 다른 PC로 옮기거나 전달하려면 반드시 수정본 파일을 저장하세요.
+   브라우저 기록 삭제·비공개 모드에서는 보관 내용이 사라질 수 있습니다.</p>
+  <p>수정본 열기는 같은 기준 대본의 작업을 합칩니다. 같은 이벤트를 이미 수정했다면 덮어쓰기 여부를 묻습니다.
+   기준 대본이 다른 파일은 열지 않고 담당자에게 재검토를 요청합니다.</p>
+  <p>‘이전 화면 유지’는 새 화면을 지정하지 않는다는 뜻이고, ‘해제’는 현재 컷신·초상을 내린다는 뜻입니다.</p>
+  <p>조건·보상·분기 연결은 참고용입니다. 구조를 바꿔야 하면 해당 장면의 연출 메모에 남기세요.
+   기준 문장에 연결된 메인 콘티는 대사를 바꿀 때 같이 확인합니다.</p>
+  <p id="packageInfo"></p>
+ </dialog>
+ <dialog id="exportDialog"><div class="dialogHead"><h2>수정본 보내기</h2><button data-close>닫기</button></div>
+  <p id="exportSummary"></p><label for="exportAuthor">작업자 이름</label><input id="exportAuthor" maxlength="100">
+  <p>JSON 파일을 담당자에게 보내 주세요. 변경 전후 문서는 사람이 읽기 위한 보조 파일입니다.</p>
+  <div class="buttons"><button id="downloadJson" class="primary">수정본 파일 저장</button>
+   <button id="downloadReport">변경 전후 문서 저장</button></div>
+ </dialog>
+ <script src="data.js"></script><script src="model.js"></script><script src="exchange.js"></script>
+ <script src="attachments.js"></script><script src="storage.js"></script><script src="render.js"></script>
+ <script src="app.js"></script>
+<script src="public-preview.js"></script></body></html>
