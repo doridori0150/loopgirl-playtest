@@ -4766,6 +4766,10 @@ body.ui4 #characterProfile .profile-tabs button{height:36px}
 #gtMode{display:flex;gap:6px;margin:0 0 6px}
 #gtMode button{flex:1;min-height:36px;border:1px solid #D2E2F1;border-radius:10px;background:#fff;font-weight:700}
 #gtMode button[aria-pressed=true]{background:#1C8CFF;border-color:#1C8CFF;color:#fff}
+
+/* ── 32. §30 지도 v3(13×7) — PC 가로는 지도 틀 폭 제한(680)을 풀어 지도 줄 높이에 맞춰 키운다(칸 약 57px).
+ * 모바일 세로는 기존 맞춤·확대/이동(mobile-ui.js) 그대로 ── */
+body.ui4 #s-run .mapwrap{max-width:none}
 </style>
 </head>
 <body>
@@ -4775,7 +4779,7 @@ body.ui4 #characterProfile .profile-tabs button{height:36px}
   <div class="hero echo-title">
     <img class="title-mobile-character" src="media/00cc8a4c966402e7e39f2f7bb7176b8e9bb40c4de88ab6829ba52c4d81a9b193.webp" alt="유하린">
     <div class="title-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
-    <header class="title-topline"><span class="title-brand"><span aria-hidden="true">◈</span> LooP <i>/</i> HUNTER OFFICE</span><span class="title-edition">v3.1.0 · 원정과 인연</span></header>
+    <header class="title-topline"><span class="title-brand"><span aria-hidden="true">◈</span> LooP <i>/</i> HUNTER OFFICE</span><span class="title-edition">v3.2.0 · 원정과 인연</span></header>
     <main class="title-content">
       <div class="title-eyebrow"><span></span> 우리의 다음 이야기는, 다시 여기서.</div>
       <h1 class="title-logo" aria-label="LoopGirl · 루프 걸">
@@ -5294,7 +5298,11 @@ function burst(x,y,color,n,spd){for(let i=0;i<n;i++){const a=fxRand()*Math.PI*2,
 // ================= 데이터 =================
 const PATH=[[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[7,1],[8,1],[8,2],[9,2],[9,3],[9,4],[8,4],[8,5],[7,5],[6,5],[5,5],[4,5],[3,5],[2,5],[1,5],[1,4],[0,4],[0,3],[0,2],[1,2],[1,1],[2,1]];
 /* PAD_TOP: 라운드 3 — 윗줄 타일의 보스(높이 90)·진화 아이콘·쌍둥이 라벨이 캔버스 위로 잘리지 않게 위 여백만 넓힌다 */
-const N=PATH.length, COLS=10, ROWS=6, CELL=64, TILE=54, PAD=20, PAD_TOP=56, W=PAD*2+COLS*CELL, H=PAD+PAD_TOP+ROWS*CELL;
+/* §30 지도 v3(13×7): 캔버스는 가장 큰 지도 기준. 도로 길이 N 은 현재 원정 지도의 값 — 지도마다 다를 수 있다(원정이 없으면 기존 순환로) */
+const COLS=13, ROWS=7, CELL=64, TILE=54, PAD=20, PAD_TOP=56, W=PAD*2+COLS*CELL, H=PAD+PAD_TOP+ROWS*CELL;
+const LEGACY_COLS=10, LEGACY_ROWS=6; /* 옛 순환로(PATH, legacy 지도)의 격자 — 확대와 무관하게 고정 */
+Object.defineProperty(window,'N',{configurable:true,
+ get:()=>typeof run!=='undefined'&&run&&Array.isArray(run.tiles)&&run.tiles.length?run.tiles.length:PATH.length});
 const MOVE_MS=450, HAND_MAX=8, START_HAND=5, INV_MAX=8, ATK_MS=800, XP_BASE=15, XP_STEP=12;
 // v0.5 카운트다운 T — 이동·리롤이 시간을 쓴다. v1.0 §17.3 C: 배치 비용 철폐(T_PLACE 0)
 const T_PLACE=0, T_REROLL=3, T_RECOVER_CAP=10, T_IMMINENT=25, SHOP_MARKERS=[0.66,0.33];
@@ -5999,7 +6007,7 @@ const BAL={
  v3:{battleExtra:1,chainReward:{front:1.5,battle:2},reinfMax:2,gradeDanger:[1,1.1,1.2],gradeLoot:[1,1.25,1.5],
   terrain:{golem:['ld_hill','ld_dust'],hound:['ld_park','ld_flower','ld_trees'],slime:['ld_river','ld_flower'],
    wisp:['ld_flower','ld_training']},
-  killGear:0.5,slimeCard:0.25,houndOp:30,deckWeight:2,moveT:0.5,imminent:13,
+  killGear:0.5,slimeCard:0.25,houndOp:30,deckWeight:2,moveT:0.5,lapT:14,refRoad:28,imminent:13,
   threat:{phase:[0,1.25,2.5],perTile:0.1},gearFull:0.25,startOp:500,starLv:[4,8]},
  command:{subSp:[1,2,4,6],coreSp:[2,4,8,12]},
  econ:{opMul:100,startOp:1000,contractOp:70,decay:[1,0.75,0.5,0.25],deposit:100,depositSkill:50,discard:25,
@@ -7331,7 +7339,7 @@ function riskArrival(t,options={}){
  const grow=loop3On()&&t.card!=='mark'&&(options.grow||nativePacksOn(t)),rt=grow&&!options.grow?reinforceTarget(t):null;
  const v3=loop3On()&&t.card!=='mark',chainAdd=!c||c.small||!t.chS?0:t.chS==='battle'&&v3?1+(BAL.v3.battleExtra||0):1;
  const per=c&&c.spawn?packSizeOf({small:c.small})+chainAdd:0; /* 새 무리 하나의 머릿수 */
- const need=route.steps*(loop3On()?BAL.v3.moveT:1),budget=run.t-(options.cost||0),blocked=riskBlocked()||budget<=need;
+ const need=walkT(route.steps),budget=run.t-(options.cost||0),blocked=riskBlocked()||budget<=need;
  const remaining=s?s.left:RISK_AB.intervalMs;
  const extra=ms=>{
   if(!s||blocked||s.state==='sealed'||s.state==='battle'||s.state==='full')return 0; /* 반환 = 늘어날 머릿수 */
@@ -7379,7 +7387,8 @@ function riskCampReached(){
 function riskRememberMember(m){if(riskOn()){run.riskBench=run.riskBench||{};run.riskBench[m.stu.id]={ratio:m.hp/m.maxHp,down:m.down};}}
 function riskRestoreMember(m){if(!riskOn())return;const old=run.riskBench&&run.riskBench[m.stu.id];if(old){m.hp=old.down?0:Math.max(1,Math.round(m.maxHp*old.ratio));m.down=old.down;}}
 function riskCampSummary(){
- const route=riskRouteTimes(),tiles=route.filter(r=>r.i!==0&&r.steps<run.t).map(r=>({t:run.tiles[r.i],a:riskArrival(run.tiles[r.i],{route})}));
+ const route=riskRouteTimes(),tiles=route.filter(r=>r.i!==0&&walkT(r.steps)<run.t)
+  .map(r=>({t:run.tiles[r.i],a:riskArrival(run.tiles[r.i],{route})}));
  const fights=tiles.filter(x=>x.a.hi>0);
  for(const x of fights)x.power=riskTilePower(x.t);
  const threat=fights.reduce((top,x)=>!top||x.power.pressure>top.power.pressure?x:top,null);
@@ -7403,7 +7412,7 @@ function riskCampSummary(){
  const weak=run.party.reduce((a,m)=>!a||m.hp/m.maxHp<a.hp/a.maxHp?m:a,null);
  const thr=typeof threatLv==='function'?threatLv():run.lap-1; /* v3: 위협 레벨 */
  const growth=Math.round((gate().h??BAL.hpScale)*BAL.lapHpMul*thr*100);
- return {fights,threat,contracts:contracts.length,baseOp:Math.floor(baseOp),cardDrops,carry,keep,loss,weak,growth,boss:run.t<=N};
+ return {fights,threat,contracts:contracts.length,baseOp:Math.floor(baseOp),cardDrops,carry,keep,loss,weak,growth,boss:run.t<=walkT(N)}; /* §30 한 바퀴 T(이동 누적 포함) */
 }
 function riskEligible(t){const c=CARDS[t.card];return !!(c&&c.spawn&&c.cap&&!(t.card==='mark'&&(t.markUses||0)>=MARK_LIFE));}
 function riskBlocked(){return !run||run.ended||run.bossPending||run.bossSpawned||run.sealLap===run.lap;}
@@ -8454,118 +8463,34 @@ const MAP_DEFINITIONS = [
       21
     ],
     "path": [
-      [
-        2,
-        0
-      ],
-      [
-        3,
-        0
-      ],
-      [
-        4,
-        0
-      ],
-      [
-        5,
-        0
-      ],
-      [
-        6,
-        0
-      ],
-      [
-        7,
-        0
-      ],
-      [
-        7,
-        1
-      ],
-      [
-        8,
-        1
-      ],
-      [
-        8,
-        2
-      ],
-      [
-        9,
-        2
-      ],
-      [
-        9,
-        3
-      ],
-      [
-        9,
-        4
-      ],
-      [
-        8,
-        4
-      ],
-      [
-        8,
-        5
-      ],
-      [
-        7,
-        5
-      ],
-      [
-        6,
-        5
-      ],
-      [
-        5,
-        5
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        3,
-        5
-      ],
-      [
-        2,
-        5
-      ],
-      [
-        1,
-        5
-      ],
-      [
-        1,
-        4
-      ],
-      [
-        0,
-        4
-      ],
-      [
-        0,
-        3
-      ],
-      [
-        0,
-        2
-      ],
-      [
-        1,
-        2
-      ],
-      [
-        1,
-        1
-      ],
-      [
-        2,
-        1
-      ]
+      [2,0],
+      [3,0],
+      [4,0],
+      [5,0],
+      [6,0],
+      [7,0],
+      [7,1],
+      [8,1],
+      [8,2],
+      [9,2],
+      [9,3],
+      [9,4],
+      [8,4],
+      [8,5],
+      [7,5],
+      [6,5],
+      [5,5],
+      [4,5],
+      [3,5],
+      [2,5],
+      [1,5],
+      [1,4],
+      [0,4],
+      [0,3],
+      [0,2],
+      [1,2],
+      [1,1],
+      [2,1]
     ],
     "mechanic": "support"
   },
@@ -8584,118 +8509,34 @@ const MAP_DEFINITIONS = [
       21
     ],
     "path": [
-      [
-        0,
-        0
-      ],
-      [
-        1,
-        0
-      ],
-      [
-        2,
-        0
-      ],
-      [
-        3,
-        0
-      ],
-      [
-        4,
-        0
-      ],
-      [
-        5,
-        0
-      ],
-      [
-        6,
-        0
-      ],
-      [
-        7,
-        0
-      ],
-      [
-        8,
-        0
-      ],
-      [
-        9,
-        0
-      ],
-      [
-        9,
-        1
-      ],
-      [
-        9,
-        2
-      ],
-      [
-        9,
-        3
-      ],
-      [
-        9,
-        4
-      ],
-      [
-        9,
-        5
-      ],
-      [
-        8,
-        5
-      ],
-      [
-        7,
-        5
-      ],
-      [
-        6,
-        5
-      ],
-      [
-        5,
-        5
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        3,
-        5
-      ],
-      [
-        2,
-        5
-      ],
-      [
-        1,
-        5
-      ],
-      [
-        0,
-        5
-      ],
-      [
-        0,
-        4
-      ],
-      [
-        0,
-        3
-      ],
-      [
-        0,
-        2
-      ],
-      [
-        0,
-        1
-      ]
+      [0,0],
+      [1,0],
+      [2,0],
+      [3,0],
+      [4,0],
+      [5,0],
+      [6,0],
+      [7,0],
+      [8,0],
+      [9,0],
+      [9,1],
+      [9,2],
+      [9,3],
+      [9,4],
+      [9,5],
+      [8,5],
+      [7,5],
+      [6,5],
+      [5,5],
+      [4,5],
+      [3,5],
+      [2,5],
+      [1,5],
+      [0,5],
+      [0,4],
+      [0,3],
+      [0,2],
+      [0,1]
     ],
     "mechanic": "coverage"
   },
@@ -8714,118 +8555,34 @@ const MAP_DEFINITIONS = [
       21
     ],
     "path": [
-      [
-        1,
-        0
-      ],
-      [
-        2,
-        0
-      ],
-      [
-        3,
-        0
-      ],
-      [
-        4,
-        0
-      ],
-      [
-        5,
-        0
-      ],
-      [
-        6,
-        0
-      ],
-      [
-        7,
-        0
-      ],
-      [
-        8,
-        0
-      ],
-      [
-        8,
-        1
-      ],
-      [
-        9,
-        1
-      ],
-      [
-        9,
-        2
-      ],
-      [
-        8,
-        2
-      ],
-      [
-        8,
-        3
-      ],
-      [
-        8,
-        4
-      ],
-      [
-        8,
-        5
-      ],
-      [
-        7,
-        5
-      ],
-      [
-        6,
-        5
-      ],
-      [
-        5,
-        5
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        3,
-        5
-      ],
-      [
-        2,
-        5
-      ],
-      [
-        1,
-        5
-      ],
-      [
-        1,
-        4
-      ],
-      [
-        1,
-        3
-      ],
-      [
-        0,
-        3
-      ],
-      [
-        0,
-        2
-      ],
-      [
-        1,
-        2
-      ],
-      [
-        1,
-        1
-      ]
+      [1,0],
+      [2,0],
+      [3,0],
+      [4,0],
+      [5,0],
+      [6,0],
+      [7,0],
+      [8,0],
+      [8,1],
+      [9,1],
+      [9,2],
+      [8,2],
+      [8,3],
+      [8,4],
+      [8,5],
+      [7,5],
+      [6,5],
+      [5,5],
+      [4,5],
+      [3,5],
+      [2,5],
+      [1,5],
+      [1,4],
+      [1,3],
+      [0,3],
+      [0,2],
+      [1,2],
+      [1,1]
     ],
     "mechanic": "crossfire"
   },
@@ -8844,118 +8601,34 @@ const MAP_DEFINITIONS = [
       21
     ],
     "path": [
-      [
-        1,
-        1
-      ],
-      [
-        1,
-        0
-      ],
-      [
-        2,
-        0
-      ],
-      [
-        3,
-        0
-      ],
-      [
-        4,
-        0
-      ],
-      [
-        5,
-        0
-      ],
-      [
-        6,
-        0
-      ],
-      [
-        7,
-        0
-      ],
-      [
-        8,
-        0
-      ],
-      [
-        9,
-        0
-      ],
-      [
-        9,
-        1
-      ],
-      [
-        9,
-        2
-      ],
-      [
-        9,
-        3
-      ],
-      [
-        9,
-        4
-      ],
-      [
-        9,
-        5
-      ],
-      [
-        8,
-        5
-      ],
-      [
-        7,
-        5
-      ],
-      [
-        6,
-        5
-      ],
-      [
-        5,
-        5
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        3,
-        5
-      ],
-      [
-        2,
-        5
-      ],
-      [
-        1,
-        5
-      ],
-      [
-        0,
-        5
-      ],
-      [
-        0,
-        4
-      ],
-      [
-        0,
-        3
-      ],
-      [
-        0,
-        2
-      ],
-      [
-        0,
-        1
-      ]
+      [1,1],
+      [1,0],
+      [2,0],
+      [3,0],
+      [4,0],
+      [5,0],
+      [6,0],
+      [7,0],
+      [8,0],
+      [9,0],
+      [9,1],
+      [9,2],
+      [9,3],
+      [9,4],
+      [9,5],
+      [8,5],
+      [7,5],
+      [6,5],
+      [5,5],
+      [4,5],
+      [3,5],
+      [2,5],
+      [1,5],
+      [0,5],
+      [0,4],
+      [0,3],
+      [0,2],
+      [0,1]
     ],
     "mechanic": "flood"
   },
@@ -8974,118 +8647,34 @@ const MAP_DEFINITIONS = [
       21
     ],
     "path": [
-      [
-        8,
-        0
-      ],
-      [
-        7,
-        0
-      ],
-      [
-        6,
-        0
-      ],
-      [
-        5,
-        0
-      ],
-      [
-        4,
-        0
-      ],
-      [
-        3,
-        0
-      ],
-      [
-        2,
-        0
-      ],
-      [
-        1,
-        0
-      ],
-      [
-        1,
-        1
-      ],
-      [
-        0,
-        1
-      ],
-      [
-        0,
-        2
-      ],
-      [
-        1,
-        2
-      ],
-      [
-        1,
-        3
-      ],
-      [
-        1,
-        4
-      ],
-      [
-        1,
-        5
-      ],
-      [
-        2,
-        5
-      ],
-      [
-        3,
-        5
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        5,
-        5
-      ],
-      [
-        6,
-        5
-      ],
-      [
-        7,
-        5
-      ],
-      [
-        8,
-        5
-      ],
-      [
-        8,
-        4
-      ],
-      [
-        8,
-        3
-      ],
-      [
-        9,
-        3
-      ],
-      [
-        9,
-        2
-      ],
-      [
-        8,
-        2
-      ],
-      [
-        8,
-        1
-      ]
+      [8,0],
+      [7,0],
+      [6,0],
+      [5,0],
+      [4,0],
+      [3,0],
+      [2,0],
+      [1,0],
+      [1,1],
+      [0,1],
+      [0,2],
+      [1,2],
+      [1,3],
+      [1,4],
+      [1,5],
+      [2,5],
+      [3,5],
+      [4,5],
+      [5,5],
+      [6,5],
+      [7,5],
+      [8,5],
+      [8,4],
+      [8,3],
+      [9,3],
+      [9,2],
+      [8,2],
+      [8,1]
     ],
     "mechanic": "signal"
   },
@@ -9104,118 +8693,358 @@ const MAP_DEFINITIONS = [
       21
     ],
     "path": [
-      [
-        2,
-        5
-      ],
-      [
-        3,
-        5
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        5,
-        5
-      ],
-      [
-        6,
-        5
-      ],
-      [
-        7,
-        5
-      ],
-      [
-        7,
-        4
-      ],
-      [
-        8,
-        4
-      ],
-      [
-        8,
-        3
-      ],
-      [
-        9,
-        3
-      ],
-      [
-        9,
-        2
-      ],
-      [
-        9,
-        1
-      ],
-      [
-        8,
-        1
-      ],
-      [
-        8,
-        0
-      ],
-      [
-        7,
-        0
-      ],
-      [
-        6,
-        0
-      ],
-      [
-        5,
-        0
-      ],
-      [
-        4,
-        0
-      ],
-      [
-        3,
-        0
-      ],
-      [
-        2,
-        0
-      ],
-      [
-        1,
-        0
-      ],
-      [
-        1,
-        1
-      ],
-      [
-        0,
-        1
-      ],
-      [
-        0,
-        2
-      ],
-      [
-        0,
-        3
-      ],
-      [
-        1,
-        3
-      ],
-      [
-        1,
-        4
-      ],
-      [
-        2,
-        4
-      ]
+      [2,5],
+      [3,5],
+      [4,5],
+      [5,5],
+      [6,5],
+      [7,5],
+      [7,4],
+      [8,4],
+      [8,3],
+      [9,3],
+      [9,2],
+      [9,1],
+      [8,1],
+      [8,0],
+      [7,0],
+      [6,0],
+      [5,0],
+      [4,0],
+      [3,0],
+      [2,0],
+      [1,0],
+      [1,1],
+      [0,1],
+      [0,2],
+      [0,3],
+      [1,3],
+      [1,4],
+      [2,4]
+    ],
+    "mechanic": "rift"
+  },
+  {
+    "id": "region-E",
+    "version": 3,
+    "region": "E",
+    "name": "지하철",
+    "template": "loop",
+    "cols": 13,
+    "rows": 7,
+    "camp": 0,
+    "marks": [
+      9,
+      18,
+      27
+    ],
+    "path": [
+      [3,0],
+      [4,0],
+      [5,0],
+      [6,0],
+      [7,0],
+      [8,0],
+      [9,0],
+      [9,1],
+      [10,1],
+      [11,1],
+      [11,2],
+      [12,2],
+      [12,3],
+      [12,4],
+      [12,5],
+      [11,5],
+      [11,6],
+      [10,6],
+      [9,6],
+      [8,6],
+      [7,6],
+      [6,6],
+      [5,6],
+      [4,6],
+      [3,6],
+      [2,6],
+      [1,6],
+      [1,5],
+      [0,5],
+      [0,4],
+      [0,3],
+      [0,2],
+      [1,2],
+      [1,1],
+      [2,1],
+      [3,1]
+    ],
+    "mechanic": "support"
+  },
+  {
+    "id": "region-D",
+    "version": 3,
+    "region": "D",
+    "name": "대교",
+    "template": "bridge",
+    "cols": 13,
+    "rows": 7,
+    "camp": 0,
+    "marks": [
+      9,
+      18,
+      27
+    ],
+    "path": [
+      [0,0],
+      [1,0],
+      [2,0],
+      [3,0],
+      [4,0],
+      [5,0],
+      [6,0],
+      [7,0],
+      [8,0],
+      [9,0],
+      [10,0],
+      [11,0],
+      [12,0],
+      [12,1],
+      [12,2],
+      [12,3],
+      [12,4],
+      [12,5],
+      [12,6],
+      [11,6],
+      [10,6],
+      [9,6],
+      [8,6],
+      [7,6],
+      [6,6],
+      [5,6],
+      [4,6],
+      [3,6],
+      [2,6],
+      [1,6],
+      [0,6],
+      [0,5],
+      [0,4],
+      [0,3],
+      [0,2],
+      [0,1]
+    ],
+    "mechanic": "coverage"
+  },
+  {
+    "id": "region-C",
+    "version": 3,
+    "region": "C",
+    "name": "옥상",
+    "template": "roof",
+    "cols": 13,
+    "rows": 7,
+    "camp": 0,
+    "marks": [
+      9,
+      18,
+      27
+    ],
+    "path": [
+      [1,0],
+      [2,0],
+      [3,0],
+      [4,0],
+      [5,0],
+      [6,0],
+      [7,0],
+      [8,0],
+      [9,0],
+      [10,0],
+      [11,0],
+      [11,1],
+      [12,1],
+      [12,2],
+      [11,2],
+      [11,3],
+      [11,4],
+      [11,5],
+      [11,6],
+      [10,6],
+      [9,6],
+      [8,6],
+      [7,6],
+      [6,6],
+      [5,6],
+      [4,6],
+      [3,6],
+      [2,6],
+      [1,6],
+      [1,5],
+      [1,4],
+      [0,4],
+      [0,3],
+      [0,2],
+      [1,2],
+      [1,1]
+    ],
+    "mechanic": "crossfire"
+  },
+  {
+    "id": "region-B",
+    "version": 3,
+    "region": "B",
+    "name": "지하 상가",
+    "template": "bridge",
+    "cols": 13,
+    "rows": 7,
+    "camp": 0,
+    "marks": [
+      9,
+      18,
+      27
+    ],
+    "path": [
+      [1,1],
+      [1,0],
+      [2,0],
+      [3,0],
+      [4,0],
+      [5,0],
+      [6,0],
+      [7,0],
+      [8,0],
+      [9,0],
+      [10,0],
+      [11,0],
+      [12,0],
+      [12,1],
+      [12,2],
+      [12,3],
+      [12,4],
+      [12,5],
+      [12,6],
+      [11,6],
+      [10,6],
+      [9,6],
+      [8,6],
+      [7,6],
+      [6,6],
+      [5,6],
+      [4,6],
+      [3,6],
+      [2,6],
+      [1,6],
+      [0,6],
+      [0,5],
+      [0,4],
+      [0,3],
+      [0,2],
+      [0,1]
+    ],
+    "mechanic": "flood"
+  },
+  {
+    "id": "region-A",
+    "version": 3,
+    "region": "A",
+    "name": "방송국",
+    "template": "roof",
+    "cols": 13,
+    "rows": 7,
+    "camp": 0,
+    "marks": [
+      9,
+      18,
+      27
+    ],
+    "path": [
+      [11,0],
+      [10,0],
+      [9,0],
+      [8,0],
+      [7,0],
+      [6,0],
+      [5,0],
+      [4,0],
+      [3,0],
+      [2,0],
+      [1,0],
+      [1,1],
+      [0,1],
+      [0,2],
+      [1,2],
+      [1,3],
+      [1,4],
+      [1,5],
+      [1,6],
+      [2,6],
+      [3,6],
+      [4,6],
+      [5,6],
+      [6,6],
+      [7,6],
+      [8,6],
+      [9,6],
+      [10,6],
+      [11,6],
+      [11,5],
+      [11,4],
+      [12,4],
+      [12,3],
+      [12,2],
+      [11,2],
+      [11,1]
+    ],
+    "mechanic": "signal"
+  },
+  {
+    "id": "region-S",
+    "version": 3,
+    "region": "S",
+    "name": "대균열",
+    "template": "loop",
+    "cols": 13,
+    "rows": 7,
+    "camp": 0,
+    "marks": [
+      9,
+      18,
+      27
+    ],
+    "path": [
+      [3,6],
+      [4,6],
+      [5,6],
+      [6,6],
+      [7,6],
+      [8,6],
+      [9,6],
+      [9,5],
+      [10,5],
+      [11,5],
+      [11,4],
+      [12,4],
+      [12,3],
+      [12,2],
+      [12,1],
+      [11,1],
+      [11,0],
+      [10,0],
+      [9,0],
+      [8,0],
+      [7,0],
+      [6,0],
+      [5,0],
+      [4,0],
+      [3,0],
+      [2,0],
+      [1,0],
+      [1,1],
+      [0,1],
+      [0,2],
+      [0,3],
+      [0,4],
+      [1,4],
+      [1,5],
+      [2,5],
+      [3,5]
     ],
     "mechanic": "rift"
   }
@@ -9243,7 +9072,8 @@ function buildRegionMap(def) {
 }
 function mapForRegion(region) {
  const id=typeof region==='string'?region:region?.id||region?.rank;
- const def=MAP_DEFINITIONS.find(m=>m.region===id||m.id===id);
+ /* 새 원정은 그 지역의 최신 지도 버전(§30 v3 13×7). 진행 중·기록의 옛 버전은 mapOf 가 버전으로 찾는다 */
+ const def=MAP_DEFINITIONS.filter(m=>m.region===id||m.id===id).sort((a,b)=>b.version-a.version)[0];
  if(!def)throw Error('Unknown expedition region: '+id);
  return mapOf({mapId:def.id,mapVersion:def.version});
 }
@@ -9252,7 +9082,7 @@ function mapOf(state) {
  const id=s?.mapId||'legacy',version=s?.mapVersion??(id==='legacy'?1:2),key=id+':'+version;
  if(MAP_CACHE.has(key))return MAP_CACHE.get(key);
  const def=id==='legacy'&&version===1
-  ?{id,version,region:null,name:'기존 순환로',cols:COLS,rows:ROWS,camp:0,marks:[7,20],path:PATH}
+  ?{id,version,region:null,name:'기존 순환로',cols:LEGACY_COLS,rows:LEGACY_ROWS,camp:0,marks:[7,20],path:PATH}
   :MAP_DEFINITIONS.find(m=>m.id===id&&m.version===version);
  if(!def)throw Error('Unsupported saved map: '+key);
  const map=buildRegionMap(def);MAP_CACHE.set(key,map);return map;
@@ -9354,7 +9184,8 @@ function mapSupportEffects(tile,state) {
  const linked=supporting.length+fields.length>0;
  if(m.mechanic==='support'&&supporting.length>=2)out.shield=4;
  if(m.mechanic==='coverage'&&fields.some(c=>{
-  const roads=fieldRoads(c.card,c,state);return roads.some(i=>i<14)&&roads.some(i=>i>=14);
+  const half=m.path.length/2,roads=fieldRoads(c.card,c,state); /* §30 도로 절반 = 지도 도로 길이 기준(v2 14 · v3 18) */
+  return roads.some(i=>i<half)&&roads.some(i=>i>=half);
  }))out.shield=6;
  if(m.mechanic==='crossfire'){
   if(linked)out.dmg=2;
@@ -11108,7 +10939,8 @@ const CHALLENGE_V2=(()=>{
  const available=(m,g)=>REGIONS.includes(g)&&number(m.campaign?.operations?.[g+':main:danger'])>0;
  function definition(region){
   const i=REGIONS.indexOf(region);if(i<0)return null;
-  return {region,mapId:'region-'+region,mapVersion:2,rulesVersion:rulesVersion(),
+  const mapVersion=typeof mapForRegion==='function'?mapForRegion(region).version:2; /* §30 새 도전은 최신 지도 */
+  return {region,mapId:'region-'+region,mapVersion,rulesVersion:rulesVersion(),
    balanceVersion:BALANCE_VERSION,seed:920220+i*1009,powerProfile:POWER_VERSION+'-'+region,
    allowedPoolVersion:POOL_VERSION,maxLoops:6,bossLap:6,maxMs:600000,bossMaxMs:120000,
    startOp:BAL.loop3===false?1800:1000,startHand:8, /* v3: 고용비가 없어 시작 OP 축소 */
@@ -12925,7 +12757,7 @@ const MODAL={
  sync(){const t=this.top();for(const [id,sel] of Object.entries(MODAL_EL)){const el=$(sel);if(el)el.hidden=id!==t;}dirty=true;},
 };
 /* v1.2 비도로 칸 기하(격자 10×6 − 도로 28 = 32칸): OFF[k]=[c,r] · OFF_IDX['c,r']=k · ADJ_CR[k] = 인접(8방) 도로 칸 · ADJ_CC[k] = 인접 비도로 칸 · ADJ_RC[i] = 도로 칸 i 에 인접한 비도로 칸. 통합 인덱스 = N+k */
-const OFF=[],OFF_IDX={};{const on=new Set(PATH.map(p=>p[0]+','+p[1]));for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(!on.has(c+','+r)){OFF_IDX[c+','+r]=OFF.length;OFF.push([c,r]);}}
+const OFF=[],OFF_IDX={};{const on=new Set(PATH.map(p=>p[0]+','+p[1]));for(let r=0;r<LEGACY_ROWS;r++)for(let c=0;c<LEGACY_COLS;c++)if(!on.has(c+','+r)){OFF_IDX[c+','+r]=OFF.length;OFF.push([c,r]);}}
 const NEAR8=(a,b)=>Math.abs(a[0]-b[0])<=1&&Math.abs(a[1]-b[1])<=1&&(a[0]!==b[0]||a[1]!==b[1]);
 const ADJ_CR=OFF.map(o=>PATH.map((p,i)=>NEAR8(o,p)?i:-1).filter(i=>i>=0)),ADJ_CC=OFF.map(o=>OFF.map((p,k)=>NEAR8(o,p)?k:-1).filter(k=>k>=0)),ADJ_RC=PATH.map(p=>OFF.map((o,k)=>NEAR8(o,p)?k:-1).filter(k=>k>=0));
 function tileCenter(i){return mapOf(run).center(i);}
@@ -13081,7 +12913,7 @@ function newRun(leader){
  spawnWander();
  rollNextCrate(); /* 랩 시작부터 다음 캠프 상자의 종류·가격을 공개 */
  selectedCard=null;hoverTile=-1;floaters=[];dirty=true;lastLogic=performance.now();
- log(`🚪 ${g.rank}랭크 게이트 진입. 리더 ${leader.name} · 덱 ${run.deckList.length}장. T ${g.T}칸 — 이동 −1·리롤 −${T_REROLL}, 소환 카드 배치는 브레이크 +${Math.round(BAL.placeBrake*100)}%p(T −${brakeCost()}), 지원 카드는 무료. 카드는 무리를 전멸시킬 때 떨어지고, 놓을수록 싸움이 세집니다.`,'good');
+ log(`🚪 ${g.rank}랭크 게이트 진입. 리더 ${leader.name} · 덱 ${run.deckList.length}장. T ${g.T} — ${loop3On()?`한 바퀴(${N}칸) 이동 −${BAL.v3.lapT}`:'이동 −1'}·리롤 −${T_REROLL}, 소환 카드 배치는 브레이크 +${Math.round(BAL.placeBrake*100)}%p(T −${brakeCost()}), 지원 카드는 무료. 카드는 무리를 전멸시킬 때 떨어지고, 놓을수록 싸움이 세집니다.`,'good');
  /* v1.4 R4 C-05: 자유 덱의 잠긴 결계(길가·지형)는 출격 덱에서 빠지고(deckFor) 기본 카드로 채운다 — 여기서 알린다 */
  run.lockedOut=simDeckMode?[]:deckNorm(leader.id,meta.deck[leader.id]||[]).filter(id=>!cardOpen(id));
  if(run.lockedOut.length){const nm=[...new Set(run.lockedOut)].map(id=>CARDS[id].icon+' '+CARDS[id].name).join(' · ');log(`🔒 잠긴 결계 카드 ${run.lockedOut.length}장(${nm})은 이번 출격 덱에서 빠지고 기본 카드로 채웠습니다 — ${cardLockHint(run.lockedOut[0])}`,'imp');banner('🔒 잠긴 결계 카드 제외',`${nm} — 해금 전에는 출격 덱에 들어가지 않습니다`,'#93c5fd',3000);}
@@ -13708,16 +13540,21 @@ function threatPhase(){
  const p=run.mode==='challenge'?(run.lap>=5?2:run.lap>=3?1:0):q>=2/3?2:q>=1/3?1:0;
  return Math.max(run.phaseMax||0,p);
 }
+/* §30 지도 v3: 도로 길이(N)가 달라도 한 바퀴 T(lapT)와 "고리를 채운 비율"당 위협을 같게 — 기준 도로 refRoad(28) */
+const moveTNow=()=>BAL.v3.lapT?BAL.v3.lapT/Math.max(1,N):BAL.v3.moveT;
+const threatPerTile=()=>BAL.v3.threat.perTile*(BAL.v3.refRoad||28)/Math.max(1,N);
+/* 지금부터 k칸을 걸을 때 실제로 쓰는 T — 이동 누적(tMoveAcc)과 같은 계산. v2 런은 칸당 1T(도착·캠프·보스 예측 공용) */
+function walkT(k){return loop3On()?Math.floor((run.tMoveAcc||0)+k*moveTNow()+1e-9):k;}
 function threatLv(boss){
  if(!run)return 0;if(!loop3On())return run.lap-1;const T=BAL.v3.threat;
- return T.phase[boss?2:threatPhase()]+(run.cardsPlaced||0)*T.perTile;
+ return T.phase[boss?2:threatPhase()]+(run.cardsPlaced||0)*threatPerTile();
 }
 const growthLap=boss=>1+threatLv(boss);
 /* 시간대가 올라갈 때 한 번 알린다(spendT · 캠프). 되돌아가지 않는다 */
 function threatPhaseTick(){
  if(!run||run.ended||!loop3On())return;const ph=threatPhase(),from=run.phaseMax||0;
  if(ph>from){
-  const T=BAL.v3.threat,placed=(run.cardsPlaced||0)*T.perTile,before=T.phase[from]+placed;
+  const T=BAL.v3.threat,placed=(run.cardsPlaced||0)*threatPerTile(),before=T.phase[from]+placed;
   run.phaseMax=ph;const after=threatLv(),name=['낮','황혼','밤'][ph];
   /* 진화 = 시간대 전환마다 한 번(낮→밤을 한 번에 넘으면 두 번). 진화는 원래 규칙대로 지도의 이형 전체에 적용 */
   if(!estMode)run.evoPending=(run.evoPending||0)+(ph-from);
@@ -14465,8 +14302,9 @@ const shopInfl=()=>BAL.shopInfl[Math.min(droneStage(),BAL.shopInfl.length-1)]||1
  * landDay(sealed)(onCamp — 랩 = 하루): 공원 회복 · 격전 흔적 상자 · 고치/전초기지/봉우리/잔류 사념 스폰(봉인 랩이면 스폰 생략) · 지연 변신 완료 · 연쇄 전리품 환전.
  * 부작용 집계 run.sideFx{outpost,forest,echo,ransack,peak} — 시뮬 지표(부작용 발생 런)와 v1.3 위험 점수가 읽을 자리. 규칙 이벤트는 dispatchRuleEvent 로 알린다 */
 const spotAt=i=>!run?null:(i<N?run.tiles[i]:(run.cells?run.cells[i-N]:null));
+/* §30: 비도로 칸 통합 인덱스 = 그 상태 지도의 도로 길이 + k(전역 N 은 현재 원정 기준이라 독립 상태에는 쓰지 않는다) */
 const newCells=(state=run)=>mapOf(state).offCells.map((p,k)=>({
- i:N+k,k,c:p[0],r:p[1],off:true,roadAdj:mapOf(state).roadAdj[k].length>0,
+ i:mapOf(state).path.length+k,k,c:p[0],r:p[1],off:true,roadAdj:mapOf(state).roadAdj[k].length>0,
  card:null,base:null,lv:1,enemies:[]}));
 const perkN=id=>(run&&run.perks&&run.perks[id])||0;
 const cellCount=id=>run&&run.cells?run.cells.filter(c=>c.card===id).length:0;
@@ -24937,7 +24775,7 @@ function update(dt){
   if(run.moveTimer>=MOVE_MS){
    run.moveTimer-=MOVE_MS;const from=run.pos;run.pos=(run.pos+1)%N;
    dispatchRuleEvent('move',{from,to:run.pos,steps:1,teleport:false});
-   if(loop3On()){run.tMoveAcc=(run.tMoveAcc||0)+BAL.v3.moveT; /* §29 v3: 이동 2칸마다 1T(정수 유지) */
+   if(loop3On()){run.tMoveAcc=(run.tMoveAcc||0)+moveTNow(); /* §29·§30: 한 바퀴 lapT(14)T — 28칸이면 2칸마다 1T */
     if(run.tMoveAcc>=1-1e-9){run.tMoveAcc-=1;spendT(1,'move');}}else spendT(1,'move');
    enterTile();
   }
@@ -28135,7 +27973,8 @@ function lap3Render(){
   `<section><h4>강해진 동료 <small>자동 장착 ${eqs.length}</small></h4>`+
   (eq?`<ul class="l3eq">${eq}</ul>`:'<p class="l3none">이번 바퀴 장착 변화 없음</p>')+'</section>'+
   `<section class="l3next"><h4>다음 바퀴</h4><p><b>${names[ph]}</b> · ${ph<2?`${names[ph+1]}까지`:'보스까지'} T ${nextT}</p>`+
-  `<p>위협 Lv <b>${th.toFixed(1)}</b> <small>시간대 ${T.phase[ph]} + 배치 ${run.cardsPlaced||0}장 × ${T.perTile}</small></p>`+
+  `<p>위협 Lv <b>${th.toFixed(1)}</b> <small>시간대 ${T.phase[ph]} + 배치 ${run.cardsPlaced||0}장 × `+
+  `${+threatPerTile().toFixed(3)}</small></p>`+
   `<p>새로 나오는 이형 HP <b>+${Math.round(h*th*100)}%</b> <small>지역 배율 별도</small></p>`+
   `<p>지도의 무리 ${packs.length} · 이형 ${mobs}마리</p></section>`+
   `<section><h4>분대 <small>캠프 회복 전 → 지금</small></h4><ul class="l3party">${party}</ul></section></div>`+
@@ -31324,7 +31163,7 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="3a887826db1fed41";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
+<script>(()=>{const version="2d9e1c10af25503e";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
 .du-m canvas.attack-sd {
  height:clamp(48px,19dvh,150px); width:auto; max-height:100%; min-height:0;
  transform:none; display:block; pointer-events:none;

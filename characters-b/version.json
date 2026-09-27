@@ -1,7 +1,7 @@
 {
   "channel": "character-b",
-  "version": "3a887826db1fed41",
-  "builtAt": "2026-09-27T13:08:30.672Z",
+  "version": "2d9e1c10af25503e",
+  "builtAt": "2026-09-27T13:37:42.168Z",
   "students": [
     "harin",
     "chaewon",
@@ -56,8 +56,9 @@
     "count": 97,
     "runtimeCheck": "docs/art/cast-continuity-20260926/runtime-check.json"
   },
-  "gameVersion": "3.1.0",
+  "gameVersion": "3.2.0",
   "loopVersion": 3,
-  "sourceCommit": "dfaa073",
-  "growthTreeVersion": 1
+  "sourceCommit": "d246dfd",
+  "growthTreeVersion": 1,
+  "mapGridVersion": 3
 }
