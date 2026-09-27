@@ -4581,6 +4581,67 @@ body.ui4 :is(.u4por,.profile-lounge-cards button) img.u4pc{object-position:50% 5
 body.ui4 #offers .offer .recruit-figure.u4pbust{margin:0!important;height:100%!important}
 body.ui4 #offers .offer .recruit-figure.u4pbust>img{position:static!important;width:100%!important;height:100%!important;
   transform:none!important;object-fit:cover!important;object-position:50% 12%!important}
+</style><style>/* LoopGirl §29 루프 v3 — PC 가로(body.ui4) 전용 추가 스킨. 체계: docs/design/ui-system/README.md ·
+ * 설계: docs/design/29-loop-v3.md. styles-ui-v4.css 다음에 싣는다(같은 변수 --u4-* · --fn · --fd 사용). */
+/* ── 29. 루프 v3 랩 정산(camp-v4.js lap3Render · #riskCamp.lap3) — 캠프마다 한 번: 지난 랩 결과 · 강해진 동료 · 다음 시간대 · 분대.
+ * 틀은 귀환 확인 창(camp4Return)과 같은 흰 판. 버튼 줄은 기존 #riskCamp footer(보급 = 금 · 귀환 = 파랑 · 한 바퀴 더 = 흰). */
+body.ui4 #riskCamp.lap3{background:rgba(58,86,122,.45)}
+body.ui4 #riskCamp.lap3>.risk-camp-box{width:min(920px,94vw);padding:18px 26px 16px;gap:12px;background:none;
+  border:0 solid transparent;border-radius:0;color:var(--u4-ink);
+  border-image:url(media/4919c110dbc08999842b30dc003d7f13d78f243f9f9ec638b0fb16201e7a693a.webp) 61 fill / 26px / 0 stretch;
+  box-shadow:0 24px 50px -16px rgba(40,90,150,.55)}
+body.ui4 #riskCamp.lap3 header>span{display:inline-block;padding:2px 10px;border-radius:10px;background:var(--u4-blue);
+  color:#fff;font:700 13px var(--fn);letter-spacing:.06em}
+body.ui4 #riskCamp.lap3 h2{margin:6px 0 0;font:400 26px var(--fd);color:var(--u4-ink)}
+body.ui4 #riskCamp.lap3 .l3grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+body.ui4 #riskCamp.lap3 .l3grid section{min-width:0;padding:12px 14px;border-radius:12px;background:var(--u4-bg2);
+  box-shadow:inset 0 0 0 1px var(--u4-line)}
+body.ui4 #riskCamp.lap3 h4{margin:0 0 8px;font:700 15px var(--fn);color:var(--u4-blue2)}
+body.ui4 #riskCamp.lap3 h4 small,body.ui4 #riskCamp.lap3 p small{display:inline;font-size:13px;color:var(--u4-sub);
+  font-weight:400}
+body.ui4 #riskCamp.lap3 .l3got{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:6px}
+body.ui4 #riskCamp.lap3 .l3got li{display:flex;flex-direction:column;gap:2px;padding:6px 10px;border-radius:10px;
+  background:#fff}
+body.ui4 #riskCamp.lap3 .l3got span{font-size:13px;color:var(--u4-sub)}
+body.ui4 #riskCamp.lap3 .l3got b{font:700 20px var(--fn);color:var(--u4-blue2)}
+body.ui4 #riskCamp.lap3 .l3got li.bad b{color:var(--u4-red)}
+body.ui4 #riskCamp.lap3 .l3eq{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+body.ui4 #riskCamp.lap3 .l3eq li{font-size:14px;line-height:1.35}
+body.ui4 #riskCamp.lap3 .l3eq span{display:block;font-size:13px;color:var(--u4-sub)}
+body.ui4 #riskCamp.lap3 .l3none{margin:0;font-size:14px;color:var(--u4-sub)}
+body.ui4 #riskCamp.lap3 .l3next p{margin:4px 0;font-size:14px}
+body.ui4 #riskCamp.lap3 .l3next b{color:var(--u4-blue2);font-size:16px}
+body.ui4 #riskCamp.lap3 .l3party{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+body.ui4 #riskCamp.lap3 .l3party li{display:grid;grid-template-columns:5.5em 1fr auto;align-items:center;gap:8px;
+  font-size:14px}
+body.ui4 #riskCamp.lap3 .l3party i{height:8px;border-radius:4px;background:#fff;
+  box-shadow:inset 0 0 0 1px var(--u4-line);overflow:hidden}
+body.ui4 #riskCamp.lap3 .l3party u{display:block;height:100%;background:#35C47A}
+body.ui4 #riskCamp.lap3 .l3party li.low u{background:#F2A43A}
+body.ui4 #riskCamp.lap3 .l3party li.bad{color:var(--u4-red)}
+body.ui4 #riskCamp.lap3 .l3party small{font-size:13px;color:var(--u4-sub)}
+body.ui4 #riskCamp.lap3 .l3keep{margin:0;font-size:15px}
+body.ui4 #riskCamp.lap3 .l3keep b{color:var(--u4-blue);font:700 20px var(--fn)}
+body.ui4 #riskCamp.lap3 footer{display:flex;justify-content:flex-end;gap:10px}
+body.ui4 .u4gain{margin-left:6px;padding:0 6px;border-radius:8px;background:#E3F8EC;color:#1F8A4C;
+  font:700 13px var(--fn)}
+
+/* ── 29-2. 작전실 편성(operations.js squadStripHtml): 리더 + 동료 3칸 한 줄, 학생 카드의 「동행」 표식 ── */
+body.ui4 #s-select .sq3{grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;
+  background:#fff;box-shadow:inset 0 0 0 2px var(--u4-line)}
+body.ui4 #s-select .sq3h{display:flex;flex-direction:column;margin-right:6px;font:700 16px var(--fn);
+  color:var(--u4-ink)}
+body.ui4 #s-select .sq3h small{font-size:13px;font-weight:400;color:var(--u4-sub)}
+body.ui4 #s-select .sq3m{display:flex;flex-direction:column;align-items:center;gap:2px;width:64px}
+body.ui4 #s-select .sq3m img{width:52px;height:52px;border-radius:12px;object-fit:cover;
+  box-shadow:0 0 0 2px var(--u4-cyan)}
+body.ui4 #s-select .sq3m small{font-size:13px;color:var(--u4-sub)}
+body.ui4 #s-select .sq3m.empty{height:70px;justify-content:center;border-radius:12px;border:2px dashed var(--u4-line)}
+body.ui4 #s-select .sq3 .btn{margin-left:auto}
+body.ui4 #s-select .stu.sq{box-shadow:0 0 0 3px var(--u4-blue)}
+body.ui4 #s-select .stu .sq3tag{position:absolute;right:8px;top:8px;z-index:2;padding:1px 8px;border-radius:9px;
+  background:var(--u4-blue);color:#fff;font:700 13px var(--fn)}
 </style>
 </head>
 <body>
@@ -4590,7 +4651,7 @@ body.ui4 #offers .offer .recruit-figure.u4pbust>img{position:static!important;wi
   <div class="hero echo-title">
     <img class="title-mobile-character" src="media/00cc8a4c966402e7e39f2f7bb7176b8e9bb40c4de88ab6829ba52c4d81a9b193.webp" alt="유하린">
     <div class="title-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
-    <header class="title-topline"><span class="title-brand"><span aria-hidden="true">◈</span> LooP <i>/</i> HUNTER OFFICE</span><span class="title-edition">v2.1.2 · 원정과 인연</span></header>
+    <header class="title-topline"><span class="title-brand"><span aria-hidden="true">◈</span> LooP <i>/</i> HUNTER OFFICE</span><span class="title-edition">v3.0.0 · 원정과 인연</span></header>
     <main class="title-content">
       <div class="title-eyebrow"><span></span> 우리의 다음 이야기는, 다시 여기서.</div>
       <h1 class="title-logo" aria-label="LoopGirl · 루프 걸">
@@ -5116,8 +5177,8 @@ const T_PLACE=0, T_REROLL=3, T_RECOVER_CAP=10, T_IMMINENT=25, SHOP_MARKERS=[0.66
 // 게이트 난이도 — E 클리어 → D 해금 → C 해금. T = 시작 카운트다운(칸)
 /* v1.2 §20.6: 보스 공격 30 → 34·격노 사냥개 2(학생 특성으로 강해진 분대 보정)에 맞춰 C 공격 배율 1.65 → 1.55 (기존 대비 ±10%p 유지). v1.1 §19.8: C 공격 배율 1.75 → 1.65 (이형 공격 랩 계수·과밀 상향이 공격 배율에 곱해져 C 승률이 −15%p 급락 → 기존 대비 ±10%p 안으로). v0.8 게이트 6단계 (Codex 라운드 1 경제표). h = 일반 적 HP 랩 계수(BAL.hpScale 대체), tier = 장비 티어 보정, mech = 보스 고유 기믹 */
 const GATES=[
- {id:'E',rank:'E',name:'폐쇄된 지하철 2호선 역사',boss:'강철 파수꾼',hp:1,atk:1,reward:1,T:200,spBonus:0,req:null,h:0.36,tier:0,mech:null,mechDesc:'격노 시 사냥개 소환',desc:'첫 출격 권장'},
- {id:'D',rank:'D',name:'한강 대교 하부',boss:'검은 물결',hp:1.6,atk:1.3,reward:1.4,T:215,spBonus:1,req:'E',quest:'q1',h:0.36,tier:0,mech:'wave',mechDesc:'3초마다 전원에게 해일 피해',desc:'E 마스터 처치 후 해금 · 작전실(4명) 권장'},
+ {id:'E',rank:'E',name:'폐쇄된 지하철 2호선 역사',boss:'강철 파수꾼',hp:1,atk:1,reward:1,T:200,spBonus:0,req:null,h:0.22,tier:0,mech:null,mechDesc:'격노 시 사냥개 소환',desc:'첫 출격 권장'},
+ {id:'D',rank:'D',name:'한강 대교 하부',boss:'검은 물결',hp:1.6,atk:1.3,reward:1.4,T:215,spBonus:1,req:'E',quest:'q1',h:0.30,tier:0,mech:'wave',mechDesc:'3초마다 전원에게 해일 피해',desc:'E 마스터 처치 후 해금 · 작전실(4명) 권장'},
  {id:'C',rank:'C',name:'폐백화점 옥상',boss:'무명의 헌터',hp:2.5,atk:1.55,reward:1.6,T:225,spBonus:2,req:'D',h:0.36,tier:1,mech:'focus',mechDesc:'HP 비율이 가장 낮은 학생만 노림',desc:'D 마스터 처치 후 해금 · 스킬 6개 이상 권장'},
  {id:'B',rank:'B',name:'침수된 지하 상가',boss:'타워 골렘',hp:3.3,atk:1.95,reward:2.2,
   T:250,spBonus:3,req:'C',h:0.34,tier:1,mech:'armor',
@@ -5667,9 +5728,13 @@ const COMBOS=[
 ];
 /* v1.1 §19.4 타일 체인 — 도로 순서상 연속 칸(run.tiles 인덱스 연속, 캠프 0번·표식·빈 칸은 끊는다). 수치는 BAL.chain, 판정은 game.js chainsFor.
  * S = 소환 타일, U = 지원 타일(소환이 아닌 내 타일). 색은 지도 연결선·배지 색(그림 에셋은 다음 작업이 교체) */
+const chainV3=()=>typeof run!=='undefined'&&run&&typeof loop3On==='function'?loop3On():BAL.loop3!==false;
 const CHAINS={
- front:{name:'전선',icon:'⚔',color:'#f97316',need:'소환 2연속',eff:()=>`각 무리에 정예 1체 · 계약 보상 +${Math.round((BAL.chain.front.reward-1)*100)}%`,cost:()=>`그 구간 이형 공격 +${Math.round((BAL.chain.front.atk-1)*100)}%`},
- battle:{name:'격전지',icon:'🔥',color:'#ef4444',need:'소환 3연속 이상',eff:()=>`엘리트 확정 · 카드 드롭 확정 · 마나석 ×${BAL.chain.battle.mana} · 계약 보상 +${Math.round((BAL.chain.battle.reward-1)*100)}%`,cost:()=>`${BAL.chain.battle.hp===BAL.chain.battle.atk?`이형 HP·공격 +${Math.round((BAL.chain.battle.hp-1)*100)}%`:`이형 HP +${Math.round((BAL.chain.battle.hp-1)*100)}% · 공격 +${Math.round((BAL.chain.battle.atk-1)*100)}%`} · 배치 시 브레이크 추가 −${Math.round(BAL.chain.battle.brake*100)}%`},
+ /* §29 루프 v3: 체인은 능력치 대신 머릿수 — 설명도 규칙 버전을 따른다(원정 중이면 그 런, 밖이면 스위치) */
+ front:{name:'전선',icon:'⚔',color:'#f97316',need:'소환 2연속',
+  eff:()=>`각 무리에 정예 1체 · 계약 보상 +${Math.round((chainV3()?BAL.v3.chainReward.front:BAL.chain.front.reward)*100-100)}%`,
+  cost:()=>chainV3()?'그 구간 무리 +1체(능력치 그대로)':`그 구간 이형 공격 +${Math.round((BAL.chain.front.atk-1)*100)}%`},
+ battle:{name:'격전지',icon:'🔥',color:'#ef4444',need:'소환 3연속 이상',eff:()=>`엘리트 확정 · 카드 드롭 확정 · 마나석 ×${BAL.chain.battle.mana} · 계약 보상 +${Math.round((chainV3()?BAL.v3.chainReward.battle:BAL.chain.battle.reward)*100-100)}%`,cost:()=>chainV3()?`그 구간 무리 +${1+(BAL.v3.battleExtra||0)}체(능력치 그대로) · 배치 시 브레이크 추가 −${Math.round(BAL.chain.battle.brake*100)}%`:`${BAL.chain.battle.hp===BAL.chain.battle.atk?`이형 HP·공격 +${Math.round((BAL.chain.battle.hp-1)*100)}%`:`이형 HP +${Math.round((BAL.chain.battle.hp-1)*100)}% · 공격 +${Math.round((BAL.chain.battle.atk-1)*100)}%`} · 배치 시 브레이크 추가 −${Math.round(BAL.chain.battle.brake*100)}%`},
  supply:{name:'보급선',icon:'📦',color:'#22c55e',need:'지원 2연속',eff:()=>`두 타일 효과 +${Math.round((BAL.chain.supply.mul-1)*100)}%`,cost:()=>'인접 소환 타일이 없는 칸은 무효'},
  base:{name:'주둔지',icon:'⛺',color:'#3b82f6',need:'지원 3연속 이상',eff:()=>`타일 효과 +${Math.round((BAL.chain.base.mul-1)*100)}% · 미니 캠프(랩당 1회 HP ${Math.round(BAL.chain.base.heal*100)}% 회복 또는 기본 OP +${displayOp(BAL.chain.base.op)})`,cost:()=>`소환 타일 최대치 −${BAL.chain.base.spawnCap}`},
  cycle:{name:'순환',icon:'♻',color:'#a855f7',need:'소환–지원–소환 교대',eff:()=>`그 구간 전투 후 EX +${BAL.chain.cycle.ex}%`,cost:()=>'없음'},
@@ -5716,9 +5781,12 @@ function deckPresetBase(mode,leaderId){
 }
 function tileSpacePreset(leaderId){
  const cls=id=>CARDS[id].cls||(CARDS[id].spawn?'fight':'visit');
- const target={fight:6,visit:2,side:3,land:4},out=[],count={};
+ /* §29 루프 v3: 전투 6→5 · 보드 4→5, 붕괴 구역은 소환 후보 맨 뒤(고정 서명·붕괴 구역과 겹쳐 골렘 카드가 몰리지 않게) */
+ const v3=BAL.loop3!==false,out=[],count={};
+ const target=v3?{fight:5,visit:2,side:3,land:5}:{fight:6,visit:2,side:3,land:4};
  for(const id of fixedFor(leaderId)){target[cls(id)]--;count[id]=(count[id]||0)+1;}
- const pools={fight:['ruin','nest','rift','patrol','kennel','fort'],visit:['store','clinic'],
+ const fight=v3?['nest','rift','patrol','kennel','ruin','fort']:['ruin','nest','rift','patrol','kennel','fort'];
+ const pools={fight,visit:['store','clinic'],
   side:['tent','wall','rally'],land:['drone','ld_hill','ld_park','bf_barrier']};
  for(const [kind,ids] of Object.entries(pools))for(let n=0;n<3&&target[kind]>0;n++)for(const id of ids){
   if(target[kind]<=0||out.length>=DECK_FREE)break;
@@ -5800,12 +5868,21 @@ const BAL={
   * 수치는 모두 시작값이다(시뮬 검증 없음) — 소유자가 밸런스 도구 「재화 개편」 묶음과 플레이로 조정한다. 규칙은 docs/DESIGN.md §27.4-2 · §27.6, 함수는 src/econ.js */
  relicHeal:{medkit:0.12},
  econ2:true,
+ /* §29 루프 v3(2026-09-27, docs/design/29-loop-v3.md): 새 런은 run.rulesV=3 고정 — 규칙 분기는 loop3On().
+  * 수치는 시작값(기대값 모델, 시뮬 검증 없음). 체인은 머릿수(battleExtra)·보상(chainReward), 등급은 구매+이웃 지형(terrain),
+  * 처치 전리품(killGear·slimeCard·houndOp), 덱 가중(deckWeight), 이동 T(moveT)·임박(imminent), 위협 레벨(threat) */
+ loop3:true,
+ v3:{battleExtra:1,chainReward:{front:1.5,battle:2},reinfMax:2,gradeDanger:[1,1.1,1.2],gradeLoot:[1,1.25,1.5],
+  terrain:{golem:['ld_hill','ld_dust'],hound:['ld_park','ld_flower','ld_trees'],slime:['ld_river','ld_flower'],
+   wisp:['ld_flower','ld_training']},
+  killGear:0.5,slimeCard:0.25,houndOp:30,deckWeight:2,moveT:0.5,imminent:13,
+  threat:{phase:[0,1.25,2.5],perTile:0.1},gearFull:0.25,startOp:500,starLv:[4,8]},
  command:{subSp:[1,2,4,6],coreSp:[2,4,8,12]},
  econ:{opMul:100,startOp:1000,contractOp:70,decay:[1,0.75,0.5,0.25],deposit:100,depositSkill:50,discard:25,
   hire:300,hireSlots:3,launchTrain:600,train:[1500,2500],
   price:{recruit:900,ward:400,gear:450,relic:1000,tactic:400,demolish:300,convert:400,upg:[2500,4500],round:10},
   gateCoef:1,lapCoef:{on:false,slope:0.05,cap:1.3},discMax:0.3,refund:{base:300,cap:0.5},
-  keep:{boss:1,camp:1,drone:0.5,emergency:0.5,wipe:0,void:0},
+  keep:{boss:1,camp:1,drone:0.6,emergency:0.6,wipe:0,void:0},
   cap:{kind:{E:5,D:6,C:7,B:8,A:9,S:10},guild:{E:4,D:5,C:6,B:7,A:8,S:9}},
   boss:{E:1,D:1,C:2,B:2,A:3,S:3,first:2},
   res:{sig:1,sigMorph:2,morph:2,kind:1,elite:2,observatory:1,terrain:2,vein:1,grove:2,pass:1,combo:2,goal:1,county:3,gear:1,machine:1,codex:1,quest:2,mission:3},
@@ -5815,7 +5892,7 @@ const BAL={
   heal:{camp:0.15,enterMul:0.6,medkit:0.08},
   growth:[[1,1,1,0],[2,2,1,0],[4,3,1,0],[2,2,2,0],[4,3,2,0],[6,5,2,0],[2,2,3,0],[4,3,3,1],[6,5,3,1],[8,6,3,2]],
   growthFx:{stat:0.03,passiveLv:3,baneLv:[6,9],bane:0.1,exLv:10,ex:0.1}},
- party4Price:1.15,gateCardRate:0.3,chain:{front:{vetHp:1.25,vetAtk:1,reward:2,atk:1.1,item:0.75,xp:1.3,card:0.4},battle:{vetHp:1.6,vetAtk:1.2,reward:2.5,hp:1.2,atk:1.15,mana:2.5,brake:0.02,xp:1.5},supply:{mul:1.75},base:{mul:1.75,heal:0.2,op:2,spawnCap:1},cycle:{ex:30}},contractMul:0.7,rerollCosts:[2,3,5],upgOp:[4,7],upgReward:[1,1.25,1.5],upgDanger:[1,1.15,1.3],upgSup:[1,1.3,1.6],supMulMax:3,lapHpMul:1.1,supAdj:[0.5,1,1.5],healTile:1,healLap:4,estN:20,estFireRef:70,estSurvRef:45,missionMana:70,hpScale:0.36,atkScale:2.7,defScale:0.8,packOffset:-1,packMax:3,markMax:1,campHeal:0.25,dangerPer:0.12,dangerFree:4,shopInfl:[1,1.35,1.82,2.46],bossN:[0.9,0.4],enrageHounds:2,star:0.25,medic:0.20,storeHeal:0.10,houndBite:0.30,bossEvo:0.10,wavePeriod:3000,waveRatio:0.45,dropWild:0.15,dropPack:0.4,dropElite:1,campCards:1,codexMana:20,goalMana:30,placeBrake:0.03,serviceMax:2,demolishOp:3,convertOp:4,promoSlot:true};
+ party4Price:1.15,gateCardRate:0.3,chain:{front:{vetHp:1.25,vetAtk:1,reward:2,atk:1.1,item:0.75,xp:1.3,card:0.4},battle:{vetHp:1.6,vetAtk:1.2,reward:2.5,hp:1.2,atk:1.15,mana:2.5,brake:0.02,xp:1.5},supply:{mul:1.75},base:{mul:1.75,heal:0.2,op:2,spawnCap:1},cycle:{ex:30}},contractMul:0.7,rerollCosts:[2,3,5],upgOp:[4,7],upgReward:[1,1.25,1.5],upgDanger:[1,1.15,1.3],upgSup:[1,1.3,1.6],supMulMax:3,lapHpMul:1.1,supAdj:[0.5,1,1.5],healTile:1,healLap:4,estN:20,estFireRef:70,estSurvRef:45,missionMana:70,hpScale:0.36,atkScale:1.7,defScale:0.3,packOffset:-1,packMax:3,markMax:1,campHeal:0.25,dangerPer:0.12,dangerFree:4,shopInfl:[1,1.35,1.82,2.46],bossN:[0.9,0.4],enrageHounds:2,star:0.25,medic:0.20,storeHeal:0.10,houndBite:0.30,bossEvo:0.10,wavePeriod:3000,waveRatio:0.45,dropWild:0.15,dropPack:0.4,dropElite:1,campCards:1,codexMana:20,goalMana:30,placeBrake:0.03,serviceMax:2,demolishOp:3,convertOp:4,promoSlot:true};
 
 /* 안내 문구 생성(데이터와 일치): 드롭률·브레이크 — index.html 의 .v-drop/.v-brake 에 채운다 */
 const dropStr=()=>{
@@ -5832,7 +5909,7 @@ window.BAL=BAL;
 const ENEMIES={
  
 slime:{name:'슬라임 코어',kind:'fluid',hp:34,atk:9,def:0,spd:1.0,color:'#22c55e',shape:'blob',mana:2,drop:0.22,xp:6,pat:'melee',pat2:'aoe'},
- golem:{name:'잔해 골렘',kind:'machine',hp:80,atk:12,def:5,spd:0.6,color:'#8b8b8b',shape:'rock',mana:3,drop:0.5,xp:12,pat:'melee',pat2:'charge'},
+ golem:{name:'잔해 골렘',kind:'machine',hp:64,atk:12,def:3,spd:0.6,color:'#8b8b8b',shape:'rock',mana:3,drop:0.5,xp:12,pat:'melee',pat2:'charge'},
  hound:{name:'그림자 사냥개',kind:'beast',hp:42,atk:13,def:1,spd:1.4,color:'#2e2a6b',shape:'hound',mana:4,drop:0.28,xp:9,pat:'melee',pat2:'snipe'},
  wisp:{name:'마나 위스프',kind:'spirit',hp:26,atk:11,def:0,spd:1.1,color:'#38bdf8',shape:'wisp',mana:6,drop:0.2,xp:8,pat:'ranged',pat2:'aoe'},
  /* v1.2 신규 4종: phantom 흡혈 사념(준 피해의 30% 회복) · ghoul 구울(약탈당한 거점) · harpy 하피(비행 — 후열을 노린다) · spider 거미(고치, 무리 +1) */
@@ -6048,9 +6125,9 @@ const ODDS=[[75,22,3],[60,30,10],[45,35,20],[30,40,30]];
 /* v0.8 스킬 트리 36노드 = 핵심 12(기존 id 유지, core) + 보조 24(a/b). 선행: 보조 n단 ← 같은 분기 핵심 n−1단, 핵심 n단 ← 같은 분기 보조 n단 둘 다.
  * fx = 효과 집계 키(calcFx). 비용은 Codex 라운드 1 경제표: 보조 [1,80][5,300][11,900][22,2400], 핵심 [2,160][10,600][22,1800][44,4800] → 총 468 SP · 44,160 마나석 */
 const SKILLS=[
- {id:'f1a',br:'fire',tier:1,name:'사격 자세',icon:'🔫',desc:'전원 공격 +2%',fx:{atkPct:0.02}},
+ {id:'f1a',br:'fire',tier:1,name:'사격 자세',icon:'🔫',desc:'전원 공격 +1',fx:{atk:1}},
  {id:'f1b',br:'fire',tier:1,name:'조준경',icon:'🔭',desc:'치명타 +5%p',fx:{crit:0.05}},
- {id:'f1',br:'fire',tier:1,core:true,name:'조준 훈련',icon:'🎯',desc:'전원 공격 +3%',fx:{atkPct:0.03}},
+ {id:'f1',br:'fire',tier:1,core:true,name:'조준 훈련',icon:'🎯',desc:'전원 공격 +1',fx:{atk:1}},
  {id:'f2a',br:'fire',tier:2,name:'탄창 개조',icon:'🧰',desc:'공격속도 +8%',fx:{spd:0.08}},
  {id:'f2b',br:'fire',tier:2,name:'철갑 탄두',icon:'💠',desc:'치명 피해 +0.2',fx:{critDmg:0.2}},
  {id:'f2',br:'fire',tier:2,core:true,name:'속사',icon:'⚡',desc:'전원 공격속도 +12%',fx:{spd:0.12}},
@@ -6059,20 +6136,20 @@ const SKILLS=[
   get desc(){return `처치 시 EX +${+(this.fx.killEx*BAL.exChargeRate).toFixed(2)} (추가 배율 적용 전)`;},fx:{killEx:3}},
  {id:'f3',br:'fire',tier:3,core:true,name:'급소 사격',icon:'💢',
   desc:'치명타 +10%p, 치명 피해 배율 +0.3',fx:{crit:0.1,critDmg:0.3}},
- {id:'f4a',br:'fire',tier:4,name:'화력 교리',icon:'📈',desc:'전원 공격 +6%',fx:{atkPct:0.06}},
+ {id:'f4a',br:'fire',tier:4,name:'화력 교리',icon:'📈',desc:'전원 공격 +2',fx:{atk:2}},
  {id:'f4b',br:'fire',tier:4,name:'선제 사격',icon:'🎇',desc:'전투 첫 공격 피해 +30%',fx:{firstHit:0.3}},
  {id:'f4',br:'fire',tier:4,core:true,name:'오버드라이브',icon:'🔥',
-  get desc(){return `전원 공격 +4%, 처치 시 EX +${+(this.fx.killEx*BAL.exChargeRate).toFixed(2)}`;},fx:{atkPct:0.04,killEx:6}},
- {id:'s1a',br:'surv',tier:1,name:'체력 단련',icon:'🏃',desc:'전원 최대 HP +3%',fx:{hpPct:0.03}},
+  get desc(){return `전원 공격 +1, 처치 시 EX +${+(this.fx.killEx*BAL.exChargeRate).toFixed(2)}`;},fx:{atk:1,killEx:6}},
+ {id:'s1a',br:'surv',tier:1,name:'체력 단련',icon:'🏃',desc:'전원 최대 HP +5',fx:{hp:5}},
  {id:'s1b',br:'surv',tier:1,name:'보호구 착용',icon:'🦺',desc:'전원 방어 +1',fx:{def:1}},
- {id:'s1',br:'surv',tier:1,core:true,name:'기초 체력',icon:'💪',desc:'전원 최대 HP +6%',fx:{hpPct:0.06}},
+ {id:'s1',br:'surv',tier:1,core:true,name:'기초 체력',icon:'💪',desc:'전원 최대 HP +8',fx:{hp:8}},
  {id:'s2a',br:'surv',tier:2,name:'야전 정비',icon:'🏕️',desc:'캠프 회복 +5%p',fx:{campHeal:0.05}},
  {id:'s2b',br:'surv',tier:2,name:'전개 보호막',icon:'🔰',desc:'전투 시작 시 보호막 +10',fx:{startShield:10}},
  {id:'s2',br:'surv',tier:2,core:true,name:'방탄 교범',icon:'🛡️',desc:'전원 방어 +3',fx:{def:3}},
  {id:'s3a',br:'surv',tier:3,name:'구조 훈련',icon:'🚑',desc:'캠프 복귀 HP 30% → 50%',fx:{reviveHp:0.2}},
  {id:'s3b',br:'surv',tier:3,name:'피해 분산',icon:'🧱',desc:'받는 피해 −5%',fx:{dmgTaken:0.05}},
  {id:'s3',br:'surv',tier:3,core:true,name:'응급 처치',icon:'🩹',desc:'전투 종료 시 전원 HP 8% 회복',fx:{endHeal:0.08}},
- {id:'s4a',br:'surv',tier:4,name:'강인함',icon:'🦾',desc:'전원 최대 HP +10%',fx:{hpPct:0.1}},
+ {id:'s4a',br:'surv',tier:4,name:'강인함',icon:'🦾',desc:'전원 최대 HP +12',fx:{hp:12}},
  {id:'s4b',br:'surv',tier:4,name:'회복 증폭',icon:'💚',desc:'편의점·텐트 회복 ×1.5',fx:{healMult:0.5}},
  {id:'s4',br:'surv',tier:4,core:true,name:'불굴',icon:'🕊️',desc:'멤버별 치명상 1회 HP 50% 재기동',fx:{revive:1}},
  {id:'t1a',br:'tac',tier:1,name:'선지급',icon:'💰',
@@ -6094,7 +6171,7 @@ const SKILLS=[
  {id:'t4b',br:'tac',tier:4,name:'대응 매뉴얼',icon:'📖',desc:'진화 대응책 선택지 +1 (4택1)',fx:{counterExtra:1}},
  {id:'t4',br:'tac',tier:4,core:true,name:'시간 왜곡',icon:'⏳',desc:'시작 카드 +1, T 회복 상한 +5',fx:{startCards:1,tRecCap:5}},
  /* 라운드 2 (d) 상호 배타 양자택일: alt = 짝이 되는 핵심 노드. 같은 비용, 둘 중 하나만. 재설정 = SP 전액·마나석 80% 환급 후 의존 노드까지 해제 */
- {id:'f3x',br:'fire',tier:3,core:true,alt:'f3',name:'관통 사격',icon:'🎯',desc:'전원 공격 +6%, 게이트 마스터에게 피해 +15% (급소 사격과 택1)',fx:{atkPct:0.06,bossDmg:0.15}},
+ {id:'f3x',br:'fire',tier:3,core:true,alt:'f3',name:'관통 사격',icon:'🎯',desc:'전원 공격 +2, 게이트 마스터에게 피해 +15% (급소 사격과 택1)',fx:{atk:2,bossDmg:0.15}},
  {id:'s4x',br:'surv',tier:4,core:true,alt:'s4',name:'철벽 진형',icon:'🧱',desc:'받는 피해 −10%, 전투 시작 시 보호막 +15 (불굴과 택1)',fx:{dmgTaken:0.1,startShield:15}},
 ];
 
@@ -6120,7 +6197,7 @@ const FACILITIES=[
  {id:'med',name:'의무실',icon:'🏥',desc:'기초 HP +2.5% / Lv',base:40,max:10},
  {id:'store',name:'창고',icon:'📦',get desc(){return `시작 OP +${BAL.econ2?200:2}, 시작 카드 +1 / Lv`;},base:90,max:3},
  {id:'lab',name:'연구실',icon:'🔬',desc:'희귀·영웅 장비 확률 +5%p / Lv',base:90,max:5},
- {id:'ops',name:'작전실',icon:'🖥️',get desc(){return BAL.econ2?'출격 고용 후보 +1 (3 → 4명)':'분대 슬롯 +1 (4명 편성) — D·C 게이트 권장';},base:300,max:1},
+ {id:'ops',name:'작전실',icon:'🖥️',get desc(){return BAL.econ2?(BAL.loop3!==false?'캠프 보급 상자 +1 (1 → 2개)':'출격 고용 후보 +1 (3 → 4명)'):'분대 슬롯 +1 (4명 편성) — D·C 게이트 권장';},base:300,max:1},
  {id:'trauma',name:'트라우마 센터',icon:'✚',desc:'학생 1명 무료 치료 · 하루 1회, 강화마다 +1회 (최대 3회)',base:40,max:2},
 ];
 /* v0.7 이형 생태: 빈 도로 떠돌이 무리(자연 스폰 복원) + 랩 3/5/7 이형 진화 + 진화마다 대응책 3택1 드래프트 */
@@ -6190,7 +6267,7 @@ function evalQuests(reason,gained){
 BAL.missionResources=12;
 const MISSIONS=[
  {id:'combo2',icon:'⚗',name:'조합 2개 발견',desc:'한 런에서 조합 타일 2개를 만든다',mana:60,sp:1,prog:r=>[r.combos||0,2]},
- {id:'star2x2',icon:'⭐',name:'★2 학생 2명',desc:'★2 이상 학생 2명으로 런을 마친다',mana:60,sp:1,prog:r=>[r.party.filter(m=>m.star>=2).length,2]},
+ {id:'star2x2',icon:'⭐',name:'★2 학생 2명',desc:'★2 이상 학생 2명으로 런을 마친다 (★ = 캐릭터 성장 Lv4·Lv8)',mana:60,sp:1,prog:r=>[r.party.filter(m=>m.star>=2).length,2]},
  {id:'mana',icon:'💎',get name(){return BAL.econ2?'성장 재료 회수':'마나석 회수';},get desc(){return BAL.econ2?`원정 중 성장 재료 총 ${missionResourceTarget()}개 확보`:'런 중 마나석을 목표만큼 모은다';},mana:50,sp:1,prog:r=>BAL.econ2?[missionResourceTotal(r),missionResourceTarget()]:[r.mana,Math.round(BAL.missionMana*gate().reward)]},
  {id:'nodown3',icon:'🛡️',name:'무기절 3랩',desc:'전투불능 없이 3랩을 연속으로 돈다',mana:70,sp:1,prog:r=>[r.noDownBest||0,3]},
  {id:'chain3',icon:'🔗',name:'체인 3개',desc:'지도에 타일 체인 3개를 동시에 유지한다',mana:70,sp:1,prog:r=>[r.chainsMax||0,3]},
@@ -7049,6 +7126,8 @@ const riskOn=()=>!!BAL.riskAB;
 /* Trauma persists immediately; the current sortie uses its entry snapshot. */
 const traumaHas=id=>riskOn()&&!!(meta.trauma&&meta.trauma[id]);
 const traumaActive=id=>riskOn()&&!!(run?run.traumaStart&&run.traumaStart[id]:meta.trauma&&meta.trauma[id]);
+/* §29 v3(사용자 결정): 첫 지역 E 는 학습 구간 — 쓰러져도 트라우마를 남기지 않는다 */
+const traumaExempt=()=>typeof loop3On==='function'&&loop3On()&&gate().id==='E';
 const traumaText=()=>`최대 HP ${Math.round(BAL.trauma.hpKeep*100)}% · 공격력 ${Math.round(BAL.trauma.atkKeep*100)}% 유지`;
 function traumaNormalize(m){
  const out={};for(const s of STUDENTS)if(m.trauma&&m.trauma[s.id]===true)out[s.id]=true;
@@ -7057,7 +7136,7 @@ function traumaNormalize(m){
  const c=m.traumaCenter||{};m.traumaCenter={cycle:Number.isInteger(c.cycle)&&c.cycle>=0?c.cycle:-1,used:Number.isFinite(c.used)?Math.max(0,Math.min(3,Math.floor(c.used))):0};return m;
 }
 function traumaFall(m){
- if(!riskOn()||estMode)return;
+ if(!riskOn()||estMode||traumaExempt())return;
  run.traumaFallen=run.traumaFallen||{};run.traumaFallen[m.stu.id]=true;
  meta.trauma=meta.trauma||{};meta.trauma[m.stu.id]=true;save();
 }
@@ -7124,16 +7203,23 @@ function riskArrival(t,options={}){
  const route=(options.route||riskRouteTimes()).find(r=>r.i===t.i);if(!route)return null;
  const c=CARDS[t.card],s=riskSpawnStatus(t),base=options.count??t.enemies.filter(e=>e.hp>0).length;
  const packs=options.packs??packsOn(t),cap=s?s.cap:0;
- const per=c&&c.spawn?packSizeOf({small:c.small})+(!c.small&&t.chS?1:0):0;
- const budget=run.t-(options.cost||0),blocked=riskBlocked()||budget<=route.steps;
+ /* options.grow = 배치 미리보기: 이제 생길 원본 무리가 증원 대상(아직 run.packs 에 없다) */
+ const grow=loop3On()&&t.card!=='mark'&&(options.grow||nativePacksOn(t)),rt=grow&&!options.grow?reinforceTarget(t):null;
+ const v3=loop3On()&&t.card!=='mark',chainAdd=!c||c.small||!t.chS?0:t.chS==='battle'&&v3?1+(BAL.v3.battleExtra||0):1;
+ const per=c&&c.spawn?packSizeOf({small:c.small})+chainAdd:0; /* 새 무리 하나의 머릿수 */
+ const need=route.steps*(loop3On()?BAL.v3.moveT:1),budget=run.t-(options.cost||0),blocked=riskBlocked()||budget<=need;
  const remaining=s?s.left:RISK_AB.intervalMs;
  const extra=ms=>{
-  if(!s||blocked||s.state==='sealed'||s.state==='battle'||packs>=cap)return 0;
-  let n=Math.min(cap-packs,Math.max(0,Math.floor((ms-remaining)/RISK_AB.intervalMs)+1));
+  if(!s||blocked||s.state==='sealed'||s.state==='battle'||s.state==='full')return 0; /* 반환 = 늘어날 머릿수 */
+  const k=Math.max(0,Math.floor((ms-remaining)/RISK_AB.intervalMs)+1);if(!k)return 0;
+  if(v3&&grow)return Math.min(k,options.grow?BAL.v3.reinfMax:rt?BAL.v3.reinfMax-(rt.reinf||0):0); /* v3: +1씩 */
+  if(v3)return per+Math.min(k-1,BAL.v3.reinfMax); /* v3 빈 칸: 새 무리 하나 뒤로는 증원 */
+  let n=Math.min(cap-packs,k);
   if(t.card==='mark')n=Math.min(n,Math.max(0,MARK_LIFE-(t.markUses||0)));
-  return n;
+  return n*per;
  };
- return {...route,base,lo:base+extra(route.min)*per,hi:base+extra(route.max)*per,boss:budget<=route.steps||run.bossPending||run.bossSpawned,cap,per};
+ return {...route,base,lo:base+extra(route.min),hi:base+extra(route.max),
+  boss:budget<=need||run.bossPending||run.bossSpawned,cap,per};
 }
 function riskPlacementArrival(p){
  const s=riskPreviewSummary(p);if(!s||!s.spawn)return null;
@@ -7142,7 +7228,7 @@ function riskPlacementArrival(p){
  const change=s.chains.find(ch=>(ch.cells||[]).includes(i));
  const t={...old,card:id,chS:change?change.to:old.chS,riskClock:{card:id,ms:0}};
  const n=(parseInt(s.spawn.value)||0)+(s.additions.find(a=>a.i===i)?.n||0);
- return riskArrival(t,{count:old.enemies.filter(e=>e.hp>0).length+n,packs:packsOn(old)+1,cost:s.cost});
+ return riskArrival(t,{count:old.enemies.filter(e=>e.hp>0).length+n,packs:packsOn(old)+1,cost:s.cost,grow:true});
 }
 function riskHealRemaining(m){
  const used=run.riskHealUsed&&run.riskHealUsed[m.stu.id]||0;
@@ -7191,7 +7277,8 @@ function riskCampSummary(){
  if(run.level-1+run.bonusSp>0)carry.unshift(`SP ${run.level-1+run.bonusSp}`);
  const keep=econOn()?ECON.keepPct('camp'):MULT.camp,loss=econOn()?1-ECON.keepPct('death'):1-MULT.death;
  const weak=run.party.reduce((a,m)=>!a||m.hp/m.maxHp<a.hp/a.maxHp?m:a,null);
- const growth=Math.round((gate().h??BAL.hpScale)*BAL.lapHpMul*(run.lap-1)*100);
+ const thr=typeof threatLv==='function'?threatLv():run.lap-1; /* v3: 위협 레벨 */
+ const growth=Math.round((gate().h??BAL.hpScale)*BAL.lapHpMul*thr*100);
  return {fights,threat,contracts:contracts.length,baseOp:Math.floor(baseOp),cardDrops,carry,keep,loss,weak,growth,boss:run.t<=N};
 }
 function riskEligible(t){const c=CARDS[t.card];return !!(c&&c.spawn&&c.cap&&!(t.card==='mark'&&(t.markUses||0)>=MARK_LIFE));}
@@ -7200,7 +7287,9 @@ function riskClock(t){return t.riskClock&&t.riskClock.card===t.card?t.riskClock:
 function riskSpawnStatus(t){
  if(!riskEligible(t))return null;
  const cap=capOf(t),packs=packsOn(t),clock=riskClock(t),left=Math.max(0,RISK_AB.intervalMs-(clock?clock.ms:0));
- const state=riskBlocked()?'sealed':run.battle&&run.battle.tile===t?'battle':packs>=cap?'full':'countdown';
+ /* v3: 원본 무리가 있으면 무리 상한이 아니라 증원 상한(무리당 +reinfMax)으로 가득 여부를 본다 */
+ const grow=loop3On()&&t.card!=='mark'&&nativePacksOn(t),full=grow?!reinforceTarget(t):packs>=cap;
+ const state=riskBlocked()?'sealed':run.battle&&run.battle.tile===t?'battle':full?'full':'countdown';
  return {cap,packs,left,state,seconds:Math.ceil(left/1000)};
 }
 function riskTick(dt){
@@ -7219,7 +7308,8 @@ function riskTick(dt){
   t.riskClock.ms+=dt;
   if(t.riskClock.ms>=RISK_AB.intervalMs){
    t.riskClock.ms=0; // at most one pack per tick, even after a stalled frame
-   if(spawnPack(t,t.card)){report.timedPacks++;run.mapVer=(run.mapVer||0)+1;dirty=true;}
+   const grow=loop3On()&&t.card!=='mark'&&nativePacksOn(t); /* §29 v3: 무리가 있으면 새 무리 대신 +1 증원 */
+   if(grow?reinforcePack(t):spawnPack(t,t.card)){report.timedPacks++;run.mapVer=(run.mapVer||0)+1;dirty=true;}
   }
  }
  report.maxEnemies=Math.max(report.maxEnemies,...run.tiles.map(t=>t.enemies.filter(e=>e.hp>0).length));
@@ -9263,7 +9353,7 @@ progression: {
       "id": "somi",
       "region": "B",
       "task": "budget",
-      "hint": "한 원정에서 동료 승급과 유료 보급"
+      "hint": "한 원정에서 타일 유료 강화와 다른 유료 보급"
     },
     {
       "id": "jiu",
@@ -9388,7 +9478,7 @@ economy: {
   "middlePacks": 6,
   "deepPacks": 12,
   "middleSites": 2,
-  "wipeKeep": 0.2,
+  "wipeKeep": 0.3,
   "wipeSp": 0,
   "catchupDiscount": 0.5,
   "catchupLevel": [
@@ -9687,7 +9777,7 @@ relics: {
       "role": "support",
       "pivotTags": [],
       "name": "행운의 학생증",
-      "desc": "영입 팩에 희귀 이상 후보 최소 1명 보장 · 해당 영입 후보가 있을 때",
+      "desc": "장비 팩의 첫 장비 희귀 이상 보장 (루프 v3 이전 규칙: 영입 팩 희귀 후보 보장)",
       "conditional": false,
       "target": "runtime",
       "econExcluded": false
@@ -9991,7 +10081,8 @@ const META_V2=(()=>{
    if(support.length&&Object.keys(s.packs).length>=2)p.sharedRegions[g]=true;
   }else if(type==='battleLost')s.streak=0;
   else if(type==='promotion')s.promotions++;
-  else if(type==='purchase'&&number(e.paid??e.amount)>0)s.paid++;
+  else if(type==='purchase'&&number(e.paid??e.amount)>0){s.paid++; /* v3: 타일 유료 강화와 그 밖의 유료 보급을 따로 센다 */
+   if(e.budget==='upgrade')s.upPaid=(s.upPaid||0)+1;else s.supPaid=(s.supPaid||0)+1;}
   else if(type==='control'&&!e.boss)s.controls++;
   else if(type==='hit'&&(e.fastGear||e.multiHitGear))s.gearHits++;
   else if(type==='gearUsed'||type==='gearSalvaged'){
@@ -10012,7 +10103,8 @@ const META_V2=(()=>{
   const s=runState(r),x=progress(r),safe=['camp','boss'].includes(reason),p=state(m);
   return {start:true,return2:safe&&x.packs>=2,shield2:s.alive>=2&&s.shields>0,
    streak3:s.maxStreak>=3,facility2:x.facility>=2,eliteAlive:s.elites>0,
-   budget:s.promotions>0&&s.paid>0,protectedElite:s.protectedElites>0,rear2:s.rear>=2,
+   budget:r&&r.rulesV>=3?(s.upPaid||0)>0&&(s.supPaid||0)>0:s.promotions>0&&s.paid>0,
+  protectedElite:s.protectedElites>0,rear2:s.rear>=2,
    gearHits:s.gearHits>=12,controlElite:s.controls>=2&&s.toolElites>0,
    support3:s.alive>=3&&x.support>=2,shared2Regions:Object.keys(p.sharedRegions).length>=2,
    prepareElite:s.prepared>0,support:x.support>0&&x.packs>=2,elite:s.elites>0};
@@ -10214,7 +10306,9 @@ const CHALLENGE_V2=(()=>{
  const RELIC_IDS=['halo','savings','medkit','plate','core','lucky','battery','lens','drone','stamp',
   'ledger','neardeath','regular','medal','frontmap','clubflag','survey','compass','specimen','scope',
   'fatigue_coil','frailty_plate','exposure_seal'];
- const RULES_VERSION='challenge-v3.2-recipes',POWER_VERSION='normalized-v2.1',POOL_VERSION='public-v2.2';
+ /* §29 v3 기록 분리: 규칙 버전·시작 OP 는 준비하는 순간의 스위치 하나로 함께 정한다(로드 시점 고정 아님) */
+ const rulesVersion=()=>BAL.loop3===false?'challenge-v3.2-recipes':'challenge-v4.0-loop3';
+ const POWER_VERSION='normalized-v2.1',POOL_VERSION='public-v2.2';
  const BALANCE_VERSION='meta-v2.1',MAX_SCORE=9000000000000;
  const number=v=>Number.isFinite(+v)?Math.max(0,+v):0;
  const integer=v=>Math.floor(number(v));
@@ -10242,10 +10336,11 @@ const CHALLENGE_V2=(()=>{
  const available=(m,g)=>REGIONS.includes(g)&&number(m.campaign?.operations?.[g+':main:danger'])>0;
  function definition(region){
   const i=REGIONS.indexOf(region);if(i<0)return null;
-  return {region,mapId:'region-'+region,mapVersion:2,rulesVersion:RULES_VERSION,
+  return {region,mapId:'region-'+region,mapVersion:2,rulesVersion:rulesVersion(),
    balanceVersion:BALANCE_VERSION,seed:920220+i*1009,powerProfile:POWER_VERSION+'-'+region,
    allowedPoolVersion:POOL_VERSION,maxLoops:6,bossLap:6,maxMs:600000,bossMaxMs:120000,
-   startOp:1800,startHand:8,growthLevel:[0,2,3,4,6,7][i],facilityLevel:[0,1,2,3,4,5][i],
+   startOp:BAL.loop3===false?1800:1000,startHand:8, /* v3: 고용비가 없어 시작 OP 축소 */
+   growthLevel:[0,2,3,4,6,7][i],facilityLevel:[0,1,2,3,4,5][i],
    commandTier:i<2?1:2,supplyRisk:'normal',fixedStep:50,packCapPerTileLap:3,packCapPerLap:24,
    students:STUDENT_IDS.slice(),cards:CARD_IDS.slice(),relics:RELIC_IDS.filter(id=>{
     const after=relicDefinition(id)?.after;return !after||i>=REGIONS.indexOf(after);
@@ -10514,6 +10609,7 @@ function challengeAttach(r){
  r.mode='challenge';r.challenge=CHALLENGE_V2.createState(plan.rule,plan.attemptId);
  r.challenge.accountSeed=r.seed;r.seed=plan.rule.seed;r.op=plan.rule.startOp;
  r.gLv={...plan.playMeta.growthLv};r.t=r.tStart=1000000;
+ r.rulesV=plan.rule.rulesVersion==='challenge-v4.0-loop3'?3:2; /* 기록 버전과 런 규칙을 같은 프로필로 */
  r.mission=null;r.sResist=plan.rule.region==='S'?'crit':null;
  r.challengeRng=challengeSession.random;
  return true;
@@ -10652,9 +10748,9 @@ const LEADER_RULES = Object.freeze(Object.fromEntries(([
     "name": "예산 편성",
     "family": "집중",
     "target": "budget",
-    "action": "캠프에서 승급 또는 보급을 골라 다음 유효 구매를 할인합니다.",
+    "action": "캠프에서 타일 강화 또는 보급을 골라 다음 유효 구매를 할인합니다.",
     "styles": [
-      "승급 한 명에 집중",
+      "타일 강화 한 곳에 집중",
       "장비와 도구 보급을 분산"
     ],
     "tuning": {
@@ -11194,7 +11290,7 @@ Object.assign(META_RULES,(() => {
    if(fx.type==='gearChance'){
     r.metaRules.gearCredit=(r.metaRules.gearCredit||0)+fx.chance;
     if(r.metaRules.gearCredit>=1&&typeof genItem==='function'){
-     r.metaRules.gearCredit--;addItem(genItem(r.lap,1));
+     r.metaRules.gearCredit--;addItem(genItem(typeof growthLap==='function'?growthLap():r.lap,1));
     }
    }
    if(fx.type==='draw'&&typeof drawCard==='function')for(let i=0;i<fx.count;i++)drawCard();
@@ -11527,7 +11623,8 @@ const RUN_DRAFT=(()=>{
   for(let i=0;i<old;i++)drawCard();
   if(bonus){const id=drawFromDeck();if(run.hand.length<handMax())addToHand(id);}
   const available=pool().filter(id=>!run.deckList.includes(id)&&!s.found.includes(id));
-  if(l.packs>=config().discoveryPacks&&l.finds<config().discoveriesPerLoop&&available.length){
+  const wispFind=loop3On()&&(pk.wisp>0||(pk.enemyTypes&&pk.enemyTypes.wisp>0)); /* v3 위스프 = 발견을 앞당김 */
+  if((l.packs>=config().discoveryPacks||wispFind)&&l.finds<config().discoveriesPerLoop&&available.length){
    const id=available[Math.floor(rng()*available.length)];l.finds++;remember(id);
    if(run.hand.length<handMax())addToHand(id);
    note('discovery',{id,source:'combat',pack:pk.uid});
@@ -11536,6 +11633,9 @@ const RUN_DRAFT=(()=>{
   note('drop',{pack:pk.uid,old,bonus,dry:s.dry});
   return old+bonus;
  }
+ /* §29 v3 슬라임 결계 카드: 랩당 추가 카드 한도(bonusCardsPerLoop)를 공통 추가 카드와 같이 쓴다 */
+ function spendBonus(){if(!active())return true;
+  const l=loop();if(l.bonus>=config().bonusCardsPerLoop)return false;l.bonus++;return true;}
  function relicFound(id){
   if(!active())return;
   const s=init(),r=META_V2_CONFIG.relics?.relics.find(d=>d.id===id);
@@ -11651,8 +11751,10 @@ const RUN_DRAFT=(()=>{
   sh.offers=makeOffers(sh.revision);return true;
  }
  function upgradeQuote(index){
-  const sh=shop(),t=spotAt(index),cost=t&&config().upgradeCost[tileLv(t)-1];
-  if(!camp()||!sh||sh.upgraded>=config().upgradePerCamp||!upgradable(t)
+  const sh=shop(),t=spotAt(index),base=t&&config().upgradeCost[tileLv(t)-1];
+  const cost=base&&loop3On()&&typeof META_RULES!=='undefined' /* v3 소미 = 타일 강화 */
+   ?base-META_RULES.discount(run,base,'upgrade'):base;
+  if(!camp()||!sh||sh.upgraded>=config().upgradePerCamp||!upgradable(t)||(loop3On()&&isSpawnTile(t)&&spawnGrade(t)>=3)
    ||!cost||t.enemies?.length||tileBusy(t))return null;
   return {cost,description:upgradeStr(t)};
  }
@@ -11672,7 +11774,7 @@ const RUN_DRAFT=(()=>{
   if(!ok){run.tactics.splice(slot,1);return false;}
   init().relocated=true;note('pivot-relocate',{from,to});return true;
  }
- return {config,active,init,camp,legal,pool,tags,drop,relicFound,shop,replaceBlock,buy,register,
+ return {config,active,init,camp,legal,pool,tags,drop,spendBonus,relicFound,shop,replaceBlock,buy,register,
   replenish,replenishBlock,replenishPrice,redraw,upgradeQuote,upgrade,relocate};
 })();
 
@@ -11865,7 +11967,7 @@ const econOn=()=>!!(typeof BAL==='object'&&BAL&&BAL.econ2);
 const metaKey=()=>riskSaveKey(econOn()?ECON_KEY:META_KEY);
 /* v1.0: deck = 리더별 편집 중 자유 목록 {leaderId:[id×0~7]}(미완성 허용) · decks = 리더별 저장 슬롯 3개 {leaderId:[{name,free}|null×3]} · deckSlot = 마지막 사용 슬롯
  * codex = 발견한 변신 타일 {tileId:true} · pauseOnDraw = 카드 획득 시 일시정지(기본 ON) · goal = 목표 조합(타일 id) */
-const META_DEFAULT=()=>({challengeV2:null,deckVersion:2,runSequence:0,progressionV2:null,growthPaid:{},facilityPaid:{},opening:null,affection:null,onboarding:null,campaign:{},relationships:{},collection:null,office:{},trauma:{},traumaCodes:0,traumaCenter:{cycle:-1,used:0},mana:0,sp:0,skills:[],upg:{range:0,med:0,store:0,lab:0,ops:0,trauma:0},bond:{},runs:0,gate:'E',cleared:{},best:{},growth:{},quests:{},rq:[],sResist:null,sCleared:{},deck:{},decks:{},deckSlot:{},deckUndo:{},codex:{},pauseOnDraw:true,goal:null,pin:null,story:{flags:{},seen:{},memory:[],unlocks:[]},storyInRun:true,unlock:{},evalBest:{},bondXp:{},town:{cycle:-1,met:{}},loop:{missions:0},tips:{}}); /* 카드 가독성 L: tips = 첫 사용 안내를 본 기록 {안내 id: 본 출격 번호}(ui.js FIRST_TIPS) */ /* v1.4 §22: bondXp = 호감 경험치{학생:n}(bond 는 기존 귀환 횟수 그대로 — 경험치로 승계) · town = 학원가 교류 기록{cycle:meta.runs 기준 귀환 주기, met:{학생:true}} · loop.missions = 작전 과제 달성 수(LooP 랭크 점수) */ /* v1.3: unlock = 해금 표(UNLOCKS) 진행 {id:해금된 런 번호} · evalBest = 게이트별 작전 평가 최고 기록(기존 best[gate].score 와 별도 필드) */
+const META_DEFAULT=()=>({challengeV2:null,deckVersion:2,runSequence:0,progressionV2:null,growthPaid:{},facilityPaid:{},opening:null,affection:null,onboarding:null,campaign:{},relationships:{},collection:null,office:{},trauma:{},traumaCodes:0,traumaCenter:{cycle:-1,used:0},mana:0,sp:0,skills:[],upg:{range:0,med:0,store:0,lab:0,ops:0,trauma:0},bond:{},runs:0,gate:'E',cleared:{},best:{},growth:{},quests:{},rq:[],sResist:null,sCleared:{},deck:{},decks:{},deckSlot:{},deckUndo:{},codex:{},pauseOnDraw:true,goal:null,pin:null,story:{flags:{},seen:{},memory:[],unlocks:[]},storyInRun:true,unlock:{},evalBest:{},bondXp:{},town:{cycle:-1,met:{}},loop:{missions:0},tips:{},squad:{}}); /* §29 v3: squad = 리더별 작전실 편성 {리더 id: [동료 id]} */ /* 카드 가독성 L: tips = 첫 사용 안내를 본 기록 {안내 id: 본 출격 번호}(ui.js FIRST_TIPS) */ /* v1.4 §22: bondXp = 호감 경험치{학생:n}(bond 는 기존 귀환 횟수 그대로 — 경험치로 승계) · town = 학원가 교류 기록{cycle:meta.runs 기준 귀환 주기, met:{학생:true}} · loop.missions = 작전 과제 달성 수(LooP 랭크 점수) */ /* v1.3: unlock = 해금 표(UNLOCKS) 진행 {id:해금된 런 번호} · evalBest = 게이트별 작전 평가 최고 기록(기존 best[gate].score 와 별도 필드) */
 /* econ2 기본 스키마: 마나석 칸이 없고 새 자원(res) · 종류별 소수 누적(resFrac) · SP 소수(spFrac) · 유료 성장 Lv(growthLv — 유효 동행 누적 growth 와 따로) ·
  * 해금 대기 원장(resPending) · 스킬 구매 당시 비용(skillPaid) · 새 최고 기록(best2)을 더한다 */
 const META_DEFAULT2=()=>{const d=META_DEFAULT();delete d.mana;
@@ -12131,14 +12233,40 @@ function storyAfterRun(reason){if(simMode)return;if(typeof storyQueueAftermath==
 const playerNameNow=()=>(window.GL&&GL.story&&GL.story.playerName&&GL.story.playerName())||'';
 const sayName=t=>{const n=playerNameNow()||'대표';return String(t==null?'':t).replace(/\{name\} 님/g,n==='대표'?'대표님':'{name} 님').replace(/\{name\}/g,n);};
 
+/* §29 루프 v3 규칙 분기 — 새 런의 run.rulesV 로만 판단한다 */
+/* §29 v3 작전실 편성: 리더 + 동료(최대 partyMax−1). 저장 편성(meta.squad[리더])을 존중하고, 잠긴·중복·리더 본인은 뺀다.
+ * 저장이 없으면 역할(탱커·서포터·딜러)을 고르게 자동 추천. 열린 학생이 적으면 있는 만큼만 */
+function squadDefault(leaderId,max){
+ const open=STUDENTS.filter(s=>s.id!==leaderId&&studentUnlocked(s)),lead=STUDENTS.find(s=>s.id===leaderId),out=[];
+ for(const role of ['tank','sup','dps']){if(out.length>=max)break;if(lead&&lead.role===role)continue;
+  const s=open.find(x=>x.role===role&&!out.includes(x.id));if(s)out.push(s.id);}
+ for(const s of open){if(out.length>=max)break;if(!out.includes(s.id))out.push(s.id);}
+ return out;
+}
+function squadFor(leaderId){
+ const max=Math.max(0,partyMax()-1),saved=meta.squad&&Array.isArray(meta.squad[leaderId])?meta.squad[leaderId]:null;
+ if(!saved)return squadDefault(leaderId,max);const out=[];
+ for(const id of saved){const s=STUDENTS.find(x=>x.id===id);
+  if(s&&id!==leaderId&&studentUnlocked(s)&&!out.includes(id))out.push(id);}
+ return out.slice(0,max);
+}
+function squadJoin(){ /* 출격 직후 한 번(newRun 다음). 원정 중에는 동료를 바꾸지 않는다 */
+ if(!loop3On()||!run)return; /* 도전은 studentUnlocked 가 허용 학생만 연다 */
+ for(const id of squadFor(run.party[0]?.stu.id)){const s=STUDENTS.find(x=>x.id===id);
+  if(s&&!run.party.some(m=>m.stu.id===id)&&run.party.length<partyMax())addMember(s,true);}
+}
+const loop3On=()=>!!(typeof run!=='undefined'&&run&&run.rulesV>=3);
+/* 새 표시(위협 HUD·역할 배지·등급 미리보기 등)는 PC 가로 v4 에서만 — 모바일 세로 화면은 바꾸지 않는다 */
+const ui4On=()=>typeof document!=='undefined'
+ &&!!(document.body&&document.body.classList&&document.body.classList.contains('ui4'));
 function newRun(leader){
  if(!migratedCurriculum())curriculumNormalize(meta);
  const seed=(Math.random()*4294967296)>>>0; /* v1.3 런 시드: 보급 상자 후보는 전투·드롭 난수와 분리해 runSeed+supplyId+offerId 로 만든다 */
  const g=gate(),fx=calcFx(meta.skills);const gCount={};for(const st of STUDENTS)gCount[st.id]=meta.growth[st.id]||0;
- run={lap:1,pos:0,moveTimer:0,state:'walking',time:0,riskAB:riskNewRun(),traumaStart:riskOn()?{...(meta.trauma||{})}:{},traumaFallen:{},
+ run={lap:1,pos:0,moveTimer:0,state:'walking',time:0,riskAB:riskNewRun(),traumaStart:riskOn()&&(BAL.loop3===false||g.id!=='E')?{...(meta.trauma||{})}:{}, /* v3: E 는 기존 트라우마도 면제 */traumaFallen:{},
   tiles:PATH.map((p,i)=>({i,c:p[0],r:p[1],card:null,enemies:[]})),
   gLv:econOn()?Object.assign({},meta.growthLv||{}):null, /* §27.6 l-4: 런 시작 성장 스냅샷 — 원정 중 구매가 규칙을 바꾸지 않게 */
-  party:[],hand:[],inv:[],relics:[],op:econOn()?(BAL.econ.startOp+meta.upg.store*200+fx.startOp*ECON.opMul()):(10+meta.upg.store*2+fx.startOp),mana:0,fx,kills:0,items:0,cardsPlaced:0,discards:0,log:[],
+  party:[],hand:[],inv:[],relics:[],op:econOn()?((BAL.loop3===false?BAL.econ.startOp:BAL.v3.startOp)+meta.upg.store*200+fx.startOp*ECON.opMul()):(10+meta.upg.store*2+fx.startOp),mana:0,fx,kills:0,items:0,cardsPlaced:0,discards:0,log:[],
   t:g.T,tStart:g.T,tRec:0,tSpent:{move:0,place:0,reroll:0,anomaly:0},markers:{},imminent:false,bossPending:false,bossSpawned:false,
   packs:{},paid:0,shopLog:[],camps:0,emptyCamps:0,adjEvents:0,drawn:{},placedBy:{},hintStage:0,newItems:false,
   battle:null,ended:false,xp:0,totalXp:0,level:1,bonusSp:0,ex:0,exUntil:0,atkBonus:0,
@@ -12150,7 +12278,9 @@ function newRun(leader){
   /* v1.2 §20: 비도로 칸 · 레벨업 특성 · 임계 플래그 · 부작용 집계 · 전초기지 수 · 연쇄 전리품 · 봉인 랩 */
   cells:[],perks:{},perkQueue:[],flags:{},sideFx:{},outposts:0,loot:0,sealLap:0,terrainPlaced:0,terrainDrops:0,ruleLog:{},
   /* v1.3 §21.10: 런 시드 · 점수 원장 · 유물 누적 상태 · 전술 슬롯 · 소형 보급(다음 상자·기록) · 열린 상자 */
-  seed,score:newScore(),relicState:{},tactics:[],tacticsUsed:0,supplyN:0,supplyLog:[],nextCrate:null,crateOpen:null,crateLog:[],relicLog:[]};
+  seed,score:newScore(),relicState:{},tactics:[],tacticsUsed:0,supplyN:0,supplyLog:[],nextCrate:null,crateOpen:null,crateLog:[],relicLog:[],
+  /* §29 루프 v3: 규칙 버전은 런 시작 때 고정(원정 중 스위치 조작이 규칙을 바꾸지 않게) · 이동 T 누적 · 랩 장부 */
+  rulesV:BAL.loop3===false?2:3,tMoveAcc:0,lapLog:null};
  metaInitRun(leader,g);
  nextMission=null;
  if(typeof campaignStart==='function')campaignStart(run);
@@ -12569,7 +12699,7 @@ function refreshOdds(why,force){
 }
 /* 현재 랩·분대·진화 기준의 보스 수치(도시에 표시용, 개체를 만들지 않는다 — makeEnemy('boss') + spawnBoss 와 같은 식) */
 function bossNow(){
- const b=enemyGrowthStats('boss',{lap:run.lap,gateData:gate()}),n=Math.max(1,run.party.length);
+ const b=enemyGrowthStats('boss',{lap:growthLap(true),gateData:gate()}),n=Math.max(1,run.party.length);
  const growth=bossGrowthMultipliers(n,run.evos.length);
  return {hp:Math.round(b.hp*growth.hp),atk:Math.round(b.atk*growth.atk),def:b.def,spd:b.spd};
 }
@@ -12588,8 +12718,11 @@ function simConvertDead(){
  return convertCard(di,to);}
 const recruitedMembers=()=>run?[...run.party,...(run.reserve||[])]:[];
 const recruitedMember=id=>recruitedMembers().find(m=>m.stu.id===id);
+/* §29 v3 ★ = 계정 성장(런 시작 스냅샷): 성장 Lv4 → ★2, Lv8 → ★3. 원정 중 승급은 없다 */
+const accountStar=id=>{const lv=typeof growthLv==='function'?growthLv(id):0,L=BAL.v3.starLv;
+ return 1+(lv>=L[0]?1:0)+(lv>=L[1]?1:0);};
 function addMember(stu,silent,reserve=false){
- const m={uid:uid(),stu,star:1,hp:1,maxHp:1,cd:0,down:false,first:false,nextMult:1,buffUntil:0,equip:{weapon:null,armor:null,acc:null},crisis:false,joinLap:(run.pos===0&&run.lap===1?0:run.lap),survLaps:0,lapDown:false,growthOk:false,regenAcc:0};
+ const m={uid:uid(),stu,star:loop3On()?accountStar(stu.id):1,hp:1,maxHp:1,cd:0,down:false,first:false,nextMult:1,buffUntil:0,equip:{weapon:null,armor:null,acc:null},crisis:false,joinLap:(run.pos===0&&run.lap===1?0:run.lap),survLaps:0,lapDown:false,growthOk:false,regenAcc:0};
  if(reserve){
   (run.reserve||(run.reserve=[])).push(m);m.maxHp=stats(m).maxHp;m.hp=m.maxHp;riskRestoreMember(m);
   if(!silent)log(`🎓 ${stu.name} 영입 — 대기 명단에서 팀 슬롯에 편성하세요`,'shop');
@@ -12602,8 +12735,8 @@ function addMember(stu,silent,reserve=false){
  syncSigMorphs();
  dirty=true;return m;
 }
-function canChangeParty(){
- return !!(run&&!run.ended&&run.state!=='battle'&&!run.battle&&!run.bossPending&&!run.bossSpawned);
+function canChangeParty(){ /* §29 v3: 동료 구성은 작전실에서만(대열·순서 변경은 별도) */
+ return !!(run&&!run.ended&&!loop3On()&&run.state!=='battle'&&!run.battle&&!run.bossPending&&!run.bossSpawned);
 }
 function setPartySlot(slot,memberUid){
  if(!canChangeParty()||!Number.isInteger(slot)||slot<0||slot>=partyMax()||slot>run.party.length)return false;
@@ -12782,13 +12915,45 @@ function enemyGrowthStats(type,{lap=1,gateData=GATES[0],danger=1,dust=1}={}){
   atk:Math.round((b.atk+atkAdd)*atkGate*dm),def:Math.round(b.def+defAdd),spd:b.spd,
   growth:{rate,hpScale,atkAdd,defAdd,hpGate,atkGate,danger:dm,dust:b.boss?1:dust}};
 }
+/* §29 v3 위협 레벨 — 적·장비 성장 기준. 시간대(보스 게이지 1/3·2/3, run.phaseMax 로 역행 없음)
+ * + 이번 원정 배치 행동 수(run.cardsPlaced) × perTile. 도전(T 고정)은 랩으로(1~2 낮 · 3~4 황혼 · 5~ 밤).
+ * 보스는 늘 밤에 나오므로 밤 기준. v2 런은 랩 그대로(growthLap = run.lap) */
+function threatPhase(){
+ if(!run)return 0;const q=1-run.t/Math.max(1,run.tStart);
+ const p=run.mode==='challenge'?(run.lap>=5?2:run.lap>=3?1:0):q>=2/3?2:q>=1/3?1:0;
+ return Math.max(run.phaseMax||0,p);
+}
+function threatLv(boss){
+ if(!run)return 0;if(!loop3On())return run.lap-1;const T=BAL.v3.threat;
+ return T.phase[boss?2:threatPhase()]+(run.cardsPlaced||0)*T.perTile;
+}
+const growthLap=boss=>1+threatLv(boss);
+/* 시간대가 올라갈 때 한 번 알린다(spendT · 캠프). 되돌아가지 않는다 */
+function threatPhaseTick(){
+ if(!run||run.ended||!loop3On())return;const ph=threatPhase(),from=run.phaseMax||0;
+ if(ph>from){
+  const T=BAL.v3.threat,placed=(run.cardsPlaced||0)*T.perTile,before=T.phase[from]+placed;
+  run.phaseMax=ph;const after=threatLv(),name=['낮','황혼','밤'][ph];
+  /* 진화 = 시간대 전환마다 한 번(낮→밤을 한 번에 넘으면 두 번). 진화는 원래 규칙대로 지도의 이형 전체에 적용 */
+  if(!estMode)run.evoPending=(run.evoPending||0)+(ph-from);
+  if(typeof lapNote==='function')lapNote('phase',ph);
+  if(!estMode&&!simMode){
+   banner(`${ph===1?'🌆':'🌙'} ${name} — 이형이 강해집니다`,`위협 ${before.toFixed(1)} → ${after.toFixed(1)}(새 이형부터)`+
+    ' · 진화는 지도의 이형 전체','#f59e0b',2600);
+   log(`${ph===1?'🌆':'🌙'} ${name}: 위협 ${before.toFixed(1)} → ${after.toFixed(1)} — 위협은 새로 나오는 이형부터,`+
+    ' 진화는 지금 지도의 이형 전체','imp');}
+ }
+ /* 대응책 창은 한 번에 하나 — 남은 진화는 창이 닫힌 뒤(다음 T 소비·캠프) 굴린다 */
+ const counterOpen=typeof MODAL!=='undefined'&&MODAL.has&&MODAL.has('counter');
+ if(run.evoPending>0&&!estMode&&!counterOpen&&typeof rollEvolution==='function'){run.evoPending--;rollEvolution();}
+}
 function makeEnemy(type){
- const b=ENEMIES[type],g=gate();
- const s=enemyGrowthStats(type,{lap:run.lap,gateData:g,danger:dangerMult(),
+ const b=ENEMIES[type],g=gate(),gl=growthLap(!!b.boss);
+ const s=enemyGrowthStats(type,{lap:gl,gateData:g,danger:dangerMult(),
   dust:1-Math.min(0.5,landFx().enemyHp)});
  const e={uid:uid(),type,kind:b.boss?(g.bossKind||null):(b.kind||null),
   name:b.boss?`게이트 마스터 「${g.boss}」`:b.name,hp:s.hp,maxHp:s.hp,atk:s.atk,def:s.def,spd:b.spd,
-  color:b.color,shape:b.shape,mana:b.mana,drop:b.drop,boss:!!b.boss,xp:b.xp,cd:0,evoN:0};
+  color:b.color,shape:b.shape,mana:b.mana,drop:b.drop,boss:!!b.boss,xp:b.xp,cd:0,evoN:0,gLap:gl};
  if(run.evos)for(const id of run.evos)applyEvo(e,id);
  if(hasCounter('slow')&&!e.boss)e.spd*=0.7;
  if(BAL.form2&&!b.boss){const mx=(BAL.form.mix||{})[g.id]||0;e.pat=b.pat2&&mx>0&&Math.random()<mx?b.pat2:(b.pat||'melee');} /* §28 공격 방식: 게이트별 비율로 전술 개체(pat2) — 끔이면 굴리지 않는다 */
@@ -12806,13 +12971,30 @@ function packsOn(t){const ids=new Set(t.enemies.map(e=>e.packId));return ids.siz
 function spawnPack(t,cardId,o={}){
  const c=CARDS[cardId];if(!c||!c.spawn)return null;
  let n=packSizeOf({small:c.small,elite:o.elite});
- const pk={uid:uid(),tile:t.i,cardId,elite:!!o.elite,reward:o.noReward?null:{mult:o.mult||1},alive:n,paid:false,lv:tileLv(t)};
+ const pk={uid:uid(),gLap:growthLap(),tile:t.i,cardId,elite:!!o.elite,reward:o.noReward?null:{mult:o.mult||1},alive:n,paid:false,lv:loop3On()?spawnGrade(t):tileLv(t)}; /* v3: 이웃 지형 가산 등급을 생성 때 저장 */
  pk.wisp=(c.spawn==='wisp')?n:wispJoin(t,cardId,o); /* §27.6 E: 이 무리에 섞인 카드 위스프 수 — 정산 때 그만큼 카드 */ /* 계약 수치는 지급 시점의 타일·강화로 계산. lv = 생성 시점의 타일 Lv(보상·이형 강도 동반) */
  const md=tileEnemyMods(t);
  for(let i=0;i<n;i++){const e=o.elite?makeElite():makeEnemy(c.spawn);e.packId=pk.uid;applyMods(e,md);t.enemies.push(e);}
  if(t.chS&&!o.elite&&!c.small){pk.chain=t.chS;chainVet(t,pk);} /* §19.4 전선·격전지: 정예/엘리트 1체 추가 */
  if(cardId==='mark')t.markUses=(t.markUses||0)+1; // 표식 수명: 최초 + 리스폰 3회
  run.packs[pk.uid]=pk;if(riskOn())t.riskClock={card:t.card,ms:0};return pk;
+}
+/* §29 v3 쌓임 = 증원: 살아 있는 미정산 원본 무리(가장 오래된 것) 하나에 같은 종 +1(무리당 최대 BAL.v3.reinfMax).
+ * 무리 UID 를 그대로 쓰므로 소탕 보상·카드 공급은 무리당 1회. 표식·무보상·측면·떠돌이·변이체·소환체는 대상 아님 */
+/* 원본 무리 판정 하나를 증원 대상·「무리 있음」 둘 다 쓴다(변이체·측면·떠돌이·무보상·소환체 제외) */
+const nativePack=(t,p)=>p.tile===t.i&&!p.paid&&p.reward&&!p.side&&!p.wild&&!p.elite&&p.alive>0
+ &&t.enemies.some(e=>e.packId===p.uid&&e.hp>0&&!e.summoned);
+function reinforceTarget(t){
+ const c=t&&CARDS[t.card];if(!loop3On()||!c||!c.spawn||t.card==='mark')return null;
+ return Object.values(run.packs).find(p=>nativePack(t,p)&&(p.reinf||0)<BAL.v3.reinfMax)||null;
+}
+/* 이 칸에 살아 있는 미정산 원본 무리가 있는가 — v3 에서는 있으면 새 무리 대신 증원만 한다(무리 상한과 별개) */
+const nativePacksOn=t=>Object.values(run.packs).some(p=>nativePack(t,p));
+function reinforcePack(t){
+ const pk=reinforceTarget(t);if(!pk)return null;
+ const md=tileEnemyMods(t),dz=BAL.v3.gradeDanger,r=dz[(pk.lv||1)-1]/dz[spawnGrade(t)-1]; /* 증원도 무리 생성 때 등급 */
+ md.hp*=r;md.atk*=r;const e=makeEnemy(CARDS[t.card].spawn);applyMods(e,md);e.packId=pk.uid;
+ t.enemies.push(e);pk.alive++;pk.reinf=(pk.reinf||0)+1;return pk;
 }
 const MARK_LIFE=4;
 function retireMark(t){if(t.card!=='mark'||(t.markUses||0)<MARK_LIFE||t.enemies.some(e=>e.hp>0))return;t.card=null;t.link=null;log('📍 협회 표식 소진 — 빈 도로로 돌아갑니다. 이제 카드를 놓아야 적과 보상이 생깁니다.','imp');
@@ -12826,12 +13008,14 @@ function emergencyMark(){
  log('📡 협회 긴급 표식 투하 — 소환 타일 0개. 소환 카드를 놓아야 제대로 된 계약 보상이 나옵니다.','imp');dirty=true;return true;
 }
 function spawnWander(){
- const L=run.lap-1;const want=Math.min(WANDER.max,Math.floor(WANDER.base+WANDER.perLap*L))+(hasEvo('swarm')?1:0);
+ /* v3: 떠돌이 수·종류도 시간대 기준(낮 0 · 황혼 2 · 밤 4 = 랩 1·3·5 상당) — 원정이 랩으로 길어져도 쌓이지 않게 */
+ const L=loop3On()?threatPhase()*2:run.lap-1;
+ const want=Math.min(WANDER.max,Math.floor(WANDER.base+WANDER.perLap*L))+(hasEvo('swarm')?1:0);
  const types=['slime'];if(L>=1)types.push('hound');if(L>=2)types.push('wisp');if(L>=3)types.push('golem');
  const cand=run.tiles.filter(t=>t.i!==0&&!t.card&&!t.enemies.length&&Math.abs(t.i-run.pos)>1&&!sideNear(t,'sd_lamp').length);
  for(let i=cand.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cand[i],cand[j]]=[cand[j],cand[i]];}
  let n=0;for(const t of cand){if(n>=want)break;const type=pick(types),size=(L>=WANDER.size2Lap&&Math.random()<0.5?2:1)+(hasEvo('swarm')&&L>=WANDER.size2Lap?1:0);
-  const pk={uid:uid(),tile:t.i,cardId:'wander',wild:true,reward:{mult:1+0.05*L},alive:size,paid:false};
+  const pk={uid:uid(),gLap:growthLap(),tile:t.i,cardId:'wander',wild:true,reward:{mult:1+0.05*L},alive:size,paid:false};
   for(let k=0;k<size;k++){const e=makeEnemy(type);e.packId=pk.uid;e.wild=true;t.enemies.push(e);}
   run.packs[pk.uid]=pk;n++;}
  run.wanders=(run.wanders||0)+n;return n;
@@ -12861,6 +13045,7 @@ function takeCounter(k){
  if(k==='slow')for(const t of run.tiles)for(const e of t.enemies)if(!e.boss)e.spd*=0.7;
  log(`🛠️ 대응책 「${c.name}」 채택: ${c.desc}`,'good');
  if(!simMode){banner(`${c.icon} 대응책 「${c.name}」`,c.desc,'#4ade80',2000);MODAL.pop('counter');}
+ if(run.evoPending>0&&typeof threatPhaseTick==='function')threatPhaseTick(); /* v3: 대기 중인 다음 진화를 바로 이어서 */
  dirty=true;
 }
 /* The same pure OP quote drives payout and the camp/placement previews. */
@@ -12886,6 +13071,7 @@ function payPack(pk,killer){
   const opBase=(()=>{const v=r.op*m*BAL.contractMul*(pk.opMul||1)*(1+(typeof fieldEffects==='function'?fieldEffects(tl).reward:0))+(run.opFrac||0),f=Math.floor(v+1e-9);run.opFrac=v-f;return f;})();
   op=gainOp(opBase+(hasRelic('halo')?relicTune('halo').op:0)+(r.op>0?FX().contractOp+(hasPassive('somi')?1:0)+(mapPas().contractOp||0):0));
  }
+ if(econOn())lapNote('op',op); /* 계약 OP(econ2 는 ECON.gainOp 직접 — gainOp 경로와 겹치지 않음) */
  const enemyType=c.spawn||Object.keys(pk.enemyTypes||{})[0];
  const identity=typeof META_RULES!=='undefined'
   ?META_RULES.enemyReward(run,pk,enemyType,META_RULES.rewardProof(run,pk)):{xp:1,gear:0,card:0};
@@ -12913,7 +13099,8 @@ function payPack(pk,killer){
  }
  /* v1.2 협회 공용 풀(길가·지형·제어): 덱 드로우를 대체하지 않는 추가 드롭 — 소환·결계 무리 BAL.terrainRate, 떠돌이·표식은 절반 */
  if(!econOn()&&BAL.terrainRate>0&&terrainOpen().length&&Math.random()<BAL.terrainRate*(pk.wild||c.small?0.5:1)){const tid=terrainPick();run.terrainDrops=(run.terrainDrops||0)+1;addToHand(tid);extra+=` +${CARDS[tid].icon}결계`;}
- if(pk.elite)addItem(genItem(run.lap,1));else if(Math.random()<(r.drop||0)+(identity.gear||0)+(killer?stats(killer).drop:0))addItem(genItem(run.lap));
+ const gl=gearLap(pk); /* v3: 장비 등급은 무리 생성 때 위협 · v2: 지급 당시 랩 */
+ if(pk.elite)addItem(genItem(gl,1));else if(Math.random()<(r.drop||0)+(identity.gear||0)+(killer?stats(killer).drop:0))addItem(genItem(gl));
  const p=tileCenter(pk.tile);
  dispatchRuleEvent('packClear',{pk,side:!!pk.side,chain:pk.chain||null,elite:!!pk.elite});
  if(pk.side){floater(p.x,p.y-40,`소탕 +${op} OP`,'#a78bfa');log(`${c.icon} ${c.name} 무리 소탕: OP +${op} · XP ${xp}${extra}`,'good');}
@@ -12924,10 +13111,13 @@ function payPack(pk,killer){
 }
 // ================= 카운트다운 T =================
 const tRecCap=()=>T_RECOVER_CAP+FX().tRecCap;
-function spendT(n,kind){if(n<=0||run.ended)return;run.t=Math.max(0,run.t-n);run.tSpent[kind]=(run.tSpent[kind]||0)+n;checkT();dirty=true;}
+function spendT(n,kind){if(n<=0||run.ended)return;run.t=Math.max(0,run.t-n);run.tSpent[kind]=(run.tSpent[kind]||0)+n;checkT();
+ threatPhaseTick();dirty=true;}
 function recoverT(n,src){const g=Math.min(Math.max(0,tRecCap()-run.tRec),n);if(g<=0){log(`⏳ ${src}: T 회복 상한(+${tRecCap()}) 도달`);return 0;}run.t+=g;run.tRec+=g;log(`⏳ ${src}: T +${g}`,'good');dirty=true;return g;}
+/* §29 v3: 이동이 2칸마다 1T 이므로 임박 기준도 절반(같은 칸 거리) */
+const tImminent=()=>loop3On()?BAL.v3.imminent:T_IMMINENT;
 function checkT(){
- if(run.t<=T_IMMINENT&&!run.imminent){run.imminent=true;run.shake=8;SFX.warn();banner('⚠ 브레이크 임박','귀환 봉쇄 · 보급 없음 — T 0에 게이트 마스터 출현','#ef4444',3000);log('⚠ 브레이크 임박: 귀환 경로 봉쇄, 보급 드론 중단','imp');}
+ if(run.t<=tImminent()&&!run.imminent){run.imminent=true;run.shake=8;SFX.warn();banner('⚠ 브레이크 임박','귀환 봉쇄 · 보급 없음 — T 0에 게이트 마스터 출현','#ef4444',3000);log('⚠ 브레이크 임박: 귀환 경로 봉쇄, 보급 드론 중단','imp');}
  if(run.t<=0&&!run.bossPending&&!run.bossSpawned){run.bossPending=true;run.shake=10;flash={color:'#ef4444',t:0,dur:400};SFX.boss();banner('⚠ WARNING — 게이트 브레이크',run.stronghold!=null&&run.tiles[run.stronghold].card?`게이트 마스터 각성 · 결전 거점 ${run.stronghold}번 ${CARDS[run.tiles[run.stronghold].card].name}에서 조우`:'게이트 마스터 각성 · 다음 타일에서 조우','#ef4444',3000);log('💥 게이트 브레이크! 게이트 마스터가 각성했습니다.','imp');}
 }
 function checkMarkers(){for(const f of SHOP_MARKERS){if(!run.markers[f]&&run.t<=run.tStart*f){run.markers[f]=true;if(!run.imminent&&!run.bossPending&&!run.bossSpawned)openShop('drone');}}}
@@ -12935,7 +13125,8 @@ function checkMarkers(){for(const f of SHOP_MARKERS){if(!run.markers[f]&&run.t<=
 // ================= 경제 · 성장 =================
 function gainMana(n){const g=Math.round(n*BAL.manaMul*gate().reward*(hasRelic('contract')?relicTune('contract').mana:1)*(1+FX().manaPct)*(run.lapMod==='storm'?2:1));run.mana+=g;return g;}
 /* econ2: 옛 표의 작은 OP 값을 ×100 하고 소수를 누적해 준다(§27.6 b — 계약은 payPack 이 직접 계산한다) */
-function gainOp(n){if(econOn())return ECON.gainOp(run,ECON.scale(n)*(1+FX().opPct));const g=Math.round(n*(1+FX().opPct));run.op+=g;return g;}
+function gainOp(n){if(econOn()){const g=ECON.gainOp(run,ECON.scale(n)*(1+FX().opPct));lapNote('op',g);return g;}
+ const g=Math.round(n*(1+FX().opPct));run.op+=g;lapNote('op',g);return g;}
 function gainEx(n){const before=run.ex;run.ex=clamp(run.ex+n*BAL.exChargeRate*(synOn('sup')?1.5:1)*(hasRelic('battery')?relicTune('battery').ex:1),0,100);if(before<100&&run.ex>=100&&!simMode&&!estMode)banner('EX 준비 완료','E 키 또는 EX 버튼으로 분대 일제 발동','#ff6fae',1800);}
 function xpNeed(lv){return XP_BASE+(lv-1)*XP_STEP;}
 function gainXp(n){run.xp+=n;run.totalXp+=n;while(run.xp>=xpNeed(run.level)){run.xp-=xpNeed(run.level);run.level++;levelUp();}}
@@ -12968,9 +13159,9 @@ function healAll(pct,src,revive,camp=false){
 }
 
 // ================= 아이템 =================
-function genItem(lap,minRarity=0){
+function genItem(lap,minRarity=0,o={}){ /* o.rarity: 고정 희귀도(v3 처치 장비 = 0). minRarity 는 최소값 */
  const slot=pick(['weapon','armor','acc']),tier=1+Math.floor((lap-1)/2)+(gate().tier||0),lab=meta.upg.lab*0.05,r=Math.random();
- const rarity=Math.max(minRarity,r<0.10+lab?2:r<0.40+lab*2?1:0);
+ const rarity=o.rarity!=null?o.rarity:Math.max(minRarity,r<0.10+lab?2:r<0.40+lab*2?1:0);
  const it={id:uid(),slot,base:pick(ITEM_BASES[slot]),rarity,tier,traits:[],atk:0,def:0,hp:0,spd:0,crit:0};
  if(slot==='weapon'){it.atk=3+tier*3+rnd(0,3)+rarity*2;if(Math.random()<0.4)it.crit=0.05;}
  if(slot==='armor'){it.def=1+tier*2+rnd(0,2)+rarity;it.hp=8+tier*6+rnd(0,8);}
@@ -12989,11 +13180,51 @@ function equipTo(m,it){
  dispatchRuleEvent('gearUsed',{targetId:m.stu.id,traits:it.traits||[]});
  recalcMember(m);log(`🎒 ${m.stu.name}: ${it.name} 장착${prev?' · 기존 '+prev.name+' 폐기':''}`);dirty=true;return true;
 }
+/* §29 v3: 새 장비는 빈 칸부터 자동 장착(가방 초과 처리보다 먼저 · equipTo 경로 재사용) — 구매 장비 제외.
+ * 무기 = 기본 공격 높은 순 · 방어구 = 전열 탱커 → 전열 → 후열 · 장신구 = 전열 우선 */
+function autoEquipTarget(it){
+ const free=run.party.filter(m=>!m.equip[it.slot]);if(!free.length)return null;
+ const front=m=>m.row!=='back',tank=m=>m.stu.role==='tank';
+ const key=it.slot==='weapon'?m=>m.stu.atk:it.slot==='armor'?m=>(front(m)?(tank(m)?2e4:1e4):0)+m.maxHp:m=>front(m)?1:0;
+ return free.slice().sort((a,b)=>key(b)-key(a))[0];
+}
+function autoEquip(it){
+ if(!loop3On()||!it||it.bought)return false;const m=autoEquipTarget(it);if(!m)return false;
+ const b=stats(m);run.inv.push(it);
+ if(!equipTo(m,it)){const i=run.inv.indexOf(it);if(i>=0)run.inv.splice(i,1);return false;}
+ const a=stats(m),d={atk:[b.atk,a.atk],def:[b.def,a.def],hp:[b.maxHp,a.maxHp]};
+ lapNote('equip',{id:m.stu.id,name:m.stu.name,slot:it.slot,item:it.name,...d});
+ m.gain={t:run.time,atk:a.atk-b.atk,def:a.def-b.def,hp:a.maxHp-b.maxHp};
+ if(!simMode&&typeof memberXY==='function'){const p=memberXY(m);
+  floater(p.x,p.y-40,`${SLOT_ICON[it.slot]} ${a.atk!==b.atk?`공격 ${b.atk}→${a.atk}`:`방어 ${b.def}→${a.def}`}`,'#86efac');}
+ log(`🎒 자동 장착: ${m.stu.name} ${it.name} — 공격 ${b.atk}→${a.atk} · 방어 ${b.def}→${a.def}`,'good');return true;
+}
 function addItem(it){
- run.items++;
+ run.items++;lapNote('items',1);
+ if(autoEquip(it)){dirty=true;return;}
  if(run.inv.length>=INV_MAX){if(econOn()){const n=it.bought?0:gainResTag('gear',{});log(`🎁 ${it.name} 획득했지만 가방이 가득… ${n?`부품 +${n}`:'버림(산 장비는 자원이 되지 않습니다)'}`);}else{gainMana(3);log(`🎁 ${it.name} 획득했지만 가방이 가득… 마나석 +3으로 변환`);}}
  else{run.inv.push(it);run.newItems=true;log(`🎁 ${it.name} 획득 (가방) — 장비 버튼에서 골라 장착`,'good');}
  dirty=true;
+}
+/* §29 v3 처치 전리품 — 보상 무리의 원본 적을 처치할 때마다(onKill). 적 역할: 골렘 = 장비(ENEMIES.drop 이 가장 높다) ·
+ * 슬라임 = 결계 카드(무리당 1장, 랩 추가 카드 한도 공유, 손패 가득이면 없음) · 사냥개 = OP(표시 단위, 타일 계약 감쇠 공유) */
+/* 장비 등급 기준: v3 = 생성 때 위협 스냅샷(gLap), v2 = 지급 당시 랩(기존 규칙 그대로) */
+const gearLap=o=>loop3On()?(o&&o.gLap)||growthLap():run.lap;
+function killLoot(e,pk){
+ if(!loop3On()||estMode||!e||!pk||!pk.reward||e.summoned||e.boss||pk.elite)return;
+ const V=BAL.v3,gm=V.gradeLoot[(pk.lv||1)-1]||1,b=ENEMIES[e.type];if(!b)return;
+ const empty=run.party.some(m=>!m.equip.weapon||!m.equip.armor||!m.equip.acc); /* 빈 칸을 채우는 게 목적 — 다 차면 줄인다 */
+ if(Math.random()<(b.drop||0)*V.killGear*gm*(empty?1:V.gearFull))addItem(genItem(gearLap(e),0,{rarity:0}));
+ if(e.type==='slime'&&!pk.slimeCard&&run.hand.length<handMax()&&Math.random()<V.slimeCard*gm){
+  /* 남은 덱에 소환이 아닌 카드가 있을 때만(다른 카드로 대체하거나 덱을 미리 섞지 않는다) · 지급될 때만 한도 소비 */
+  const at=(run.deck||[]).findIndex(x=>!CARDS[x].spawn);
+  const ok=at>=0&&(typeof RUN_DRAFT==='undefined'||!RUN_DRAFT.active()||RUN_DRAFT.spendBonus());
+  if(ok){pk.slimeCard=true;const id=run.deck.splice(at,1)[0];addToHand(id);
+   log(`🟢 슬라임 코어: 결계 카드 「${CARDS[id].name}」`,'good');}}
+ if(e.type==='hound'&&econOn()){const tl=run.tiles[pk.tile];
+  const rate=pk.wild||!tl?1:ECON.payRate(tl.payN||0,econFloorOf(pk.tile));
+  const g=ECON.gainOp(run,Math.round(V.houndOp*gm*rate));
+  if(g>0){lapNote('op',g);if(!simMode){const p=tileCenter(pk.tile);floater(p.x,p.y-20,`+${g} OP`,'#7cc4ff');}}}
 }
 function salvage(it){const i=run.inv.indexOf(it);if(i<0)return;run.inv.splice(i,1);dispatchRuleEvent('gearSalvaged',{traits:it.traits||[]});if(econOn()){const n=it.bought?0:gainResTag('gear',{});log(`🔧 ${it.name} 분해 → ${n?'부품 +'+n:'자원 없음(구매 장비 또는 수집 상한)'}`);}else{gainMana(3);log(`🔧 ${it.name} 분해 → 마나석 +3`);}dirty=true;}
 
@@ -13062,9 +13293,11 @@ function addToHand(id,silent){
   /* 손패 가득: 들어오는 카드가 소환이면 지원 카드를 대신 처분해 소환 카드를 보호 (빈 루프 방지) */
   const j=CARDS[id].spawn?run.hand.findIndex(h=>!CARDS[h].spawn):-1;
   const dg=econOn()?BAL.econ.discard:1;
-  if(j>=0){const out=run.hand[j];run.hand[j]=id;run.drawn[id]=(run.drawn[id]||0)+1;run.op+=dg;if(!silent)log(`🃏 손패 가득 → ${CARDS[out].icon} ${CARDS[out].name} 처분 OP +${dg} (소환 카드 보호)`);dirty=true;return;}
-  run.op+=dg;if(!silent)log(`🃏 손패 가득 → 카드 자동 처분 OP +${dg}`);return;}
- run.hand.push(id);run.drawn[id]=(run.drawn[id]||0)+1;dirty=true;
+  if(j>=0){const out=run.hand[j];run.hand[j]=id;run.drawn[id]=(run.drawn[id]||0)+1;run.op+=dg;
+   if(run.time>0){lapNote('cards',1);lapNote('op',dg);} /* 랩 장부: 교체 획득·처분 OP */
+  if(!silent)log(`🃏 손패 가득 → ${CARDS[out].icon} ${CARDS[out].name} 처분 OP +${dg} (소환 카드 보호)`);dirty=true;return;}
+  run.op+=dg;if(run.time>0)lapNote('op',dg);if(!silent)log(`🃏 손패 가득 → 카드 자동 처분 OP +${dg}`);return;}
+ run.hand.push(id);run.drawn[id]=(run.drawn[id]||0)+1;dirty=true;if(run.time>0)lapNote('cards',1);
  if(silent)return;
  fxEvent('draw',{id,i:run.battle?run.battle.tile.i:run.pos});
  /* §17.3 E 놓는 순간 = 자동 일시정지 (설정 pauseOnDraw, 시뮬 제외). 시뮬은 정책 훅 __simDrop 으로 즉시 배치 판단 */
@@ -13082,7 +13315,11 @@ function pauseForCard(id,idx,raise){if(!run||run.ended)return;run.paused=true;ru
  * 카드 가독성 S(2026-09-20): 카드를 고른 동안은 시간이 멈추므로(ui.js cardHold) 「보관 · 재개」는 선택도 푼다 — 남겨 두면 재개해도 시간이 흐르지 않는다 */
 function resumeFromCard(){if(!run)return;run.paused=false;run.pendingCard=null;selectedCard=null;pendingTile=null;MODAL.pop('draw');dirty=true;}
 // 덱(15장)은 섞어서 비복원 추출(소진 시 재셔플) — 같은 카드 4장 같은 손패를 막는다
-function refillDeck(){run.deck=run.deckList.slice();for(let i=run.deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[run.deck[i],run.deck[j]]=[run.deck[j],run.deck[i]];}}
+function refillDeck(){run.deck=run.deckList.slice();
+ if(loop3On()){ /* §29 v3: 비복원 가중 셔플 — 소환이 아닌 카드가 앞쪽에 오기 쉽다(복제 없음, 한 덱 전체 비중은 그대로) */
+  const w=id=>CARDS[id]&&CARDS[id].spawn?1:BAL.v3.deckWeight;
+  run.deck=run.deck.map(id=>({id,k:Math.pow(Math.random(),1/w(id))})).sort((a,b)=>b.k-a.k).map(x=>x.id);return;}
+ for(let i=run.deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[run.deck[i],run.deck[j]]=[run.deck[j],run.deck[i]];}}
 function drawFromDeck(filter){if(!run.deck||!run.deck.length)refillDeck();let idx=filter?run.deck.findIndex(filter):0;if(idx<0){refillDeck();idx=run.deck.findIndex(filter);if(idx<0)idx=0;}return run.deck.splice(idx,1)[0];}
 function drawCard(silent){addToHand(drawFromDeck(),silent);}
 /* v1.1 §19.5 처치 드롭: BAL.gateCardRate(30%) 로 그 게이트의 전용 카드(덱 밖, 4장 중 무작위), 아니면 덱에서 */
@@ -13121,10 +13358,15 @@ function placeCard(t,idx){
  run.hand.splice(idx,1);if(selectedCard===idx)selectedCard=null;else if(selectedCard>idx)selectedCard--;
  t.card=id;t.link=null;t.base=null;t.combo=false;t.used=false;t.lv=1;t.delay=null;econPlaceN(t,id);run.cardsPlaced++;run.placedBy[id]=(run.placedBy[id]||0)+1;const c=CARDS[id];
  recomputeChains(); /* 체인은 무리 생성 전에 — 새 구간의 첫 무리부터 정예·배율 */
- if(c.spawn){spawnPack(t,id);run.spawnPlaced=(run.spawnPlaced||0)+1;}
+ const v3=loop3On(); /* §29 v3: 배치 T·시간대를 먼저 확정하고 그 위협으로 첫 무리를 만든다 */
+ if(c.spawn&&!v3){spawnPack(t,id);run.spawnPlaced=(run.spawnPlaced||0)+1;}
  linkSupports(t);
- if(placeCost(id)>0)spendT(placeCost(id),'place');SFX.click();dispatchRuleEvent('place',{id,i:t.i,cls:'road'});
- if(c.spawn&&t.chS==='battle'&&chainBrakeCost()>0){spendT(chainBrakeCost(),'place');log(`🔥 격전지 구간 배치 — 브레이크 추가 T −${chainBrakeCost()}`,'imp');}
+ if(placeCost(id)>0)spendT(placeCost(id),'place');
+ if(v3&&c.spawn&&t.chS==='battle'&&chainBrakeCost()>0){spendT(chainBrakeCost(),'place');
+  log(`🔥 격전지 구간 배치 — 브레이크 추가 T −${chainBrakeCost()}`,'imp');}
+ if(c.spawn&&v3){spawnPack(t,id);run.spawnPlaced=(run.spawnPlaced||0)+1;}
+ SFX.click();dispatchRuleEvent('place',{id,i:t.i,cls:'road'});
+ if(!v3&&c.spawn&&t.chS==='battle'&&chainBrakeCost()>0){spendT(chainBrakeCost(),'place');log(`🔥 격전지 구간 배치 — 브레이크 추가 T −${chainBrakeCost()}`,'imp');}
  const lk=t.link?` · 주지원 ${CARDS[t.link.kind].name} 연결`:'';
  if(run.hintStage<1)run.hintStage=1;pendingTile=null;
  const e=effOf(id);
@@ -13168,15 +13410,16 @@ function nextLapEstimate(id,t){
  const ov={};if(id&&t)ov[t.i]=id;
  const at=o=>(ov[o.i]!==undefined)?ov[o.i]:o.card;
  const al=alive();const totHp=Math.max(1,al.reduce((a,m)=>a+m.maxHp,0)),avgDef=al.length?al.reduce((a,m)=>a+stats(m).def,0)/al.length:0;
- const g=gate(),L=run.lap;let fights=0,op=0,dmg=0,heal=0;
+ const g=gate(),L=run.lap,GL=growthLap();let fights=0,op=0,dmg=0,heal=0; /* 적 공격은 성장 기준(v3 위협), 떠돌이 수는 랩 */
+ const AL=loop3On()?GL-1:L,GM=loop3On()?GL:run.lap; /* v2 는 기존 추정식 그대로(공격 성장 × 랩) */
  const n=clamp(run.party.length+BAL.packOffset,1,BAL.packMax);
  for(const o of run.tiles){const cid=at(o);if(!cid)continue;const e=effOf(cid);
-  if(e.spawn){fights++;op+=e.contract?e.contract.op:0;const b=ENEMIES[e.spawn];const atk=(b.atk+BAL.atkScale*L)*gateMult(g.atk);dmg+=Math.max(1,atk-avgDef)*(e.small?1:n)*2;}
+  if(e.spawn){fights++;op+=e.contract?e.contract.op:0;const b=ENEMIES[e.spawn];const atk=(b.atk+BAL.atkScale*AL)*gateMult(g.atk,GM);dmg+=Math.max(1,atk-avgDef)*(e.small?1:n)*2;}
   if(e.enter&&e.enter.heal)heal+=e.enter.heal*totHp;
   if(e.enter&&e.enter.op)op+=e.enter.op;
   if(e.camp&&e.camp.op)op+=e.camp.op;
  }
- const wand=Math.min(WANDER.max,Math.floor(WANDER.base+WANDER.perLap*L));fights+=wand;dmg+=wand*Math.max(1,(ENEMIES.slime.atk+BAL.atkScale*L)*gateMult(g.atk)-avgDef)*1.5;
+ const wand=Math.min(WANDER.max,Math.floor(WANDER.base+WANDER.perLap*L));fights+=wand;dmg+=wand*Math.max(1,(ENEMIES.slime.atk+BAL.atkScale*AL)*gateMult(g.atk,GM)-avgDef)*1.5;
  heal+=totHp*(BAL.campHeal+FX().campHeal);
  return {fights,op,hpLoss:clamp(Math.round(100*(dmg-heal)/totHp),0,100)};
 }
@@ -13303,6 +13546,14 @@ const isSpawnTile=t=>!!(t&&t.card&&t.card!=='mark'&&CARDS[t.card]&&CARDS[t.card]
 const isSupportTile=t=>!!(t&&t.i!==0&&t.card&&t.card!=='mark'&&CARDS[t.card]&&!CARDS[t.card].spawn);
 const adjSpawnN=(t,at)=>adjTiles(t).filter(o=>{const id=at?at(o):o.card;return !!(id&&id!=='mark'&&CARDS[id]&&CARDS[id].spawn);}).length;
 const tileLv=t=>(t&&t.lv)||1;
+/* §29 v3 등급: 구매 등급(t.lv, 저장) + 이웃 지형 가산(저장 안 함). 적마다 정한 지형 종류당 +1, 최대 +2 · 소환 도로 칸만 */
+function gradeTerrain(t,at){
+ if(!loop3On()||!t||t.off||t.i===0)return [];const id=at?at(t):t.card,c=id&&CARDS[id];
+ const want=c&&c.spawn&&id!=='mark'?BAL.v3.terrain[c.spawn]:null;if(!want)return [];
+ const near=typeof tileSpaceAdjacent==='function'?tileSpaceAdjacent(t):[];
+ return [...new Set(near.filter(o=>o.off).map(o=>at?at(o):o.card).filter(k=>want.includes(k)))].slice(0,2);
+}
+const spawnGrade=(t,at)=>Math.min(3,tileLv(t)+gradeTerrain(t,at).length);
 const dangerFreeNow=()=>Math.max(1,BAL.dangerFree-(typeof chainSpawnCap==='function'?chainSpawnCap():0));
 function tileMul(t){
  if(!isSupportTile(t))return 1;if(t.off)return cellMul(t,false);
@@ -13317,20 +13568,32 @@ const mulStr=t=>{const m=tileMul(t);return m===1?'':` ×${Math.round(m*100)}%`;}
 /* 회복 발동 제한: 회복 타일 하나는 랩당 BAL.healTile 회, 지도 전체로 랩당 BAL.healLap 회(진입 회복·교전 후 회복 공통). 발동했으면 true */
 function healGate(t){const L=run.lap;if(t.healL!==L){t.healL=L;t.healN=0;}if(!run.healCt||run.healCt.lap!==L)run.healCt={lap:L,n:0};if(t.healN>=BAL.healTile||run.healCt.n>=BAL.healLap)return false;t.healN++;run.healCt.n++;return true;}
 /* 타일 승급(OP 소비처): Lv2 = OP 4, Lv3 = OP 7. 소환 타일은 계약 보상·이형 HP·공격이 함께 오르고(다음 무리부터), 지원 타일은 효과가 오른다. 횟수 제한 없음 — 보급 화면 서비스와 지도(내 타일 클릭) */
-const upgradeCost=t=>tileLv(t)>=3?null:(econOn()?ECON.price(BAL.econ.price.upg[tileLv(t)-1],{lap:run?run.lap:1}):BAL.upgOp[tileLv(t)-1]);
+const upgradeBase=t=>tileLv(t)>=3?null:(econOn()?ECON.price(BAL.econ.price.upg[tileLv(t)-1],{lap:run?run.lap:1}):BAL.upgOp[tileLv(t)-1]);
+/* §29 v3: 소미 「예산 편성」 할인은 모든 타일 강화 경로에 같은 값으로 */
+const upgradeCost=t=>{const b=upgradeBase(t);
+ return b!=null&&loop3On()&&typeof META_RULES!=='undefined'?b-META_RULES.discount(run,b,'upgrade'):b;};
 const demolishCost=()=>econOn()?ECON.price(BAL.econ.price.demolish,{lap:run?run.lap:1}):BAL.demolishOp;
 const convertCost=()=>econOn()?ECON.price(BAL.econ.price.convert,{lap:run?run.lap:1}):BAL.convertOp;
 const upgradable=t=>!!(t&&t.i!==0&&t.card&&t.card!=='mark'&&(!t.off||(CARDS[t.card].cls==='side'&&!CARDS[t.card].tile))); /* v1.2: 승급은 도로·길가 결계(지형·파생 제외) */
-const canUpgrade=t=>!!(run&&!run.ended&&upgradable(t)&&upgradeCost(t)!=null&&run.op>=upgradeCost(t));
-function upgradeStr(t){const lv=tileLv(t),c=CARDS[t.card];if(lv>=3)return 'Lv3 (최대)';return c.spawn?`Lv${lv+1}: 계약 보상 ×${BAL.upgReward[lv]} · 이형 HP·공격 ×${BAL.upgDanger[lv]}`:`Lv${lv+1}: 효과 ×${BAL.upgSup[lv]}`;}
+const canUpgrade=t=>!!(run&&!run.ended&&upgradable(t)&&upgradeCost(t)!=null&&run.op>=upgradeCost(t)
+ &&!(loop3On()&&isSpawnTile(t)&&spawnGrade(t)>=3)); /* v3: 이웃 지형으로 이미 Lv3 이면 구매해도 효과 없음 */
+function upgradeStr(t){const lv=tileLv(t),c=CARDS[t.card];if(lv>=3)return 'Lv3 (최대)';
+ if(loop3On()&&c.spawn){const g=spawnGrade(t),n=Math.min(3,g+1),V=BAL.v3; /* v3: 구매 등급 + 이웃 지형 = 유효 등급 */
+  return `구매 Lv${lv}→${lv+1} · 유효 Lv${g}→${n}: 계약 보상 ×${BAL.upgReward[n-1]} · 전리품 ×${V.gradeLoot[n-1]}`+
+   ` · 이형 ×${V.gradeDanger[n-1]}`;}
+return c.spawn?`Lv${lv+1}: 계약 보상 ×${BAL.upgReward[lv]} · 이형 HP·공격 ×${BAL.upgDanger[lv]}`:`Lv${lv+1}: 효과 ×${BAL.upgSup[lv]}`;}
 function upgradeTile(i){
  const t=spotAt(i);if(!canUpgrade(t))return false;const cost=upgradeCost(t);run.op-=cost;t.lv=tileLv(t)+1;run.upgrades=(run.upgrades||0)+1;
- log(`⬆ 타일 승급: ${CARDS[t.card].icon} ${CARDS[t.card].name} Lv${t.lv} (OP −${cost}) — ${CARDS[t.card].spawn?`다음 무리부터 계약 보상 ×${BAL.upgReward[t.lv-1]} · 이형 ×${BAL.upgDanger[t.lv-1]}`:`효과 ×${BAL.upgSup[t.lv-1]}`}`,'shop');
+ if(loop3On())dispatchRuleEvent('purchase',{paid:cost,amount:cost,budget:'upgrade',source:'tile-upgrade', /* 과제·소미 집계 */
+  campId:run.runId+':camp:'+run.camps,rerolled:false});
+ log(`⬆ 타일 승급: ${CARDS[t.card].icon} ${CARDS[t.card].name} Lv${t.lv} (OP −${cost}) — ${CARDS[t.card].spawn?`다음 무리부터 계약 보상 ×${BAL.upgReward[(loop3On()?spawnGrade(t):t.lv)-1]} · 이형 ×${loop3On()?BAL.v3.gradeDanger[spawnGrade(t)-1]:BAL.upgDanger[t.lv-1]}`:`효과 ×${BAL.upgSup[t.lv-1]}`}`,'shop');
  {const p=tileCenter(i);floater(p.x,p.y-34,`Lv${t.lv}`,'#fbbf24');}
  if(typeof recomputeChains==='function')recomputeChains();run.party.forEach(recalcMember);checkMission();dirty=true;return true;
 }
 /* 소환 타일의 이형 배율(생성 시점): 타일 Lv × 위험보상 카드(risk) × 체인(§19.4) */
-function tileEnemyMods(t){const c=t&&t.card?CARDS[t.card]:null,md={hp:1,atk:1};if(!c)return md;const lv=tileLv(t);md.hp*=BAL.upgDanger[lv-1];md.atk*=BAL.upgDanger[lv-1];
+function tileEnemyMods(t){const c=t&&t.card?CARDS[t.card]:null,md={hp:1,atk:1};if(!c)return md;
+ const g3=loop3On()&&!!c.spawn,lv=g3?spawnGrade(t):tileLv(t),dz=g3?BAL.v3.gradeDanger:BAL.upgDanger;
+ md.hp*=dz[lv-1];md.atk*=dz[lv-1];
  if(c.risk){md.hp*=c.risk.hp||1;md.atk*=c.risk.atk||1;}if(typeof chainEnemyMods==='function'){const cm=chainEnemyMods(t);md.hp*=cm.hp;md.atk*=cm.atk;}
  md.atk*=mapSupportEffects(t,run).enemyAtk;return md;}
 function applyMods(e,md){if(md.hp!==1){e.hp=e.maxHp=Math.round(e.maxHp*md.hp);}if(md.atk!==1)e.atk=Math.round(e.atk*md.atk);}
@@ -13375,12 +13638,19 @@ function recomputeChains(){
 function discoverChain(c){const d=CHAINS[c.kind],id='chain_'+c.kind;
  if(!meta.codex[id]&&!estMode){meta.codex[id]=true;run.codexNew.push(id);banner(`🔗 체인 발견! 「${d.name}」`,`${d.need} → ${d.eff()} · 대가: ${d.cost()}`,d.color,2600);log(`🔗 체인 발견! ${d.icon} ${d.name} (${c.tiles[0]}~${c.tiles[c.tiles.length-1]}번 칸) — ${d.eff()} / 대가: ${d.cost()}. 학원 도감에 기록 (💎${BAL.codexMana})`,'good');SFX.star();}
  else log(`🔗 체인 ${d.icon} ${d.name} 형성 (${c.tiles[0]}~${c.tiles[c.tiles.length-1]}번 칸) — ${d.eff()} / 대가: ${d.cost()}`,'good');}
-const chainEnemyMods=t=>{const k=t&&t.chS,c=k?BAL.chain[k]:null;return {hp:(c&&c.hp)||1,atk:(c&&c.atk)||1};};
+const chainEnemyMods=t=>{const k=t&&t.chS,c=k?BAL.chain[k]:null;
+ if(loop3On())return {hp:1,atk:1}; /* §29 v3: 체인은 능력치 대신 머릿수(chainVet) */
+ return {hp:(c&&c.hp)||1,atk:(c&&c.atk)||1};};
 /* 전선 = 정예 1체 추가, 격전지 = 엘리트(☠) 확정. 무리 하나에 1체, 표식·변이체 무리 제외 */
 function chainVet(t,pk){const k=t.chS,c=CARDS[t.card];if(!k||!c||!c.spawn||c.small||pk.elite)return null;const b=BAL.chain[k],e=makeEnemy(c.spawn);applyMods(e,tileEnemyMods(t));
- e.hp=e.maxHp=Math.round(e.maxHp*b.vetHp);e.atk=Math.round(e.atk*b.vetAtk);e.vet=true;e.xp=Math.round(e.xp*1.5);e.name=(k==='battle'?'☠ 엘리트 ':'◆ 정예 ')+e.name;if(k==='battle'){e.elite=true;e.color='#7c3aed';}
- e.packId=pk.uid;pk.alive++;t.enemies.push(e);return e;}
-const chainRewardMul=pk=>pk.chain&&BAL.chain[pk.chain]?BAL.chain[pk.chain].reward||1:1;
+ if(!loop3On()){e.hp=e.maxHp=Math.round(e.maxHp*b.vetHp);e.atk=Math.round(e.atk*b.vetAtk);} /* v3: 정예 표식·보상만, 능력치 그대로 */
+ e.vet=true;e.xp=Math.round(e.xp*1.5);e.name=(k==='battle'?'☠ 엘리트 ':'◆ 정예 ')+e.name;if(k==='battle'){e.elite=true;e.color='#7c3aed';}
+ e.packId=pk.uid;pk.alive++;t.enemies.push(e);
+ if(loop3On()&&k==='battle')for(let n=0;n<(BAL.v3.battleExtra||0);n++){ /* v3 격전지: 일반 개체 추가 → 전선 +1 · 격전지 +2 */
+  const x=makeEnemy(c.spawn);applyMods(x,tileEnemyMods(t));x.packId=pk.uid;pk.alive++;t.enemies.push(x);}
+ return e;}
+const chainRewardMul=pk=>{if(!pk.chain||!BAL.chain[pk.chain])return 1;
+ if(loop3On()&&BAL.v3.chainReward[pk.chain])return BAL.v3.chainReward[pk.chain];return BAL.chain[pk.chain].reward||1;};
 const chainSupMul=t=>t.chU?BAL.chain[t.chU].mul:1;
 const chainSpawnCap=()=>run&&run.chains?run.chains.filter(c=>c.kind==='base').length*BAL.chain.base.spawnCap:0;
 /* 거점(지원 3+) 미니 캠프: 그 구간에 들어설 때 랩당 1회 — 분대 HP 가 70% 미만이면 HP 15% 회복, 아니면 OP +2 (자동 택1. 선택 UI 는 다음 작업) */
@@ -13528,7 +13798,8 @@ function mapSettleMorph(state,pending){
 /* 길가·지형이 도로 칸 t 에 만드는 추가 무리 — 보상은 그 결계 카드의 contract(pk.side: 타일 카드가 아니라 pk.cardId 로 정산) */
 function spawnSidePack(t,cardId,type,o={}){
  let n=packSizeOf({bonus:ENEMIES[type].swarm||0});if(o.n)n=o.n;const lv=o.lv||1;
- const pk={uid:uid(),tile:t.i,cardId,side:true,elite:false,reward:{mult:o.mult||1},alive:n,paid:false,lv};
+ const pk={uid:uid(),gLap:growthLap(),
+  tile:t.i,cardId,side:true,elite:false,reward:{mult:o.mult||1},alive:n,paid:false,lv};
  for(let i=0;i<n;i++){const e=makeEnemy(type);e.packId=pk.uid;applyMods(e,{hp:BAL.upgDanger[lv-1],atk:BAL.upgDanger[lv-1]});
   if(o.vet&&i===0){e.hp=e.maxHp=Math.round(e.maxHp*BAL.side.vetHp);e.atk=Math.round(e.atk*BAL.side.vetAtk);e.vet=true;e.xp=Math.round(e.xp*1.5);e.name='◆ 정예 '+e.name;}
   t.enemies.push(e);}
@@ -13563,7 +13834,7 @@ function manorJoin(t){if(t.off||t.enemies.some(e=>e.boss))return;const m=sideMul
  const pk=Object.values(run.packs).find(p=>p.tile===t.i&&!p.paid&&p.reward&&!p.manor&&p.alive>0&&t.enemies.some(e=>e.packId===p.uid));if(!pk)return;
  pk.manor=true;pk.reward.mult=(pk.reward.mult||1)*(1+(BAL.side.manorReward-1)*m);const e=makeEnemy('phantom');e.packId=pk.uid;pk.alive++;t.enemies.push(e);log(`🏚 폐가: 흡혈 사념 합류 — 이 무리 계약 보상 ×${(1+(BAL.side.manorReward-1)*m).toFixed(2)}`);}
 /* 정비소·헌책방: 인접 도로 통과 시 랩당 1회 */
-function tuneGear(){const items=[];for(const m of run.party)for(const s of ['weapon','armor','acc'])if(m.equip[s])items.push([m,m.equip[s]]);if(!items.length){addItem(genItem(run.lap));return;}
+function tuneGear(){const items=[];for(const m of run.party)for(const s of ['weapon','armor','acc'])if(m.equip[s])items.push([m,m.equip[s]]);if(!items.length){addItem(genItem(growthLap()));return;}
  const [m,it]=items[Math.floor(Math.random()*items.length)];it.plus=(it.plus||0)+1;if(it.slot==='weapon')it.atk+=2;else if(it.slot==='armor'){it.def+=1;it.hp+=4;}else{it.hp+=6;it.atk+=1;}
  if(!/ ⚙\d+$/.test(it.name))it.name+=' ⚙1';else it.name=it.name.replace(/ ⚙\d+$/,' ⚙'+it.plus);recalcMember(m);log(`🔧 정비소: ${m.stu.name}의 ${it.name} 강화`,'good');}
 function bookSwap(){if(run.hand.length>=handMax()){const out=run.hand.shift();run.deck.push(out);if(selectedCard!==null)selectedCard=selectedCard>0?selectedCard-1:null;log(`📚 헌책방: ${CARDS[out].name} → 새 카드로 교체`);}else log('📚 헌책방: 카드 +1','good');drawCard();}
@@ -14141,10 +14412,13 @@ function pvBuild(id,ti){
   if(fe.enhanced)fx('+','상시',`${CLUB_ICON[fc.club]||''} ${CLUBS[fc.club]} 강화 적용 — 수치에 반영`,'강화',[ti]);
   if(fc.spawn){
    const pk=c.spawn?c:fc,n=packN(pk),vet=c.spawn&&R.chS&&!pk.small?R.chS:null,en=ENEMIES[pk.spawn],quiet=!c.spawn&&(run.sealLap===run.lap||!!(run.battle&&run.battle.tile===t));
-   if(!quiet)fx('-','즉시',`${en?en.name:'이형'} 무리 ${n}체 출현${vet?` + ${vet==='battle'?'☠ 엘리트':'◆ 정예'} 1체(${CHAINS[vet].name})`:''}`,`${n+(vet?1:0)}체`,[ti]);
+   const vx=vet?(vet==='battle'&&loop3On()?1+(BAL.v3.battleExtra||0):1):0; /* v3 격전지: 엘리트 1 + 일반 추가 */
+   if(!quiet)fx('-','즉시',`${en?en.name:'이형'} 무리 ${n}체 출현${vet?` + ${vet==='battle'?'☠ 엘리트':'◆ 정예'}${vx>1?` 1 · 일반 ${vx-1}`:' 1'}체`+
+    `(${CHAINS[vet].name}${loop3On()?' · 능력치 그대로':''})`:''}`,`${n+vx}체`,[ti]);
    if(fe.risk){const p=[];if(fe.risk.hp)p.push(`HP +${pc(fe.risk.hp-1)}%`);if(fe.risk.atk)p.push(`공격 +${pc(fe.risk.atk-1)}%`);fx('-','교전 시',`위험보상 — 이 칸 이형 ${p.join(' · ')}`,p[0],[ti]);}
    if(fe.contract){
-    const quote=econOn()?econContractQuote(fe.contract.op,{mult:vet?BAL.chain[vet].reward:1}):null;
+    const cm=vet?(loop3On()?BAL.v3.chainReward[vet]:BAL.chain[vet].reward):1;
+    const quote=econOn()?econContractQuote(fe.contract.op,{mult:cm}):null;
     fx('+','처치 시',`처치 보상 ${contractStr(fe)}`,`OP ${displayContractOp(fe)}`,[ti]);
     E[E.length-1].opQuote=quote;
    }
@@ -14248,7 +14522,15 @@ function pvBuild(id,ti){
   if(e.flag==='forest')warn(e.on?`⚠ 숲속 매점 — 가로수 ${e.n}개: 편의점류 회복 ×${BAL.land.forestHeal} · 랩당 카드 +1`:'숲속 매점 해제 — 편의점류 회복이 돌아옴');
   if(e.flag==='echo')warn(e.on?`⚠ 잔류 사념 — 격전 흔적 ${e.n}개: 랩마다 사념 무리 출현`:'잔류 사념 멈춤');}
  {const rn=morphs.filter(m=>m.random).length;if(rn)warn(`⚠ 이형 전초기지 ${rn}곳 생성 — 위치 무작위(도로 옆 빈 칸 우선) · 랩마다 정예 무리`);}
- if(R.cost.t>0&&!run.bossPending&&!run.bossSpawned){const af=run.t-R.cost.t;if(af<=0)W.unshift({text:`⚠ 배치하면 T ${run.t} → 0 — 게이트 마스터 출현`});else if(run.t>T_IMMINENT&&af<=T_IMMINENT)W.unshift({text:`⚠ T ${af} — 브레이크 임박(귀환 봉쇄 · 보급 중단)`});}
+ if(R.cost.t>0&&!run.bossPending&&!run.bossSpawned){const af=run.t-R.cost.t;if(af<=0)W.unshift({text:`⚠ 배치하면 T ${run.t} → 0 — 게이트 마스터 출현`});else if(run.t>tImminent()&&af<=tImminent())W.unshift({text:`⚠ T ${af} — 브레이크 임박(귀환 봉쇄 · 보급 중단)`});}
+ if(loop3On()&&ui4On()){ /* §29 v3 등급 미리보기(PC): 적마다 정한 이웃 지형이 소환 타일 등급을 올린다 */
+  const at=o=>o.off?B.cell[o.k]:B.road[o.i];
+  const roads=t.off?tileSpaceAdjacent(t).filter(o=>!o.off&&isSp(B.road[o.i])):isSp(B.road[ti])?[t]:[];
+  for(const r of roads){const a=isSp(r.card)?spawnGrade(r):1,b=spawnGrade(r,at);if(b<=Math.max(a,1)&&!(r===t&&b>1))continue;
+   const kinds=gradeTerrain(r,at).map(x=>CARDS[x].name).join('·');
+   fx('+','다음 무리부터',`${CARDS[B.road[r.i]].name} 등급 Lv${b} (${kinds}) — 보상 ×${BAL.upgReward[b-1]}`+
+    ` · 전리품 ×${BAL.v3.gradeLoot[b-1]} · 이형 ×${BAL.v3.gradeDanger[b-1]}`,`등급 ${b}`,[r.i]);}
+ }
  /* 옛 필드: lines·text(계약에서) · next(참고 추정) · tiles·morph·links·chains(previewSim) */
  const region=mapPlacementInfo(run,id,t);
  if(region.text)W.push({text:region.text});
@@ -14591,9 +14873,11 @@ const relicNow=id=>{
  try{return R.now?R.now(run,ctx):'';}catch(e){return '';}
 };
 function discardRelic(id){const i=run.relics.indexOf(id);if(i<0||run.battle)return false;run.relics.splice(i,1);run.party.forEach(recalcMember);log(`🏺 유물 「${relicOf(id).name}」을(를) 내려놓았습니다`,'shop');dirty=true;return true;}
-function makeOfferNoRelic(){const kind=weightedPick([{k:'student',w:60},{k:'supply',w:15}]).k,free=Math.random()<0.05;
+function makeOfferNoRelic(){
+ const kind=weightedPick([{k:'student',w:loop3On()?0:60},{k:'supply',w:15}]).k,free=Math.random()<0.05;
  if(kind==='student'){const rar=rarityRoll(),stu=pickStudent(rar);return {uid:uid(),kind,stu,rarity:stu.rarity,cost:free?0:STUDENT_COST[stu.rarity],free};}
- const sp=pick(SUPPLIES.filter(x=>econOn()?x.id!=='crystal':!x.econ)); /* econ2: 결계 결정(OP → SP)은 폐지, 특훈은 econ2 에서만 */
+ /* econ2: 결계 결정(OP → SP)은 폐지, 특훈은 econ2 에서만 · v3: 원정 중 승급 없음 */
+ const sp=pick(SUPPLIES.filter(x=>(econOn()?x.id!=='crystal':!x.econ)&&!(loop3On()&&x.id==='train')));
  return {uid:uid(),kind:'supply',supply:sp,rarity:0,cost:free?0:(econOn()&&sp.id==='train'?BAL.econ.train[0]:sp.cost),abs:econOn()&&sp.id==='train',free};}
 function regularCheck(cost){if(!(cost>0)||!run.relics.includes('regular'))return;const R=relicOf('regular'),ctx={rerolled:(run.shop.rerollsHere||0)>0,paid:cost,used:!!run.shop.regularUsed};
  if(R.when(run,ctx)){run.shop.regularUsed=true;run.score.cur.add+=R.mult(run,ctx);run.relicState.regularN=(run.relicState.regularN||0)+1;const a=run.relicAct||(run.relicAct={});a.regular=(a.regular||0)+1;log(`💳 단골 카드: 리롤 후 구매 — 이번 랩 평가 +${R.mult(run,ctx)}`,'good');}}
@@ -14656,7 +14940,9 @@ function crateCands(kind,rng){const n=BAL.crate.pool;
   const pk=ECON.buildPack({rng,pool,party,dry,size:n,reserve:3});
   return pk.list.concat(pk.reserve).map(x=>x.id);
  }
- if(kind==='gear')return Array.from({length:n},()=>genItem(run.lap));
+ if(kind==='gear'){ /* §29 v3: 행운의 학생증 = 장비 팩 첫 장비 희귀 이상(영입 팩이 없어서) */
+  const lucky=loop3On()&&typeof META_RULES!=='undefined'&&META_RULES.recruitRarity(run,0)>0;
+  return Array.from({length:n},(_,i)=>genItem(growthLap(),lucky&&i===0?1:0));}
 
  if(kind==='ward')return seedSample([...(GATE_CARDS[gate().id]||[]),...terrainOpen()].map(id=>({id,w:CARDS[id].w||1})),n,rng);
  if(kind==='tactic')return [...seedSample(TACTICS.map(t=>({id:t.id})),4,rng),...seedSample(TACTICS.map(t=>({id:t.id})),4,rng)].slice(0,n);
@@ -14699,9 +14985,13 @@ function toggleReserve(){
 const droneDue=()=>SHOP_MARKERS.some(f=>!run.markers[f]&&run.t<=run.tStart*f)&&!run.imminent&&!run.bossPending&&!run.bossSpawned;
 /* §27.6 d 캠프 보급(econ2): 매 랩 영입 팩 + 순환 팩. 살 수 있는 팩이 있으면 멈춘다(자동 통과를 켜면 한 줄 알림만) */
 function econCampSupply(){
+ run.campDeferred=null; /* v3: 지난 캠프에서 넘긴 보급은 새 캠프에 남지 않는다 */
  if(run.imminent||run.bossPending||run.bossSpawned)return;
  const sid='C'+run.lap,rot=['ward','gear',unlocked('tactic')?'tactic':'relic','relic'][run.lap%4];
- const crates=[makeCrate(sid,0,true,'recruit'),makeCrate(sid,1,true,rot)];
+ /* v3: 영입 팩 없음 — 사무소 작전실 시설이 있으면 순환 상자 한 칸 더 */
+ const rot2=['ward','gear',unlocked('tactic')?'tactic':'relic','relic'][(run.lap+1)%4];
+ const crates=!loop3On()?[makeCrate(sid,0,true,'recruit'),makeCrate(sid,1,true,rot)]
+  :[makeCrate(sid,1,true,rot),...(meta.upg.ops?[makeCrate(sid,0,true,rot2)]:[])];
  const can=crates.filter(cr=>run.op>=cratePrice(cr.kind,false)&&crateRoom(cr));
  const rec={lap:run.lap-1,sid,kind:'camp',price:cratePrice(crates[0].kind,false),reserved:!run.autoPass,bought:false,merged:false,grade:gradeNow(),op:run.op,afford:can.length>0};
  run.supplyLog.push(rec);
@@ -14713,6 +15003,7 @@ function econCampSupply(){
  if(!can.length&&!canTile&&!run.pendingDrones){log(`📦 캠프 보급: 살 수 있는 팩 없음(OP ${run.op}/${cratePrice(crates[0].kind,false)})`);return;}
  if(run.autoPass){run.campPassed=(run.campPassed||0)+1;log(`📦 캠프 보급: 살 수 있는 팩 ${can.length} — 자동 통과 중`);return;}
  run.shop.crates=crates;run.campStops=(run.campStops||0)+1;
+ if(typeof lap3Defer==='function'&&lap3Defer(crates,can.length,!!canTile||!!run.pendingDrones))return; /* v3 PC: 정산 창 */
  openShop('camp');
 }
 function smallSupply(){
@@ -14736,7 +15027,9 @@ function largeCrates(){run.shop.regularUsed=false;run.shop.crates=[];if(!supplyO
   return;}
  run.shop.crates=[makeCrate(sid,0,false),makeCrate(sid,1,false)];
  if(run.carryCrate){run.shop.crates.push(run.carryCrate);run.carryCrate=null;}}
-function buyCrate(k){const cr=run.shop&&run.shop.crates&&run.shop.crates[k];if(!cr||cr.sold||run.crateOpen||!run.shop.kind)return false;const price=cratePrice(cr.kind,!cr.small);
+function buyCrate(k){const cr=run.shop&&run.shop.crates&&run.shop.crates[k];if(!cr||cr.sold||run.crateOpen||!run.shop.kind)return false;
+ if(cr.kind==='recruit'&&loop3On())return false; /* v3: 영입 팩은 비용 차감 전에 거부 */
+const price=cratePrice(cr.kind,!cr.small);
  if(typeof PACK_RESEARCH!=='undefined'&&!PACK_RESEARCH.canOpen(cr))return false;
  if(run.op<price||!crateRoom(cr))return false;
  run.op-=price;run.purchases++;run.shop.buys=(run.shop.buys||0)+1;
@@ -14779,6 +15072,7 @@ function takeCrate(i){
  const cr=run&&!run.ended&&run.crateOpen;if(!cr)return false;
  const id=cr.view[Math.max(0,Math.min(cr.view.length-1,i|0))];if(!id)return false;
  if(!crateTakeOk(cr,id))return false;
+ if(cr.kind==='recruit'&&loop3On())return false; /* v3: 영입 팩 없음(옛 상자가 남아도 거부) */
  if(cr.kind==='ward'){run.hand.push(id);if(typeof collectionDiscover==='function')collectionDiscover(id,'pack');run.drawn[id]=(run.drawn[id]||0)+1;if(CARDS[id].cls)run.terrainDrops=(run.terrainDrops||0)+1;log(`🧿 결계 상자 → ${CARDS[id].icon} ${CARDS[id].name} (손패)`,'shop');}
  else if(cr.kind==='tactic'){run.tactics.push(id);log(`🎴 전술 상자 → ${tacticOf(id).icon} ${tacticOf(id).name} (전술 슬롯)`,'shop');}
  else if(cr.kind==='recruit'){
@@ -14874,14 +15168,33 @@ function rollAnomaly(){
  if(a.id==='elite'&&!sealedLap)spawnElite('☠️ 변이체 출현');
  if(a.id==='calm')recoverT(8,'정적');
 }
+/* §29 v3 랩 장부 — 캠프의 랩 정산 창이 읽는다. 실제 지급 경로(payPack·gainOp·addItem·addToHand·자동 장착)에서만 기록 */
+function lapLogNew(){
+ const first=run.lap===1&&!run.camps;
+ return {lap:run.lap,op:0,items:0,cards:0,equips:[],phase:null,xp0:first?0:run.totalXp||0,kills0:first?0:run.kills||0,
+  downs0:first?0:run.downs||0,res0:first?{}:{...(run.res||{})},placed0:first?0:run.cardsPlaced||0};
+}
+function lapNote(k,v){
+ if(!run||estMode)return;const L=run.lapLog||(run.lapLog=lapLogNew());
+ if(k==='equip')L.equips.push(v);else if(k==='phase')L.phase=v;else L[k]=(L[k]||0)+v;
+}
+function lapClose(){ /* 캠프 도착 맨 앞(회복 전) — 지난 랩 결과를 run.lapDone 으로 확정. 추정 중·같은 랩 두 번은 무시 */
+ if(!run||estMode||run.lapClosedAt===run.lap)return;run.lapClosedAt=run.lap;const L=run.lapLog||lapLogNew(),res={};
+ for(const [k,n] of Object.entries(run.res||{})){const d=n-(L.res0[k]||0);if(d>0)res[k]=d;}
+ run.lapDone={...L,xp:(run.totalXp||0)-L.xp0,kills:(run.kills||0)-L.kills0,downs:(run.downs||0)-L.downs0,res,
+  placed:(run.cardsPlaced||0)-L.placed0,threat:typeof threatLv==='function'?threatLv():0,
+  hp:run.party.map(m=>({id:m.stu.id,name:m.stu.name,hp:m.hp,max:m.maxHp,down:!!m.down}))};
+ run.lapLog=null;
+}
 function onCamp(){
+ lapClose();
  const dryHand=run.hand.length+(run.discardLap===run.lap?(run.discardN||0):0);
  riskCampReached();
  settleLap(false); /* v1.3 §21.10: 지난 랩 평가 확정(회복 전 상태 기준) → 랩 증가 → 회복·스폰 → 보급 후보 */
  /* v1.1 과제 「무기절 3랩」: 이번 랩에 전투불능이 없었으면 연속 +1 */
  if(run.party.some(m=>m.lapDown||m.down))run.noDownStreak=0;else{run.noDownStreak=(run.noDownStreak||0)+1;run.noDownBest=Math.max(run.noDownBest||0,run.noDownStreak);}
  for(const m of run.party){if(!m.down&&!m.lapDown&&m.joinLap<run.lap)m.survLaps++;m.lapDown=false;}
- run.lap++;if(run.party.length>=4)run.lap4=Math.max(run.lap4||0,run.lap);run.lapMod=null;run.camps++;dispatchRuleEvent('camp',{});if(!run.hand.length)run.emptyCamps++;
+ run.lap++;run.lapLog=lapLogNew();threatPhaseTick();if(run.party.length>=4)run.lap4=Math.max(run.lap4||0,run.lap);run.lapMod=null;run.camps++;dispatchRuleEvent('camp',{});if(!run.hand.length)run.emptyCamps++;
  {const rv=0.3+FX().reviveHp+(hasPassive('gaeul')?0.1:0);for(const m of run.party){if(m.down){m.down=false;m.hp=Math.round(m.maxHp*rv);log(`🚑 구조대가 ${m.stu.name}을(를) 복귀시켰습니다 (HP ${Math.round(rv*100)}%)`,'good');}}}
  /* v1.0 캠프 효과 집계: camp{t,heal,op,card} 타일 합산 · 포위된 캠프는 회복 ×2 */
  const cp={t:0,heal:0,op:0,card:0},campSources={};let healMul=1;
@@ -14902,7 +15215,8 @@ function onCamp(){
  if(cp.op>0){gainOp(cp.op);log(`📦 보급 창고: 기본 OP +${displayOp(cp.op)}`,'good');}
  /* v1.2 랩 = 하루: 봉인된 랩이면 모든 스폰(리스폰·변이체·긴급 표식·떠돌이·결계 추가 무리)을 건너뛴다. 가로등 옆 타일은 무리 상한 −1(capOf) */
  const sealed=run.sealLap===run.lap;if(sealed){banner('🔒 봉인 발동','이번 랩은 스폰이 멈춥니다','#93c5fd',2000);log('🔒 봉인 발동 — 이번 랩 스폰 정지','good');}
- let respawn=0;for(const t of (sealed?[]:spawnTiles(false))){const c=CARDS[t.card];if(t.card==='mark'&&(t.markUses||0)>=MARK_LIFE){retireMark(t);continue;}if(!riskOn()&&packsOn(t)<capOf(t)){spawnPack(t,t.card);respawn++;}
+ let respawn=0;for(const t of (sealed?[]:spawnTiles(false))){const c=CARDS[t.card];if(t.card==='mark'&&(t.markUses||0)>=MARK_LIFE){retireMark(t);continue;}if(!riskOn()){if(loop3On()&&t.card!=='mark'&&nativePacksOn(t)){if(reinforcePack(t))respawn++;} /* v3: 쌓임 = 증원 */
+   else if(packsOn(t)<capOf(t)){spawnPack(t,t.card);respawn++;}}
   if(econOn()&&econFloorOf(t.i)>0&&packsOn(t)<capOf(t)){spawnPack(t,t.card);respawn++;log(`🏭 공장: ${c.name} 무리 추가 소환`);} /* §27.6 k 공장의 대가 — 캠프마다 한 무리 더 */
   if(c.eliteOnCamp&&!t.enemies.some(e=>e.elite)){spawnPack(t,t.card,{elite:true,mult:2});log(`☠️ ${c.name}: 변이체 고정 스폰`,'imp');}}
  if(!sealed&&emergencyMark())respawn++;
@@ -14925,13 +15239,15 @@ function onCamp(){
   else drawCard();}
  if(hasRelic('drone'))for(let i=0;i<relicTune('drone').cards;i++)drawCard();
  if(run.lap>=2&&Math.random()<0.4)rollAnomaly();
- if(EVO_LAPS.includes(run.lap))rollEvolution();
+ if(!loop3On()&&EVO_LAPS.includes(run.lap))rollEvolution(); /* v3: 진화는 황혼·밤 전환 때(threatPhaseTick) */
  if(run.lap===4&&run.lapMod!=='elite'&&!sealed)spawnElite('📡 협회 정기 경보 (랩 4)'); // 이변 변이체와 같은 랩 중복 금지 (Codex R1)
  checkCombos((typeof tileSpaceAll==='function'?tileSpaceAll():run.tiles).filter(t=>t.card));
  log(`🔁 LAP ${run.lap} · 캠프 통과 · 리스폰 ${respawn}무리 · 떠돌이 ${wand}무리 · 카드 +${run.hand.length-before} · T ${run.t}`);
  if(simMode&&window.__simPlace)window.__simPlace();
  smallSupply(); /* 예약한 소형 보급(도착해서만 정지) → 다음 랩 상자 공개 */
  checkMission();refreshOdds('캠프 통과');
+ /* §29 v3: 캠프마다 랩 정산(PC). 자동 통과·임박·보스 중에는 멈추지 않는다 */
+ if(loop3On()&&!run.autoPass&&!run.imminent&&!run.bossPending&&!run.bossSpawned)run.lapCampPending=true;
  if(typeof riskOpenCamp==='function')riskOpenCamp();
 }
 /* ===== 라운드 3 규칙 ① 결전 거점 ===== 마지막 보급 드론(33% 마커)부터 지도의 자기 타일 하나를 거점으로 지정. 브레이크 100% 뒤 보스는 그 거점에서 조우하고
@@ -15215,7 +15531,7 @@ function memberFall(target,b,p){
  if(FX().revive&&!run.revived[target.uid]&&(!riskOn()||riskRevive(target,target.maxHp*0.5))){run.revived[target.uid]=true;if(!riskOn())target.hp=Math.round(target.maxHp*0.5);run.shake=10;banner('🕊️ 불굴!',`${target.stu.name} — 치명상을 버티고 ${riskOn()?'HP '+target.hp+' (야전 회복 사용)':'HP 50%'} 재기동`,'#4ade80',2000);log(`🕊️ 불굴: ${target.stu.name} 재기동`,'good');burst(p.x,p.y-10,'#4ade80',16,0.14);SFX.level();return false;}
  const fallQuote=typeof storyBarkText==='function'?storyBarkText(target.stu.id,'down'):'';
  if(typeof storyTrackFall==='function')storyTrackFall(target.stu.id);
- target.hp=0;target.down=true;target.lapDown=true;traumaFall(target);{const r=bsM(target);if(r&&r.downAt==null)r.downAt=run.time-b.stat.t0;}run.downs=(run.downs||0)+1;run.shake=8;banner(`💔 ${target.stu.name} 전투불능${riskOn()?' · 트라우마':''}`,fallQuote||(alive().length?(riskOn()?'트라우마 기록 — 다음 출격 능력치 감소 · 현재 원정에서는 구조 가능':'남은 분대원이 버팁니다 — 캠프에서 구조대가 복귀시킵니다'):'분대 전멸…'),'#f87171',2200);log(`💔 ${target.stu.name} 전투불능!${fallQuote?' 「'+fallQuote+'」':''}`,'imp');dirty=true;SFX.down();burst(p.x,p.y-10,'#f87171',12,0.12);
+ target.hp=0;target.down=true;target.lapDown=true;traumaFall(target);{const r=bsM(target);if(r&&r.downAt==null)r.downAt=run.time-b.stat.t0;}run.downs=(run.downs||0)+1;run.shake=8;banner(`💔 ${target.stu.name} 전투불능${riskOn()&&!traumaExempt()?' · 트라우마':''}`,fallQuote||(alive().length?(riskOn()&&!traumaExempt()?'트라우마 기록 — 다음 출격 능력치 감소 · 현재 원정에서는 구조 가능':'남은 분대원이 버팁니다 — 캠프에서 구조대가 복귀시킵니다'):'분대 전멸…'),'#f87171',2200);log(`💔 ${target.stu.name} 전투불능!${fallQuote?' 「'+fallQuote+'」':''}`,'imp');dirty=true;SFX.down();burst(p.x,p.y-10,'#f87171',12,0.12);
  if(run.f2st){const k=target.stu.role+'·'+rowOf(target);run.f2st.dn[k]=(run.f2st.dn[k]||0)+1;}
  if(!alive().length){endRun('death');return true;}
  if(BAL.form2)f2ExposeCheck();
@@ -15316,7 +15632,9 @@ function onKill(e,killer){
  run.kills++;if(e.elite||e.vet)run.eliteKills=(run.eliteKills||0)+1;
  dispatchRuleEvent('kill',{e,pk:run.packs[e.packId]||null});
  /* §19.4 전선의 정예 = 장비 드랍 BAL.chain.front.item, 격전지의 엘리트 = 희귀 이상 장비 확정 */
- if(e.vet&&!estMode){const bt=e.elite;if(bt)addItem(genItem(run.lap,1));else if(Math.random()<BAL.chain.front.item)addItem(genItem(run.lap));}
+ if(e.vet&&!estMode){const bt=e.elite,gl=gearLap(e);if(bt)addItem(genItem(gl,1));
+  else if(Math.random()<BAL.chain.front.item)addItem(genItem(gl));}
+ if(pk0&&typeof killLoot==='function')killLoot(e,pk0); /* §29 v3 처치 전리품(장비·결계 카드·OP) */
  if(e.boss&&run.bossT0!=null&&!t.enemies.some(x=>x!==e&&x.boss&&x.hp>0))run.bossMs=run.time-run.bossT0;
  {const ep=tileCenter(t.i);burst(ep.x,ep.y-6,e.color,e.boss?48:e.elite?18:9,e.boss?0.26:0.16);}SFX.kill();fxEvent('kill',{e,t});
  if(!run.ruleOrigin||run.ruleOrigin==='native')
@@ -15421,16 +15739,18 @@ function pickStudent(rar){
 function makeOffer(){
  if(run.relics.length>=BAL.relicSlots&&
   !(typeof RUN_DRAFT!=='undefined'&&RUN_DRAFT.active()))return makeOfferNoRelic();
- const kind=weightedPick([{k:'student',w:60},{k:'relic',w:25},{k:'supply',w:15}]).k,free=Math.random()<0.05;
+ /* §29 v3: 영웅은 원정 밖에서만 — 진열에 학생(영입·★)과 특훈이 없다 */
+ const kind=weightedPick([{k:'student',w:loop3On()?0:60},{k:'relic',w:25},{k:'supply',w:15}]).k,free=Math.random()<0.05;
  if(kind==='student'){const rar=rarityRoll(),stu=pickStudent(rar);return {uid:uid(),kind,stu,rarity:stu.rarity,cost:free?0:STUDENT_COST[stu.rarity],free};}
  if(kind==='relic'){const rar=rarityRoll(),shown=new Set((run.shop.offers||[]).filter(o=>o&&o.kind==='relic').map(o=>o.relic.id)),base=relicPool().filter(r=>!shown.has(r.id));let pool=base.filter(r=>r.rarity===rar);if(!pool.length)pool=base; /* C-06: 한 진열에 같은 유물 두 번 금지 */
   if(pool.length){const rel=pick(pool);return {uid:uid(),kind,relic:rel,rarity:rel.rarity,cost:free?0:RELIC_COST[rel.rarity],free};}}
- const sp=pick(SUPPLIES.filter(x=>econOn()?x.id!=='crystal':!x.econ)); /* econ2: 결계 결정(OP → SP)은 폐지, 특훈은 econ2 에서만 */
+ /* econ2: 결계 결정(OP → SP)은 폐지, 특훈은 econ2 에서만 · v3: 원정 중 승급 없음 */
+ const sp=pick(SUPPLIES.filter(x=>(econOn()?x.id!=='crystal':!x.econ)&&!(loop3On()&&x.id==='train')));
  return {uid:uid(),kind:'supply',supply:sp,rarity:0,cost:free?0:(econOn()&&sp.id==='train'?BAL.econ.train[0]:sp.cost),abs:econOn()&&sp.id==='train',free};
 }
 /* 라운드 3 최종 처방 ③ 승급 슬롯(BAL.promoSlot): 출격 보급 제외, 분대 정원(partyMax) 충족 후, 매 롤 5칸 중 1칸을 ★3 미만 보유 학생에서 균등 추첨. 정상 가격·무료 아님, 희귀 천장은 다른 칸에 보존, 전원 ★3 이면 일반 롤 */
 function promoSlot(){
- if(!BAL.promoSlot)return -1;
+ if(!BAL.promoSlot||loop3On())return -1; /* v3: 원정 중 승급 없음 */
  if(!econOn()&&(run.shop.kind==='launch'||run.party.length<partyMax()))return -1; /* §27.6 d ②: econ2 는 인원과 무관하게 승급 칸을 둔다 */
  const cands=run.party.filter(m=>m.star<3);if(!cands.length)return -1;
  const stu=pick(cands).stu,i=rnd(0,shopSlots()-1);run.shop.offers[i]={uid:uid(),kind:'student',stu,rarity:stu.rarity,cost:STUDENT_COST[stu.rarity],free:false,promo:true};return i;
@@ -15439,6 +15759,7 @@ function rollOffers(){rollOffersCore();for(const o of run.shop.offers)if(o.kind=
 /* §27.6 d 출격 고용(econ2): 후보를 공개한다 — 가능하면 딜러 · 탱커 · 서포터 한 명씩, 작전실이 있으면 한 명 더(i-2).
  * 강제(「동료 먼저」)는 없고, 고용 대신 특훈(★+1)을 살 수도 있다 */
 function econLaunchOffers(){
+ if(loop3On()){run.shop.offers=[];return;} /* v3: 출격 고용 없음 — 편성은 작전실 */
  const n=Math.max(1,(BAL.econ.hireSlots||3)+(meta.upg.ops?1:0)),have=new Set(run.party.map(m=>m.stu.id)),picks=[];
  const take=pool=>{if(!pool.length)return;const st=pick(pool);picks.push(st);have.add(st.id);};
  const pending=curriculumPending();
@@ -15461,7 +15782,7 @@ function rollOffersCore(){
  const pi=promoSlot();
  // 천장(pity): 희귀 이상이 하나도 없는 롤이 연속 2회면 다음 롤은 희귀 이상 1칸 보장 (승급 슬롯과 다른 칸)
  const hasRare=run.shop.offers.some(o=>o.rarity>=1);
- if(!hasRare&&run.shop.dry>=2){let i=rnd(0,shopSlots()-1);if(i===pi)i=(i+1)%shopSlots();const stu=pickStudent(1);run.shop.offers[i]={uid:uid(),kind:'student',stu,rarity:stu.rarity,cost:STUDENT_COST[stu.rarity],free:false,pity:true};run.shop.dry=0;}
+ if(!hasRare&&run.shop.dry>=2&&!loop3On()){let i=rnd(0,shopSlots()-1);if(i===pi)i=(i+1)%shopSlots();const stu=pickStudent(1);run.shop.offers[i]={uid:uid(),kind:'student',stu,rarity:stu.rarity,cost:STUDENT_COST[stu.rarity],free:false,pity:true};run.shop.dry=0;}
  else run.shop.dry=hasRare?0:(run.shop.dry||0)+1;
  /* v1.3 특급: 대형 진열에 유물 1칸 보장(정상 가격 — 선택 폭만 넓힌다). 승급·보정 칸은 건드리지 않는다 */
  if(supplyOn()&&BAL.scoreReward&&gradeNow()==='top'&&run.relics.length<BAL.relicSlots&&!run.shop.offers.some(o=>o.kind==='relic')){const pool=relicPool();const k=run.shop.offers.findIndex(o=>!o.promo&&!o.pity&&!o.guaranteed&&!o.free);if(pool.length&&k>=0){const rel=pick(pool);run.shop.offers[k]={uid:uid(),kind:'relic',relic:rel,rarity:rel.rarity,cost:RELIC_COST[rel.rarity],free:false,topGrade:true};}}
@@ -15536,10 +15857,11 @@ function shopHasPurchaseOpportunity(op){
 /* econ2: 리롤도 ×100 체계 · 할인은 OP 단위로 환산(§27.6 c) */
 const rerollCost=()=>{const base=BAL.rerollCosts[Math.min((run&&run.shop&&run.shop.rerollsHere)||0,BAL.rerollCosts.length-1)];
  return econOn()?Math.max(ECON.scale(1),ECON.price(ECON.scale(base),{lap:run?run.lap:1})-ECON.scale(FX().rerollDisc)):Math.max(1,base-FX().rerollDisc);};
-function reroll(){if(run.op<rerollCost()||run.t<=T_IMMINENT)return;run.op-=rerollCost();run.shop.rerolls++;run.shop.rerollsHere=(run.shop.rerollsHere||0)+1;spendT(T_REROLL,'reroll');rollOffers();renderShop();SFX.reroll();for(let i=0;i<shopSlots();i++)SFX.flip(i);}
+function reroll(){if(run.op<rerollCost()||run.t<=tImminent())return;run.op-=rerollCost();run.shop.rerolls++;run.shop.rerollsHere=(run.shop.rerollsHere||0)+1;spendT(T_REROLL,'reroll');rollOffers();renderShop();SFX.reroll();for(let i=0;i<shopSlots();i++)SFX.flip(i);}
 function buy(ouid,replaceIdx){
  const o=run.shop.offers.find(x=>x.uid===ouid);if(!o||o.sold||run.op<priceOf(o))return;
- if(o.kind==='student'&&!studentUnlocked(o.stu))return;
+ if(o.kind==='student'&&(!studentUnlocked(o.stu)||loop3On()))return; /* v3: 원정 중 영입·★ 없음(비용 차감 전 거부) */
+ if(o.kind==='supply'&&o.supply?.id==='train'&&loop3On())return;
  if(o.kind==='relic'&&(!relicOk(o.relic.id)||(run.relics.length>=BAL.relicSlots&&
   (!Number.isInteger(replaceIdx)||!run.relics[replaceIdx]))))return;
  const cost=priceOf(o),budget=offerBudget(o);
@@ -15586,7 +15908,7 @@ function learnGearRecipe(id){
 function craftGearRecipe(id){
  if(typeof META_V2==='undefined')return false;
  const status=META_V2.craftStatus(meta,run,id);if(!status.ok||run.inv.length>=INV_MAX)return false;
- const d=status.recipe,tier=1+Math.floor((run.lap-1)/2)+(gate().tier||0);
+ const d=status.recipe,tier=1+Math.floor((growthLap()-1)/2)+(gate().tier||0); /* v3: 위협 기준 */
  const trait=TRAITS.find(t=>t.id===id);if(!trait)return false;
  const item={id:uid(),slot:d.slot,base:d.name,name:d.name.replace('설계도','제작품'),
   rarity:1,tier,traits:[trait],atk:0,def:0,hp:0,spd:0,crit:0,bought:true,crafted:true};
@@ -15613,7 +15935,7 @@ function recipeShopHtml(){
  return `<section><h4>장비 제작 · 캠프당 1회</h4><div class="svl">${rows.join('')}</div></section>`;
 }
 function sellMember(idx){
- const m=run.party[idx];if(!m||run.party.length<=1)return;
+ const m=run.party[idx];if(!m||run.party.length<=1||loop3On())return; /* v3: 원정 중 동료 귀환 없음 */
  riskRememberMember(m);
  const refund=memberReturnRefund(m);run.op+=refund;
  for(const k of ['weapon','armor','acc']){const it=m.equip[k];if(!it)continue;if(run.inv.length<INV_MAX)run.inv.push(it);else if(econOn()){if(!it.bought)gainResTag('gear',{uid:it.id});}else gainMana(3);}
@@ -15790,7 +16112,7 @@ function renderShop(){
  }
  else{const sub=`${supplyOn()?`${GRADES[gradeNow()].icon}${GRADES[gradeNow()].name} 보급 · `:''}보급은 출격 1회 + 드론 2회(T 66%·33%)뿐 · 가격 ×${shopInfl()}${run.party.length>=4&&BAL.party4Price>1?` · 4인 편성 +${Math.round((BAL.party4Price-1)*100)}%`:''} · 같은 학생을 다시 사면 ★ 승급(최대 ★3) · 리롤 = ${BAL.rerollCosts.join('→')} OP 누진 + T −${T_REROLL} · 남은 OP는 귀환 시 마나석으로`,el=$('#shSub');el.textContent=sub;if(el.setAttribute)el.setAttribute('title',sub);}
  $('#shOp').textContent=run.op;
- $('#shParty').innerHTML=run.party.map((m,i)=>`<div class="pm">${ptImg(m.stu,'face')}<div class="pmi"><b>${i===0?'🚩 ':''}${m.stu.name} ${traumaBadge(m.stu.id)} <i>${'★'.repeat(m.star)}</i></b><span class="pmc">${idChipsHtml(m.stu)}<span class="hpt" data-tip="HP ${m.hp}/${m.maxHp}${m.down?' (전투불능)':''}">${icoImg('icon_stat_hp','HP')}${m.down?'✖':Math.round(m.hp/m.maxHp*100)+'%'}</span></span></div><span class="pmb">${i>0?`<button data-front="${i}" title="선두로 — 적 공격의 60%를 선두가 받습니다">▲ 선두</button>`:''}${run.party.length>1?`<button class="x" data-sell="${i}" title="매각: OP +${memberReturnRefund(m)}">매각</button>`:''}</span></div>`).join('')
+ $('#shParty').innerHTML=run.party.map((m,i)=>`<div class="pm">${ptImg(m.stu,'face')}<div class="pmi"><b>${i===0?'🚩 ':''}${m.stu.name} ${traumaBadge(m.stu.id)} <i>${'★'.repeat(m.star)}</i></b><span class="pmc">${idChipsHtml(m.stu)}<span class="hpt" data-tip="HP ${m.hp}/${m.maxHp}${m.down?' (전투불능)':''}">${icoImg('icon_stat_hp','HP')}${m.down?'✖':Math.round(m.hp/m.maxHp*100)+'%'}</span></span></div><span class="pmb">${i>0?`<button data-front="${i}" title="선두로 — 적 공격의 60%를 선두가 받습니다">▲ 선두</button>`:''}${run.party.length>1&&!loop3On()?`<button class="x" data-sell="${i}" title="매각: OP +${memberReturnRefund(m)}">매각</button>`:''}</span></div>`).join('')
   +Array.from({length:partyMax()-run.party.length},()=>'<div class="empty">빈 자리</div>').join('');
  $$('#shParty [data-sell]').forEach(b=>b.onclick=()=>{sellMember(+b.dataset.sell);renderShop();});
  $$('#shParty [data-front]').forEach(b=>b.onclick=()=>{moveFront(+b.dataset.front);SFX.click();renderShop();});
@@ -15805,7 +16127,7 @@ function renderShop(){
  {const n0=offers.filter(o=>!o.sold).length,n1=(run.shop.crates||[]).filter(c=>!c.sold).length,t=(id,v)=>{const e=$(id);if(e)e.textContent=v;};t('#shTabN0',n0);t('#shTabN1',n1);t('#shTabN2',run.hand.length);}
  {const noRoll=econOn()&&run.shop.kind==='camp'&&!run.shop.delivery; /* 캠프 팩은 진열이 없으니 리롤도 없다 */
   $('#btnReroll').hidden=noRoll;
-  if(!noRoll){$('#btnReroll').disabled=run.op<rerollCost()||run.t<=T_IMMINENT;$('#btnReroll').textContent=`🎲 리롤 (${rerollCost()} OP · T −${T_REROLL})`;}}
+  if(!noRoll){$('#btnReroll').disabled=run.op<rerollCost()||run.t<=tImminent();$('#btnReroll').textContent=`🎲 리롤 (${rerollCost()} OP · T −${T_REROLL})`;}}
  {const blocked=run.imminent||run.bossPending||run.bossSpawned,bt=$('#btnCampReturn'),ok=validSortie(run);bt.disabled=blocked;bt.textContent=blocked?'⛔ 귀환 봉쇄':ok?(econOn()&&run.shop&&run.shop.kind==='drone'?`🏁 여기서 귀환 (자원 · SP ${Math.round(ECON.keepPct('drone')*100)}%)`:'🏁 여기서 귀환 (100%)'):'🏁 귀환 (무효 — 보상 없음)';bt.title=ok?'':'전투 1회 승리 또는 캠프 1회 통과 전에는 귀환해도 마나석·SP·호감·학원가 주기가 오르지 않습니다';} /* v1.4 R4 C-04 */
  if(typeof systemCampLayout==='function')systemCampLayout();
 }
@@ -16734,7 +17056,7 @@ function boardPreview(cardId,spot){
  P.chainChanges=boardChainDiff(boardChainsFor(S),boardChainsFor(boardOverlay(S,rp,cardId))).map(boardChangeOf);
  const nf=P.chainChanges.filter(d=>d.kind==='form'&&!d.ext&&d.type==='fort').length;
  if(nf){P.cost.chainT=nf*boardFortT();P.cost.t+=P.cost.chainT;P.cost.breakPct=+(P.cost.breakPct+nf*BAL.board.fort.formT*100).toFixed(2);}
- if(off&&S.t-P.cost.t<=T_IMMINENT)W(`배치 뒤 T ${Math.max(0,S.t-P.cost.t)} — 브레이크 임박`);
+ if(off&&S.t-P.cost.t<=tImminent())W(`배치 뒤 T ${Math.max(0,S.t-P.cost.t)} — 브레이크 임박`);
  return P;
 }
 
@@ -23439,8 +23761,10 @@ function riskHud(){
  const inspected=hoverTile>=0&&run.tiles[hoverTile],next=inspected||run.tiles.slice(run.pos+1).concat(run.tiles.slice(0,run.pos+1)).find(t=>t.enemies.some(e=>e.hp>0));
  const q=next&&riskTileInfo(next),nextText=q?`${inspected?'이 칸':'앞쪽'} ${next.i}번 · ${q.count}체${q.grade.rank?' '+q.grade.label:''}`:'앞쪽 적 없음';
  const paused=speed===0||cardHold()||storyBusy()||MODAL.held();
- const timer=riskBlocked()?'증원 정지':paused?'시간 정지':active.length?`${active[0].t.i}번 +1무리 ${active[0].s.seconds}초`:'증원 대기';
- const growth=Math.round((gate().h??BAL.hpScale)*BAL.lapHpMul*(run.lap-1)*100);
+ const timer=riskBlocked()?'증원 정지':paused?'시간 정지':active.length?`${active[0].t.i}번 +1${loop3On()&&nativePacksOn(active[0].t)?'마리':'무리'} ${active[0].s.seconds}초`
+  :'증원 대기'; /* v3: 무리가 있으면 1마리 증원 */
+ const thr=typeof threatLv==='function'?threatLv():run.lap-1; /* v3: 위협 레벨 */
+ const growth=Math.round((gate().h??BAL.hpScale)*BAL.lapHpMul*thr*100);
  const now=performance.now();
  const previewKey=preview&&preview.ok?preview.cardId+':'+preview.cells.join(','):'';
  if(riskHudCache.run!==run||now-riskHudCache.at>300||riskHudCache.tile!==(next&&next.i)||riskHudCache.previewKey!==previewKey){
@@ -23454,6 +23778,7 @@ function riskHud(){
 }
 function riskArrivalText(a){if(!a)return '';if(a.boss)return '도착 전 보스 전환';return `도착 ${a.lo===a.hi?a.lo:a.lo+'~'+a.hi}체 · 약 ${Math.ceil(a.min/1000)}${Math.ceil(a.max/1000)>Math.ceil(a.min/1000)?'~'+Math.ceil(a.max/1000):''}초`;}
 function riskOpenCamp(){
+ {const l3=typeof lap3OpenCamp==='function'?lap3OpenCamp():null;if(l3!==null)return l3;} /* §29 v3 랩 정산(PC) */
  if(!riskOn()||!run||run.ended||simMode)return false;
  if(MODAL.has('riskcamp'))return true;
  if(!run.riskCampPending)return false;
@@ -23463,6 +23788,10 @@ function riskOpenCamp(){
  renderRiskCamp();MODAL.push('riskcamp');return true;
 }
 function renderRiskCamp(){
+ {const rc=document.getElementById('riskCamp');if(rc&&rc.classList)rc.classList.remove('lap3');
+  const sp=document.getElementById('lap3Supply');if(sp)sp.hidden=true;
+  const hd=rc&&rc.querySelector('header>span'),h2=rc&&rc.querySelector('header>h2');
+  if(hd)hd.textContent='B · 캠프 출발 확인';if(h2)h2.textContent='여기서 돌아갈까?';}
  const s=riskCampSummary(),el=$('#riskCampBody');if(!el)return;
  const threat=s.threat?`${s.threat.t.i}번 · ${s.threat.a.lo===s.threat.a.hi?s.threat.a.hi:s.threat.a.lo+'~'+s.threat.a.hi}체`:'현재 경로 적 없음';
  const power=s.threat?.power,powerText=power?`현재 HP 합 ${Math.ceil(power.hp)} · 공격/초 합 ${Math.round(power.attackRate)}${power.elites?' · 정예 이상 '+power.elites+'체':''}`:'';
@@ -23473,7 +23802,8 @@ function renderRiskCamp(){
  $('#riskCampContinue').textContent=s.boss?'보스까지 진행':'한 바퀴 더 진행';
 }
 {const next=$('#riskCampContinue'),back=$('#riskCampReturn');
- if(next)next.onclick=()=>{if(!run||run.ended||!MODAL.has('riskcamp'))return;run.riskCampPending=false;MODAL.pop('riskcamp');};
+ if(next)next.onclick=()=>{if(!run||run.ended||!MODAL.has('riskcamp'))return;run.riskCampPending=false;run.lapCampPending=false;
+  run.campDeferred=null;MODAL.pop('riskcamp');};
  if(back)back.onclick=()=>{if(!run||run.ended||run.imminent||run.bossPending||run.bossSpawned||!MODAL.has('riskcamp'))return;run.riskCampPending=false;endRun('camp');};
 }
 function riskPlaceCard(t,idx){
@@ -23817,7 +24147,9 @@ function update(dt){
   if(run.moveTimer>=MOVE_MS){
    run.moveTimer-=MOVE_MS;const from=run.pos;run.pos=(run.pos+1)%N;
    dispatchRuleEvent('move',{from,to:run.pos,steps:1,teleport:false});
-   spendT(1,'move');enterTile();
+   if(loop3On()){run.tMoveAcc=(run.tMoveAcc||0)+BAL.v3.moveT; /* §29 v3: 이동 2칸마다 1T(정수 유지) */
+    if(run.tMoveAcc>=1-1e-9){run.tMoveAcc-=1;spendT(1,'move');}}else spendT(1,'move');
+   enterTile();
   }
  }
  else if(run.state==='battle')battleTick(dt);
@@ -24493,7 +24825,9 @@ function hud(){
  renderActiveSynergies();
  $('#tVal').textContent=run.t;$('#tRecTxt').textContent=`회복 ${run.tRec}/${tRecCap()}`;{const pc=preview&&preview.ok&&preview.cost?preview.cost.t||0:placeCost(selectedCard!==null?run.hand[selectedCard]:null);$('#btnPlace').textContent=pc>0?`배치 확정 (T −${pc})`:'배치 확정';} /* v1.5: 가리킨 칸의 실제 비용(길가형·발자국·격전지·요새선 형성) */
  {const hot=run.imminent||run.bossPending||run.bossSpawned;$('#tnum').classList.toggle('hot',hot);$('#track').classList.toggle('hot',hot);}
- {const st=spawnTiles(true).length,dm=Math.round((dangerMult()-1)*100);const el=$('#dangerTxt');el.textContent=`소환 타일 ${st}/${dangerFreeNow()} · 이형 강화 +${dm}%`+((run.chains||[]).length?` · 🔗 ${run.chains.map(c=>CHAINS[c.kind].icon).join('')}`:'')+(run.evos.length?` · 진화 ${run.evos.map(id=>EVOS.find(e=>e.id===id).icon).join('')}`:'')+(run.counters.length?` · 대응 ${run.counters.map(k=>COUNTERS[k].icon).join('')}`:'');el.style.color=dm>0?'#b91c1c':'';}
+ {const st=spawnTiles(true).length,dm=Math.round((dangerMult()-1)*100);const el=$('#dangerTxt');
+  const th=loop3On()&&ui4On()?` · 위협 Lv ${threatLv().toFixed(1)}(${['낮','황혼','밤'][threatPhase()]})`:''; /* §29 v3 */
+  el.textContent=`소환 타일 ${st}/${dangerFreeNow()} · 이형 강화 +${dm}%`+th+((run.chains||[]).length?` · 🔗 ${run.chains.map(c=>CHAINS[c.kind].icon).join('')}`:'')+(run.evos.length?` · 진화 ${run.evos.map(id=>EVOS.find(e=>e.id===id).icon).join('')}`:'')+(run.counters.length?` · 대응 ${run.counters.map(k=>COUNTERS[k].icon).join('')}`:'');el.style.color=dm>0?'#b91c1c':'';}
  {const nx=$('#nextTxt');const pend=SHOP_MARKERS.filter(f=>!run.markers[f]).map(f=>Math.ceil(run.tStart*f));
   /* 승인 조건 3: HUD 는 보스전에 실제 적용되는 효과만 표시(미적용 효과는 title 로) */
   const ht=run.stronghold!=null&&run.tiles[run.stronghold].card?run.tiles[run.stronghold]:null,hf=ht?holdFx(ht):null;
@@ -24630,8 +24964,14 @@ function econResChips(id){
  else if(c.cls==='side')add('rec',BAL.econ.res.pass,'옆 도로 통과(랩 1회)');
  if((c.enter||{}).mana)add(id==='observatory'?ECON.kindFor('observatory',{gate:gid}):'stone',1,'진입(랩 1회)');
  return out.slice(0,3).map(o=>({...o,tier}));}
+/* §29 v3 적 역할 — 처치마다 주는 것(규칙: contracts.js killLoot)과 싸우는 방식을 카드에서 바로 읽게 */
+const ENEMY_ROLE3={golem:['장비','느리고 단단함 · 처치마다 장비 확률이 가장 높음'],slime:['결계 카드','약하고 흔함 · 처치 시 결계 카드'],
+ hound:['OP','빠름 · 약한 학생을 뭄 · 처치마다 OP'],wisp:['발견','원거리 · 소탕하면 새 카드 발견'],
+ spider:['광역','떼로 나와 광역 공격'],phantom:['흡혈','후열 저격 · 흡혈'],harpy:['비행','후열을 노림'],ghoul:['돌격','전열 돌격 · 단단함']};
 function cardChipsHtml(id){const c=CARDS[id],e=(run&&!run.ended?effOf(id):c)||c,k=e.contract,p=[];
  const ch=(ic,v,tip)=>`<span class="rc" data-tip="${escTip(tip)}">${ic}${v}</span>`;
+ {const v3=run&&!run.ended?loop3On():BAL.loop3!==false,r=e.spawn&&ENEMY_ROLE3[e.spawn];
+  if(v3&&r&&ui4On())p.push(ch('⚑',r[0],`${ENEMIES[e.spawn].name} — ${r[1]}`));}
  for(const r of econResChips(id))p.push(ch('◈',`${r.name.replace(/\(.*\)/,'')} +${r.amt}`,`${r.name} +${r.amt} — ${r.why} · 이번 게이트 단계: ${r.tier}`));
  if(k){p.push(ch(icoImg('icon_res_op'),k.op,'계약 OP '+k.op+(e.enhanced?' (강화 중)':'')));p.push(ch(icoImg('icon_res_xp'),k.xp,'XP '+k.xp));if(k.mana)p.push(ch(icoImg('icon_res_mana'),k.mana,'마나석 '+k.mana));if(k.card)p.push(ch(icoImg('icon_res_card'),k.card,'카드 '+k.card));if(k.drop)p.push(ch('🎒',Math.round(k.drop*100)+'%','장비 드랍 '+Math.round(k.drop*100)+'%'));}
  else{const en=e.enter||{},pa=e.pas||{},su=e.sup||{};
@@ -24811,10 +25151,14 @@ function rowToggleUi(i){if(!run||run.ended)return false;
 /* 분대 줄 초상 툴팁 — 접힌 줄(tight2·tight3)에서 숨는 칩(역할·동아리·사거리·특효·성향·특성·EX)을 한 줄로 */
 function memberTip(m){const st=m.stu,rc=REACH[st.reach],sy=STYLES[st.style],k=ENEMY_KINDS[st.bane];
  return `${st.name}${'★'.repeat(m.star||1)} · ${ROLES[st.role]||''} · ${CLUBS[st.club]||''} · ${m.row==='back'?'후열':'전열'} · ${rc?rc.name:''}${k?` · 특효 ${k.name}`:''}${sy?` · ${sy.name}`:''} · 특성 「${st.trait.name}」 · EX 「${st.ex.name}」`;}
+/* §29 v3 자동 장착 직후 8초: 분대 카드에 ▲변화(PC 가로만 — 모바일 화면은 그대로) */
+const gainBadge=m=>{const g=m.gain;if(!g||!run||run.time-g.t>8000||!document.body.classList.contains('ui4'))return '';
+ const t=g.atk>0?`공격 +${g.atk}`:g.def>0?`방어 +${g.def}`:g.hp>0?`HP +${g.hp}`:'';
+ return t?`<span class="u4gain">▲${t}</span>`:'';};
 function renderPanels(){
  $('#squadLv').textContent=`${run.party.length}/${partyMax()}명 · 시너지 ${synergies().filter(s=>s.on).length}`;
  $('#party').innerHTML=run.party.map(m=>{const s=stats(m);const eq=['weapon','armor','acc'].map(k=>m.equip[k]?`<span class="r${m.equip[k].rarity}" title="${m.equip[k].name} ${statStr(m.equip[k])}">${SLOT_ICON[k]}</span>`:`<span style="opacity:.3">${SLOT_ICON[k]}</span>`).join(' ');
-  return `<div class="member${m.down?' down':''}" style="--acc:${m.stu.halo}">${ptImg(m.stu,'face').replace('<img ',`<img data-tip="${escTip(memberTip(m))}" `)}<div class="mi"><div class="mn">${m.stu.name} ${traumaBadge(m.stu.id)} <i>${'★'.repeat(m.star)}</i>${idChipsHtml(m.stu)}${m.down?' <span class="kbd">✖</span>':''}</div><div class="mt">${traitChipsHtml(m.stu,m.row||'front',run.party.indexOf(m),iconHint())}${kitChipsHtml(m.stu)}</div><div class="hp" id="hp-${m.uid}"><i style="width:${(m.hpDisp==null?m.hp:m.hpDisp)/m.maxHp*100}%"></i><u></u><span>${Math.round(m.hpDisp==null?m.hp:m.hpDisp)} / ${m.maxHp}</span></div><div class="ms">${statBarsHtml({atk:s.atk,def:s.def,spd:s.spd},'mini',['atk','def','spd'])}<span class="crit" data-tip="치명 ${Math.round(s.crit*100)}%">✦${Math.round(s.crit*100)}</span><span class="eq">${eq}</span></div><button class="member-equipment" data-member-gear="${run.party.indexOf(m)}" title="장비 관리">${['weapon','armor','acc'].map(k=>`<span class="${m.equip[k]?'filled':'empty'}">${SLOT_ICON[k]} ${m.equip[k]?SLOT_NAME[k]:'비어 있음'}</span>`).join('')}</button></div></div>`;}).join('');
+  return `<div class="member${m.down?' down':''}" style="--acc:${m.stu.halo}">${ptImg(m.stu,'face').replace('<img ',`<img data-tip="${escTip(memberTip(m))}" `)}<div class="mi"><div class="mn">${m.stu.name} ${traumaBadge(m.stu.id)} <i>${'★'.repeat(m.star)}</i>${gainBadge(m)}${idChipsHtml(m.stu)}${m.down?' <span class="kbd">✖</span>':''}</div><div class="mt">${traitChipsHtml(m.stu,m.row||'front',run.party.indexOf(m),iconHint())}${kitChipsHtml(m.stu)}</div><div class="hp" id="hp-${m.uid}"><i style="width:${(m.hpDisp==null?m.hp:m.hpDisp)/m.maxHp*100}%"></i><u></u><span>${Math.round(m.hpDisp==null?m.hp:m.hpDisp)} / ${m.maxHp}</span></div><div class="ms">${statBarsHtml({atk:s.atk,def:s.def,spd:s.spd},'mini',['atk','def','spd'])}<span class="crit" data-tip="치명 ${Math.round(s.crit*100)}%">✦${Math.round(s.crit*100)}</span><span class="eq">${eq}</span></div><button class="member-equipment" data-member-gear="${run.party.indexOf(m)}" title="장비 관리">${['weapon','armor','acc'].map(k=>`<span class="${m.equip[k]?'filled':'empty'}">${SLOT_ICON[k]} ${m.equip[k]?SLOT_NAME[k]:'비어 있음'}</span>`).join('')}</button></div></div>`;}).join('');
  $$('#party [data-row]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();rowToggleUi(+b.dataset.row);}); /* 진형 무대와 같은 경로 — 교전 중 잠금 */
  {const syn=synergies(),on=syn.filter(s=>s.on),near=syn.filter(s=>!s.on&&s.have>0);$('#synergy').innerHTML=on.map(s=>`<span class="s on" title="${s.desc}">✔ ${s.name} — ${s.desc}</span>`).join('')+near.slice(0,2).map(s=>`<span class="s" title="${s.desc}">${s.name} ${s.have}/${s.needNow}</span>`).join('')||'<span class="kbd">시너지: 동아리·역할이 2명 겹치면 발동</span>';}
  renderSupplyHud();
@@ -25155,16 +25499,36 @@ function renderSchoolTabs(){
  $('#schoolTabs').innerHTML=schools.map(([k,sc])=>`<button data-sc="${k}" class="${schoolTab===k?'on':''}" style="--acc:${sc.accent}" title="${sc.name}(${sc.abbr}) · ${sc.desc}">${sc.short} <span class="kbd">${STUDENTS.filter(s=>s.school===k&&studentUnlocked(s)).length}</span></button>`).join('');
  $$('#schoolTabs button').forEach(b=>b.onclick=()=>{schoolTab=b.dataset.sc;SFX.click();renderSchoolTabs();renderStudents();});
 }
+/* §29 v3 작전실 편성(PC 가로): 리더 + 동료 최대 3명 = meta.squad[리더]. 원정 중에는 바뀌지 않는다. 모바일은 자동 추천 편성(squadFor) */
+const squadUiOn=()=>BAL.loop3!==false&&document.body.classList.contains('ui4');
+function squadToggle(id){
+ const cur=squadFor(selLeader),max=Math.max(0,partyMax()-1),next=cur.includes(id)?cur.filter(x=>x!==id):[...cur,id];
+ if(next.length>max){if(typeof toast==='function')toast(`동료는 ${max}명까지 — 먼저 한 명을 빼세요`);return;}
+ meta.squad=meta.squad||{};meta.squad[selLeader]=next;save();SFX.click();renderStudents();
+}
+function squadStripHtml(){
+ if(!squadUiOn())return '';
+ const lead=STUDENTS.find(s=>s.id===selLeader),ids=squadFor(selLeader),max=Math.max(0,partyMax()-1);
+ const face=(s,tag)=>`<span class="sq3m" data-tip="${escTip(s.name+' · '+ROLES[s.role])}">${ptImg(s,'face')}`+
+  `<small>${tag||ROLES[s.role]}</small></span>`;
+ const slots=Array.from({length:max},(_,i)=>{const s=STUDENTS.find(x=>x.id===ids[i]);
+  return s?face(s):'<span class="sq3m empty"><small>빈 칸</small></span>';}).join('');
+ return `<div class="sq3"><span class="sq3h">출격 분대<small>학생을 눌러 동행 추가 · 원정 중에는 바뀌지 않음</small></span>`+
+  `${lead?face(lead,'리더'):''}${slots}<button type="button" class="btn sm ghost" data-sq-auto>역할 고르게 자동</button></div>`;
+}
 function renderStudents(){
- $('#students').innerHTML=curriculumHtml()+STUDENTS.filter(s=>s.school===schoolTab&&studentUnlocked(s))
- .map(s=>{const {gated,locked}=stuLocked(s);
-  return `<div class="stu panel${locked?' locked':''}${pickStu===s.id?' pick':''}" data-id="${s.id}"><span class="rar r${s.rarity}">${RARITY[s.rarity].name}</span><div class="bond" data-tip="호감도">♥ Lv.${bondLv(s.id)}</div>${ptImg(s,'face')}
+ $('#students').innerHTML=squadStripHtml()+curriculumHtml()+STUDENTS.filter(s=>s.school===schoolTab&&studentUnlocked(s))
+ .map(s=>{const {gated,locked}=stuLocked(s),sq=squadUiOn()&&squadFor(selLeader).includes(s.id);
+  return `<div class="stu panel${locked?' locked':''}${pickStu===s.id?' pick':''}${sq?' sq':''}" data-id="${s.id}">${sq?'<span class="sq3tag">동행</span>':''}<span class="rar r${s.rarity}">${RARITY[s.rarity].name}</span><div class="bond" data-tip="호감도">♥ Lv.${bondLv(s.id)}</div>${ptImg(s,'face')}
   <div class="nm">${s.name} ${traumaBadge(s.id)}</div><div class="cl">${idChipsHtml(s)}${traitChipsHtml(s)}</div>${statBarsHtml(statLine(s),'mini')}
   <div class="dk" data-s="${s.id}"></div>${locked?`<div class="lkr" data-tip="${escTip(gated?lockReason(s):'보급 롤에서 만나 함께 귀환하면 리더로 해금')}">🔒</div>`:''}</div>`;}).join('');
  $$('#students .stu').forEach(el=>{const s=STUDENTS.find(x=>x.id===el.dataset.id);el.onclick=()=>{pickStu=s.id;SFX.click();$$('#students .stu').forEach(x=>x.classList.toggle('pick',x.dataset.id===s.id));renderStuDetail();$('#ldr').classList.add('open');};});
  const lead=STUDENTS.find(x=>x.id===selLeader);
  $$('#students .stu .dk').forEach(el=>{const st=STUDENTS.find(x=>x.id===el.dataset.s);dkFill(el,st,lead?lead.id:null);});
  $$('#students .stu').forEach(el=>el.classList.toggle('on',el.dataset.id===selLeader));
+ {const ab=$('#students [data-sq-auto]');
+  if(ab)ab.onclick=e=>{e.stopPropagation();if(meta.squad)delete meta.squad[selLeader];
+  save();SFX.click();renderStudents();};}
  renderStuDetail();
 }
 /* 학생 카드의 덱 연결 칩: 내 덱에 그 동아리 카드가 몇 장인지(아이콘 + 숫자, 설명은 툴팁) */
@@ -25177,10 +25541,13 @@ function renderStuDetail(){
   ${riskOn()?`<div class="trauma-care" title="교전 ${BAL.trauma.minWins}승 이상 생환: 코드 ${BAL.trauma.returnCodes}개 · 보스 격파: ${BAL.trauma.bossCodes}개 · 전멸: 0개 · OP 구매 불가">${traumaBadge(s.id)}<span>${traumaHas(s.id)?traumaText():'트라우마 없음'} · 사무소 무료 치료 ${traumaCenterStatus().remaining}/${traumaCenterStatus().limit}회 · 코드 ${meta.traumaCodes||0}개</span>${traumaHas(s.id)?`<button class="btn xs" data-trauma-heal="${s.id}" ${(meta.traumaCodes||0)<BAL.trauma.codeCost?'disabled':''}>회복 · 코드 ${BAL.trauma.codeCost}개</button>`:''}</div>`:''}
   <div class="sig" data-tip="서명 카드 「${escTip(sig.name)}」 — 이 학생이 분대에 있으면 「${escTip(CARDS[sig.morph.tile].name)}」, ★2 면 「${escTip(CARDS[sig.morph.star2].name)}」로 변신 · 고정 ${fixedFor(s.id).length}장 + 자유 ${DECK_FREE}장 · 다른 계열 카드도 자유 조합">✨ ${sgArt(s.sig)}<em>▸</em>${sgArt(sig.morph.tile)}<em>▸★2</em>${sgArt(sig.morph.star2)}</div>
   ${locked?`<div class="kbd" style="color:#b91c1c">🔒 ${gated?lockReason(s):'보급 롤에서 만나 함께 귀환하면 리더로 해금'}</div>`:''}
-  <button class="btn sm${s.id===selLeader?' pink':''}" data-lead="${s.id}" ${locked?'disabled':''}>${s.id===selLeader?'이 리더로 덱 편집 ›':'이 리더로 ›'}</button>`;
+  <button class="btn sm${s.id===selLeader?' pink':''}" data-lead="${s.id}" ${locked?'disabled':''}>${s.id===selLeader?'이 리더로 덱 편집 ›':'이 리더로 ›'}</button>`+
+  (squadUiOn()&&s.id!==selLeader&&!locked?`<button class="btn sm ghost" data-squad="${s.id}">`+
+   `${squadFor(selLeader).includes(s.id)?'동행 빼기':'동행 추가'}</button>`:'');
  const tb=$('#stuDetail [data-trauma-heal]');if(tb)tb.onclick=()=>{if(traumaRecover(s.id)){renderStudents();renderDeck();if(typeof storyRecovery==='function')storyRecovery(s.id);}};
  const lb=$('#stuDetail [data-lead]');if(lb)lb.onclick=()=>{selectLeader(s.id);SFX.click();$('#ldr').classList.remove('open');renderStudents();setStep(3);};
  const cb=$('#stuDetail [data-close]');if(cb)cb.onclick=()=>$('#ldr').classList.remove('open');
+ const sb=$('#stuDetail [data-squad]');if(sb)sb.onclick=()=>squadToggle(sb.dataset.squad);
 }
 function renderSelect(){
  if(!gateUnlocked(gate()))meta.gate='E';if(gateUnlocked(GATES[GATES.length-1]))ensureResist();
@@ -25325,7 +25692,8 @@ function renderDeck(){
 }
 function launch(){const s=STUDENTS.find(x=>x.id===selLeader);if(!s||!studentUnlocked(s)||!DECK_EDIT.ready()||storyBusy())return;save();missionOffers=null;storyFire('gateFirst',{gate:gate().id,leader:s.id},()=>startRun(s));} /* 출격 확정 직후 브리핑 대화(있으면) → 끝나면 원정 시작 */
 let gateFadeT=0;
-function startRun(s){newRun(s);if(typeof openingPrepareRun==='function')openingPrepareRun();pendingTile=null;preview=null;closeTileMenu();relicSel=null;tacSel=null;shopTab='offers';setSpeed(1);if(simMode){openShop('launch');return;}const g=gate();$('#gateLabel').innerHTML=`${g.rank}랭크 게이트 「${g.name}」<small>보스: 게이트 마스터 「${g.boss}」 · 보상 ×${g.reward} · T ${g.T}</small>`;{const gb=$('#gateBig');gb.innerHTML=`<small>GATE RANK ${g.rank}</small>${g.name}<span>게이트 마스터 「${g.boss}」</span>`;gb.classList.remove('fade');clearTimeout(gateFadeT);gateFadeT=setTimeout(()=>gb.classList.add('fade'),2000);} /* 입장 연출 2초 뒤 페이드 — 이름은 헤더(gateLabel)에 남는다 */$('#tzone').style.width=(100*T_IMMINENT/g.T)+'%';MODAL.clear();shots=[];particles=[];flash=null;dirty=true;show('s-run');openShop('launch');}
+function startRun(s){newRun(s);squadJoin();if(typeof openingPrepareRun==='function')openingPrepareRun();pendingTile=null;preview=null;closeTileMenu();relicSel=null;tacSel=null;shopTab='offers';setSpeed(1);if(simMode){if(!loop3On())openShop('launch');return;}const g=gate();$('#gateLabel').innerHTML=`${g.rank}랭크 게이트 「${g.name}」<small>보스: 게이트 마스터 「${g.boss}」 · 보상 ×${g.reward} · T ${g.T}</small>`;{const gb=$('#gateBig');gb.innerHTML=`<small>GATE RANK ${g.rank}</small>${g.name}<span>게이트 마스터 「${g.boss}」</span>`;gb.classList.remove('fade');clearTimeout(gateFadeT);gateFadeT=setTimeout(()=>gb.classList.add('fade'),2000);} /* 입장 연출 2초 뒤 페이드 — 이름은 헤더(gateLabel)에 남는다 */$('#tzone').style.width=(100*tImminent()/g.T)+'%';MODAL.clear();shots=[];particles=[];flash=null;dirty=true;show('s-run');
+ if(!loop3On())openShop('launch');} /* §29 v3: 출격 고용 없음 — 편성은 작전실에서 */
 /* v1.3 정산의 작전 평가 줄: 총점 · 등급 분포 · 종료 보너스(최대 +20%) · 평가 최고 기록(별도 필드) · 새로 열린 체계 */
 function evalLineHtml(){const ep=run.evalPay,u=run.unlockNew;let h='';
  if(ep){const L=run.score.laps.filter(l=>!l.final),hi=L.filter(l=>l.grade==='hi').length,top=L.filter(l=>l.grade==='top').length;
@@ -25388,7 +25756,8 @@ function suggestNext(reason){
  if(reason==='boss')return g_bossTip();
  if(run.cardsPlaced<=5)return `카드를 ${run.cardsPlaced}장만 놓았습니다. 소환 카드가 OP·XP의 원천이니 첫 랩에 3~4장을 놓아보세요.`;
  if(syn===0)return '시너지가 없었습니다. 같은 동아리·역할을 2명 맞추면 전원이 강해집니다.';
- if(!star2&&run.purchases>=3)return `★ 승급이 없었습니다. ${econOn()?'캠프 영입 팩에서':'드론에서'} 보유 학생이 다시 나오면 승급해 보세요.`;
+ if(!star2&&run.purchases>=3)return run.rulesV>=3?'★는 원정 밖에서 오릅니다 — 사무소에서 동료를 성장 Lv4까지 키우면 ★2로 출격합니다.'
+  :`★ 승급이 없었습니다. ${econOn()?'캠프 영입 팩에서':'드론에서'} 보유 학생이 다시 나오면 승급해 보세요.`;
  return `무사 귀환. 마나석 ${run.result.gained}·SP ${run.result.spG}로 사무소를 강화하면 다음 원정이 쉬워집니다.`;
 }
 function g_bossTip(){if(!campaignIsMain(run))return '반복 작전을 마쳤습니다. 자원을 사용하거나 다른 작전·인연 의뢰를 진행하세요.';const nxt=GATES[GATES.findIndex(x=>x.id===gate().id)+1];return nxt?`게이트 폐쇄. ${nxt.rank}랭크 「${nxt.name}」이 열렸습니다 — 작전실(4인)과 스킬 트리를 먼저 채우세요.`:'메인 공략을 마쳤습니다. 동료별 인연을 이어가거나 위험 작전과 점수 기록에 도전하세요.';}
@@ -25821,7 +26190,7 @@ function metaUiLeaderChoices(){
  if(targets.length&&unchosen)html='<p>캠프에서 지령을 적용할 거점을 지정하세요.</p>'+html;
  if(d.target==='budget')html+='<div class="meta-button-row">'+['supply','upgrade'].map(v=>
   `<button data-meta-budget="${v}" aria-pressed="${s.choice.budget===v}" ${camp?'':'disabled'}>`+
-  (v==='supply'?'다음 보급 할인':'다음 승급 할인')+'</button>').join('')+'</div>';
+  (v==='supply'?'다음 보급 할인':run&&run.rulesV>=3?'다음 타일 강화 할인':'다음 승급 할인')+'</button>').join('')+'</div>';
  if(s.terrain)html+='<div class="meta-button-row">'+['settle','clear'].map(v=>
   `<button data-meta-terrain="${v}" ${camp?'':'disabled'}>${v==='settle'?'유예 지형 정착':'유예 지형 정리'}</button>`
  ).join('')+'</div>';
@@ -26933,6 +27302,65 @@ function gear4Tile(it,opts){
  return icon+`<span class="g4tx"><b class="r${it.rarity}">${camp4Esc(it.name)}</b>`+
   `<span class="g4sts">${gear4Stats(it)}</span>`+
   `${gear4Traits(it)}</span>`;
+}
+/* ===== §29 루프 v3 랩 정산(PC 가로 · camp-v4): 캠프마다 한 번 멈춰 지난 랩 결과 · 강해진 동료 · 다음 시간대 · 분대를 보여 주고
+ * [보급 열기] [귀환] [한 바퀴 더] 중 고른다. 보급 창은 이 창에서 열어 캠프에서 두 번 멈추지 않는다. 모바일·시뮬은 기존 흐름 ===== */
+const lap3On=()=>typeof loop3On==='function'&&loop3On()&&document.body.classList.contains('ui4');
+function lap3Defer(crates,can,tile){ /* econCampSupply: PC v3 는 바로 열지 않고 정산 창의 버튼으로(이 캠프 한정) */
+ if(!lap3On())return false;run.campDeferred={lap:run.lap,camps:run.camps,crates,can,tile};return true;
+}
+function lap3OpenCamp(){
+ if(typeof run==='undefined'||!run||run.ended||!run.lapCampPending)return null;
+ if(!lap3On()||run.bossPending||run.bossSpawned){run.lapCampPending=false;return null;}
+ if(MODAL.has('riskcamp'))return true;
+ if(MODAL.held()||(typeof storyBusy==='function'&&storyBusy())||(typeof cardHold==='function'&&cardHold()))return false;
+ lap3Render();run.lapCampPending=false;MODAL.push('riskcamp');return true;
+}
+const lap3Li=(label,val,cls)=>`<li class="${cls||''}"><span>${label}</span><b>${val}</b></li>`;
+function lap3Render(){
+ const el=document.getElementById('riskCamp'),body=document.getElementById('riskCampBody');if(!el||!body)return;
+ el.classList.add('lap3');const D=run.lapDone||{},h=(gate().h??BAL.hpScale)*BAL.lapHpMul;
+ const th=threatLv(),ph=threatPhase(),names=['낮','황혼','밤'],eqs=D.equips||[];
+ const nextT=ph<2?Math.max(0,Math.ceil(run.t-run.tStart*(1-(ph+1)/3))):run.t;
+ const res=Object.values(D.res||{}).reduce((a,n)=>a+n,0);
+ const got=lap3Li('OP','+'+(D.op||0))+lap3Li('장비','+'+(D.items||0))+lap3Li('카드','+'+(D.cards||0))+
+  lap3Li('소재','+'+res)+lap3Li('처치',D.kills||0)+lap3Li('쓰러짐',D.downs||0,D.downs?'bad':'');
+ const delta=x=>[['공격','atk'],['방어','def'],['HP','hp']].filter(([,k])=>x[k]&&x[k][0]!==x[k][1])
+  .map(([n,k])=>`${n} ${x[k][0]}→${x[k][1]}`).join(' · ')||'능력치 변화 없음(특성)';
+ const eq=eqs.slice(-4).map(x=>`<li><b>${camp4Esc(x.name)}</b> ${SLOT_NAME[x.slot]||x.slot}`+
+  `<span>${delta(x)}</span></li>`).join('');
+ const packs=Object.values(run.packs).filter(p=>!p.paid&&p.alive>0&&p.reward),mobs=packs.reduce((a,p)=>a+p.alive,0);
+ const party=(D.hp||[]).map(x=>{const now=run.party.find(m=>m.stu.id===x.id),pct=x.down?0:Math.round(x.hp/x.max*100);
+  const nowPct=now?Math.round(now.hp/now.maxHp*100):0;
+  return `<li class="${x.down?'bad':pct<35?'low':''}"><span>${camp4Esc(x.name)}</span>`+
+   `<i><u style="width:${pct}%"></u></i>`+
+   `<small>${x.down?'쓰러짐':pct+'%'} → ${nowPct}%</small></li>`;}).join('');
+ const keep=camp4ReturnPreview(),T=BAL.v3.threat;
+ body.innerHTML=`<div class="l3grid"><section><h4>LAP ${D.lap||Math.max(1,run.lap-1)} 결과</h4>`+
+  `<ul class="l3got">${got}</ul></section>`+
+  `<section><h4>강해진 동료 <small>자동 장착 ${eqs.length}</small></h4>`+
+  (eq?`<ul class="l3eq">${eq}</ul>`:'<p class="l3none">이번 바퀴 장착 변화 없음</p>')+'</section>'+
+  `<section class="l3next"><h4>다음 바퀴</h4><p><b>${names[ph]}</b> · ${ph<2?`${names[ph+1]}까지`:'보스까지'} T ${nextT}</p>`+
+  `<p>위협 Lv <b>${th.toFixed(1)}</b> <small>시간대 ${T.phase[ph]} + 배치 ${run.cardsPlaced||0}장 × ${T.perTile}</small></p>`+
+  `<p>새로 나오는 이형 HP <b>+${Math.round(h*th*100)}%</b> <small>지역 배율 별도</small></p>`+
+  `<p>지도의 무리 ${packs.length} · 이형 ${mobs}마리</p></section>`+
+  `<section><h4>분대 <small>캠프 회복 전 → 지금</small></h4><ul class="l3party">${party}</ul></section></div>`+
+  (keep.valid?`<p class="l3keep">지금 귀환하면 모은 자원의 <b>${Math.round((keep.keep||1)*100)}%</b>`+
+   (keep.items.length?' — '+keep.items.slice(0,3).map(x=>`${camp4Esc(x.name)} +${x.n}`).join(' · '):'')+'</p>'
+   :'<p class="l3keep">아직 무효 출격 — 전투에서 이기면 귀환 보상이 생깁니다.</p>');
+ const hd=el.querySelector('header>span'),h2=el.querySelector('header>h2');
+ if(hd)hd.textContent='캠프 · 랩 정산';if(h2)h2.textContent='한 바퀴 더 돌까요?';
+ const blocked=run.imminent||run.bossPending||run.bossSpawned,ret=document.getElementById('riskCampReturn');
+ if(ret){ret.disabled=blocked;ret.textContent=blocked?'귀환 봉쇄':`귀환 · ${Math.round((keep.keep||1)*100)}% 보존`;}
+ const go=document.getElementById('riskCampContinue');if(go)go.textContent='한 바퀴 더';
+ let sup=document.getElementById('lap3Supply');
+ if(!sup&&ret){sup=document.createElement('button');sup.id='lap3Supply';sup.type='button';sup.className='btn gold';
+  ret.parentElement.insertBefore(sup,ret.parentElement.firstChild);
+  sup.onclick=()=>{if(!run||run.ended||!MODAL.has('riskcamp'))return;const d=run.campDeferred;run.campDeferred=null;
+   MODAL.pop('riskcamp');run.lapCampPending=false;
+   if(d&&d.lap===run.lap&&d.camps===run.camps&&!run.imminent){run.shop.crates=d.crates;openShop('camp');}};}
+ {const d=run.campDeferred,ok=!!(d&&d.lap===run.lap&&d.camps===run.camps);
+  if(sup){sup.hidden=!ok;if(ok)sup.textContent=d.can>0?`보급 열기 · 살 수 있는 팩 ${d.can}`:'보급·정비 열기';}}
 }
 Object.assign(window.GL=window.GL||{},{camp4Render,camp4ReturnPreview,gear4Tile,l4Render});
 
@@ -28468,6 +28896,7 @@ function openingPrepareRun(){
  const o=openingState();
  if(!o.enabled||meta.cleared.E||run.campaign?.region!=='E'||!campaignIsMain(run))return;
  run.openingAttempt=true;
+ if(typeof loop3On==='function'&&loop3On())return; /* §29 v3: 첫 E 도 작전실 편성(squadJoin) — 수동 편성을 덮지 않는다 */
  for(const id of ['harin','chaewon','seoyul']){
   const student=STUDENTS.find(s=>s.id===id);
   if(student&&!run.party.some(m=>m.stu.id===id)&&run.party.length<partyMax())addMember(student,true);
@@ -29423,6 +29852,7 @@ function systemCampLayout(){
   gear.before(team);team.onclick=()=>openRoster();
  }
  team.innerHTML=supplyIcon('team')+`<span>팀 편성 · 대기 ${(run.reserve||[]).length}</span>`;
+ team.hidden=loop3On(); /* §29 v3: 동료 구성은 작전실에서만 */
  if(typeof mobileCampLayout==='function')mobileCampLayout();
  systemCampConsole();
  if(typeof camp4Render==='function')camp4Render(); /* PC 가로 캠프 상점(src/ui/camp-v4.js) */
@@ -29836,7 +30266,7 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="5daa685c51f99069";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
+<script>(()=>{const version="8ad72acc6c01e864";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
 .du-m canvas.attack-sd {
  height:clamp(48px,19dvh,150px); width:auto; max-height:100%; min-height:0;
  transform:none; display:block; pointer-events:none;
