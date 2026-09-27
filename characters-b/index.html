@@ -4642,6 +4642,130 @@ body.ui4 #s-select .sq3 .btn{margin-left:auto}
 body.ui4 #s-select .stu.sq{box-shadow:0 0 0 3px var(--u4-blue)}
 body.ui4 #s-select .stu .sq3tag{position:absolute;right:8px;top:8px;z-index:2;padding:1px 8px;border-radius:9px;
   background:var(--u4-blue);color:#fff;font:700 13px var(--fn)}
+
+/* ── 30. §29.4 성장 트리 — 지휘실 노드 그래프(growth-tree.js gtCommandRender). 원래 목록(#tree 등)은 숨기고 같은 칸에.
+ * 열 = 보조 a · 핵심 · 보조 b, 행 = 단. 선: 기본 회색 · 산 노드에서 나가는 선 하늘 점선 · 양끝을 산 선 파랑.
+ * 노드: 산 것(✓) · 살 수 있음(빛남) · 재화 부족 · 지역 조건(배지) · 선행 미충족만 실루엣(??). 오른쪽 상세 = 필요/보유/강화 후 ── */
+body.ui4 #s-academy .atab.gt-on>:not(#gtCommand){display:none!important}
+body.ui4 #s-academy .atab.gt-on>#gtCommand{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:8px}
+body.ui4 #gtCommand .gt-head{display:flex;align-items:center;gap:10px}
+body.ui4 #gtCommand .gt-trees{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+body.ui4 #gtCommand .gt-wallet{padding:0 8px 6px 0}
+body.ui4 #gtCommand .gt-trees button,body.ui4 #gtCommand .gt-branches button{display:flex;align-items:center;
+  justify-content:center;gap:8px;height:44px;border:0;border-radius:12px;background:#fff;color:var(--u4-ink);
+  font:700 16px var(--fn);box-shadow:inset 0 0 0 2px var(--u4-line);cursor:pointer}
+body.ui4 #gtCommand .gt-trees button small,body.ui4 #gtCommand .gt-branches button small{font-size:13px;
+  font-weight:400;color:var(--u4-sub)}
+body.ui4 #gtCommand .gt-trees button[aria-pressed=true]{background:var(--u4-blue);color:#fff;box-shadow:none}
+body.ui4 #gtCommand .gt-trees button[aria-pressed=true] small{color:#fff;opacity:.9}
+body.ui4 #gtCommand .gt-branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+body.ui4 #gtCommand .gt-branches button{height:40px;font-size:15px}
+body.ui4 #gtCommand .gt-branches button img{width:24px;height:24px}
+body.ui4 #gtCommand .gt-branches button[aria-pressed=true]{background:var(--u4-sky);
+  box-shadow:inset 0 0 0 2px var(--u4-blue);color:var(--u4-blue2)}
+body.ui4 #gtCommand .gt-hint{margin:0;font-size:13px;color:var(--u4-sub)}
+body.ui4 #gtCommand .gt-body{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:10px}
+body.ui4 #gtCommand .gt-graph{position:relative;min-height:0;border-radius:14px;background:var(--u4-bg2);
+  box-shadow:inset 0 0 0 1px var(--u4-line);overflow:hidden}
+body.ui4 #gtCommand .gt-lines{position:absolute;inset:0;width:100%;height:100%}
+body.ui4 #gtCommand .gt-lines line{stroke:#C9D8EA;stroke-width:3;stroke-linecap:round}
+body.ui4 #gtCommand .gt-lines line.open{stroke:var(--u4-cyan);stroke-dasharray:6 6}
+body.ui4 #gtCommand .gt-lines line.on{stroke:var(--u4-blue);stroke-width:4}
+body.ui4 #gtCommand .gt-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;
+  align-items:center;gap:6px;width:120px;padding:0;border:0;background:none;color:var(--u4-ink);cursor:pointer}
+body.ui4 .gt-hex{position:relative;display:grid;place-items:center;width:62px;height:62px;
+  background:var(--gt-tile) center/contain no-repeat;filter:drop-shadow(0 4px 6px rgba(40,90,150,.25))}
+body.ui4 .gt-hex img{width:62%;height:62%;object-fit:contain}
+body.ui4 .gt-hex i{font:700 22px var(--fn);font-style:normal;color:#fff}
+body.ui4 #gtCommand .gt-node.core .gt-hex{width:76px;height:76px}
+body.ui4 #gtCommand .gt-node b{max-width:118px;font:700 14px/1.2 var(--fn);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+body.ui4 #gtCommand .gt-node small{margin-top:-5px;font-size:12px;color:var(--u4-sub)}
+body.ui4 .gt-hex .gt-ok{position:absolute;right:-2px;bottom:0;width:22px;height:22px;border-radius:50%;
+  background:#3CCB9A;color:#fff;font:700 13px/22px var(--fn);font-style:normal;text-align:center;
+  box-shadow:0 0 0 2px #fff}
+body.ui4 .gt-hex .gt-zone{position:absolute;right:-6px;top:-4px;padding:0 6px;border-radius:8px;background:#61789A;
+  color:#fff;font:700 12px/18px var(--fn);font-style:normal}
+body.ui4 #gtCommand .gt-node.sil .gt-hex{filter:grayscale(1) brightness(.85) opacity(.7)}
+body.ui4 #gtCommand .gt-node.sil b{color:var(--u4-sub)}
+body.ui4 #gtCommand .gt-node:is(.poor,.zone,.alt) .gt-hex{filter:saturate(.55) opacity(.9)}
+body.ui4 #gtCommand .gt-node.alt b{text-decoration:line-through;color:var(--u4-sub)}
+body.ui4 #gtCommand .gt-node.can .gt-hex{animation:gtGlow 1.6s ease-in-out infinite}
+body.ui4 #gtCommand .gt-node.can small{color:var(--u4-blue2);font-weight:700}
+body.ui4 #gtCommand .gt-node.poor small{color:#C26A00}
+body.ui4 #gtCommand .gt-node.sel .gt-hex::after{content:"";position:absolute;inset:-4px;border-radius:50%;
+  box-shadow:0 0 0 3px var(--u4-blue),0 0 0 6px rgba(28,140,255,.18)}
+body.ui4 #gtCommand .gt-node:focus-visible{outline:3px solid var(--u4-blue);outline-offset:2px;border-radius:12px}
+@keyframes gtGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(57,199,255,0))}
+  50%{filter:drop-shadow(0 0 10px rgba(57,199,255,.95))}}
+@media (prefers-reduced-motion:reduce){body.ui4 #gtCommand .gt-node.can .gt-hex{animation:none}}
+body.ui4 #gtCommand .gt-detail{display:flex;flex-direction:column;gap:8px;min-height:0;overflow-y:auto;padding:14px;
+  border-radius:14px;background:#fff;box-shadow:inset 0 0 0 2px var(--u4-line)}
+body.ui4 #gtCommand .gt-detail.can{box-shadow:inset 0 0 0 2px var(--u4-blue)}
+body.ui4 .gt-dh{display:flex;align-items:center;gap:10px}
+body.ui4 .gt-hex.big{width:64px;height:64px;flex:none}
+body.ui4 .gt-dh small{font-size:13px;color:var(--u4-sub)}
+body.ui4 .gt-dh h4{margin:2px 0 0;font:400 20px/1.2 var(--fd);color:var(--u4-ink)}
+body.ui4 #gtCommand .gt-eff{margin:0;font-size:15px;line-height:1.45;color:var(--u4-ink)}
+body.ui4 #gtCommand :is(.gt-scope,.gt-req){margin:0;font-size:13px;line-height:1.4;color:var(--u4-sub)}
+body.ui4 #gtCommand .gt-cost{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;padding:8px 10px;
+  border-radius:10px;background:#F3F8FD;font-size:13px;color:var(--u4-sub)}
+body.ui4 #gtCommand .gt-cost>span:first-child{font-weight:800;color:var(--u4-ink)}
+body.ui4 #gtCommand .gt-cost b{color:var(--u4-ink)}
+body.ui4 #gtCommand .gt-cost strong{grid-column:1/-1;color:var(--u4-blue2)}
+body.ui4 #gtCommand .gt-cost.short :is(strong,b){color:var(--u4-red)}
+body.ui4 #gtCommand .gt-act{margin-top:auto;display:flex;gap:6px}
+body.ui4 #gtCommand .gt-act .btn{flex:1;height:46px;margin:0;font-size:15px}
+body.ui4 #gtCommand .gt-act .pinb{flex:none;width:46px;height:46px;border:0;border-radius:12px;background:#fff;
+  box-shadow:inset 0 0 0 1px var(--u4-line);cursor:pointer}
+body.ui4 #gtCommand .gt-act .pinb.on{box-shadow:inset 0 0 0 2px var(--u4-blue)}
+body.ui4 #gtCommand .gt-or{position:absolute;transform:translate(-50%,-50%);padding:1px 8px;border-radius:9px;
+  background:#FFF4DA;color:#9A6200;font:700 12px var(--fn);box-shadow:0 0 0 2px #fff;pointer-events:none}
+body.ui4 #gtMode{display:none}
+
+/* ── 31. §29.4 캐릭터 [성장] 탭(growth-tree.js profileGrowth) — Lv1~10 경로 5칸×2줄(뱀 모양) · 이정표 배지 ·
+ * 다음 성장 상세 · 교본 모으기. PC·모바일 공통(모바일은 같은 구조를 좁은 폭으로) ── */
+.gt-char{display:flex;flex-direction:column;gap:10px}
+.gt-char>header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gt-char>header b{font-size:20px}
+.gt-char>header small{color:#61789A}
+.gt-path{--gt-line:#C9D8EA;position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-rows:74px 74px;gap:6px 4px;margin:0;padding:0;list-style:none;
+  background:linear-gradient(var(--gt-line),var(--gt-line)) 10% 20px/80% 4px no-repeat,
+   linear-gradient(var(--gt-line),var(--gt-line)) 10% 100px/80% 4px no-repeat,
+   linear-gradient(var(--gt-line),var(--gt-line)) calc(90% - 2px) 22px/4px 80px no-repeat}
+.gt-lv{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;text-align:center}
+.gt-orb{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#EEF3F9;color:#61789A;
+  font-weight:700;font-size:16px;line-height:1;box-shadow:0 0 0 3px #fff,0 0 0 5px #D2E2F1}
+.gt-lv small{font-size:12px;color:#61789A}
+.gt-lv em{max-width:100%;padding:0 6px;border-radius:8px;background:#FFF4DA;color:#9A6200;font-size:11px;
+  font-weight:700;line-height:16px;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gt-lv i{font-size:11px;font-style:normal;color:#61789A}
+.gt-lv.own .gt-orb{background:#1C8CFF;color:#fff;box-shadow:0 0 0 3px #fff,0 0 0 5px #1C8CFF}
+.gt-lv.can .gt-orb{background:#fff;color:#0F6FE0;box-shadow:0 0 0 3px #fff,0 0 0 5px #39C7FF;
+  animation:gtOrb 1.6s ease-in-out infinite}
+.gt-lv.poor .gt-orb{background:#fff;color:#C26A00;box-shadow:0 0 0 3px #fff,0 0 0 5px #F2A43A}
+.gt-lv.zone .gt-orb{background:#DCE4EE;color:#61789A}
+.gt-lv.later{opacity:.72}
+@keyframes gtOrb{50%{box-shadow:0 0 0 3px #fff,0 0 0 5px #39C7FF,0 0 14px 4px rgba(57,199,255,.6)}}
+@media (prefers-reduced-motion:reduce){.gt-lv.can .gt-orb{animation:none}}
+.gt-next{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px 12px;padding:10px 12px;
+  border-radius:12px;background:#F3F8FD;box-shadow:inset 0 0 0 1px #D2E2F1}
+.gt-next small{font-size:12px;color:#61789A}
+.gt-next h4{margin:2px 0;font-size:16px}
+.gt-next p{margin:0;font-size:13px;color:#61789A}
+.gt-next .gt-cost{grid-column:1;display:flex;gap:8px;padding:0;background:none;font-size:13px}
+.gt-next .gt-cost.short b{color:#F0435F}
+.gt-next .gt-buy{grid-column:2;grid-row:1/span 2;min-width:120px}
+.gt-next.max{display:block}
+.gt-supply p{margin:0 0 6px;font-size:13px;color:#61789A}
+.gt-supply>div{display:flex;flex-wrap:wrap;gap:6px}
+.gt-supply small{opacity:.75}
+body.ui4 #characterProfile .profile-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+body.ui4 #characterProfile .profile-tabs button{height:36px}
+#gtMode{display:flex;gap:6px;margin:0 0 6px}
+#gtMode button{flex:1;min-height:36px;border:1px solid #D2E2F1;border-radius:10px;background:#fff;font-weight:700}
+#gtMode button[aria-pressed=true]{background:#1C8CFF;border-color:#1C8CFF;color:#fff}
 </style>
 </head>
 <body>
@@ -4651,7 +4775,7 @@ body.ui4 #s-select .stu .sq3tag{position:absolute;right:8px;top:8px;z-index:2;pa
   <div class="hero echo-title">
     <img class="title-mobile-character" src="media/00cc8a4c966402e7e39f2f7bb7176b8e9bb40c4de88ab6829ba52c4d81a9b193.webp" alt="유하린">
     <div class="title-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
-    <header class="title-topline"><span class="title-brand"><span aria-hidden="true">◈</span> LooP <i>/</i> HUNTER OFFICE</span><span class="title-edition">v3.0.0 · 원정과 인연</span></header>
+    <header class="title-topline"><span class="title-brand"><span aria-hidden="true">◈</span> LooP <i>/</i> HUNTER OFFICE</span><span class="title-edition">v3.1.0 · 원정과 인연</span></header>
     <main class="title-content">
       <div class="title-eyebrow"><span></span> 우리의 다음 이야기는, 다시 여기서.</div>
       <h1 class="title-logo" aria-label="LoopGirl · 루프 걸">
@@ -7389,13 +7513,22 @@ const ECON = (() => {
     const s = (typeof SCHOOLS === 'object' && SCHOOLS && SCHOOLS[id]) ? SCHOOLS[id] : null;
     return s ? (s.short || s.abbr || id) : id;
   };
-  const bookId = (school, tier) => 'book_' + school + '_t' + tier;
-  const coreId = (role, tier) => 'core_' + role + '_t' + tier;
+  /* §29.4 v3.1: 교본·코어는 단계 없이 학교·역할당 한 종류(1:1 통합). 단계 인자는 호환용으로 받고 무시한다 */
+  const bookId = school => 'book_' + school;
+  const coreId = role => 'core_' + role;
+  /* 옛 단계 키(book_<학교>_t1~3 · core_<역할>_t1~3) → 통합 키. 옛 저장·정산 입력에만 남는다 */
+  const canon = k => {
+    const x = typeof k === 'string' ? /^(book|core)_([a-z]+)_t[123]$/.exec(k) : null;
+    return x ? x[1] + '_' + x[2] : k;
+  };
   const DEFS = (() => {
     const m = {};
-    for (const t of TIERS) {
-      for (const s of SCHOOL_IDS) m[bookId(s, t.id)] = { id: bookId(s, t.id), cls: 'char', group: 'book', school: s, tier: t.id, name: schoolShort(s) + ' 교본(' + t.name + ')', chip: 'book' };
-      for (const r of ROLE_IDS) m[coreId(r, t.id)] = { id: coreId(r, t.id), cls: 'char', group: 'core', role: r, tier: t.id, name: ROLE_CORE[r] + '(' + t.name + ')', chip: 'core' };
+    for (const s of SCHOOL_IDS) {
+      m[bookId(s)] = { id: bookId(s), cls: 'char', group: 'book', school: s, tier: 0,
+        name: schoolShort(s) + ' 교본', chip: 'book' };
+    }
+    for (const r of ROLE_IDS) {
+      m[coreId(r)] = { id: coreId(r), cls: 'char', group: 'core', role: r, tier: 0, name: ROLE_CORE[r], chip: 'core' };
     }
     m.mem = { id: 'mem', cls: 'mem', group: 'mem', name: '기억 조각', chip: 'mem' };
     m.stone = { id: 'stone', cls: 'guild', group: 'guild', name: '결계석', chip: 'stone' };
@@ -7403,7 +7536,33 @@ const ECON = (() => {
     m.part = { id: 'part', cls: 'guild', group: 'guild', name: '부품', chip: 'part' };
     return m;
   })();
-  const defOf = k => (typeof k === 'string' && own(DEFS, k)) ? DEFS[k] : null;
+  const defOf = k => { const c = canon(k); return (typeof c === 'string' && own(DEFS, c)) ? DEFS[c] : null; };
+  /* 옛 키를 통합 키로 더하고 지운다(제자리). 계정 로드·정산 입력에서 쓴다 */
+  function foldRes(o) {
+    if (!o || typeof o !== 'object') return o;
+    for (const k of Object.keys(o)) {
+      const c = canon(k); if (c === k) continue;
+      o[c] = num(o[c], 0) + num(o[k], 0); delete o[k];
+    }
+    return o;
+  }
+  /* 소수 누적 합산(제자리): 옛 키를 더한 합의 정수 부분은 res 로 옮기고(0.7+0.6 → 1 지급 + 0.3) 옮긴 양을 돌려준다 */
+  function foldFrac(frac, res) {
+    const moved = {};
+    if (!frac || typeof frac !== 'object') return moved;
+    const merged = new Set();
+    for (const k of Object.keys(frac)) {
+      const c = canon(k); if (c === k) continue;
+      frac[c] = num(frac[c], 0) + num(frac[k], 0); delete frac[k]; merged.add(c);
+    }
+    for (const k of merged) {
+      const v = num(frac[k], 0), g = Math.floor(v + EPS);
+      if (g < 1) continue;
+      frac[k] = normFrac(v - g); moved[k] = g;
+      if (res) res[k] = num(res[k], 0) + g;
+    }
+    return moved;
+  }
   const classOf = k => { const d = defOf(k); return d ? d.cls : null; };
   const tierOfGate = g => {
     for (const t of TIERS) if (t.gates.indexOf(g) >= 0) return t.id;
@@ -7418,7 +7577,7 @@ const ECON = (() => {
     return e ? (e.kind || null) : null;
   };
   /* ctx = {gate, school(서명 주인 학원), enemy(이형 id) 또는 kind(계열), role, kind(고정 종류 — mission)} */
-  const valid = k => (defOf(k) ? k : null);
+  const valid = k => (defOf(k) ? canon(k) : null); /* §29.4 옛 단계 키가 들어와도 통합 키로 */
   function kindFor(tag, ctx) {
     ctx = ctx || {};
     const tier = ctx.tier || tierOfGate(ctx.gate);
@@ -7475,12 +7634,13 @@ const ECON = (() => {
   function gainRes(res, kind, n, gate) {
     const want = int0(n);
     if (!res || !defOf(kind) || want <= 0) return 0;
+    kind = canon(kind); foldRes(res);
     const room = capOf(kind, gate) - num(res[kind], 0);
     const g = Math.max(0, Math.min(want, room));
     if (g > 0) res[kind] = (res[kind] || 0) + g;
     return g;
   }
-  const capped = (res, kind, gate) => !!defOf(kind) && !!res && num(res[kind], 0) >= capOf(kind, gate);
+  const capped = (res, kind, gate) => !!defOf(kind) && !!res && num(foldRes(res)[canon(kind)], 0) >= capOf(kind, gate);
 
   /* ---- 계약 감쇠(b C-1): 순번 n(그 칸 계약의 몇 번째 유효 정산, 0부터) ---- */
   const decayTable = () => { const d = B().decay; return Array.isArray(d) && d.length ? d : [1, 0.75, 0.5, 0.25]; };
@@ -7584,14 +7744,16 @@ const ECON = (() => {
    * 반환 {grant 종류별 정수, frac 다음으로 넘길 소수, keep 비율} — frac 은 새 객체(입력을 고치지 않는다) */
   function settle(input) {
     input = input || {};
-    const res = input.res || {}, reason = reasonOf(input.reason), keep = keepPct(input.reason);
+    const res = foldRes(Object.assign({}, input.res || {}));
+    const reason = reasonOf(input.reason), keep = keepPct(input.reason);
     const frac = Object.assign({}, input.frac || {});
     /* 무효 출격은 아무것도 주지 않고 소수 누적도 건드리지 않는다(a) */
     if (reason === 'void') return { grant: {}, frac, keep: 0 };
+    const carry = foldFrac(frac, null); /* §29.4 옛 키 소수 합의 정수 부분 — 지급에 더한다 */
     const ev = evalOf(input.evalBonus);
     const bonus = reason === 'boss' ? bossBonus(res, input) : {};
     const grant = {};
-    const kinds = new Set(Object.keys(res).concat(Object.keys(bonus)));
+    const kinds = new Set(Object.keys(res).concat(Object.keys(bonus), Object.keys(carry)));
     for (const k of kinds) {
       if (!defOf(k)) continue;
       const isMem = classOf(k) === 'mem';
@@ -7600,7 +7762,7 @@ const ECON = (() => {
       if (!isMem) v *= (1 + ev);
       const total = v + normFrac(frac[k]);
       const g = Math.floor(total + EPS);
-      grant[k] = g;
+      grant[k] = g + num(carry[k], 0);
       frac[k] = normFrac(total - g);
     }
     return { grant, frac, keep };
@@ -7619,15 +7781,29 @@ const ECON = (() => {
 
   /* ---- 학생 성장(l-4): Lv 1~10, 그 학생의 학원 교본 + 역할 코어(+ 높은 Lv 는 기억 조각) ---- */
   const growthTable = () => { const g = B().growth; return Array.isArray(g) && g.length ? g : []; };
-  const growthMax = () => growthTable().length;
-  /* lv = 올리려는 Lv(1부터). 반환 {kind:양} — 학원 · 역할은 그 학생 것, 단계는 표가 정한다 */
+  /* §29.4 v3.1 캐릭터 트리 가격표(META_V2_CONFIG.growthTrees.character.costs) — 그 학생 학교 교본만 */
+  const treeCosts = () => (typeof META_V2_CONFIG === 'object' && META_V2_CONFIG && META_V2_CONFIG.growthTrees)
+    ? META_V2_CONFIG.growthTrees.character.costs : null;
+  const growthMax = () => (treeCosts() || growthTable()).length;
+  /* lv = 올리려는 Lv(1부터). 반환 {교본 키: 양} */
   function growthCost(lv, school, role) {
+    const c = treeCosts();
+    if (!c) return legacyGrowthCost(lv, school, role, true);
+    const n = num(lv, 0);
+    if (!(n >= 1 && n <= c.length)) return null;
+    const bk = valid(bookId(school));
+    return bk ? { [bk]: c[Math.floor(n) - 1] } : null;
+  }
+  /* 옛 표(교본+코어+기억, 단계 키) — costsV2 이관을 옛 의미 그대로 계산할 때만 쓴다. merged 면 통합 키로 */
+  function legacyGrowthCost(lv, school, role, merged) {
     const t = growthTable(), n = num(lv, 0), row = (n >= 1 && n <= t.length) ? t[Math.floor(n) - 1] : null;
     if (!row) return null;
     const [book, core, tier, mem] = row, out = {};
-    const bk = valid(bookId(school, tier)), co = valid(coreId(role, tier));
-    if (book > 0) { if (!bk) return null; out[bk] = book; }
-    if (core > 0) { if (!co) return null; out[co] = core; }
+    if (SCHOOL_IDS.indexOf(school) < 0 || ROLE_IDS.indexOf(role) < 0) return null;
+    const bk = merged ? bookId(school) : 'book_' + school + '_t' + tier;
+    const co = merged ? coreId(role) : 'core_' + role + '_t' + tier;
+    if (book > 0) out[bk] = book;
+    if (core > 0) out[co] = core;
     if (mem > 0) out.mem = mem;
     return out;
   }
@@ -7796,10 +7972,10 @@ const ECON = (() => {
   return {
     on, CLASSES, DEFS, TIERS, SCHOOL_IDS, ROLE_IDS, FLOOR_CARDS,
     orderFor, bumpOrder, carryOrder, moveOrder, depositDue, carryPush, carryPop, placeOrder, leaveOrder, opMul, scale, buildPack, confirmPack, bundleFor,
-    defOf, classOf, tierOfGate, tierName, bookId, coreId, kindFor, amountFor,
+    defOf, classOf, tierOfGate, tierName, bookId, coreId, canon, foldRes, foldFrac, kindFor, amountFor,
     capOf, gainRes, capped, payRate, expired, payFloorFor, floorCap, gainOp, contractValue, deposit,
     price, refund, keepPct, bossBonus, settle, settleSp,
-    growthTable, growthMax, growthCost, growthFx,
+    growthTable, growthMax, growthCost, legacyGrowthCost, growthFx,
     partyMax, packSize, bossHpMul, guaranteeSlots,
   };
 })();
@@ -7935,8 +8111,9 @@ function progressionRewardText(reward){
 }
 function missionResourceTarget(){return Math.max(1,progressionRewardCount(BAL.missionResources,12));}
 function missionResourceTotal(r){return Object.entries((r&&r.res)||{}).reduce((n,[k,v])=>n+(ECON.defOf(k)?progressionRewardCount(v):0),0);}
-function missionResourceKind(r){
- const entries=Object.entries((r&&r.res)||{}).filter(([k,n])=>ECON.defOf(k)&&progressionRewardCount(n)>0);
+function missionResourceKind(r){ /* §29.4 옛 단계 키는 합쳐서 센다 */
+ const entries=Object.entries(ECON.foldRes({...((r&&r.res)||{})}))
+  .filter(([k,n])=>ECON.defOf(k)&&progressionRewardCount(n)>0);
  entries.sort((a,b)=>progressionRewardCount(b[1])-progressionRewardCount(a[1])||a[0].localeCompare(b[0]));
  return entries.length?entries[0][0]:'part';
 }
@@ -7987,8 +8164,8 @@ function econMetaReward(tag,ctx={}){
  meta.res=meta.res||{};meta.resPending=meta.resPending||{};
  for(const [k,v] of Object.entries(bundle||{})){
   if(!ECON.defOf(k))continue;const n=progressionRewardCount(v)*count;if(!n)continue;
-  const target=typeof econResOpen==='function'&&!econResOpen(k)?meta.resPending:meta.res;
-  target[k]=progressionRewardCount(target[k])+n;paid[k]=n;
+  const key=ECON.canon(k),target=typeof econResOpen==='function'&&!econResOpen(key)?meta.resPending:meta.res;
+  target[key]=progressionRewardCount(target[key])+n;paid[key]=(paid[key]||0)+n;
  }
  if(key&&r){r.progressionRewardPaid=r.progressionRewardPaid||{};r.progressionRewardPaid[key]=true;}
  return paid;
@@ -9995,6 +10172,420 @@ relics: {
       "econExcluded": false
     }
   ]
+},
+growthTrees: {
+  "version": 1,
+  "status": "initial-v3.1",
+  "character": {
+    "costs": [
+      1,
+      2,
+      3,
+      3,
+      4,
+      5,
+      5,
+      6,
+      7,
+      8
+    ],
+    "gates": [
+      {
+        "from": 4,
+        "to": 6,
+        "region": "C"
+      },
+      {
+        "from": 7,
+        "to": 10,
+        "region": "A"
+      }
+    ],
+    "milestones": {
+      "3": "고유 패시브",
+      "4": "★2 출격",
+      "6": "특효 +10%p",
+      "8": "★3 출격",
+      "9": "특효 +10%p",
+      "10": "EX 효과 +10%"
+    },
+    "memExchange": {
+      "mem": 1,
+      "book": 3
+    },
+    "bookSwap": {
+      "give": 2,
+      "get": 1
+    },
+    "catchupRate": 0.5
+  },
+  "role": {
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": [
+          3,
+          3,
+          5
+        ]
+      },
+      {
+        "tier": 2,
+        "cost": [
+          6,
+          6,
+          10
+        ],
+        "region": "C"
+      },
+      {
+        "tier": 3,
+        "cost": [
+          10,
+          10,
+          15
+        ],
+        "region": "A"
+      }
+    ],
+    "caps": {
+      "dmgTaken": 0.4,
+      "endHeal": 0.15,
+      "startShield": 45,
+      "killEx": 12
+    },
+    "names": {
+      "tank": "탱커",
+      "dps": "딜러",
+      "sup": "서포터"
+    },
+    "nodes": [
+      {
+        "id": "tank_1a",
+        "role": "tank",
+        "tier": 1,
+        "slot": "a",
+        "scope": "role",
+        "name": "방호 단련",
+        "desc": "탱커 최대 HP +6%",
+        "fx": {
+          "hpPct": 0.06
+        }
+      },
+      {
+        "id": "tank_1b",
+        "role": "tank",
+        "tier": 1,
+        "slot": "b",
+        "scope": "role",
+        "name": "방패 자세",
+        "desc": "탱커 방어 +1",
+        "fx": {
+          "def": 1
+        }
+      },
+      {
+        "id": "tank_1",
+        "role": "tank",
+        "tier": 1,
+        "slot": "key",
+        "scope": "role",
+        "name": "선두 방벽",
+        "desc": "전투 시작 시 탱커 보호막 +8",
+        "fx": {
+          "startShield": 8
+        }
+      },
+      {
+        "id": "tank_2a",
+        "role": "tank",
+        "tier": 2,
+        "slot": "a",
+        "scope": "role",
+        "name": "두꺼운 장갑",
+        "desc": "탱커 최대 HP +8%",
+        "fx": {
+          "hpPct": 0.08
+        }
+      },
+      {
+        "id": "tank_2b",
+        "role": "tank",
+        "tier": 2,
+        "slot": "b",
+        "scope": "role",
+        "name": "충격 흡수",
+        "desc": "탱커 받는 피해 −3%",
+        "fx": {
+          "dmgTaken": 0.03
+        }
+      },
+      {
+        "id": "tank_2",
+        "role": "tank",
+        "tier": 2,
+        "slot": "key",
+        "scope": "party",
+        "name": "수호 결계",
+        "desc": "분대에 탱커가 있으면 전투 시작 시 전원 보호막 +5",
+        "fx": {
+          "startShield": 5
+        }
+      },
+      {
+        "id": "tank_3a",
+        "role": "tank",
+        "tier": 3,
+        "slot": "a",
+        "scope": "role",
+        "name": "강철 체력",
+        "desc": "탱커 최대 HP +10%",
+        "fx": {
+          "hpPct": 0.1
+        }
+      },
+      {
+        "id": "tank_3b",
+        "role": "tank",
+        "tier": 3,
+        "slot": "b",
+        "scope": "role",
+        "name": "철벽",
+        "desc": "탱커 방어 +2",
+        "fx": {
+          "def": 2
+        }
+      },
+      {
+        "id": "tank_3",
+        "role": "tank",
+        "tier": 3,
+        "slot": "key",
+        "scope": "role",
+        "name": "불굴의 방패",
+        "desc": "탱커 받는 피해 −6%",
+        "fx": {
+          "dmgTaken": 0.06
+        }
+      },
+      {
+        "id": "dps_1a",
+        "role": "dps",
+        "tier": 1,
+        "slot": "a",
+        "scope": "role",
+        "name": "공격 훈련",
+        "desc": "딜러 공격 +5%",
+        "fx": {
+          "atkPct": 0.05
+        }
+      },
+      {
+        "id": "dps_1b",
+        "role": "dps",
+        "tier": 1,
+        "slot": "b",
+        "scope": "role",
+        "name": "약점 조준",
+        "desc": "딜러 치명타 +3%p",
+        "fx": {
+          "crit": 0.03
+        }
+      },
+      {
+        "id": "dps_1",
+        "role": "dps",
+        "tier": 1,
+        "slot": "key",
+        "scope": "role",
+        "name": "선제 타격",
+        "desc": "딜러 전투 첫 공격 피해 +15%",
+        "fx": {
+          "firstHit": 0.15
+        }
+      },
+      {
+        "id": "dps_2a",
+        "role": "dps",
+        "tier": 2,
+        "slot": "a",
+        "scope": "role",
+        "name": "연사 훈련",
+        "desc": "딜러 공격속도 +6%",
+        "fx": {
+          "spd": 0.06
+        }
+      },
+      {
+        "id": "dps_2b",
+        "role": "dps",
+        "tier": 2,
+        "slot": "b",
+        "scope": "role",
+        "name": "급소 연구",
+        "desc": "딜러 치명 피해 +0.15",
+        "fx": {
+          "critDmg": 0.15
+        }
+      },
+      {
+        "id": "dps_2",
+        "role": "dps",
+        "tier": 2,
+        "slot": "key",
+        "scope": "role",
+        "name": "추격 사격",
+        "desc": "딜러 공격 +6%",
+        "fx": {
+          "atkPct": 0.06
+        }
+      },
+      {
+        "id": "dps_3a",
+        "role": "dps",
+        "tier": 3,
+        "slot": "a",
+        "scope": "role",
+        "name": "정밀 사격",
+        "desc": "딜러 치명타 +5%p",
+        "fx": {
+          "crit": 0.05
+        }
+      },
+      {
+        "id": "dps_3b",
+        "role": "dps",
+        "tier": 3,
+        "slot": "b",
+        "scope": "role",
+        "name": "화력 집중",
+        "desc": "딜러 공격 +8%",
+        "fx": {
+          "atkPct": 0.08
+        }
+      },
+      {
+        "id": "dps_3",
+        "role": "dps",
+        "tier": 3,
+        "slot": "key",
+        "scope": "role",
+        "name": "결전 화력",
+        "desc": "딜러의 게이트 마스터 피해 +12%",
+        "fx": {
+          "bossDmg": 0.12
+        }
+      },
+      {
+        "id": "sup_1a",
+        "role": "sup",
+        "tier": 1,
+        "slot": "a",
+        "scope": "role",
+        "name": "기초 체력",
+        "desc": "서포터 최대 HP +6%",
+        "fx": {
+          "hpPct": 0.06
+        }
+      },
+      {
+        "id": "sup_1b",
+        "role": "sup",
+        "tier": 1,
+        "slot": "b",
+        "scope": "role",
+        "name": "마력 순환",
+        "desc": "서포터 공격속도 +6%",
+        "fx": {
+          "spd": 0.06
+        }
+      },
+      {
+        "id": "sup_1",
+        "role": "sup",
+        "tier": 1,
+        "slot": "key",
+        "scope": "party",
+        "name": "응급 처치",
+        "desc": "분대에 서포터가 있으면 전투 종료 시 전원 HP 3% 회복",
+        "fx": {
+          "endHeal": 0.03
+        }
+      },
+      {
+        "id": "sup_2a",
+        "role": "sup",
+        "tier": 2,
+        "slot": "a",
+        "scope": "party",
+        "name": "회복 증폭",
+        "desc": "분대에 서포터가 있으면 타일·지원·텐트 회복량 +10%",
+        "fx": {
+          "healMult": 0.1
+        }
+      },
+      {
+        "id": "sup_2b",
+        "role": "sup",
+        "tier": 2,
+        "slot": "b",
+        "scope": "party",
+        "name": "보호 마법",
+        "desc": "분대에 서포터가 있으면 전투 시작 시 전원 보호막 +4",
+        "fx": {
+          "startShield": 4
+        }
+      },
+      {
+        "id": "sup_2",
+        "role": "sup",
+        "tier": 2,
+        "slot": "key",
+        "scope": "party",
+        "name": "충전 지원",
+        "desc": "분대에 서포터가 있으면 처치 시 EX +2",
+        "fx": {
+          "killEx": 2
+        }
+      },
+      {
+        "id": "sup_3a",
+        "role": "sup",
+        "tier": 3,
+        "slot": "a",
+        "scope": "role",
+        "name": "마력 강화",
+        "desc": "서포터 공격 +8%",
+        "fx": {
+          "atkPct": 0.08
+        }
+      },
+      {
+        "id": "sup_3b",
+        "role": "sup",
+        "tier": 3,
+        "slot": "b",
+        "scope": "party",
+        "name": "신속 치료",
+        "desc": "분대에 서포터가 있으면 전투 종료 회복 +3%p",
+        "fx": {
+          "endHeal": 0.03
+        }
+      },
+      {
+        "id": "sup_3",
+        "role": "sup",
+        "tier": 3,
+        "slot": "key",
+        "scope": "party",
+        "name": "결계 공명",
+        "desc": "분대에 서포터가 있으면 전원 받는 피해 −3%",
+        "fx": {
+          "dmgTaken": 0.03
+        }
+      }
+    ]
+  }
 }
 };
 
@@ -10032,7 +10623,9 @@ const META_V2=(()=>{
    if(raw?.cleared?.[regions()[i-1]])p.introduced[regions()[i]]=true;
   }
   m.progressionV2=p;
-  m.growthPaid={...object(raw?.growthPaid)};m.facilityPaid={...object(raw?.facilityPaid)};
+  /* 중첩 지불 원장은 깊게 복제 — 이관(costsV2·treesV3)이 입력 원본을 고치지 않게 */
+  m.growthPaid=JSON.parse(JSON.stringify(object(raw?.growthPaid)));
+  m.facilityPaid=JSON.parse(JSON.stringify(object(raw?.facilityPaid)));
   return p;
  }
  const state=m=>m.progressionV2?.v===2?m.progressionV2:normalize(m);
@@ -10197,10 +10790,19 @@ const META_V2=(()=>{
   }
   p.settled[key]=out;r.metaV2Settlement=out;return out;
  }
+ const catchupTarget=m=>config().economy.catchupLevel[Math.max(0,...regions().map((g,i)=>introduced(m,g)?i:0))]||0;
+ /* §29.4 v3.1 캐릭터 트리: 학교 교본만. 따라잡기(가장 먼 소개 지역 기준 Lv 이하) = ceil(가격×비율), 최소 1 — 같은 교본 */
  function growthCost(m,student,lv){
   const cost=ECON.growthCost(lv,student.school,student.role);if(!cost)return null;
-  const p=state(m),index=Math.max(0,...regions().map((g,i)=>introduced(m,g)?i:0));
-  const target=config().economy.catchupLevel[index]||0;
+  if(lv>catchupTarget(m)||!state(m).recruited[student.id])return cost;
+  const rate=config().growthTrees?.character?.catchupRate??config().economy.catchupDiscount,out={};
+  for(const [k,n] of Object.entries(cost))out[k]=Math.max(1,Math.ceil(n*rate));
+  return out;
+ }
+ /* 옛 가격(교본+코어+기억, 단계 키, 따라잡기는 교본→기록·코어→부품) — costsV2 이관을 옛 의미 그대로 계산할 때만 */
+ function legacyGrowthCost(m,student,lv){
+  const cost=ECON.legacyGrowthCost(lv,student.school,student.role,false);if(!cost)return null;
+  const p=state(m),target=catchupTarget(m);
   if(lv<=target&&p.recruited[student.id]){
    const discounted={};
    for(const [k,n] of Object.entries(cost)){
@@ -10218,7 +10820,7 @@ const META_V2=(()=>{
   for(const [id,levels] of Object.entries(paid)){
    const st=STUDENTS.find(s=>s.id===id);if(!st)continue;
    for(const [lv,old] of Object.entries(object(levels))){
-    if(+lv>number(m.growthLv?.[id]))continue;const now=growthCost(m,st,+lv);if(!now)continue;
+    if(+lv>number(m.growthLv?.[id]))continue;const now=legacyGrowthCost(m,st,+lv);if(!now)continue;
     const kept={};
     for(const [k,n] of Object.entries(object(old))){
      if(!ECON.defOf(k))continue;
@@ -10279,10 +10881,180 @@ const META_V2=(()=>{
   return {ok:number(r.op)>=cost,reason:number(r.op)>=cost?'':'OP 부족',cost,recipe:st};
  }
  return {normalize,state,recruited,studentOpen,introduced,observe,progress,recordReturn,ready,recruit,
-  lockHint,systemOpen,relicOpen,spPlan,settlement,claim,growthCost,migrateInvestments,recipeStatus,
+  lockHint,systemOpen,relicOpen,spPlan,settlement,claim,growthCost,legacyGrowthCost,migrateInvestments,recipeStatus,
   learnRecipe,craftStatus,challenge,region,runState,alreadySettled};
 })();
 if(typeof window==='object')window.META_V2=META_V2;
+
+</script><script>
+'use strict';
+/* §29.4 v3.1 성장 트리 — 계정(SP · 지휘실 SKILLS 그대로) · 역할(역할 코어) · 캐릭터(학교 교본 · meta.growthLv).
+ * 데이터: authoring/meta-v2/growth-trees.json → META_V2_CONFIG.growthTrees. 계약: docs/design/29-loop-v3.md §29.4.7
+ * 역할 효과는 v3 런에만, 출격 순간 스냅샷(run.roleFx · run.roleSet). 트리 구매·재설정·교환은 원정 중 거부 */
+const GROWTH_TREES=(()=>{
+ const cfg=()=>META_V2_CONFIG.growthTrees;
+ const num=n=>Number.isFinite(+n)?Math.max(0,+n):0;
+ const ROLES=['tank','dps','sup'];
+ const clone=o=>JSON.parse(JSON.stringify(o&&typeof o==='object'?o:{}));
+ const busy=()=>typeof run!=='undefined'&&!!run&&!run.ended;
+ const open=(m,g)=>!g||META_V2.introduced(m,g);
+ const coreKey=r=>ECON.coreId(r),bookKey=s=>ECON.bookId(s);
+ /* ---- 역할 트리: 단마다 보조 a·b → 핵심(a·b 둘 다 필요), 다음 단 보조는 이전 핵심 필요 ---- */
+ const nodes=()=>cfg().role.nodes;
+ const node=id=>nodes().find(n=>n.id===id)||null;
+ const tierOf=t=>cfg().role.tiers.find(x=>x.tier===t)||{cost:[0,0,0]};
+ function owned(m){
+  if(!m.roleTree||typeof m.roleTree!=='object'||Array.isArray(m.roleTree))m.roleTree={};
+  return m.roleTree;
+ }
+ const price=n=>tierOf(n.tier).cost[n.slot==='a'?0:n.slot==='b'?1:2];
+ function req(n){
+  if(n.slot==='key')return nodes().filter(x=>x.role===n.role&&x.tier===n.tier&&x.slot!=='key').map(x=>x.id);
+  return n.tier<=1?[]:nodes().filter(x=>x.role===n.role&&x.tier===n.tier-1&&x.slot==='key').map(x=>x.id);
+ }
+ function status(m,id){
+  const n=node(id);if(!n)return null;
+  const own=owned(m),key=coreKey(n.role),cost=price(n),region=tierOf(n.tier).region||null;
+  const has=!!own[id],reqOk=req(n).every(r=>own[r]),regionOk=open(m,region),have=num(m.res&&m.res[key]);
+  const why=has?'':!reqOk?'선행 강화 필요':!regionOk?region+' 지역 소개 후':busy()?'원정 중에는 강화할 수 없음'
+   :have<cost?'코어 부족':'';
+  return {node:n,owned:has,reqOk,region,regionOk,cost,key,have,ok:!has&&!why,why};
+ }
+ function buy(m,id){
+  const s=status(m,id);if(!s||!s.ok)return false;
+  m.res[s.key]=num(m.res[s.key])-s.cost;owned(m)[id]=s.cost;return true;
+ }
+ /* 재설정: 그 노드와 선행이 깨지는 노드를 연쇄 해제하고 지불한 코어를 100% 돌려준다 */
+ function reset(m,id){
+  const own=owned(m);if(!own[id]||busy())return null;
+  const keep=new Set(Object.keys(own));keep.delete(id);
+  for(let grew=true;grew;){
+   grew=false;
+   for(const k of [...keep]){const n=node(k);if(!n||!req(n).every(r=>keep.has(r))){keep.delete(k);grew=true;}}
+  }
+  const removed=Object.keys(own).filter(k=>!keep.has(k)),refund={};
+  for(const k of removed){
+   const n=node(k);if(n)refund[coreKey(n.role)]=(refund[coreKey(n.role)]||0)+num(own[k]);delete own[k];
+  }
+  m.res=m.res||{};for(const [k,v] of Object.entries(refund))m.res[k]=num(m.res[k])+v;
+  return {removed,refund};
+ }
+ const count=(m,role)=>nodes().filter(n=>n.role===role&&owned(m)[n.id]).length;
+ /* 효과 합: role = 그 역할 분대원에게만, party = 분대에 그 역할이 있으면 전원 */
+ function effects(m){
+  const out={role:{},party:{}};for(const r of ROLES){out.role[r]={};out.party[r]={};}
+  for(const id of Object.keys(owned(m))){
+   const n=node(id);if(!n)continue;const bag=(n.scope==='party'?out.party:out.role)[n.role];
+   for(const [k,v] of Object.entries(n.fx||{}))bag[k]=(bag[k]||0)+v;
+  }
+  return out;
+ }
+ /* 출격 스냅샷(newRun, 첫 능력치 계산 전): v3 규칙이고 도전이 아닐 때만 */
+ function snapshot(m,r){
+  if(!r||!(r.rulesV>=3)||(typeof META_V2!=='undefined'&&META_V2.challenge(r)))return null;
+  return effects(m);
+ }
+ const caps=()=>cfg().role.caps||{};
+ /* 합산 안전 상한(절대값): 전투 종료 회복 · 처치 EX · 전투 시작 보호막 · 받는 피해 감소 */
+ const cap=(k,v)=>caps()[k]!=null?Math.min(v||0,caps()[k]):(v||0);
+ /* 확정 편성의 역할 집합을 고정하고 분대 효과를 역할당 1회 run.fx 에 더한다(원본 run.fxBase). 다시 불러도 같은 결과 */
+ function applyParty(r){
+  if(!r||!r.roleFx||!Array.isArray(r.party))return;
+  if(!r.fxBase)r.fxBase={...r.fx};
+  r.roleSet=[...new Set(r.party.map(p=>p.stu.role))].sort();
+  const fx={...r.fxBase},c=caps();
+  for(const role of r.roleSet)for(const [k,v] of Object.entries(r.roleFx.party[role]||{}))fx[k]=(fx[k]||0)+v;
+  for(const k of ['endHeal','killEx'])if(c[k]!=null)fx[k]=cap(k,fx[k]);
+  r.fx=fx;
+ }
+ /* 도전 부착·되돌리기: 역할 효과를 모두 걷어 낸다 */
+ function strip(r){
+  if(!r)return;if(r.fxBase)r.fx={...r.fxBase};r.fxBase=null;r.roleFx=null;r.roleSet=null;
+ }
+ /* 분대원별 효과 = 공용 FX + 그 역할 효과. 역할 HP·공격%는 영구 예산 전용 칸(roleHpPct·roleAtkPct)으로만 */
+ const memo=new WeakMap();
+ function memberFx(fx,r,m){
+  const role=r&&r.roleFx&&m&&m.stu?r.roleFx.role[m.stu.role]:null;
+  if(!role||!Object.keys(role).length)return fx;
+  let c=memo.get(fx);if(!c){c={};memo.set(fx,c);}
+  if(!c[m.stu.role]){
+   const o={...fx,roleHpPct:0,roleAtkPct:0};
+   for(const [k,v] of Object.entries(role)){
+    if(k==='hpPct')o.roleHpPct+=v;else if(k==='atkPct')o.roleAtkPct+=v;else o[k]=(o[k]||0)+v;
+   }
+   c[m.stu.role]=o;
+  }
+  return c[m.stu.role];
+ }
+ /* 받는 피해 가산 묶음(지휘실 + 분대 역할 + 그 학생 역할 + 가산 패시브) 상한 */
+ const damageCut=v=>cap('dmgTaken',Math.max(0,v||0));
+ /* 엄호: 엄호한 탱커의 역할 범위 감소만(분대·지휘실 감소는 원래 피격에서 이미 적용) */
+ function coverCut(r,m){
+  const role=r&&r.roleFx&&m&&m.stu?r.roleFx.role[m.stu.role]:null;
+  return damageCut(role&&role.dmgTaken);
+ }
+ /* ---- 캐릭터 트리: 노드 = 성장 Lv(meta.growthLv), 가격은 학교 교본(따라잡기는 META_V2.growthCost) ---- */
+ function charGate(lv){
+  for(const g of cfg().character.gates)if(lv>=g.from&&lv<=g.to)return g.region;
+  return null;
+ }
+ const milestone=lv=>cfg().character.milestones[String(lv)]||'';
+ function charPath(m,st){
+  const lv=Math.max(0,Math.min(ECON.growthMax(),Math.floor(num(m.growthLv&&m.growthLv[st.id])))),out=[];
+  for(let i=1;i<=ECON.growthMax();i++){
+   const cost=META_V2.growthCost(m,st,i)||{},key=bookKey(st.school),gate=charGate(i);
+   const need=num(cost[key]),gateOk=open(m,gate);
+   out.push({lv:i,owned:i<=lv,next:i===lv+1,cost,key,need,gate,gateOk,milestone:milestone(i),
+    full:num((ECON.growthCost(i,st.school,st.role)||{})[key])});
+  }
+  return out;
+ }
+ /* ---- 학교 선택 공급: 기억 조각 1 → 교본 3, 다른 학교 교본 2 → 이 학교 교본 1 ---- */
+ function memExchange(m,school){
+  const x=cfg().character.memExchange,key=bookKey(school);
+  if(busy()||!ECON.defOf(key)||num(m.res&&m.res.mem)<x.mem)return false;
+  m.res.mem=num(m.res.mem)-x.mem;m.res[key]=num(m.res[key])+x.book;return true;
+ }
+ function bookSwap(m,from,to){
+  const x=cfg().character.bookSwap,a=bookKey(from),b=bookKey(to);
+  if(busy()||from===to||!ECON.defOf(a)||!ECON.defOf(b)||num(m.res&&m.res[a])<x.give)return false;
+  m.res[a]=num(m.res[a])-x.give;m.res[b]=num(m.res[b])+x.get;return true;
+ }
+ /* ---- 투자 이관(1회, progressionV2.refunds.treesV3): 복제본에서 전부 계산한 뒤 한 번에 반영 ----
+  * 옛 단계 키 합산(보유·소수·보류 원장·성장 지불 기록) · Lv별 교본 지불 − 새 정가의 양수 환급 · 코어·기억 전액 환급
+  * · 기록·부품(당시 따라잡기 가격)은 환급 없음 · 부족분 청구 없음 · 기록 없는 Lv 는 유지·환급 0 */
+ function migrate(m){
+  const p=META_V2.state(m);owned(m);
+  if(p.refunds.treesV3){ECON.foldRes(m.res);ECON.foldFrac(m.resFrac,m.res);ECON.foldRes(m.resPending);return {};}
+  const res=ECON.foldRes(clone(m.res)),frac=clone(m.resFrac),pend=ECON.foldRes(clone(m.resPending));
+  ECON.foldFrac(frac,res);
+  const paid=clone(m.growthPaid),refund={};
+  for(const [id,levels] of Object.entries(paid)){
+   const st=typeof STUDENTS!=='undefined'?STUDENTS.find(s=>s.id===id):null;
+   if(!st||!levels||typeof levels!=='object')continue;
+   for(const [lv,old] of Object.entries(levels)){
+    if(+lv>num(m.growthLv&&m.growthLv[id])||!old||typeof old!=='object')continue;
+    const pay=ECON.foldRes({...old}),now=ECON.growthCost(+lv,st.school,st.role)||{},book=bookKey(st.school),kept={};
+    for(const [k,v] of Object.entries(pay)){
+     const n=num(v),d=ECON.defOf(k);let back=0;
+     if(d&&(d.group==='core'||d.group==='mem'))back=n;else if(k===book)back=Math.max(0,n-num(now[k]));
+     if(back>0)refund[k]=(refund[k]||0)+back;
+     kept[k]=n-back;
+    }
+    levels[lv]=kept;
+   }
+  }
+  for(const [k,v] of Object.entries(refund))res[k]=num(res[k])+v;
+  m.res=res;m.resFrac=frac;m.resPending=pend;m.growthPaid=paid;
+  p.refunds.treesV3={source:'recorded-growth-payments',amount:refund};
+  return refund;
+ }
+ return {ROLES,nodes,node,req,price,status,buy,reset,count,effects,snapshot,applyParty,strip,memberFx,cap,
+  damageCut,coverCut,charGate,charPath,milestone,memExchange,bookSwap,migrate,busy,owned};
+})();
+/* 분대원 m 의 효과(공용 FX + 역할 트리). 런이 없거나 역할 효과가 없으면 FX() 그대로 */
+function roleFxOf(m){return GROWTH_TREES.memberFx(FX(),typeof run!=='undefined'?run:null,m);}
+if(typeof window==='object')window.GROWTH_TREES=GROWTH_TREES;
 
 </script>
 <script>
@@ -10437,6 +11209,7 @@ const CHALLENGE_V2=(()=>{
   playMeta.skills=typeof SKILLS==='undefined'?[]:SKILLS.filter(s=>!s.alt&&s.tier<=rule.commandTier).map(s=>s.id);
   playMeta.upg={range:rule.facilityLevel,med:rule.facilityLevel,store:0,lab:0,ops:0,trauma:0};
   playMeta.growthPaid={};playMeta.facilityPaid={};playMeta.skillPaid={};playMeta.commandBalance=1;
+  playMeta.roleTree={}; /* §29.4 도전은 고정 규칙 — 역할 트리 0 */
   playMeta.storyInRun=false;playMeta.pauseOnDraw=false;
   playMeta.unlock={side:1,land:1,supply:1,relic2:1,tactic:1};
   playMeta.collection={v:1,owned:Object.fromEntries(rule.allowed.cards.map(id=>[id,true])),seen:{},fresh:{}};
@@ -10610,6 +11383,7 @@ function challengeAttach(r){
  r.challenge.accountSeed=r.seed;r.seed=plan.rule.seed;r.op=plan.rule.startOp;
  r.gLv={...plan.playMeta.growthLv};r.t=r.tStart=1000000;
  r.rulesV=plan.rule.rulesVersion==='challenge-v4.0-loop3'?3:2; /* 기록 버전과 런 규칙을 같은 프로필로 */
+ if(typeof GROWTH_TREES!=='undefined')GROWTH_TREES.strip(r); /* §29.4 도전은 역할 트리 효과 없음 */
  r.mission=null;r.sResist=plan.rule.region==='S'?'crit':null;
  r.challengeRng=challengeSession.random;
  return true;
@@ -11972,7 +12746,7 @@ const META_DEFAULT=()=>({challengeV2:null,deckVersion:2,runSequence:0,progressio
  * 해금 대기 원장(resPending) · 스킬 구매 당시 비용(skillPaid) · 새 최고 기록(best2)을 더한다 */
 const META_DEFAULT2=()=>{const d=META_DEFAULT();delete d.mana;
  return Object.assign(d,{econ:2,packResearch:null,commandBalance:0,res:{},resFrac:{},spFrac:0,
-  growthLv:{},resPending:{},skillPaid:{},best2:{}});};
+  growthLv:{},resPending:{},skillPaid:{},best2:{},roleTree:{}});};
 const metaDef=()=>econOn()?META_DEFAULT2():META_DEFAULT();
 let meta=META_DEFAULT();
 /* 옛 세이브·초기화 공통: META_DEFAULT 의 모든 키를 보충한다 (객체 키는 얕은 병합, 배열·스칼라는 타입이 맞을 때만 채택) */
@@ -12003,6 +12777,7 @@ function fillMeta(o){
  metaMigrateDecks(m,o);
  if(typeof CHALLENGE_V2!=='undefined')CHALLENGE_V2.normalize(m,o);
  if(typeof META_V2!=='undefined')META_V2.migrateInvestments(m);
+ if(econOn()&&typeof GROWTH_TREES!=='undefined')GROWTH_TREES.migrate(m); /* §29.4 v3.1 재화 통합·성장 지불 환급(1회) */
  if(typeof PACK_RESEARCH!=='undefined')PACK_RESEARCH.normalize(m,o);
  return traumaNormalize(m);
 }
@@ -12254,6 +13029,8 @@ function squadJoin(){ /* 출격 직후 한 번(newRun 다음). 원정 중에는 
  if(!loop3On()||!run)return; /* 도전은 studentUnlocked 가 허용 학생만 연다 */
  for(const id of squadFor(run.party[0]?.stu.id)){const s=STUDENTS.find(x=>x.id===id);
   if(s&&!run.party.some(m=>m.stu.id===id)&&run.party.length<partyMax())addMember(s,true);}
+ /* §29.4 확정 편성의 역할 집합으로 분대 효과를 역할당 1회 — 쓰러져도 유지 */
+ if(typeof GROWTH_TREES!=='undefined'&&run.roleFx){GROWTH_TREES.applyParty(run);run.party.forEach(recalcMember);}
 }
 const loop3On=()=>!!(typeof run!=='undefined'&&run&&run.rulesV>=3);
 /* 새 표시(위협 HUD·역할 배지·등급 미리보기 등)는 PC 가로 v4 에서만 — 모바일 세로 화면은 바꾸지 않는다 */
@@ -12285,6 +13062,8 @@ function newRun(leader){
  nextMission=null;
  if(typeof campaignStart==='function')campaignStart(run);
  if(typeof CHALLENGE_V2!=='undefined')CHALLENGE_V2.attach(run);
+ /* §29.4 역할 트리: 첫 능력치 계산(리더 합류) 전에 역할 효과를 고정 — v3 런·도전 아님일 때만 */
+ run.roleFx=typeof GROWTH_TREES!=='undefined'?GROWTH_TREES.snapshot(meta,run):null;
  if(GL.relationships)GL.relationships.beginRun(meta,run);
  if(BAL.form2||simF2)run.f2st={tk:{},rw:{},dn:{},cover:0,coverDmg:0,expose:0,taunt:0,pat:{}}; /* §28 진형 계측(읽기 전용 — 규칙·난수에 영향 없음). 끔 + 일반 시뮬·실플레이에서는 만들지 않는다 */
  addMember(leader,true);
@@ -12553,7 +13332,11 @@ function buyFacility(id){if(typeof officeFacilityOpen==='function'&&!officeFacil
 /* §27.6 l-4 학생 성장 구매 — 그 학생의 학원 교본 + 역할 코어(높은 Lv 는 기억 조각) */
 function growthNext(sid){const st=STUDENTS.find(x=>x.id===sid);if(!st||!econOn()||!studentUnlocked(st))return null;
  const lv=growthLvMeta(sid);if(lv>=ECON.growthMax())return null;
- const cost=typeof META_V2!=='undefined'?META_V2.growthCost(meta,st,lv+1):ECON.growthCost(lv+1,st.school,st.role);return cost?{lv:lv+1,cost,ok:costOk(cost)}:null;}
+ const cost=typeof META_V2!=='undefined'?META_V2.growthCost(meta,st,lv+1):ECON.growthCost(lv+1,st.school,st.role);
+ /* §29.4 캐릭터 트리 지역 조건(새 구매에만 — 이미 연 Lv·★·도전 고정 Lv 는 그대로) */
+ const gate=typeof GROWTH_TREES!=='undefined'?GROWTH_TREES.charGate(lv+1):null;
+ const gateOk=!gate||META_V2.introduced(meta,gate);
+ return cost?{lv:lv+1,cost,ok:costOk(cost)&&gateOk,gate,gateOk}:null;}
 function buyGrowth(sid){const nx=growthNext(sid);if(!nx||!nx.ok)return false;
  if(!payCost(nx.cost))return false;
  meta.growthLv=meta.growthLv||{};meta.growthLv[sid]=nx.lv;
@@ -12589,8 +13372,9 @@ function econSettleRes(reason,g,eb){
    meta.res[k]=(meta.res[k]||0)+n;run.resPay[k]=(run.resPay[k]||0)+n;
   }
   META_V2.claim(meta,run,'collected-materials',st.grant,{cap:'per-kind-run-cap'});
-  run.resBreakdown={collected:{...run.res},grant:{...st.grant},bonus:{...depth},keep:st.keep,
-   lost:Object.fromEntries(Object.entries(run.res||{}).map(([k,n])=>[k,Math.max(0,n*(1-st.keep))]))};
+  const col=ECON.foldRes({...(run.res||{})}); /* §29.4 정산 내역도 통합 키 */
+  run.resBreakdown={collected:col,grant:{...st.grant},bonus:{...depth},keep:st.keep,
+   lost:Object.fromEntries(Object.entries(col).map(([k,n])=>[k,Math.max(0,n*(1-st.keep))]))};
  }
  const names=Object.keys(run.resPay).filter(k=>run.resPay[k]>0).map(k=>`${ECON.defOf(k).name} +${run.resPay[k]}`);
  if(names.length)log(`📦 가져간 자원(${Math.round(ECON.keepPct(reason)*100)}%): ${names.join(' · ')}`,'good');
@@ -12867,13 +13651,14 @@ function permanentBaseStat(base,flat,pct,axis){
 }
 function stats(m){
  const st=m.stu,sm=1+BAL.star*(m.star-1),lv=1+0.015*(run.level-1);
- const fx=FX();
+ const fx=typeof roleFxOf==='function'?roleFxOf(m):FX(); /* §29.4 공용 + 그 학생 역할 트리 */
  const gm=gMulOf(st.id),mp=mapPas(),bm=bondMul(st.id); /* v1.4 호감 보너스: HP·공격 × (1 + Lv당 1%, 최대 5%) */
  const modern=econOn()&&typeof META_V2_CONFIG!=='undefined';
  const med=modern?st.hp*0.025*meta.upg.med:meta.upg.med*12;
  const range=modern?st.atk*0.025*meta.upg.range:meta.upg.range*2;
- const hpBase=permanentBaseStat(st.hp,st.hp*gm+med+fx.hp,fx.hpPct,'hp');
- const atkBase=permanentBaseStat(st.atk,st.atk*gm+range+fx.atk,fx.atkPct,'attack');
+ /* 역할 트리 HP·공격%는 영구 예산 안(permanentBaseStat)에만 — 런 가산(hpRun·atkRun)에는 곱하지 않는다 */
+ const hpBase=permanentBaseStat(st.hp,st.hp*gm+med+fx.hp,fx.hpPct+(fx.roleHpPct||0),'hp');
+ const atkBase=permanentBaseStat(st.atk,st.atk*gm+range+fx.atk,fx.atkPct+(fx.roleAtkPct||0),'attack');
  const hpRun=((hasCounter('vest')?20:0)+(mp.hp||0))*(1+fx.hpPct);
  const atkRun=(run.atkBonus+(hasCounter('drill')?4:0)+(mp.atk||0))*(1+fx.atkPct);
  const s={maxHp:(hpBase+hpRun)*sm*lv*bm,atk:(atkBase+atkRun)*sm*lv*bm,
@@ -14656,7 +15441,9 @@ function f2Taken(m,dmg,attacker){
 }
 function f2CoverHit(tk,ally,share,attacker){
  const b=run.battle;if(!b||tk.down)return;
- let d=Math.max(1,Math.round(share*(1-BAL.form.tankCut))),ab=0;const sh=b.shield[tk.uid]||0;if(sh>0){ab=Math.min(sh,d);b.shield[tk.uid]=sh-ab;d-=ab;}
+ /* §29.4 엄호: 엄호한 탱커의 역할 트리 감소만(분대·지휘실 감소는 원래 피격에서 적용) */
+ const cut=typeof GROWTH_TREES!=='undefined'?GROWTH_TREES.coverCut(run,tk):0;
+ let d=Math.max(1,Math.round(share*(1-BAL.form.tankCut)*(1-cut))),ab=0;const sh=b.shield[tk.uid]||0;if(sh>0){ab=Math.min(sh,d);b.shield[tk.uid]=sh-ab;d-=ab;}
  bsTake(tk,Math.min(d,Math.max(0,tk.hp)),ab,'cover');fxEvent('cover',{tank:tk,ally,dmg:d+ab});
  const effective=Math.min(d,Math.max(0,tk.hp));
  if(run.metaRules)tk.enemyDebt=(tk.enemyDebt||0)+effective;
@@ -15415,7 +16202,7 @@ function startBattle(t){
  run.battleSeq=(run.battleSeq||0)+1;run.battle.completedPacks=[];
  run.battle.ruleStat=newBattleRuleStat(t);
  const ls=battleSup(t),ns=run.nextShield||0;run.nextShield=0; /* v1.0 주지원 보호막·둔화, 방호 게이트 보호막 (거점·지원 타일 위 교전은 그 타일 자신의 sup) */
- for(const m of alive()){m.cd=300+Math.random()*400;m.first=true;m.nextMult=1;if(synOn('shield'))run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+15;if(hasPassive('chaewon'))run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+8;if(hasPassive('yerin'))run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+5;m.charge=(m.stu.id==='yeseo'&&hasPassive('yeseo'))?1:0;if(hasPassive('harin'))m.nextMult=Math.max(m.nextMult,1.15);if(FX().startShield)run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+FX().startShield;
+ for(const m of alive()){m.cd=300+Math.random()*400;m.first=true;m.nextMult=1;if(synOn('shield'))run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+15;if(hasPassive('chaewon'))run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+8;if(hasPassive('yerin'))run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+5;m.charge=(m.stu.id==='yeseo'&&hasPassive('yeseo'))?1:0;if(hasPassive('harin'))m.nextMult=Math.max(m.nextMult,1.15);{const sh=GROWTH_TREES.cap('startShield',roleFxOf(m).startShield);if(sh)run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+sh;}
   if(styleOf(m)==='summon'){run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+BAL.style.summon[2];m.droneT=0;}
   if(ls&&ls.shield)run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+ls.shield;if(ns)run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+ns;trigger('onBattleStart',m,{});}
  {const nb=alive().filter(m=>m.stu.reach==='support'&&m.row==='back').length;if(nb)for(const m of alive())run.battle.shield[m.uid]=(run.battle.shield[m.uid]||0)+BAL.form.supShield*nb;} /* 후열 지원 보너스 */
@@ -15441,7 +16228,7 @@ function battleTick(dt){
  /* v1.2 전투 성향: 재생(자신) · 특성 「야전 재생」(전원) · 소환(드론 사격) */
  {const pr=BAL.perk.regen*perkN('regen');for(const m of alive()){const rate=pr+(styleOf(m)==='regen'?BAL.style.regen:0);if(rate>0){m.regenAcc2=(m.regenAcc2||0)+m.maxHp*rate*dt/1000;if(m.regenAcc2>=1){const h=Math.floor(m.regenAcc2);m.regenAcc2-=h;healM(m,h);}}
    if(styleOf(m)==='summon'){m.droneT=(m.droneT||0)+dt;if(m.droneT>=BAL.style.summon[0]){m.droneT-=BAL.style.summon[0];const en=b.tile.enemies.filter(e=>e.hp>0),tg=(run.focusUid&&en.find(e=>e.uid===run.focusUid))||en[0];
-     if(tg){let d=Math.max(1,Math.round(stats(m).atk*BAL.style.summon[1]*baneMul(m,tg)-enemyDef(tg)*0.5));if(tg.boss)d=Math.round(d*bossMul(tg));hitEnemy(tg,d,m,false,baneMul(m,tg)>1);if(run.ended||run.state!=='battle')return;}}}}}
+     if(tg){let d=Math.max(1,Math.round(stats(m).atk*BAL.style.summon[1]*baneMul(m,tg)-enemyDef(tg)*0.5));if(tg.boss)d=Math.round(d*bossMul(tg,m));hitEnemy(tg,d,m,false,baneMul(m,tg)>1);if(run.ended||run.state!=='battle')return;}}}}}
  for(const e of b.tile.enemies)if(e.boss&&e.hp>0&&e.mech==='armor')armorTick(e);
  /* C 게이트 카드 「옥상 정원」: 보스전 중 3초마다 HP 비율 최저 학생 회복 */
  if(b.tile.enemies.some(e=>e.boss&&e.hp>0)){const lh=mapPas().lowHeal;if(lh){b.lowT=(b.lowT||0)+dt;if(b.lowT>=3000){b.lowT-=3000;const low=alive().sort((x,y)=>x.hp/x.maxHp-y.hp/y.maxHp)[0];if(low)healM(low,Math.round(low.maxHp*lh));}}}
@@ -15492,7 +16279,7 @@ function memberAttack(m,s){
  const first=m.first;m.first=false;m.recoil=120;
  let mult=m.nextMult;m.nextMult=1;
  if(first&&m.stu.id==='harin')mult*=heroTune('harin').first;
- if(first&&FX().firstHit)mult*=1+FX().firstHit;
+ {const fh=roleFxOf(m).firstHit;if(first&&fh)mult*=1+fh;} /* §29.4 지휘실 + 딜러 역할 트리 */
  const tf=tileFx(t);if(first&&tf.first)mult*=1+tf.first; /* v1.0 돌격 교두보 등: 이 타일 첫 공격 배율 */
  if(exActive()&&m.stu.id==='harin')mult*=heroExTune(m).damage;
  const primary=(run.focusUid&&en.find(e=>e.uid===run.focusUid))||en[0];
@@ -15520,7 +16307,7 @@ function memberAttack(m,s){
    const bn=baneMul(m,target);
    let dmg=atk*tm*charge*aoe*critMul*rowMul*bn*(0.85+Math.random()*0.3);
   dmg=Math.max(1,Math.round(dmg-enemyDef(target)*(hasCounter('ap')?0.3:1)))+ldmg;
-  if(target.boss)dmg=Math.round(dmg*bossMul(target));
+  if(target.boss)dmg=Math.round(dmg*bossMul(target,m));
   hitEnemy(target,dmg,m,ce,bn>1,true);
   if(run.ended||run.state!=='battle')return;
  }
@@ -15546,7 +16333,8 @@ function damageMember(target,dmg,e,src){
  if(target.stu.id==='chaewon'&&Math.random()<heroTune('chaewon').chance){dmg=Math.ceil(dmg*heroTune('chaewon').taken);floater(p.x-18,p.y-44,'철벽!','#fbbf24');}
  if(exActive()&&target.stu.id==='chaewon')dmg=Math.ceil(dmg*heroTune('chaewon').exTaken);
  if(hasRelic('core'))dmg=Math.round(dmg*relicTune('core').taken);
- if(FX().dmgTaken||hasPassive('jiu'))dmg=Math.round(dmg*(1-FX().dmgTaken-(hasPassive('jiu')?0.05:0)));
+ {const cut=GROWTH_TREES.damageCut(roleFxOf(target).dmgTaken+(hasPassive('jiu')?0.05:0)); /* §29.4 가산 묶음 상한 */
+  if(cut>0)dmg=Math.round(dmg*(1-cut));}
  if(run.party[0]&&run.party[0].stu.id==='bora'&&!run.party[0].down)dmg=Math.round(dmg*heroTune('bora').taken); /* 신보라 의장 진형: 선두일 때 전원 −10% */
  if(src==='wave'&&hasPassive('ara'))dmg=Math.round(dmg*0.75);
  if(src==='wave'){const wc=mapPas().waveCut;if(wc)dmg=Math.round(dmg*(1-Math.min(0.6,wc)));} /* D 게이트 카드 「수문」 */
@@ -15595,14 +16383,15 @@ function enemyAttack(e){
 }
 /* v0.9 보스 고유 기믹 (Codex R2 라운드 2): B 장갑 페이즈 · A 쌍둥이 · S 공개 저항 */
 /* A 게이트 카드 「케이블」: 쌍둥이 중 집중 대상(run.focusUid)에게 피해 + */
-const bossMul=e=>e&&e.boss?(1+FX().bossDmg+(hasPassive('eunha')?0.1:0)+(mapPas().bossDmg||0))*(isBroken(e)?1.3:1)*(e.twin&&run.focusUid===e.uid?1+(mapPas().focusDmg||0):1):1;
+const bossMul=(e,m)=>e&&e.boss?(1+(m?roleFxOf(m):FX()).bossDmg+(hasPassive('eunha')?0.1:0)+(mapPas().bossDmg||0))*(isBroken(e)?1.3:1)*(e.twin&&run.focusUid===e.uid?1+(mapPas().focusDmg||0):1):1;
 /* S 게이트 카드 「균열 핵」: 저항 패널티 완화 비율(0~1) */
 const resistCut=()=>clamp(mapPas().resistCut||0,0,1);
 const isArmored=e=>!!(e&&e.armorUntil>run.time);
 const isBroken=e=>!!(e&&!isArmored(e)&&e.breakUntil>run.time);
 const enemyDef=e=>e.def+(isArmored(e)?25:0)-(isBroken(e)?10:0);
 /* EX 직접 피해 공통: 방어·장갑·보스 배율·S EX 저항 */
-function exDmg(e,raw){let d=raw-enemyDef(e);if(e.boss){d*=bossMul(e);if(run.sResist==='ex')d*=0.5+0.5*resistCut();}return Math.max(1,Math.round(d));}
+let exAttacker=null; /* §29.4 EX 피해의 공격자 — 보스 피해 역할 판정(발동 반복에서 기록) */
+function exDmg(e,raw){let d=raw-enemyDef(e);if(e.boss){d*=bossMul(e,exAttacker);if(run.sResist==='ex')d*=0.5+0.5*resistCut();}return Math.max(1,Math.round(d));}
 /* B 타워 골렘: HP 75/50/25% 통과 시 장갑 4초(방어 +25) → 해제 창 3초(방어 −10, 피해 +30%). 임계치별 1회, 큰 EX로 두 임계치를 넘겨도 창은 하나 */
 const ARMOR_THR=[0.75,0.5,0.25];
 function armorTick(e){
@@ -15704,6 +16493,7 @@ function useEx(){
  if(b.tile.enemies.some(e=>e.boss&&e.hp>0&&isBroken(e)))run.exInBreak=true;
  if(b.stat){b.stat.ex++;if(run.exInBreak&&b.tile.enemies.some(e=>e.boss&&e.hp>0&&isBroken(e)))b.stat.exBreak++;}
  for(const m of al){
+  exAttacker=m;
   const s=stats(m),id=m.stu.id,exTune=heroExTune(m),en=b.tile.enemies.filter(e=>e.hp>0),p=tileCenter(b.tile.i);
   if(id==='chaewon')b.shield[m.uid]=(b.shield[m.uid]||0)+exTune.shield;
   if(id==='bora'){b.shield[m.uid]=(b.shield[m.uid]||0)+exTune.shield;run.party.forEach(recalcMember);} /* 정렬! — 방어 +10 은 stats 가 exActive 로 판정 */
@@ -24972,7 +25762,8 @@ function cardChipsHtml(id){const c=CARDS[id],e=(run&&!run.ended?effOf(id):c)||c,
  const ch=(ic,v,tip)=>`<span class="rc" data-tip="${escTip(tip)}">${ic}${v}</span>`;
  {const v3=run&&!run.ended?loop3On():BAL.loop3!==false,r=e.spawn&&ENEMY_ROLE3[e.spawn];
   if(v3&&r&&ui4On())p.push(ch('⚑',r[0],`${ENEMIES[e.spawn].name} — ${r[1]}`));}
- for(const r of econResChips(id))p.push(ch('◈',`${r.name.replace(/\(.*\)/,'')} +${r.amt}`,`${r.name} +${r.amt} — ${r.why} · 이번 게이트 단계: ${r.tier}`));
+ /* §29.4 교본·코어 단계 없음 — 칩 이름 그대로 */
+ for(const r of econResChips(id))p.push(ch('◈',`${r.name} +${r.amt}`,`${r.name} +${r.amt} — ${r.why}`));
  if(k){p.push(ch(icoImg('icon_res_op'),k.op,'계약 OP '+k.op+(e.enhanced?' (강화 중)':'')));p.push(ch(icoImg('icon_res_xp'),k.xp,'XP '+k.xp));if(k.mana)p.push(ch(icoImg('icon_res_mana'),k.mana,'마나석 '+k.mana));if(k.card)p.push(ch(icoImg('icon_res_card'),k.card,'카드 '+k.card));if(k.drop)p.push(ch('🎒',Math.round(k.drop*100)+'%','장비 드랍 '+Math.round(k.drop*100)+'%'));}
  else{const en=e.enter||{},pa=e.pas||{},su=e.sup||{};
   if(en.op)p.push(ch(icoImg('icon_res_op'),'+'+en.op,'진입 시 OP +'+en.op));if(en.mana)p.push(ch(icoImg('icon_res_mana'),'+'+en.mana,'진입 시 마나석 +'+en.mana));if(en.card)p.push(ch(icoImg('icon_res_card'),'+'+en.card,'진입 시 카드 +'+en.card));
@@ -25761,6 +26552,13 @@ function suggestNext(reason){
  return `무사 귀환. 마나석 ${run.result.gained}·SP ${run.result.spG}로 사무소를 강화하면 다음 원정이 쉬워집니다.`;
 }
 function g_bossTip(){if(!campaignIsMain(run))return '반복 작전을 마쳤습니다. 자원을 사용하거나 다른 작전·인연 의뢰를 진행하세요.';const nxt=GATES[GATES.findIndex(x=>x.id===gate().id)+1];return nxt?`게이트 폐쇄. ${nxt.rank}랭크 「${nxt.name}」이 열렸습니다 — 작전실(4인)과 스킬 트리를 먼저 채우세요.`:'메인 공략을 마쳤습니다. 동료별 인연을 이어가거나 위험 작전과 점수 기록에 도전하세요.';}
+/* 계정 트리 구매(지휘실 목록·그래프 공통): 선행 → 결제 → 습득 → 저장 */
+function buySkillById(id){
+ const s=SKILLS.find(x=>x.id===id);if(!s||!canBuySkill(s))return false;
+ if(econOn()){if(!paySkill(s))return false;}
+ else{const [cs,cm]=skillCost(s);if(meta.sp<cs||meta.mana<cm)return false;meta.sp-=cs;meta.mana-=cm;}
+ meta.skills.push(s.id);save();return true;
+}
 function skillReq(s){const br=s.id[0];return s.core?[br+s.tier+'a',br+s.tier+'b']:(s.tier===1?[]:[br+(s.tier-1)]);}
 /* 선행 충족: 핵심 노드 자리는 원본 또는 양자택일 대체 노드 중 하나면 된다. 짝이 이미 선택됐으면 구매 불가 */
 const hasSkillOrAlt=id=>meta.skills.includes(id)||(altOf(id)?meta.skills.includes(altOf(id)):false);
@@ -25853,13 +26651,9 @@ function renderAcademy(){
  $$('#tree [data-reset]').forEach(b=>b.onclick=e=>{e.stopPropagation();resetSkill(b.dataset.reset);SFX.click();renderAcademy();});
  if(typeof mobileCommandLayout==='function')mobileCommandLayout();
  $$('#tree [data-pin]').forEach(b=>b.onclick=e=>{e.stopPropagation();setPin('skill',b.dataset.pin);SFX.click();renderAcademy();});
- $$('#tree [data-buy-skill]').forEach(n=>n.onclick=()=>{
- const s=SKILLS.find(x=>x.id===n.dataset.buySkill),[cs,cm]=skillCost(s);
- if(!canBuySkill(s))return;
- if(econOn()){if(!paySkill(s))return;}
- else{if(meta.sp<cs||meta.mana<cm)return;meta.sp-=cs;meta.mana-=cm;}
- meta.skills.push(s.id);save();renderAcademy();});
- ensureRq();$('#quests').innerHTML=(econOn()?'<p class="kbd">교본·코어는 출격 리더 기준입니다. 재료 등급은 완료한 원정 지역에 따라 정해집니다.</p>':'')+QUESTS.map(q=>`<div class="f panel" style="opacity:${meta.quests[q.id]?.55:1}"><div><div><b>${meta.quests[q.id]?'✔ ':'📋 '}${q.name}</b></div><div class="d">${q.desc}</div></div><div class="kbd">${questRewardText(q)}</div></div>`).join('')+meta.rq.map(id=>{const q=RQ_POOL.find(x=>x.id===id);return `<div class="f panel" style="border-style:dashed"><div><div><b>🔁 ${q.name}</b></div><div class="d">${q.desc}</div></div><div class="kbd">${questRewardText(q)}</div></div>`;}).join('');
+ $$('#tree [data-buy-skill]').forEach(n=>n.onclick=()=>{if(buySkillById(n.dataset.buySkill))renderAcademy();});
+ if(typeof gtCommandRender==='function')gtCommandRender(); /* §29.4 성장 트리: PC 그래프 · 모바일 역할 목록 */
+ ensureRq();$('#quests').innerHTML=(econOn()?'<p class="kbd">교본·코어는 출격 리더 기준입니다.</p>':'')+QUESTS.map(q=>`<div class="f panel" style="opacity:${meta.quests[q.id]?.55:1}"><div><div><b>${meta.quests[q.id]?'✔ ':'📋 '}${q.name}</b></div><div class="d">${q.desc}</div></div><div class="kbd">${questRewardText(q)}</div></div>`).join('')+meta.rq.map(id=>{const q=RQ_POOL.find(x=>x.id===id);return `<div class="f panel" style="border-style:dashed"><div><div><b>🔁 ${q.name}</b></div><div class="d">${q.desc}</div></div><div class="kbd">${questRewardText(q)}</div></div>`;}).join('');
  renderCodex();
  $('#facilities').innerHTML=FACILITIES.map(f=>{const lv=meta.upg[f.id],ec=econOn(),co=ec?facCost(f,lv):null,cost=ec?0:f.base*(lv+1),maxed=lv>=f.max;return `<div class="f panel"><div><div><span style="font-size:20px">${f.icon}</span> <b>${f.name}</b><span class="lv">Lv.${lv}</span></div><div class="d">${f.desc}</div></div><span>${maxed?'':`<button class="pinb${meta.pin&&meta.pin.kind==='upg'&&meta.pin.id===f.id?' on':''}" data-pinf="${f.id}" title="개발 목표로 핀">📌</button> `}<button class="btn sm" data-id="${f.id}" ${maxed||(ec?!costOk(co):meta.mana<cost)?'disabled':''}>${maxed?'MAX':(ec?costStr(co):'💎 '+cost)}</button></span></div>`;}).join('');
  $$('#facilities [data-pinf]').forEach(b=>b.onclick=()=>{setPin('upg',b.dataset.pinf);SFX.click();renderAcademy();});
@@ -27754,6 +28548,266 @@ function hub4Tick(){
 const HUB4_ERR={v:0};
 Object.assign(window.GL=window.GL||{},{hub4Tick});
 
+</script><script>
+'use strict';
+/* §29.4 v3.1 성장 트리 화면 — 지휘실 노드 그래프(PC v4: 계정 SP · 역할 코어) · 모바일 지휘실 역할 목록 · 캐릭터 [성장] 탭.
+ * 판정·구매는 엔진과 같은 함수(canBuySkill·paySkill·resetSkill / GROWTH_TREES / growthNext·buyGrowth).
+ * 선행 미충족 노드만 실루엣(그래프 이름 ??) — 눌러서 상세 효과·조건을 볼 수 있다. 트리마다 재화 칸 하나 */
+const GT_UI={tree:'account',branch:'fire',role:'tank',sel:null,bound:false,mBound:false};
+const GT_ESC={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+const gtEsc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>GT_ESC[c]);
+const gtKit=n=>typeof hub4Kit==='function'?hub4Kit(n):'assets/ui/kit/'+n+'.webp';
+const gtIcon=n=>typeof hub4Icon==='function'?hub4Icon(n):'assets/ui/icons/'+n+'.webp';
+const gtArt=p=>typeof hub4Art==='function'?hub4Art(p):p;
+const gtSlot=(k,n)=>typeof hub4Slot==='function'?hub4Slot(k,n):`<b>${gtEsc(n)}</b>`;
+const GT_ROLE_TILE={dps:'fire',tank:'surv',sup:'tac'};
+const GT_ROLE_FROM={tank:'골렘(기계) 무리',dps:'사냥개 등 짐승·인간형 무리',sup:'슬라임·위스프(유체·정령) 무리'};
+/* 역할 노드 아이콘 = 효과 종류(첫 효과) */
+const GT_FX_ICON={hpPct:'icon_stat_hp',def:'icon_stat_def',atkPct:'icon_stat_atk',spd:'icon_stat_spd',crit:'icon_bane',
+ critDmg:'icon_break',firstHit:'icon_front',startShield:'icon_club_shield',dmgTaken:'style_evade',endHeal:'style_regen',
+ healMult:'icon_tile_support',killEx:'style_ramp',bossDmg:'icon_boss'};
+const gtN=n=>Math.floor(Number(n)||0).toLocaleString('ko-KR');
+const gtOn=()=>typeof hub4On==='function'&&hub4On();
+/* ---- 노드 모델: {id,x,y,tier,name,desc,icon,tile,state,why,cost,have,alt} ---- */
+function gtAccountNodes(br){
+ const out=[],rows=4;
+ for(let t=1;t<=rows;t++){
+  const y=12+(t-1)*25,subs=SKILLS.filter(s=>s.br===br&&s.tier===t&&!s.core),a=subs[0],b=subs[1];
+  const key=SKILLS.find(s=>s.br===br&&s.tier===t&&s.core&&!s.alt),alt=SKILLS.find(s=>s.br===br&&s.tier===t&&s.alt);
+  const put=(s,x,slot)=>{if(s)out.push({...gtSkillState(s),x,y,tier:t,slot});};
+  put(a,16,'a');put(b,84,'b');
+  if(alt){put(key,39,'key');put(alt,61,'key');}else put(key,50,'key');
+ }
+ return out;
+}
+function gtSkillState(s){
+ const own=meta.skills.includes(s.id),alt=altOf(s.id),altTaken=!!alt&&meta.skills.includes(alt);
+ const reqOk=skillReq(s).every(hasSkillOrAlt),cost=skillCostRes(s).sp||0,have=Math.floor(meta.sp||0);
+ const poor=econOn()?!skillCostOk(s):have<cost;
+ const state=own?'own':altTaken?'alt':!reqOk?'sil':poor?'poor':'can';
+ const why=own?'습득 완료':altTaken?'다른 쪽을 선택함(택1)':!reqOk?'선행 강화 필요':poor?'SP 부족':'강화 가능';
+ const art=typeof HUB4_SKILL_ART==='object'&&HUB4_SKILL_ART.has(s.id);
+ return {id:s.id,kind:'skill',name:s.name,desc:s.desc,core:!!s.core,pair:!!alt,state,why,cost,have,cur:'SP',
+  tile:s.br,icon:art?`<img src="${gtArt('assets/ui/skills/skill_'+s.id+'.webp')}" alt="">`:`<i>${s.icon}</i>`,
+  reqText:skillReq(s).map(id=>(SKILLS.find(x=>x.id===id)||{}).name).filter(Boolean).join(' · ')};
+}
+function gtRoleNodes(role){
+ const out=[];
+ for(const n of GROWTH_TREES.nodes().filter(x=>x.role===role)){
+  const y=16+(n.tier-1)*34,x=n.slot==='a'?16:n.slot==='b'?84:50,st=GROWTH_TREES.status(meta,n.id);
+  const state=st.owned?'own':!st.reqOk?'sil':!st.regionOk?'zone':st.ok?'can':'poor';
+  out.push({id:n.id,kind:'role',name:n.name,desc:n.desc,core:n.slot==='key',state,why:st.owned?'습득 완료':st.why,
+   cost:st.cost,have:st.have,cur:ECON.defOf(st.key).name,x,y,tier:n.tier,slot:n.slot,tile:GT_ROLE_TILE[role],
+   icon:`<img src="${gtIcon(GT_FX_ICON[Object.keys(n.fx||{})[0]]||'icon_role_'+role)}" alt="">`,
+   scope:n.scope,region:st.region,
+   reqText:GROWTH_TREES.req(n).map(id=>GROWTH_TREES.node(id).name).join(' · ')});
+ }
+ return out;
+}
+function gtEdges(nodes){
+ const by={},out=[];for(const n of nodes)(by[n.tier]=by[n.tier]||[]).push(n);
+ for(const t of Object.keys(by).map(Number)){
+  const keys=by[t].filter(n=>n.slot==='key'),subs=by[t].filter(n=>n.slot!=='key');
+  const prev=(by[t-1]||[]).filter(n=>n.slot==='key');
+  for(const k of keys)for(const s of subs)out.push([s,k]);
+  for(const p of prev)for(const s of subs)out.push([p,s]);
+ }
+ return out;
+}
+function gtGraphHtml(nodes,rows){
+ const edge=([a,b])=>{const on=a.state==='own'&&b.state==='own',open=a.state==='own';
+  return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" class="${on?'on':open?'open':''}" `+
+   'vector-effect="non-scaling-stroke"/>';};
+ return `<div class="gt-graph" style="--gt-rows:${rows}"><svg class="gt-lines" viewBox="0 0 100 100" `+
+  `preserveAspectRatio="none" aria-hidden="true">${gtEdges(nodes).map(edge).join('')}</svg>`+
+  nodes.map(n=>{
+   const sil=n.state==='sil',tile=sil?'lock':n.tile;
+   return `<button type="button" class="gt-node ${n.state}${n.core?' core':''}${GT_UI.sel===n.id?' sel':''}" `+
+    `data-gt="${n.id}" style="left:${n.x}%;top:${n.y}%" aria-pressed="${GT_UI.sel===n.id}" `+
+    `aria-label="${gtEsc(sil?'잠긴 강화':n.name)} · ${gtEsc(n.why)}">`+
+    `<span class="gt-hex" style="--gt-tile:url('${gtKit('tile_'+tile)}')">${sil?'<i>?</i>':n.icon}`+
+    (n.state==='own'?'<em class="gt-ok">✓</em>':n.state==='zone'?`<em class="gt-zone">${gtEsc(n.region)}</em>`:'')+
+    `</span><b>${sil?'??':gtEsc(n.name)}</b>`+
+    (n.state==='own'?'':`<small>${n.cost} ${gtEsc(n.cur)}</small>`)+'</button>';
+  }).join('')+gtPairTags(nodes)+'</div>';
+}
+/* 양자택일 단: 두 핵심 사이에 「택1」 */
+function gtPairTags(nodes){
+ const by={};for(const n of nodes)if(n.pair&&n.core)(by[n.tier]=by[n.tier]||[]).push(n);
+ return Object.values(by).filter(p=>p.length===2).map(([a,b])=>
+  `<span class="gt-or" style="left:${(a.x+b.x)/2}%;top:${a.y}%">택1</span>`).join('');
+}
+function gtDetailHtml(n){
+ if(!n)return '<aside class="gt-detail"><p>노드를 눌러 효과를 확인하세요.</p></aside>';
+ const after=n.have-n.cost,tierName=n.kind==='role'?`${n.tier}단 ${n.core?'핵심':'보조'}`:`${n.tier}단 ${n.core?'핵심':'기초'}`;
+ const scope=n.kind==='role'?(n.scope==='party'?'분대 효과 — 분대에 이 역할이 있으면 전원':'역할 효과 — 이 역할 분대원에게만'):'';
+ const buy=n.state==='own'?`<button class="btn ghost gt-reset" data-gt-reset="${n.id}" `+
+   'title="연결된 다음 강화도 해제되고 쓴 재화를 모두 돌려받습니다">재설정 · 전액 반환</button>'
+  :`<button class="btn gt-buy" data-gt-buy="${n.id}" ${n.state==='can'?'':'disabled'}>`+
+   `${n.state==='can'?'강화':gtEsc(n.why)}</button>`;
+ const pinned=meta.pin&&meta.pin.kind==='skill'&&meta.pin.id===n.id;
+ const pin=n.kind==='skill'&&n.state!=='own'?`<button class="pinb${pinned?' on':''}" `+
+  `data-gt-pin="${n.id}" title="개발 목표로 핀" aria-label="개발 목표 설정">📌</button>`:'';
+ return `<aside class="gt-detail ${n.state}"><div class="gt-dh"><span class="gt-hex big" `+
+  `style="--gt-tile:url('${gtKit('tile_'+n.tile)}')">${n.icon}</span>`+
+  `<div><small>${tierName}${n.pair?' · 택1':''}</small>`+
+  `<h4>${gtEsc(n.name)}</h4></div></div><p class="gt-eff">${gtEsc(n.desc)}</p>`+
+  (scope?`<p class="gt-scope">${scope}</p>`:'')+
+  (n.reqText&&n.state!=='own'?`<p class="gt-req">선행: ${gtEsc(n.reqText)}`+
+   `${n.region?` · ${gtEsc(n.region)} 지역 소개 후`:''}</p>`:'')+
+  (n.state==='own'?'':`<div class="gt-cost${after<0?' short':''}"><span>${gtEsc(n.cur)}</span><b>필요 ${gtN(n.cost)}</b>`+
+   `<span>보유 ${gtN(n.have)}</span><strong>${after<0?'부족 '+gtN(-after):'강화 후 '+gtN(after)}</strong></div>`)+
+  `<div class="gt-act">${buy}${pin}</div></aside>`;
+}
+/* ---- 지휘실(PC v4): 원래 목록(#tree 등)은 숨기고 같은 칸에 그래프를 그린다 ---- */
+function gtCommandRender(){
+ const tab=document.querySelector('#s-academy .atab[data-t="skill"]');if(!tab)return;
+ let box=document.getElementById('gtCommand');
+ if(!gtOn()||!econOn()||typeof GROWTH_TREES==='undefined'){
+  tab.classList.remove('gt-on');if(box)box.hidden=true;gtMobileRender();return;
+ }
+ if(!box){
+  box=document.createElement('section');box.id='gtCommand';box.setAttribute('aria-label','성장 트리');tab.appendChild(box);
+ }
+ if(!GT_UI.bound){GT_UI.bound=true;box.addEventListener('click',gtCommandClick);}
+ tab.classList.add('gt-on');box.hidden=false;
+ const acct=GT_UI.tree==='account';
+ if(acct&&!BRANCH[GT_UI.branch])GT_UI.branch=Object.keys(BRANCH)[0];
+ const nodes=acct?gtAccountNodes(GT_UI.branch):gtRoleNodes(GT_UI.role);
+ if(!nodes.some(n=>n.id===GT_UI.sel))GT_UI.sel=(nodes.find(n=>n.state==='can')||nodes.find(n=>n.state==='poor')||
+  nodes.find(n=>n.state!=='own'&&n.state!=='sil')||nodes[0]).id;
+ const roleKey=ECON.coreId(GT_UI.role),coreHave=Math.floor(meta.res?.[roleKey]||0);
+ const coreSum=GROWTH_TREES.ROLES.reduce((a,r)=>a+Math.floor(meta.res?.[ECON.coreId(r)]||0),0);
+ const wallet=acct?gtSlot('sp',gtN(meta.sp)):gtSlot(roleKey,gtN(coreHave));
+ const tabs=acct?Object.entries(BRANCH).map(([br,b])=>{
+   const n=SKILLS.filter(s=>s.br===br&&meta.skills.includes(s.id)).length;
+   return `<button type="button" data-gt-br="${br}" aria-pressed="${GT_UI.branch===br}" style="--gt-acc:${b.color}">`+
+    `${gtEsc(b.name.replace(/^\S+\s/,''))}<small>${n}/12</small></button>`;}).join('')
+  :GROWTH_TREES.ROLES.map(r=>`<button type="button" data-gt-role="${r}" aria-pressed="${GT_UI.role===r}">`+
+   `<img src="${gtIcon('icon_role_'+r)}" alt="">${gtEsc(ROLES[r])}<small>${GROWTH_TREES.count(meta,r)}/9 · `+
+   `코어 ${gtN(meta.res?.[ECON.coreId(r)])}</small></button>`).join('');
+ const hint=acct?'SP로 강화 · 핵심은 같은 단 기초 2개 필요 · 재설정하면 SP 전액 반환 · 다음 원정부터 적용'
+  :`${ECON.defOf(roleKey).name}는 ${GT_ROLE_FROM[GT_UI.role]}을 정산하면 모입니다 · 다음 원정부터 적용`;
+ box.innerHTML=`<header class="gt-head"><nav class="gt-trees" aria-label="성장 트리 종류">`+
+  `<button type="button" data-gt-tree="account" aria-pressed="${acct}">계정 강화<small>SP ${gtN(meta.sp)}</small></button>`+
+  `<button type="button" data-gt-tree="role" aria-pressed="${!acct}">역할 강화<small>코어 ${gtN(coreSum)}</small></button>`+
+  `</nav><div class="gt-wallet">${wallet}</div></header>`+
+  `<nav class="gt-branches ${acct?'acct':'role'}" aria-label="${acct?'계열':'역할'}">${tabs}</nav>`+
+  `<p class="gt-hint">${gtEsc(hint)}</p>`+
+  `<div class="gt-body">${gtGraphHtml(nodes,acct?4:3)}${gtDetailHtml(nodes.find(n=>n.id===GT_UI.sel))}</div>`;
+}
+function gtCommandClick(e){
+ const b=e.target.closest('button');if(!b||b.disabled)return;const d=b.dataset;
+ if(d.gtTree){GT_UI.tree=d.gtTree;GT_UI.sel=null;}
+ else if(d.gtBr){GT_UI.branch=d.gtBr;GT_UI.sel=null;}
+ else if(d.gtRole){GT_UI.role=d.gtRole;GT_UI.sel=null;}
+ else if(d.gt)GT_UI.sel=d.gt;
+ else if(d.gtBuy){if(!gtBuy(d.gtBuy))return;}
+ else if(d.gtReset){if(!gtReset(d.gtReset))return;}
+ else if(d.gtPin){if(typeof setPin==='function')setPin('skill',d.gtPin);}
+ else return;
+ if(typeof SFX==='object'&&SFX.click&&!d.gtBuy)SFX.click();
+ if(d.gtBuy||d.gtReset||d.gtPin){if(typeof renderAcademy==='function')renderAcademy();else gtCommandRender();}
+ else gtCommandRender();
+}
+function gtBuy(id){
+ const ok=GROWTH_TREES.node(id)?GROWTH_TREES.buy(meta,id):typeof buySkillById==='function'&&buySkillById(id);
+ if(!ok)return false;if(GROWTH_TREES.node(id))save();if(typeof SFX==='object'&&SFX.buy)SFX.buy();return true;
+}
+function gtReset(id){
+ if(GROWTH_TREES.node(id)){const r=GROWTH_TREES.reset(meta,id);if(!r)return false;save();return true;}
+ return !!resetSkill(id);
+}
+/* ---- 모바일 지휘실: 계정/역할 전환 + 역할은 기존 목록 모양(.branch · .tier · .node)으로 ---- */
+function gtMobileRender(){
+ const tree=document.getElementById('tree'),tabs=document.getElementById('treeTabs');
+ if(!tree||!tabs||!econOn()||typeof GROWTH_TREES==='undefined')return;
+ let mode=document.getElementById('gtMode');
+ if(!mode){mode=document.createElement('nav');mode.id='gtMode';mode.setAttribute('aria-label','성장 트리 종류');
+  tabs.before(mode);mode.addEventListener('click',e=>{const b=e.target.closest('[data-gt-tree]');if(!b)return;
+   GT_UI.tree=b.dataset.gtTree;if(typeof renderAcademy==='function')renderAcademy();});}
+ const mb=(k,t)=>`<button type="button" data-gt-tree="${k}" aria-pressed="${GT_UI.tree===k}">${t}</button>`;
+ mode.innerHTML=mb('account','계정 강화 · SP')+mb('role','역할 강화 · 코어');
+ const four=document.querySelector('#mobileCommandTabs [data-command-tier="4"]');
+ if(GT_UI.tree!=='role'){if(four)four.hidden=false;return;}
+ if(four){four.hidden=true;if(typeof MOBILE==='object'&&MOBILE.commandTier===4)MOBILE.commandTier=3;}
+ tabs.innerHTML=GROWTH_TREES.ROLES.map(r=>`<button data-gt-mrole="${r}" class="${GT_UI.role===r?'on':''}">`+
+  `${gtEsc(ROLES[r])} <span class="kbd">${GROWTH_TREES.count(meta,r)}/9 · `+
+  `코어 ${gtN(meta.res?.[ECON.coreId(r)])}</span></button>`).join('');
+ tabs.querySelectorAll('[data-gt-mrole]').forEach(b=>b.onclick=()=>{GT_UI.role=b.dataset.gtMrole;renderAcademy();});
+ const hint=document.getElementById('treeHint');
+ if(hint)hint.textContent='역할 코어로 강화 · 핵심은 같은 단 보조 2개 필요 · 2단 C·3단 A 지역 소개 후 · 재설정 시 코어 전액 반환';
+ const node=n=>{const st=GROWTH_TREES.status(meta,n.id),after=st.have-st.cost;
+  return `<div class="node${st.owned?' owned':st.ok?' avail':st.reqOk&&st.regionOk?' poor':''}" data-id="${n.id}">`+
+   `<div class="st">${gtEsc(st.owned?'습득 완료':st.ok?'강화 가능':st.why)}</div><div class="nn">${gtEsc(n.name)}</div>`+
+   `<div class="nd">${gtEsc(n.desc)}</div><div class="nc">`+(st.owned?
+   `<button class="btn xs ghost" data-gt-mreset="${n.id}">재설정 · 코어 반환</button>`:
+   `<div class="command-cost"><div class="command-cost-row${after<0?' is-short':''}">`+
+   `<span>${gtEsc(ECON.defOf(st.key).name)}</span>`+
+   `<b>${st.cost}</b><span>${gtN(st.have)}</span><strong>${after<0?'부족 '+(-after):after}</strong></div></div>`+
+   `<div class="command-actions"><button class="btn command-buy" data-gt-mbuy="${n.id}" ${st.ok?'':'disabled'}>`+
+   `${st.ok?'강화하기':gtEsc(st.why)}</button></div>`)+'</div></div>';};
+ const ns=GROWTH_TREES.nodes().filter(n=>n.role===GT_UI.role);
+ tree.innerHTML=`<div class="branch on" data-br="${GT_UI.role}" data-scroll-ok><h5>${gtEsc(ROLES[GT_UI.role])}</h5>`+
+  [1,2,3].map(t=>{const subs=ns.filter(n=>n.tier===t&&n.slot!=='key'),key=ns.find(n=>n.tier===t&&n.slot==='key');
+   return `<div class="tier"><div class="tl">${t}단</div><div class="subs">${subs.map(node).join('')}</div>`+
+    `${node(key)}</div>`;})
+   .join('')+'</div>';
+ if(!GT_UI.mBound){GT_UI.mBound=true;tree.addEventListener('click',e=>{
+  const b=e.target.closest('[data-gt-mbuy],[data-gt-mreset]');if(!b||b.disabled||GT_UI.tree!=='role')return;
+  const ok=b.dataset.gtMbuy?GROWTH_TREES.buy(meta,b.dataset.gtMbuy):!!GROWTH_TREES.reset(meta,b.dataset.gtMreset);
+  if(ok){save();if(typeof SFX==='object'&&SFX.buy)SFX.buy();renderAcademy();}});}
+ if(typeof mobileCommandLayout==='function')mobileCommandLayout();
+}
+/* ---- 캐릭터 [성장] 탭: Lv1~10 경로(5칸 두 줄, 뱀 모양) · 다음 Lv 상세 · 교본 모으기 ---- */
+function profileGrowth(s){
+ if(!econOn()||typeof GROWTH_TREES==='undefined')return `<p class="profile-note">${gtEsc(growthLine(s))}</p>`;
+ const path=GROWTH_TREES.charPath(meta,s),lv=path.filter(n=>n.owned).length,key=ECON.bookId(s.school);
+ const have=Math.floor(meta.res?.[key]||0),book=ECON.defOf(key).name,nx=growthNext(s.id),open=studentUnlocked(s);
+ const passive=PASSIVES[s.id]?`고유 패시브 「${PASSIVES[s.id].name}」`:'고유 패시브';
+ const label=n=>n.lv===3?passive:n.milestone;
+ const cell=(n,i)=>{const row=i<5?1:2,col=row===1?i+1:10-i;
+  const state=n.owned?'own':n.next?(nx&&nx.ok?'can':!n.gateOk?'zone':'poor'):'later';
+  return `<li class="gt-lv ${state}" style="grid-row:${row};grid-column:${col}">`+
+   `<span class="gt-orb" aria-label="Lv${n.lv}">${n.owned?'✓':n.lv}</span>`+
+   (n.milestone?`<em>${gtEsc(n.lv===3?'패시브':n.milestone.replace(' 출격','').replace(/ \+.*$/,''))}</em>`:'')+
+   (n.owned?'':`<i>교본 ${n.need}</i>`)+'</li>';};
+ const next=path.find(n=>n.next);
+ const why=!open?'동료 해금 후 성장 가능':!nx?'':!nx.gateOk?`${nx.gate} 지역 소개 후 성장 가능`:
+  !nx.ok?`${book} 부족 ${Math.max(0,next.need-have)}`:'';
+ /* 원정 중 성장 구매는 가능하지만 이번 원정은 출격 스냅샷(run.gLv) 그대로 — 다음 원정부터 적용 */
+ const later=GROWTH_TREES.busy()?' · 다음 원정부터 적용':'';
+ const nextHtml=next?`<div class="gt-next"><div><small>다음 성장</small>`+
+   `<h4>Lv${next.lv}${label(next)?' · '+gtEsc(label(next)):''}</h4>`+
+   `<p>HP·공격 +2%${next.gate&&!next.gateOk?` · ${next.gate} 지역 소개 후 가능`:''}${later}`+
+   `${next.need<next.full?` · 따라잡기 할인(정가 ${next.full})`:''}</p></div>`+
+   `<div class="gt-cost${have<next.need?' short':''}"><span>${gtEsc(book)}</span><b>필요 ${next.need}</b>`+
+   `<span>보유 ${gtN(have)}</span></div>`+
+   `<button class="btn gt-buy" data-grow="${s.id}" ${nx&&nx.ok?'':'disabled'}>`+
+   `${why?gtEsc(why):`Lv${next.lv} 성장`}</button></div>`
+  :'<div class="gt-next max"><h4>성장 완료 · Lv10</h4><p>모든 이정표를 열었습니다.</p></div>';
+ const mem=Math.floor(meta.res?.mem||0),x=META_V2_CONFIG.growthTrees.character,busy=GROWTH_TREES.busy();
+ const swaps=Object.keys(SCHOOLS).filter(id=>id!==s.school&&ECON.defOf(ECON.bookId(id))).map(id=>{
+  const n=Math.floor(meta.res?.[ECON.bookId(id)]||0);
+  return `<button class="btn xs ghost" data-gt-swap="${id}" ${busy||n<x.bookSwap.give?'disabled':''}>`+
+   `${gtEsc(ECON.defOf(ECON.bookId(id)).name)} ${x.bookSwap.give} → ${x.bookSwap.get} `+
+   `<small>보유 ${gtN(n)}</small></button>`;}).join('');
+ return `<section class="gt-char" aria-label="${gtEsc(s.name)} 성장 트리"><header><div><b>성장 Lv.${lv}</b>`+
+  `<small> / ${ECON.growthMax()}</small></div>${gtSlot(key,gtN(have))}</header>`+
+  `<ol class="gt-path" aria-label="성장 단계">${path.map(cell).join('')}</ol>${nextHtml}`+
+  `<div class="gt-supply"><p>${gtEsc(book)}은 ${gtEsc((SCHOOLS[s.school]||{}).short||'')} 학생의 서명 카드를 원정에서 놓으면 모입니다.</p>`+
+  `<div><button class="btn xs ghost" data-gt-mem="${s.school}" ${busy||mem<x.memExchange.mem?'disabled':''}>`+
+  `기억 조각 ${x.memExchange.mem} → ${x.memExchange.book} <small>보유 ${gtN(mem)}</small></button>`+
+  `${swaps}</div></div></section>`;
+}
+function profileGrowthBind(el,s,refresh){
+ el.querySelectorAll('[data-gt-mem]').forEach(b=>b.onclick=()=>{
+  if(GROWTH_TREES.memExchange(meta,b.dataset.gtMem)){save();if(typeof SFX==='object'&&SFX.buy)SFX.buy();refresh();}});
+ el.querySelectorAll('[data-gt-swap]').forEach(b=>b.onclick=()=>{
+  if(GROWTH_TREES.bookSwap(meta,b.dataset.gtSwap,s.school)){
+   save();if(typeof SFX==='object'&&SFX.buy)SFX.buy();refresh();}});
+}
+
 </script>
 <script>
 'use strict';
@@ -27833,12 +28887,14 @@ function econShoppingLine(){
   if(k==='mem')return '게이트 보스 처치';
   return '';};
  return '🧾 장보기: '+lack.slice(0,2).map(k=>`${ECON.defOf(k).name} ${(res[k]||0)}/${need[k]} → ${src(k)}`).join(' · ');}
-/* §27.6 l-4: 학생 성장 구매 버튼 — 다음 Lv 과 필요한 소재(그 학생의 학원 교본 + 역할 코어) */
+/* §27.6 l-4 · §29.4: 학생 성장 구매 버튼 — 다음 Lv 과 필요한 소재(그 학생 학교 교본) */
 function econGrowBtn(st){
  if(!studentUnlocked(st))return '<span class="kbd">동료 해금 후 성장 가능</span>';
  const nx=growthNext(st.id);
  if(!nx)return `<span class="kbd" style="align-self:center">성장 MAX</span>`;
- const need=Object.keys(nx.cost).map(k=>`${ECON.defOf(k).name} ${Math.min(((meta.res||{})[k]||0),nx.cost[k])}/${nx.cost[k]}`).join(' · ');
+ const need=(nx.gateOk===false?nx.gate+' 지역 소개 후 · ':'')+ /* §29.4 캐릭터 트리 지역 조건 */
+  Object.keys(nx.cost).map(k=>`${ECON.defOf(k).name} ${Math.min(((meta.res||{})[k]||0),nx.cost[k])}/${nx.cost[k]}`)
+   .join(' · ');
  return `<span style="align-self:center;text-align:right"><button class="btn xs" data-grow="${st.id}" ${nx.ok?'':'disabled'} title="${need}">Lv${nx.lv} 성장</button><div class="kbd">${need}</div></span>`;}
 function resetMeta(){meta=metaDef();selLeader=null;poolFilter='all';save();$('#optPause').checked=true;}
 /* §27.6 재화 개편 스위치(설정 창) — 로비에서만. 켜고 끌 때 그 경제의 세이브로 갈아탄다(두 세이브는 섞이지 않는다) */
@@ -28643,7 +29699,7 @@ function profileFacts(s){
   +`<div class="profile-skill"><b>${profileEscape(s.trait.name)}</b><p>${profileEscape(s.trait.desc)}</p>`
   +`<b>${profileEscape(s.ex.name)}</b><p>${profileEscape(s.ex.desc)}</p></div>`
   +`<p class="profile-note">${profileEscape(growthLine(s))}</p>`
-  +(econOn()?econGrowBtn(s):'');
+  +(econOn()?`<button class="btn xs" data-profile-tab="growth">성장 트리 열기</button>`:'');
 }
 function profileRewardCards(s){
  return '<div class="profile-rewards">'+affectionCosmetics(s.id).map(def=>{
@@ -28697,8 +29753,9 @@ function renderCharacterProfile(){
  const all=STUDENTS.filter(studentMet),s=all.find(x=>x.id===PROFILE.student)||all[0];if(!s)return;
  PROFILE.student=s.id;
  const bi=bondInfo(s.id),daily=affectionDailyStatus(s.id),next=bondEventsFor(s.id)[0];
- const tabs={profile:'프로필',story:'개인 이야기',rewards:'특전',gifts:'선물',memory:'회상'};
- const contents={profile:()=>profileFacts(s),story:()=>profileStories(s),rewards:()=>profileRewardCards(s),
+ const tabs={profile:'프로필',growth:'성장',story:'개인 이야기',rewards:'특전',gifts:'선물',memory:'회상'};
+ const contents={profile:()=>profileFacts(s),growth:()=>profileGrowth(s),
+  story:()=>profileStories(s),rewards:()=>profileRewardCards(s),
   gifts:()=>profileGifts(s),memory:()=>profileArchive(s)};
  const quote=s.quotes[Math.min(s.quotes.length-1,Math.floor((bi.lv-1)/3))];
  el.innerHTML=`<header class="profile-header"><button data-profile-close aria-label="프로필 닫기">‹ 돌아가기</button>`
@@ -28745,6 +29802,7 @@ function renderCharacterProfile(){
  });
  bind('[data-reset]',b=>{affectionResetAppearance(s.id,b.dataset.reset);profileRefresh();applyAffectionWallpaper();});
  bind('[data-grow]',()=>{if(buyGrowth(s.id)){SFX.buy();profileRefresh();}});
+ profileGrowthBind(el,s,profileRefresh); /* §29.4 교본 모으기(기억 조각 · 학교 전환) */
  const focusTarget=focusAttr?el.querySelector(`[${focusAttr}="${focusValue}"]`):null;
  if(focusTarget&&!focusTarget.disabled)focusTarget.focus();
  else el.querySelector('.profile-tabs [aria-pressed="true"]')?.focus();
@@ -30266,7 +31324,7 @@ function mobileHubSync(){
 
 </script>
 <div id="characterPreviewBadge" style="position:fixed;left:8px;bottom:4px;z-index:90;pointer-events:none;font-size:10px;color:#bfd9f7;background:#102438aa;padding:2px 5px;border-radius:4px">캐릭터 B 테스트 · 하린 포함 14명 · 별도 저장</div>
-<script>(()=>{const version="8ad72acc6c01e864";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
+<script>(()=>{const version="3a887826db1fed41";async function check(){try{const r=await fetch('version.json',{cache:'no-store'}),v=await r.json();if(v.version!==version&&!document.getElementById('characterUpdate')){const b=document.createElement('button');b.id='characterUpdate';b.textContent='새 캐릭터 테스트판 · 저장 후 새로고침';b.style.cssText='position:fixed;top:8px;left:8px;z-index:10000';b.onclick=()=>{if(typeof run!=='undefined'&&run&&!run.ended)return;location.replace('index.html?v='+v.version);};document.body.append(b);}}catch(e){}}setInterval(check,60000);})();</script><style>/* 결전은 캔버스 내부에서 한 번만 반전한다. 기존 img.sd의 반전을 상속하지 않는다. */
 .du-m canvas.attack-sd {
  height:clamp(48px,19dvh,150px); width:auto; max-height:100%; min-height:0;
  transform:none; display:block; pointer-events:none;
